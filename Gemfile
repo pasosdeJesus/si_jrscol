@@ -15,6 +15,8 @@ gem 'cocoon',
 
 gem 'coffee-rails' # CoffeeScript para recuersos .js.coffee y vistas
 
+gem 'colorize' # Colores en terminal
+
 gem 'devise' # Autenticación y roles
 
 gem 'devise-i18n'
@@ -110,8 +112,6 @@ gem 'sivel2_sjr',
 group :development, :test do
 
   #gem 'byebug' # Depurar
-
-  gem 'colorize' # Colores en terminal
 
   gem 'dotenv-rails'
 end
