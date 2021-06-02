@@ -27,14 +27,15 @@ include:
 
 image: ruby:3.0
 services:
-  - postgresql: latest
+  - postgres:12.2-alpine
 
 .testing:
   stage: test
   variables:
-    POSTGRES_HOST: postgres
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: password
+    POSTGRES_USER: runner
+    POSTGRES_PASSWORD: ""
+    POSTGRES_DB: sijrscol_pru
+    POSTGRES_HOST_AUTH_METHOD: trust
     RAILS_ENV: test
     NOKOGIRI_USE_SYSTEM_LIBRARIES: true
   script:
