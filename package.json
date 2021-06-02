@@ -1,26 +1,29 @@
 {
+  "name": "si_jrscol",
+  "private": false,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@rails/ujs": "^6.0.1",
-    "@rails/webpacker": "^4.0.2",
-    "bootstrap": "^4.3.1",
+    "@rails/webpacker": "^5.4.0",
+    "bootstrap": "^4.6.0",
     "bootstrap-datepicker": "^1.9.0",
     "chartkick": "^3.2.1",
     "chosen-js": "^1.8.7",
-    "expose-loader": "^0.7.5",
     "gridstack": "^0.6.0",
     "highcharts": "^9.0.1",
     "is-svg": "^4.2.2",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "jquery-ui": "^1.12.1",
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
-    "node-forge": "0.10.0",
     "popper.js": "^1.16.0",
     "serialize-javascript": "2.1.1",
-    "turbolinks": "^5.2.0"
+    "turbolinks": "^5.2.0",
+    "webpack": "^4.46.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.4.1"
+    "expose-loader": "^1.0.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-cli": "^3.3.12"
   }
 }

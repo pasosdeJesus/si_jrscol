@@ -22,3 +22,32 @@ sast:
   stage: test
 include:
 - template: Auto-DevOps.gitlab-ci.yml
+
+# https://medium.com/@antongrigoriev_23292/playing-with-gitlab-ci-cd-configs-for-ruby-on-rails-test-and-deployment-5744485a9a0e
+
+image: ruby:3.0
+services:
+  - postgresql: latest
+
+.testing:
+  stage: test
+  variables:
+    POSTGRES_HOST: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: password
+    RAILS_ENV: test
+    NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+  script:
+    - nvm install node
+    - apt-get update -yy && apt-get install build-essential libpq-dev -y
+    - bundle install
+    - bundle exec rails db:setup
+    - yarn install
+    - cp .env.gitlab .env
+    - cp config/database.ci.yml config/database.yml
+    - cp db/structure.sql db/structure.sql.copia 
+    - sed -e 's/provider = libc,//g;s/SET default_table_access_method.*/-- &/g' db/structure.sql.copia > db/structure.sql 
+    - bundle exec bin/rails db:setup
+    - bundle exec bin/rails sip:indices
+    - CONFIG_HOSTS=www.example.com bin/rails test
+
