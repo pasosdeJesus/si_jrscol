@@ -1,22 +1,21 @@
+image: alpine:latest
+
+variables:
+  POSTGRES_ENABLED: "true"
+  POSTGRES_USER: runner
+  POSTGRES_PASSWORD: ""
+  POSTGRES_DB: sijrscol_pru
+  POSTGRES_HOST_AUTH_METHOD: trust
+  RAILS_ENV: test
+  NOKOGIRI_USE_SYSTEM_LIBRARIES: "true"
+
+
 stages:
-- build
-- test
+  - build
+  - test
 
-# https://medium.com/@antongrigoriev_23292/playing-with-gitlab-ci-cd-configs-for-ruby-on-rails-test-and-deployment-5744485a9a0e
-
-image: ruby:3.0
-services:
-  - postgres:12.2-alpine
-
-.testing:
-  stage: test
-  variables:
-    POSTGRES_USER: runner
-    POSTGRES_PASSWORD: ""
-    POSTGRES_DB: sijrscol_pru
-    POSTGRES_HOST_AUTH_METHOD: trust
-    RAILS_ENV: test
-    NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+build:
+  stage: build
   script:
     - nvm install node
     - apt-get update -yy && apt-get install build-essential libpq-dev -y
@@ -29,5 +28,9 @@ services:
     - sed -e 's/provider = libc,//g;s/SET default_table_access_method.*/-- &/g' db/structure.sql.copia > db/structure.sql 
     - bundle exec bin/rails db:setup
     - bundle exec bin/rails sip:indices
-    - CONFIG_HOSTS=www.example.com bin/rails test
 
+test:
+  stage: test
+  needs: [build]
+  script:
+    - CONFIG_HOSTS=www.example.com bin/rails tes
