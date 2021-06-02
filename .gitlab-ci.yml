@@ -1,13 +1,6 @@
 stages:
 - build
 - test
-- review
-- dast
-- staging
-- canary
-- cleanup
-sast:
-  stage: test
 
 # https://medium.com/@antongrigoriev_23292/playing-with-gitlab-ci-cd-configs-for-ruby-on-rails-test-and-deployment-5744485a9a0e
 
