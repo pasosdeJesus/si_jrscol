@@ -42,3 +42,4 @@ test:
   needs: [build]
   script:
     - CONFIG_HOSTS=www.example.com bin/rails test
+
