@@ -21,12 +21,13 @@ Aplican las mismas instrucciones de SIVeL 2
 <https://github.com/pasosdeJesus/sivel2>
 
 ### Arquitectura
-Se usa junto con sip, mr519_gen, heb412_gen, sivel2_gen, sivel2_sjr, cor1440_gen y sal7711_gen ver
-https://github.com/pasosdeJesus/sip
-https://github.com/pasosdeJesus/mr519_gen
-https://github.com/pasosdeJesus/heb412_gen
-https://github.com/pasosdeJesus/sivel2_gen
-https://github.com/pasosdeJesus/sivel2_sjr
-https://github.com/pasosdeJesus/cor1440_gen
-https://github.com/pasosdeJesus/sal7711_gen
+Se ha desarrollado sobre:
+* [sip](https://github.com/pasosdeJesus/sip)
+* [mr519_gen](https://github.com/pasosdeJesus/mr519_gen)
+* [heb412_gen](https://github.com/pasosdeJesus/heb412_gen)
+* [sivel2_gen](https://github.com/pasosdeJesus/sivel2_gen)
+* [sivel2_sjr](https://github.com/pasosdeJesus/sivel2_sjr)
+* [cor1440_gen](https://github.com/pasosdeJesus/cor1440_gen)
+* [sal7711_gen](https://github.com/pasosdeJesus/sal7711_gen)
+
 
