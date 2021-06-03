@@ -10,7 +10,7 @@ Disponible en <https://docs.google.com/document/d/1qxJOBzbG_lQPN0nfhlJ1QyeRO4a9h
 
 ### Requerimientos
 * Ruby version >= 3.0.1
-* PostgreSQL >= 13.2 con extension unaccent
+* PostgreSQL >= 13.3 con extension unaccent
 * Recomendado sobre adJ 6.8 (que incluye todos los componentes mencionados). 
 * La cuenta desde la cual se ejecute el servidor o las pruebas debe poder abrir 2048 archivos --en 
 adJ se establece en la clase del usuario que ejecuta en `/etc/login.conf` con `:openfiles-cur=2048:`
