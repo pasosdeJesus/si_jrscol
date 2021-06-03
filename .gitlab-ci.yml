@@ -17,7 +17,6 @@ stages:
 build:
   stage: build
   script:
-    - nvm install node
     - apt-get update -yy && apt-get install build-essential libpq-dev -y
     - bundle install
     - bundle exec rails db:setup
