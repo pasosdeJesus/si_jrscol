@@ -5,6 +5,7 @@ default: &default
   pool: 5
   username: <%= ENV.fetch('BD_USUARIO', 'postgres') %>
   password: <%= ENV.fetch('BD_CLAVE') %>
+  host: <%= ENV.fetch('BD_SERVIDOR', 'localhost') %>
 
 development:
   <<: *default
