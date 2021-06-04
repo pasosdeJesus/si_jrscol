@@ -6,12 +6,11 @@ rvm:
 addons:
   postgresql: '10'
   chrome: stable
-
-apt:
-  packages:
-    - libproj9
-    - postgresql-10-postgis-2.4
-    - postgresql-client-10
+  apt:
+    packages:
+      - libproj9
+      - postgresql-10-postgis-2.4
+      - postgresql-client-10
 
 notifications:
   email: false
