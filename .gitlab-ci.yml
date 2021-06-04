@@ -30,7 +30,7 @@ test:
       - apt-cache
       - node_modules
       - vendor/bundle
-  before-script:
+  before_script:
     - ruby -v
     - which ruby
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
