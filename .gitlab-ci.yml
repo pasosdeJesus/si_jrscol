@@ -1,4 +1,4 @@
-image: "ruby:3.0"
+image: "ruby:3.0.1"
 
 services:
   - postgres
@@ -20,7 +20,7 @@ stages:
 build:
   stage: build
   script:
-    - apt-get update -yy && apt-get install build-essential libpq-dev -y
+    - apt-get update -yy && apt-get install build-essential libpq-dev postgresql-client -y
     - apt-get install -y -qq nodejs
     - ruby -v
     - which ruby
