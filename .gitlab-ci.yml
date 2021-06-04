@@ -50,7 +50,6 @@ test:
     #- psql -h postgres -U runner --set ON_ERROR_STOP=1 --no-psqlrc --file /builds/pasosdeJesus/si_jrscol/db/structure.sql sijrscol_pru
     - bin/rails db:drop db:create db:setup
     - bin/rails sip:indices
-    - which chromedriver
   script:
     - CONFIG_HOSTS=www.example.com bin/rails test
     - CONFIG_HOSTS=127.0.0.1 bin/rails test:system
