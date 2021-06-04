@@ -52,6 +52,6 @@ test:
     - bin/rails sip:indices
   script:
     - CONFIG_HOSTS=www.example.com bin/rails test
-    - CONFIG_HOSTS=127.0.0.1 bin/rails test:system
+    #- CONFIG_HOSTS=127.0.0.1 bin/rails test:system
 
 
