@@ -5,7 +5,6 @@ require 'application_system_test_case'
 class AccesoTest < ApplicationSystemTestCase
 
   test "puede crear caso" do
-    skip
     @usuario = Usuario.create(PRUEBA_USUARIO)
     visit new_usuario_session_path 
     fill_in "Usuario", with: @usuario.nusuario
@@ -19,7 +18,7 @@ class AccesoTest < ApplicationSystemTestCase
 
     assert (@numcaso.to_i > 0)
     click_button "Guardar"
-    puts page.body
+    #puts page.body
     assert page.has_content?("5 errores.")
     #puts page.body
     # Driver no acepta: abrir solicitante para poner nombreclick_on "Eliminar" end

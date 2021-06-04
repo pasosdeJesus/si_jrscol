@@ -18,12 +18,16 @@ class CasoconjsTest < ApplicationSystemTestCase
   end
 
   test "puede crear caso con datos mínimos" do
-    skip
     visit '/casos/nuevo'
     @numcaso=find_field('Código').value
 
     # Sol principal
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
+    take_screenshot
+    skip
+    click_on "DATOS BÁSICOS DEL CONTACTO"
+    take_screenshot
+    #if (!find_link('Añadir Sitio Geográfico').visible?)
     #if (!find_link('Añadir Sitio Geográfico').visible?)
     #  click_link "Sitios geográficos de refugios y desplazamientos"
     #end
@@ -48,7 +52,6 @@ class CasoconjsTest < ApplicationSystemTestCase
   end
 
   test "puede crear caso con familiar" do
-    skip
     Capybara.current_driver = Capybara.javascript_driver
     visit '/casos/nuevo'
     # Datos básicos
@@ -57,7 +60,8 @@ class CasoconjsTest < ApplicationSystemTestCase
     #fill_in "Memo", with: 'con familiar'
 
     # Sol principal
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
+    skip
     #if (!find_link('Añadir Sitio Geográfico').visible?)
     #  click_link "Sitios geográficos de refugios y desplazamientos"
     #end
@@ -67,7 +71,7 @@ class CasoconjsTest < ApplicationSystemTestCase
       fill_in "Apellidos", with: 'Apellidos Solicitante'
     end
     #page.save_screenshot('tmp/s-sol1.png')
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
     #page.save_screenshot('tmp/s-sol2.png')
 
     # Núcleo familiar
@@ -103,7 +107,6 @@ class CasoconjsTest < ApplicationSystemTestCase
   end
 
   test "puede crear caso con familiar mínimo y 1 ubicación" do
-    skip
     visit '/casos/nuevo'
     # Datos básicos
     #page.save_screenshot('tmp/s-sol0.png')
@@ -112,7 +115,8 @@ class CasoconjsTest < ApplicationSystemTestCase
     #fill_in "Memo", with: 'descripcion con javascript'
 
     # Sol principal
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
+    skip
     #if (!find_link('Añadir Sitio Geográfico').visible?)
     #  click_link "Sitios geográficos de refugios y desplazamientos"
     #end
@@ -165,7 +169,6 @@ class CasoconjsTest < ApplicationSystemTestCase
   end
 
   test "puede crear caso con familiar mínimo, 2 ubicaciones, ref y desp" do
-    skip
     visit '/casos/nuevo'
     # Datos básicos
     fill_in "Fecha de recepción", with: '2014-08-04'
@@ -173,7 +176,8 @@ class CasoconjsTest < ApplicationSystemTestCase
     #fill_in "Memo", with: 'descripcion con javascript'
 
     # Sol principal
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
+    skip
     #if (!find_link('Añadir Sitio Geográfico').visible?)
     #  click_link "Sitios geográficos de refugios y desplazamientos"
     #end
@@ -183,7 +187,7 @@ class CasoconjsTest < ApplicationSystemTestCase
       fill_in "Apellidos", with: 'Apellidos Solicitante'
     end
     #page.save_screenshot('tmp/s-sol1.png')
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
     #page.save_screenshot('tmp/s-sol2.png')
 
     # Núcleo familiar
@@ -286,7 +290,6 @@ class CasoconjsTest < ApplicationSystemTestCase
   end
 
   test "puede crear caso con solicitante, p. resp y acto" do
-    skip
     #skip # Por arreglar acto
     visit '/casos/nuevo'
     # Datos básicos
@@ -295,7 +298,8 @@ class CasoconjsTest < ApplicationSystemTestCase
     #fill_in "Memo", with: 'descripcion con javascript'
 
     # Sol principal
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
+    skip
     #if (!find_link('Añadir Sitio Geográfico').visible?)
     #  click_link "Sitios geográficos de refugios y desplazamientos"
     #end
@@ -305,7 +309,7 @@ class CasoconjsTest < ApplicationSystemTestCase
       fill_in "Apellidos", with: 'Apellidos Solicitante'
     end
     #page.save_screenshot('tmp/s-sol1.png')
-    click_on "Contacto"
+    click_on "DATOS BÁSICOS DEL CONTACTO"
     #page.save_screenshot('tmp/s-sol2.png')
 
     #Desplazamiento
