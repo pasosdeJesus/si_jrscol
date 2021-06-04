@@ -1,7 +1,8 @@
 image: "ruby:3.0.1"
 
 services:
-  - vtamara/postgres-es_co:13.3
+  - name: vtamara/postgres-es_co:13.3
+    alias: postgres
 
 variables:
   RAILS_ENV: test

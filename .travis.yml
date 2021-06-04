@@ -48,7 +48,7 @@ before_script:
 
 script: 
   - CONFIG_HOSTS=www.example.com bin/rails test
-  - CONFIG_HOSTS=127.0.0.1 bin/rails test:system
+  - PATH=$PATH:${HOME}/bin/ CONFIG_HOSTS=127.0.0.1 bin/rails test:system
 
 after_script:
   - ./cc-test-reporter after-build -t simplecov --exit-code $TRAVIS_TEST_RESULT
