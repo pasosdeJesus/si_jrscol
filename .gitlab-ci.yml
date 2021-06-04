@@ -30,9 +30,10 @@ build:
     - cp config/database.ci.yml config/database.yml
     - cp db/structure.sql db/structure.sql.copia 
     - sed -e 's/provider = libc,//g;s/SET default_table_access_method.*/-- &/g' db/structure.sql.copia > db/structure.sql 
-    - bin/rails db:drop db:create db:setup
-    - bin/rails sip:indices
-    - yarn install
+    - psql --set ON_ERROR_STOP=1 --no-psqlrc --file /builds/pasosdeJesus/si_jrscol/db/structure.sql sijrscol_pru
+    #    - bin/rails db:drop db:create db:setup
+    # bin/rails sip:indices
+    #- yarn install
 
 test:
   stage: test

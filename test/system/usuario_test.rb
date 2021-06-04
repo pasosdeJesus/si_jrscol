@@ -5,7 +5,6 @@ require 'application_system_test_case'
 class UsuarioTest < ApplicationSystemTestCase
 
   test "no autentica con clave errada a usuario existente" do
-    skip
     @usuario = Usuario.find_by(nusuario: 'sjrcol')
     visit new_usuario_session_path 
     fill_in "Usuario", with: @usuario.nusuario
