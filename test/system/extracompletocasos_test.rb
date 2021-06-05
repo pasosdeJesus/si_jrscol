@@ -27,9 +27,7 @@ class ExtracompletocasosTest < ApplicationSystemTestCase
     assert page.has_content?("Casos")
     click_on "Casos"
     assert page.has_content?("Listado")
-    byebug
     click_on "Listado"
-    byebug
     assert page.has_content?("Búsqueda Avanzada")
     click_on "Búsqueda Avanzada"
     assert page.has_content?("Fecha de ingreso")
