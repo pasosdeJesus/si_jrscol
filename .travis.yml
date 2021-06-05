@@ -7,10 +7,13 @@ addons:
   postgresql: '10'
   chrome: stable
   apt:
+    sources:
+      - google-chrome
     packages:
       - libproj9
       - postgresql-10-postgis-2.4
       - postgresql-client-10
+      - chromium-chromedriver 
 
 notifications:
   email: false
@@ -43,13 +46,9 @@ before_install:
   - bundle exec bin/rails db:setup
   - bundle exec bin/rails sip:indices
 
-before_script:
-  - ln --symbolic /usr/lib/chromium-browser/chromedriver "${HOME}/bin/chromedriver"
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-
 script: 
   - CONFIG_HOSTS=www.example.com bin/rails test
-  - PATH=$PATH:${HOME}/bin/ CONFIG_HOSTS=127.0.0.1 bin/rails test:system
+  - CONFIG_HOSTS=127.0.0.1 bin/rails test:system
 
 after_script:
   - ./cc-test-reporter after-build -t simplecov --exit-code $TRAVIS_TEST_RESULT
