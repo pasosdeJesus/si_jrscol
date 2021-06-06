@@ -1640,7 +1640,10 @@ CREATE TABLE public.cor1440_gen_caracterizacionpf (
 CREATE TABLE public.cor1440_gen_datointermedioti (
     id bigint NOT NULL,
     nombre character varying(1024) NOT NULL,
-    tipoindicador_id integer NOT NULL
+    tipoindicador_id integer NOT NULL,
+    nombreinterno character varying(127),
+    filtro character varying(5000),
+    funcion character varying(5000)
 );
 
 
@@ -5939,7 +5942,11 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.id_persona = contacto.id) AND (vcontacto.id_caso = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (true = false)
+  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
+           FROM public.sivel2_gen_conscaso
+          WHERE (sivel2_gen_conscaso.caso_id = 102)
+          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
+  ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
 
 
@@ -6012,6 +6019,16 @@ ALTER SEQUENCE public.sivel2_gen_contextovictima_id_seq OWNED BY public.sivel2_g
 CREATE TABLE public.sivel2_gen_contextovictima_victima (
     contextovictima_id integer,
     victima_id integer
+);
+
+
+--
+-- Name: sivel2_gen_departamento_region; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_departamento_region (
+    departamento_id integer,
+    region_id integer
 );
 
 
@@ -6268,6 +6285,16 @@ CREATE TABLE public.sivel2_gen_maternidad (
     updated_at timestamp without time zone,
     observaciones character varying(5000),
     CONSTRAINT maternidad_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sivel2_gen_municipio_region; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_municipio_region (
+    municipio_id integer,
+    region_id integer
 );
 
 
@@ -14753,7 +14780,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210505135714'),
 ('20210509193202'),
 ('20210514201449'),
+('20210524121112'),
 ('20210531223906'),
+('20210601023450'),
+('20210601023557'),
 ('20210604225609');
 
 
