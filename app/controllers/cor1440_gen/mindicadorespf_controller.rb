@@ -9,6 +9,38 @@ module Cor1440Gen
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource class: Cor1440Gen::Mindicadorpf
 
+
+    def atributos_index
+      [ :id,
+        #:proyectofinanciero_id,
+        :indicadorpf_id,
+        :frecuenciaanual,
+        :pmindicadorpf
+      ]
+    end
+
+    def atributos_form
+      [ :proyectofinanciero_id,
+        :indicadorpf_id] +
+        (@registro && @registro.indicadorpf && 
+         @registro.indicadorpf.resultadopf ? [:actividadpf] : []) +
+      [
+        :frecuenciaanual,
+        :pmindicadorpf
+         ]
+    end
+
+    def atributos_show
+      [ :id,
+        :proyectofinanciero_id,
+        :indicadorpf_id,
+        :tipoindicador,
+        :actividadpf,
+        :frecuenciaanual,
+        :pmindicadorpf
+      ]
+    end
+
     # PRM2020 R1I3 Número de personas (pueden ser repetidas)
     # Número de beneficiarios (contactos + familiares) en casos de 
     # actividades con acción jurídica'

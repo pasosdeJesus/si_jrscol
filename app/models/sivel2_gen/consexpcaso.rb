@@ -263,10 +263,10 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
   def self.poblacion_a_fecha(caso_id, anio, mes, dia, sexo, inf, sup)
     cond_edad = ''
     if inf && inf >= 0
-      cond_edad += " AND edad>='#{inf}'"
+      cond_edad += " AND edad>='#{inf.to_i}'"
     end
     if sup && sup >= 0
-      cond_edad += " AND edad<='#{sup}'"
+      cond_edad += " AND edad<='#{sup.to_i}'"
     end
     if !inf && !sup
       cond_edad += " AND edad IS NULL"
@@ -276,11 +276,11 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
         SELECT COUNT(*) FROM (
           SELECT v.id, sip_edad_de_fechanac_fecharef(
             p.anionac, p.mesnac, p.dianac,
-            '#{anio}', '#{mes}', '#{dia}') AS edad 
+            '#{anio.to_i}', '#{mes.to_i}', '#{dia.to_i}') AS edad 
           FROM public.sivel2_gen_victima AS v
           JOIN public.sip_persona AS p ON p.id=v.id_persona
-          WHERE v.id_caso='#{caso_id}' AND 
-           p.sexo='#{sexo}') AS sub
+          WHERE v.id_caso='#{caso_id.to_i}' AND 
+           p.sexo='#{sexo[0]}') AS sub
         WHERE TRUE=TRUE 
         #{cond_edad}")
     return   r[0]['count'].to_i
