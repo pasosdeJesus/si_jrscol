@@ -81,22 +81,22 @@ class QuitaUbicacionesListadoCasos < ActiveRecord::Migration[6.1]
       columnas.push(col)
       col = sigcol(col)
     end 
-    columnas.each do |col|
+    columnas.each do |co|
       execute <<-SQL
-        UPDATE public.heb412_gen_campoplantillahcm SET columna='#{prevcolp(col, 27)}' WHERE columna='#{col}';
+        UPDATE public.heb412_gen_campoplantillahcm SET columna='#{prevcolp(co, 27)}' WHERE columna='#{co}' AND plantillahcm_id= 44;
       SQL
     end 
   end
   def corre_resto_a_derecha
     columnas = []
-    col = 'HF'
-    while col!='LZ' do
+    col = 'LY'
+    while col!='GD' do
       columnas.push(col)
-      col = sigcol(col)
+      col = prevcol(col)
     end 
-    columnas.each do |col|
+    columnas.each do |co|
       execute <<-SQL
-        UPDATE public.heb412_gen_campoplantillahcm SET columna='#{sigcolp(col, 27)}' WHERE columna='#{col}';
+        UPDATE public.heb412_gen_campoplantillahcm SET columna='#{sigcolp(co, 27)}' WHERE columna='#{co}' AND plantillahcm_id= 44;
       SQL
     end 
   end
