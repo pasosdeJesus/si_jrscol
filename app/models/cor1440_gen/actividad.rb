@@ -213,8 +213,8 @@ module Cor1440Gen
       }.flatten.uniq
 
       idp += personas_asistentes_condicion {|a| 
-        a.perfilactorsocial &&
-          a.perfilactorsocial.nombre == nomperfil
+        a.perfilorgsocial &&
+          a.perfilorgsocial.nombre == nomperfil
       }
       idp.uniq!
       idp.join(",")
@@ -371,7 +371,7 @@ module Cor1440Gen
     def presenta(atr)
       case atr.to_s
       when 'beneficiarios_com_acogida'
-        self.asistencia.select{|a| a.perfilactorsocial_id == 13}.count
+        self.asistencia.select{|a| a.perfilorgsocial_id == 13}.count
 
       when 'covid19'
         if self.covid
@@ -404,7 +404,7 @@ module Cor1440Gen
         detallefinanciero_ids.join(', ')
 
       when 'organizaciones_sociales_ids'
-        actorsocial_ids.join(', ')
+        orgsocial_ids.join(', ')
 
       when 'mes'
         if fecha

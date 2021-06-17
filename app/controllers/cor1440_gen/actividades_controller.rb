@@ -91,7 +91,7 @@ module Cor1440Gen
         :objetivo,
         :resultado, 
         :observaciones,
-        :actorsocial,
+        :orgsocial,
         :listado_asistencia,
         :listado_casos,
         :anexos

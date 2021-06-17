@@ -2,17 +2,17 @@
 
 module Sip
   module Admin
-    class LineasactorsocialController < Sip::Admin::BasicasController
-      before_action :set_lineaactorsocial, 
+    class LineasorgsocialController < Sip::Admin::BasicasController
+      before_action :set_lineaorgsocial, 
         only: [:show, :edit, :update, :destroy]
-      load_and_authorize_resource  class: Sip::Lineaactorsocial
+      load_and_authorize_resource  class: Sip::Lineaorgsocial
   
       def clase 
-        "Sip::Lineaactorsocial"
+        "Sip::Lineaorgsocial"
       end
   
-      def set_lineaactorsocial
-        @basica = Sip::Lineaactorsocial.find(params[:id])
+      def set_lineaorgsocial
+        @basica = Sip::Lineaorgsocial.find(params[:id])
       end
   
       def atributos_index
@@ -29,8 +29,8 @@ module Sip
         'F'
       end
   
-      def lineaactorsocial_params
-        params.require(:lineaactorsocial).permit(*atributos_form)
+      def lineaorgsocial_params
+        params.require(:lineaorgsocial).permit(*atributos_form)
       end
   
     end

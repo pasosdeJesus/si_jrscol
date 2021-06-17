@@ -51,7 +51,7 @@ Población asistente: <%= personas.uniq.count  %>
           <% end %>
         </td>
         <td>
-          <%= asistencia.perfilactorsocial.nombre if asistencia.perfilactorsocial %>
+          <%= asistencia.perfilorgsocial.nombre if asistencia.perfilorgsocial %>
         </td>
         <td>
           <% casoa = Sivel2Gen::Victima.where(id_persona: asistencia.persona.id).pluck(:id_caso) %>

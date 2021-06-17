@@ -1,16 +1,16 @@
 # encoding: UTF-8
-require_dependency "sip/concerns/controllers/actoressociales_controller"
+require_dependency "sip/concerns/controllers/orgsociales_controller"
 
 module Sip
-  class ActoressocialesController < Heb412Gen::ModelosController
-    include Sip::Concerns::Controllers::ActoressocialesController
+  class OrgsocialesController < Heb412Gen::ModelosController
+    include Sip::Concerns::Controllers::OrgsocialesController
     
     def atributos_index
       [ :id, 
         :grupoper_id,
-        :tipoactorsocial_id,
-        { :sectoractor_ids => [] },
-        :lineaactorsocial_id,
+        :tipoorgsocial_id,
+        { :sectororgsocial_ids => [] },
+        :lineaorgsocial_id,
         :email,
         :web,
         :telefono, 
@@ -24,8 +24,8 @@ module Sip
       ]
     end
 
-    def actorsocial_params
-      params.require(:actorsocial).permit(
+    def orgsocial_params
+      params.require(:orgsocial).permit(
         atributos_form - [:grupoper] +
         [ :departamento_id,
           :municipio_id,
@@ -38,7 +38,7 @@ module Sip
     end
 
     def vistas_manejadas
-      ['Actorsocial']
+      ['Orgsocial']
     end
 
   end

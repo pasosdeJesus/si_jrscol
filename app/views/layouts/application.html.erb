@@ -60,8 +60,8 @@
             <%= opcion_menu "Medición de indicadores de resultado", 
               cor1440_gen.mindicadorespf_path, desplegable: true %>
           <% end %>
-          <% if can? :read, Sip::Actorsocial then %>
-            <%= opcion_menu "Organizaciones sociales", sip.actoressociales_path, desplegable: true %>
+          <% if can? :read, Sip::Orgsocial then %>
+            <%= opcion_menu "Organizaciones sociales", sip.orgsociales_path, desplegable: true %>
           <% end %>
           <% if can? :read, Sip::Persona then %>
             <%= opcion_menu "Beneficiarios", sip.personas_path, desplegable: true %>

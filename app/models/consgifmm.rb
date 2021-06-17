@@ -201,8 +201,8 @@ class Consgifmm < ActiveRecord::Base
     return beneficiarios_nuevos_condicion_ids {|p|
       p.asistencia.any? {|as|
         as.actividad.fecha <= finmes &&
-          as.perfilactorsocial && 
-          as.perfilactorsocial.nombre == 'COMUNIDAD DE ACOGIDA'
+          as.perfilorgsocial && 
+          as.perfilorgsocial.nombre == 'COMUNIDAD DE ACOGIDA'
       }
     }
   end

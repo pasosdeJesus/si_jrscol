@@ -712,7 +712,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     when 'actividades_perfiles'
       bids = casosjr.beneficiarios_activos.pluck(:id_persona).uniq
       Cor1440Gen::Asistencia.where(persona_id: bids).
-        joins(:perfilactorsocial).pluck('sip_perfilactorsocial.nombre').
+        joins(:perfilorgsocial).pluck('sip_perfilorgsocial.nombre').
         uniq.join('. ')
 
     when 'actividades_a_humanitaria_tipos_de_ayuda'

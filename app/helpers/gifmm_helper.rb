@@ -24,22 +24,22 @@ module GifmmHelper
       'cor1440_gen_actividad.id = cor1440_gen_asistencia.actividad_id').
       where('cor1440_gen_actividad.fecha <= ?', fecha).
       order('cor1440_gen_actividad.fecha DESC').find {|as|
-      as.perfilactorsocial &&
+      as.perfilorgsocial &&
         ::Perfilmigracion.pluck(:nombre).include?(
-          as.perfilactorsocial.nombre)
+          as.perfilorgsocial.nombre)
     }
     if mc
       if ma
         if mc.casosjr.fecharec > ma.actividad.fecha
           return mc.migracion[0].perfilmigracion.nombre
         else
-          return ma.perfilactorsocial.nombre
+          return ma.perfilorgsocial.nombre
         end
       end
       return mc.migracion[0].perfilmigracion.nombre
     end
     if ma
-      return ma.perfilactorsocial.nombre
+      return ma.perfilorgsocial.nombre
     end
     return ''
   end

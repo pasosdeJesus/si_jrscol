@@ -4452,10 +4452,10 @@ CREATE TABLE public.sip_grupoper (
 
 
 --
--- Name: sip_lineaactorsocial; Type: TABLE; Schema: public; Owner: -
+-- Name: sip_lineaorgsocial; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sip_lineaactorsocial (
+CREATE TABLE public.sip_lineaorgsocial (
     id bigint NOT NULL,
     nombre character varying(500) NOT NULL,
     observaciones character varying(5000),
@@ -4467,10 +4467,10 @@ CREATE TABLE public.sip_lineaactorsocial (
 
 
 --
--- Name: sip_lineaactorsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sip_lineaorgsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.sip_lineaactorsocial_id_seq
+CREATE SEQUENCE public.sip_lineaorgsocial_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4479,10 +4479,10 @@ CREATE SEQUENCE public.sip_lineaactorsocial_id_seq
 
 
 --
--- Name: sip_lineaactorsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: sip_lineaorgsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.sip_lineaactorsocial_id_seq OWNED BY public.sip_lineaactorsocial.id;
+ALTER SEQUENCE public.sip_lineaorgsocial_id_seq OWNED BY public.sip_lineaorgsocial.id;
 
 
 --
@@ -4561,8 +4561,8 @@ CREATE TABLE public.sip_orgsocial (
     web character varying(500),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    tipoactorsocial_id integer,
-    lineaactorsocial_id integer,
+    tipoorgsocial_id integer,
+    lineaorgsocial_id integer,
     departamento_id integer,
     municipio_id integer,
     email character varying(128),
@@ -4896,40 +4896,6 @@ ALTER SEQUENCE public.sip_tema_id_seq OWNED BY public.sip_tema.id;
 
 
 --
--- Name: sip_tipoactorsocial; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_tipoactorsocial (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: sip_tipoactorsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_tipoactorsocial_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_tipoactorsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.sip_tipoactorsocial_id_seq OWNED BY public.sip_tipoactorsocial.id;
-
-
---
 -- Name: sip_tipoanexo; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4961,6 +4927,40 @@ CREATE SEQUENCE public.sip_tipoanexo_id_seq
 --
 
 ALTER SEQUENCE public.sip_tipoanexo_id_seq OWNED BY public.sip_tipoanexo.id;
+
+
+--
+-- Name: sip_tipoorgsocial; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_tipoorgsocial (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_tipoorgsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_tipoorgsocial_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_tipoorgsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_tipoorgsocial_id_seq OWNED BY public.sip_tipoorgsocial.id;
 
 
 --
@@ -8403,10 +8403,10 @@ ALTER TABLE ONLY public.sip_grupo ALTER COLUMN id SET DEFAULT nextval('public.si
 
 
 --
--- Name: sip_lineaactorsocial id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sip_lineaorgsocial id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_lineaactorsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_lineaactorsocial_id_seq'::regclass);
+ALTER TABLE ONLY public.sip_lineaorgsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_lineaorgsocial_id_seq'::regclass);
 
 
 --
@@ -8459,17 +8459,17 @@ ALTER TABLE ONLY public.sip_tema ALTER COLUMN id SET DEFAULT nextval('public.sip
 
 
 --
--- Name: sip_tipoactorsocial id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_tipoactorsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_tipoactorsocial_id_seq'::regclass);
-
-
---
 -- Name: sip_tipoanexo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sip_tipoanexo ALTER COLUMN id SET DEFAULT nextval('public.sip_tipoanexo_id_seq'::regclass);
+
+
+--
+-- Name: sip_tipoorgsocial id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_tipoorgsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_tipoorgsocial_id_seq'::regclass);
 
 
 --
@@ -9875,11 +9875,11 @@ ALTER TABLE ONLY public.sip_grupoper
 
 
 --
--- Name: sip_lineaactorsocial sip_lineaactorsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_lineaorgsocial sip_lineaorgsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_lineaactorsocial
-    ADD CONSTRAINT sip_lineaactorsocial_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.sip_lineaorgsocial
+    ADD CONSTRAINT sip_lineaorgsocial_pkey PRIMARY KEY (id);
 
 
 --
@@ -9971,19 +9971,19 @@ ALTER TABLE ONLY public.sip_tema
 
 
 --
--- Name: sip_tipoactorsocial sip_tipoactorsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_tipoactorsocial
-    ADD CONSTRAINT sip_tipoactorsocial_pkey PRIMARY KEY (id);
-
-
---
 -- Name: sip_tipoanexo sip_tipoanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sip_tipoanexo
     ADD CONSTRAINT sip_tipoanexo_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_tipoorgsocial sip_tipoorgsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_tipoorgsocial
+    ADD CONSTRAINT sip_tipoorgsocial_pkey PRIMARY KEY (id);
 
 
 --
@@ -12285,7 +12285,7 @@ ALTER TABLE ONLY public.sal7711_gen_bitacora
 --
 
 ALTER TABLE ONLY public.sip_orgsocial
-    ADD CONSTRAINT fk_rails_548bef9dcf FOREIGN KEY (lineaactorsocial_id) REFERENCES public.sip_lineaactorsocial(id);
+    ADD CONSTRAINT fk_rails_548bef9dcf FOREIGN KEY (lineaorgsocial_id) REFERENCES public.sip_lineaorgsocial(id);
 
 
 --
@@ -12709,7 +12709,7 @@ ALTER TABLE ONLY public.cor1440_gen_formulario_tipoindicador
 --
 
 ALTER TABLE ONLY public.sip_orgsocial
-    ADD CONSTRAINT fk_rails_898ac05185 FOREIGN KEY (tipoactorsocial_id) REFERENCES public.sip_tipoactorsocial(id);
+    ADD CONSTRAINT fk_rails_898ac05185 FOREIGN KEY (tipoorgsocial_id) REFERENCES public.sip_tipoorgsocial(id);
 
 
 --
@@ -14766,6 +14766,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210609024118'),
 ('20210614120835'),
 ('20210614212220'),
-('20210616003251');
+('20210616003251'),
+('20210617105509');
 
 

@@ -71,9 +71,9 @@ class Ability < Sivel2Sjr::Ability
     ['Sivel2Sjr', 'accionjuridica'],
     ['Sivel2Sjr', 'motivosjr'],
     ['Sivel2Sjr', 'regimensalud'],
-    ['Sip', 'lineaactorsocial'],
+    ['Sip', 'lineaorgsocial'],
     ['Sip', 'tipoanexo'],
-    ['Sip', 'tipoactorsocial'],
+    ['Sip', 'tipoorgsocial'],
     ['', 'agresionmigracion'],
     ['', 'autoridadrefugio'],
     ['', 'causaagresion'],
@@ -107,7 +107,7 @@ class Ability < Sivel2Sjr::Ability
       Sivel2Sjr::Ability::BASICAS_PROPIAS +
       BASICAS_PROPIAS - [
         ['Sip', 'grupo'],
-        ['Sip', 'perfilactorsocial'],
+        ['Sip', 'perfilorgsocial'],
         ['Sivel2Gen', 'filiacion'],
         ['Sivel2Gen', 'frontera'],
         ['Sivel2Gen', 'iglesia'],
@@ -569,7 +569,7 @@ class Ability < Sivel2Sjr::Ability
       ruta: '/actividades'
     },
 
-    'Actorsocial' => {
+    'Orgsocial' => {
       campos: [
         'actualización',
         'anotaciones',
@@ -588,8 +588,8 @@ class Ability < Sivel2Sjr::Ability
         'tipo',
         'web'
       ],
-      controlador: 'Sip::Actorsocial',
-      ruta: '/actorsocial'
+      controlador: 'Sip::Orgsocial',
+      ruta: '/orgsocial'
     },
 
 
@@ -925,7 +925,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
-        can [:new, :create, :read, :index, :edit, :update], Sip::Actorsocial
+        can [:new, :create, :read, :index, :edit, :update], Sip::Orgsocial
         can :manage, Sip::Persona
 
         can :manage, Sivel2Gen::Acto
@@ -957,8 +957,8 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
-        can :manage, Sip::Actorsocial
-        can :manage, Sip::Sectoractor
+        can :manage, Sip::Orgsocial
+        can :manage, Sip::Sectororgsocial
         can :manage, Sip::Persona
 
         can :manage, Sivel2Gen::Caso

@@ -134,13 +134,13 @@ es:
         Frecuenciaentrega: Frecuancia de Entrega
         Frecuenciasentrega: Frecuencias de Entrega
       "heb412_gen/plantillahcm":
-        Actoressociales: Organizaciones Sociales
+        Orgsociales: Organizaciones Sociales
         Consactividadcaso: Actividades con Caso
         Consgifmm: GIFMM
         Personas: Beneficiarios
         Proyectos: Convenios Financiados
       "heb412_gen/plantillahcr":
-        Actorsocial: Organización Social
+        Orgsocial: Organización Social
         Persona: Beneficiario
         Proyecto: Convenio Financiado
       "mecanismodeentrega":
@@ -167,15 +167,15 @@ es:
       "sectorgifmm":
         Sectorgifmm: Sector GIFMM
         Sectoresgifmm: Sectores GIFMM
-      "sip/actorsocial":
-        tipoactorsocial: Tipo
-        tipoactorsocial_id: Tipo
-        sectoractor: Población relacionada
-        sectoresactores: Poblaciones relacionadas
-        sectoractor_ids: Población(es) relacionada(s)
-        "{:sectoractor_ids=>[]}": Población(es) relacionada(s)
-        lineaactorsocial: Línea de trabajo
-        lineaactorsocial_id: Línea de trabajo
+      "sip/orgsocial":
+        tipoorgsocial: Tipo
+        tipoorgsocial_id: Tipo
+        sectororgsocial: Población relacionada
+        sectoresorgsocial: Poblaciones relacionadas
+        sectororgsocial_ids: Población(es) relacionada(s)
+        "{:sectororgsocial_ids=>[]}": Población(es) relacionada(s)
+        lineaorgsocial: Línea de trabajo
+        lineaorgsocial_id: Línea de trabajo
       "sip/claverespaldo":
         Claverespaldo: Clave para respaldo automático
         Clavesrespaldos: Claves para respaldos automáticos
@@ -203,17 +203,17 @@ es:
         telefono: Teléfono
         tipocotizante: Tipo de afiliacioń
         veredares: Vereda de residencia
-      "sip/lineaactorsocial":
-        Lineaactorsocial: Línea de trabajo del actor social
-        Lineasactorsocial: Línea de trabajo del actor social
+      "sip/lineaorgsocial":
+        Lineaorgsocial: Línea de trabajo del organización social
+        Lineasorgsocial: Línea de trabajo del organización social
       "sip/persona":
         detallefinanciero_ids: Detalles financieros en los que aparece
-      "sip/sectoractor":
-        Sectoractor: Población relacionada con actor social
-        Sectoresactores: Poblaciones relacionadas con actor social
-      "sip/tipoactorsocial":
-        Tipoactorsocial: Tipo de actor social
-        Tiposactorsocial: Tipos de actor social
+      "sip/sectororgsocial":
+        Sectororgsocial: Población relacionada con organización social
+        Sectoresorgsocial: Poblaciones relacionadas con organización social
+      "sip/tipoorgsocial":
+        Tipoorgsocial: Tipo de organización social
+        Tiposorgsocial: Tipos de organización social
       "sip/tipoanexo":
         Tipoanexo: Tipo de anexo
         Tiposanexo: Tipos de anexo
