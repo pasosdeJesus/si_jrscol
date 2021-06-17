@@ -1,7 +1,18 @@
 GIT
+  remote: https://github.com/kreeti/kt-paperclip.git
+  revision: 379d3a8ca990ce91baef7498bd74c8680c181c3c
+  specs:
+    kt-paperclip (7.0.0)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      marcel (~> 1.0.1)
+      mime-types
+      terrapin (~> 0.6.0)
+
+GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 15bd380b9d43fd1f04ccd249ea135daa62c6bd86
-  branch: main
+  revision: 724260407be0e2c509cca0651be8c99d19a813ce
+  branch: orgsocial
   specs:
     heb412_gen (1.0.b6)
       mr519_gen
@@ -11,8 +22,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: e2f0899f9307610977c81b8ee75d8b62040b022a
-  branch: main
+  revision: eca7e6327ccbf75038f94f0e31dcf9ee9077eb12
+  branch: orgsocial
   specs:
     mr519_gen (0.2.0)
       rails
@@ -20,8 +31,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 2af52b479ada799ee16a2b476f5e5344f60fb682
-  branch: main
+  revision: 873b6569fa72211f3098f47ed5747070596ddc5c
+  branch: orgsocial
   specs:
     sal7711_gen (1.0.b3)
       rails
@@ -29,46 +40,27 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 36ca5780d146ff58d66d1f6cc1cc040142a95dfb
-  branch: main
+  revision: f98aef1b983bd07a1824d8327c8610b912d52d3f
+  branch: orgsocial
   specs:
     sal7711_web (1.0.a3)
       rails
       sal7711_gen
 
 GIT
-  remote: https://github.com/pasosdeJesus/sip.git
-  revision: 8f388d74e20099c6e69d9ba52df2b9ea48842dea
-  branch: main
-  specs:
-    sip (2.0.b11)
-      cancancan
-      chosen-rails
-      devise
-      devise-i18n
-      jquery-ui-rails
-      minitest
-      paperclip
-      rails
-      rails-i18n
-      simple_form
-      twitter_cldr
-      will_paginate
-
-GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 39cbe2813d038022f966922056264c1e1707b41f
-  branch: main
+  revision: 7ab9cdf078f053d4882a5721445a60d999dcd1dd
+  branch: orgsocial
   specs:
-    sivel2_gen (2.0b14)
+    sivel2_gen (2.0b15)
       devise
       jquery-rails
       rails
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 0dbd7e8469564545a1734316a48b878705c8b853
-  branch: main
+  revision: 9423d9a01bee128d73595bced576e77b679baa2c
+  branch: orgsocial
   specs:
     sivel2_sjr (2.0b10)
       rails
@@ -84,7 +76,7 @@ GIT
 PATH
   remote: ../cor1440_gen
   specs:
-    cor1440_gen (1.0b3)
+    cor1440_gen (1.0b4)
       devise
       heb412_gen
       jquery-rails
@@ -92,6 +84,23 @@ PATH
       paperclip
       rails
       sip
+
+PATH
+  remote: ../sip
+  specs:
+    sip (2.0.b11)
+      cancancan
+      chosen-rails
+      devise
+      devise-i18n
+      jquery-ui-rails
+      minitest
+      paperclip
+      rails
+      rails-i18n
+      simple_form
+      twitter_cldr
+      will_paginate
 
 GEM
   remote: https://rubygems.org/
@@ -209,7 +218,7 @@ GEM
       railties (>= 3.2)
     erubi (1.10.0)
     execjs (2.8.1)
-    ffi (1.15.1)
+    ffi (1.15.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.8.10)
@@ -257,6 +266,7 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
+    parslet (2.0.0)
     pdf-core (0.9.0)
     pg (1.2.3)
     pick-a-color-rails (0.0.1)
@@ -383,7 +393,7 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    websocket-driver (0.7.4)
+    websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     will_paginate (3.3.0)
@@ -412,11 +422,12 @@ DEPENDENCIES
   heb412_gen!
   jbuilder
   jquery-ui-rails
+  kt-paperclip!
   libxml-ruby
   mr519_gen!
   nokogiri (>= 1.11.1)
   odf-report
-  paperclip
+  parslet
   pg
   pick-a-color-rails
   prawn
