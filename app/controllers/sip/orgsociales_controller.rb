@@ -24,6 +24,19 @@ module Sip
       ]
     end
 
+    def atributos_show
+      atributos_index 
+    end
+
+    def atributos_form
+      atributos_show - [
+        :id, 
+        :habilitado
+      ] + [
+        :fechadeshabilitacion_localizada
+      ]
+    end
+
     def orgsocial_params
       params.require(:orgsocial).permit(
         atributos_form - [:grupoper] +
