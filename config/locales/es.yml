@@ -204,8 +204,8 @@ es:
         tipocotizante: Tipo de afiliacioń
         veredares: Vereda de residencia
       "sip/lineaorgsocial":
-        Lineaorgsocial: Línea de trabajo del organización social
-        Lineasorgsocial: Línea de trabajo del organización social
+        Lineaorgsocial: Línea de trabajo de organización social
+        Lineasorgsocial: Líneas de trabajo de organización social
       "sip/persona":
         detallefinanciero_ids: Detalles financieros en los que aparece
       "sip/sectororgsocial":
