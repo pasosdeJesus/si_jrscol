@@ -78,8 +78,8 @@ gem 'will_paginate' # Listados en páginas
 # lógico y no alfabetico como las gemas anteriores)
 
 gem 'sip', # Motor generico
-  #git: 'https://github.com/pasosdeJesus/sip.git', branch: :orgsocial
-  path: '../sip'
+  git: 'https://github.com/pasosdeJesus/sip.git', branch: :orgsocial
+  #path: '../sip'
 
 gem 'mr519_gen', # Motor de gestion de formularios y encuestas
   git: 'https://github.com/pasosdeJesus/mr519_gen.git', branch: :orgsocial
@@ -91,8 +91,8 @@ gem 'heb412_gen',  # Motor de nube y llenado de plantillas
 
 # Motor Cor1440_gen
 gem 'cor1440_gen',
-  #git: 'https://github.com/pasosdeJesus/cor1440_gen.git', branch: :orgsocial
-  path: '../cor1440_gen'
+  git: 'https://github.com/pasosdeJesus/cor1440_gen.git', branch: :orgsocial
+  #path: '../cor1440_gen'
 
 # Motor Sal7711_gen
 gem 'sal7711_gen',

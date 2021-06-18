@@ -10,71 +10,9 @@ GIT
       terrapin (~> 0.6.0)
 
 GIT
-  remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 724260407be0e2c509cca0651be8c99d19a813ce
+  remote: https://github.com/pasosdeJesus/cor1440_gen.git
+  revision: 675369b349bb0347057bcd3350658e632a18f7f2
   branch: orgsocial
-  specs:
-    heb412_gen (1.0.b6)
-      mr519_gen
-      redcarpet
-      rspreadsheet
-      sip
-
-GIT
-  remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: eca7e6327ccbf75038f94f0e31dcf9ee9077eb12
-  branch: orgsocial
-  specs:
-    mr519_gen (0.2.0)
-      rails
-      sip
-
-GIT
-  remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 873b6569fa72211f3098f47ed5747070596ddc5c
-  branch: orgsocial
-  specs:
-    sal7711_gen (1.0.b3)
-      rails
-      sip
-
-GIT
-  remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: f98aef1b983bd07a1824d8327c8610b912d52d3f
-  branch: orgsocial
-  specs:
-    sal7711_web (1.0.a3)
-      rails
-      sal7711_gen
-
-GIT
-  remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 7ab9cdf078f053d4882a5721445a60d999dcd1dd
-  branch: orgsocial
-  specs:
-    sivel2_gen (2.0b15)
-      devise
-      jquery-rails
-      rails
-
-GIT
-  remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 9423d9a01bee128d73595bced576e77b679baa2c
-  branch: orgsocial
-  specs:
-    sivel2_sjr (2.0b10)
-      rails
-      sivel2_gen
-
-GIT
-  remote: https://github.com/vtamara/cocoon.git
-  revision: 9f1892403c3dbdb8f7d457a06f237ff58e7dfb07
-  branch: new_id_with_ajax
-  specs:
-    cocoon (1.2.11)
-
-PATH
-  remote: ../cor1440_gen
   specs:
     cor1440_gen (1.0b4)
       devise
@@ -85,8 +23,48 @@ PATH
       rails
       sip
 
-PATH
-  remote: ../sip
+GIT
+  remote: https://github.com/pasosdeJesus/heb412_gen.git
+  revision: 04afc987890c7be94c29c3370de073ee5413ee35
+  branch: orgsocial
+  specs:
+    heb412_gen (1.0.b6)
+      mr519_gen
+      redcarpet
+      rspreadsheet
+      sip
+
+GIT
+  remote: https://github.com/pasosdeJesus/mr519_gen.git
+  revision: c27bbcafb5460fa15f1b565d2f133c85d54cc904
+  branch: orgsocial
+  specs:
+    mr519_gen (0.2.0)
+      rails
+      sip
+
+GIT
+  remote: https://github.com/pasosdeJesus/sal7711_gen.git
+  revision: 24a5ea399d33c6ba33fb37196666b43e230535c0
+  branch: orgsocial
+  specs:
+    sal7711_gen (1.0.b3)
+      rails
+      sip
+
+GIT
+  remote: https://github.com/pasosdeJesus/sal7711_web.git
+  revision: 194a31284de9b60fe66cf27900ec7364f321a97a
+  branch: orgsocial
+  specs:
+    sal7711_web (1.0.a3)
+      rails
+      sal7711_gen
+
+GIT
+  remote: https://github.com/pasosdeJesus/sip.git
+  revision: e2278cdd5263bca4f406d71ec4ce0cee368f8f15
+  branch: orgsocial
   specs:
     sip (2.0.b11)
       cancancan
@@ -101,6 +79,32 @@ PATH
       simple_form
       twitter_cldr
       will_paginate
+
+GIT
+  remote: https://github.com/pasosdeJesus/sivel2_gen.git
+  revision: 8b56c55ae66cf6a81551c33963b212136d9f2eea
+  branch: orgsocial
+  specs:
+    sivel2_gen (2.0b15)
+      devise
+      jquery-rails
+      rails
+
+GIT
+  remote: https://github.com/pasosdeJesus/sivel2_sjr.git
+  revision: 9e9da5aa374dd7268ab686b3dfb8c2f918158db8
+  branch: orgsocial
+  specs:
+    sivel2_sjr (2.0b10)
+      rails
+      sivel2_gen
+
+GIT
+  remote: https://github.com/vtamara/cocoon.git
+  revision: 9f1892403c3dbdb8f7d457a06f237ff58e7dfb07
+  branch: new_id_with_ajax
+  specs:
+    cocoon (1.2.11)
 
 GEM
   remote: https://rubygems.org/
