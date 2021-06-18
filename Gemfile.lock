@@ -62,9 +62,24 @@ GIT
       sal7711_gen
 
 GIT
-  remote: https://github.com/pasosdeJesus/sip.git
-  revision: e2278cdd5263bca4f406d71ec4ce0cee368f8f15
+  remote: https://github.com/pasosdeJesus/sivel2_gen.git
+  revision: 8b56c55ae66cf6a81551c33963b212136d9f2eea
   branch: orgsocial
+  specs:
+    sivel2_gen (2.0b15)
+      devise
+      jquery-rails
+      rails
+
+GIT
+  remote: https://github.com/vtamara/cocoon.git
+  revision: 9f1892403c3dbdb8f7d457a06f237ff58e7dfb07
+  branch: new_id_with_ajax
+  specs:
+    cocoon (1.2.11)
+
+PATH
+  remote: ../sip
   specs:
     sip (2.0.b11)
       cancancan
@@ -80,31 +95,12 @@ GIT
       twitter_cldr
       will_paginate
 
-GIT
-  remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 8b56c55ae66cf6a81551c33963b212136d9f2eea
-  branch: orgsocial
-  specs:
-    sivel2_gen (2.0b15)
-      devise
-      jquery-rails
-      rails
-
-GIT
-  remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 9e9da5aa374dd7268ab686b3dfb8c2f918158db8
-  branch: orgsocial
+PATH
+  remote: ../sivel2_sjr
   specs:
     sivel2_sjr (2.0b10)
       rails
       sivel2_gen
-
-GIT
-  remote: https://github.com/vtamara/cocoon.git
-  revision: 9f1892403c3dbdb8f7d457a06f237ff58e7dfb07
-  branch: new_id_with_ajax
-  specs:
-    cocoon (1.2.11)
 
 GEM
   remote: https://rubygems.org/

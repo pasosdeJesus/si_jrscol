@@ -139,6 +139,8 @@ es:
         Consgifmm: GIFMM
         Personas: Beneficiarios
         Proyectos: Convenios Financiados
+        Plantillahcm: Plantilla para listado
+        Plantillashcm: Plantillas para listado
       "heb412_gen/plantillahcr":
         Orgsocial: Organización Social
         Persona: Beneficiario
