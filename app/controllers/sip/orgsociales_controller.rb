@@ -29,12 +29,14 @@ module Sip
     end
 
     def atributos_form
-      atributos_show - [
+      a = atributos_show - [
         :id, 
         :habilitado
       ] + [
         :fechadeshabilitacion_localizada
       ]
+      a[a.index(:grupoper_id)] = :grupoper
+      return a
     end
 
     def orgsocial_params
