@@ -11,19 +11,23 @@
 <tr><td rowspan="1" colspan="3">beneficiario-elimina</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>link=Editar<datalist><option>link=Editar</option><option>css=a.btn.btn-sm</option><option>//a[contains(text(),'Editar')]</option><option>//a[contains(@href, '/personas/377/edita')]</option><option>//td[9]/a</option></datalist></td><td>21,13</td>
+<tr><td>clickAt</td><td>id=navbarDropdownActividades<datalist><option>id=navbarDropdownActividades</option><option>link=Actividades</option><option>css=#navbarDropdownActividades</option><option>//a[contains(text(),'Actividades')]</option><option>//a[@id='navbarDropdownActividades']</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/a</option><option>xpath=(//a[contains(@href, '#')])[3]</option><option>//li[3]/a</option></datalist></td><td>50,31</td>
 </tr>
-<tr><td>runScript</td><td>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')<datalist><option>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')</option></datalist></td><td></td>
+<tr><td>clickAt</td><td>link=Beneficiarios<datalist><option>link=Beneficiarios</option><option>//a[contains(text(),'Beneficiarios')]</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/div/a[9]</option><option>xpath=(//a[contains(@href, '/personas')])[2]</option><option>//a[9]</option></datalist></td><td>61,20</td>
 </tr>
-<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='persona_proyectofinanciero_ids_chosen']/ul/li/a</option><option>//div[15]/div/ul/li/a</option></datalist></td><td>7,5</td>
+<tr><td>clickAt</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>76,24</td>
 </tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='edit_persona_2177']/div[17]/input</option><option>//div[17]/input</option></datalist></td><td>64,15</td>
+<tr><td>type</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>55662277</td>
+</tr>
+<tr><td>sendKeys</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>${KEY_ENTER}</td>
+</tr>
+<tr><td>esperaAsercionTexto2s</td><td>//tbody/tr/td[2]<datalist><option>//tbody/tr/td[2]</option></datalist></td><td>aaa</td>
 </tr>
 <tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
 </tr>
-<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/personas/2177')])[2]</option><option>//div[4]/a</option></datalist></td><td>15,14</td>
+<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/personas/2002')])[2]</option><option>//div[4]/a</option></datalist></td><td>28,20</td>
 </tr>
-<tr><td>clickAt</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Personas</td>
+<tr><td>esperaAsercionTexto2s</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Personas</td>
 </tr>
 </tbody></table>
 </body>
