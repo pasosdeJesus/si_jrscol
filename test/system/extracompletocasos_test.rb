@@ -2,6 +2,13 @@ require 'application_system_test_case'
 
 class ExtracompletocasosTest < ApplicationSystemTestCase
 
+  self.use_transactional_tests = false
+  # Buscando evitar el error:
+  # ActiveRecord::StatementInvalid: PG::InFailedSqlTransaction: ERROR:  current
+  # transaction is aborted, commands ignored until end of transaction block
+  #
+  # El compromiso es que la prueba elimine los datos que cree
+
   setup do
     @usuario = Usuario.find_by(nusuario: 'sjrcol')
     @usuario.password = 'sjrcol123'
