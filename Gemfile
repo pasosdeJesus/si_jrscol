@@ -139,7 +139,7 @@ group :test do
 
   gem 'selenium-webdriver' # Pruebas de regresión que no requieren javascript
 
-  gem 'simplecov', '<0.18' # Debido a https://github.com/codeclimate/test-reporter/issues/418
+  gem 'simplecov'
 
 end
 
