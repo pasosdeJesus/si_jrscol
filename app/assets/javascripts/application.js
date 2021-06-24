@@ -61,7 +61,7 @@ document.addEventListener('turbolinks:load', function() {
   cor1440_gen_prepara_eventos_comunes(root)
   sal7711_gen_prepara_eventos_comunes(root)
   sivel2_sjr_prepara_eventos_unicos(root)
-  @sip_registra_cambios_para_bitacora(root)
+  sip_registra_cambios_para_bitacora(root)
 
 
 })
