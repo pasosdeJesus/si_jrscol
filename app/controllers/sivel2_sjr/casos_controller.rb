@@ -69,6 +69,10 @@ module Sivel2Sjr
       ]
     end
 
+    def registrar_en_bitacora
+      true
+    end
+
     # Campos por presentar en listado index
     def incluir_inicial
       return ['casoid', 'contacto', 'fecharec', 'oficina', 
