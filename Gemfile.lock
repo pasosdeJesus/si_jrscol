@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: f000845046a08beabf39807c42ecf9ca807d5868
-  branch: main
+  revision: fae5cb36c3d70943f426c8d6448174e84b1ffb0b
+  branch: webpacker6
   specs:
     cor1440_gen (1.0b4)
       devise
@@ -25,8 +25,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 32f8f10b5823db338607eaa9070ad29d0f175520
-  branch: main
+  revision: dee989f86552ada508432d6ce870eaec0d8385fc
+  branch: webpacker6
   specs:
     heb412_gen (1.0.b6)
       mr519_gen
@@ -36,8 +36,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: e1578477dde3f902bfb81014e1a096b716afb30e
-  branch: main
+  revision: de30fe331dd73aa262e36647aabd7712ae0bf36b
+  branch: webpacker6
   specs:
     mr519_gen (0.2.0)
       rails
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 031b2c29d45cc7793224acd55f5e81070a7c8a69
-  branch: main
+  revision: 294829b053f595abcff714d7294d5b1776decf50
+  branch: webpacker6
   specs:
     sal7711_gen (1.0.b3)
       rails
@@ -54,8 +54,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: c77c4eaef874d9d409c2c88f3a4c0c926093b4c6
-  branch: main
+  revision: ee4fd7774220d7d1cca8586bb1bfa92656f9c6e8
+  branch: webpacker6
   specs:
     sal7711_web (1.0.a3)
       rails
@@ -63,8 +63,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 598c519e1794b9dd91c9d77e609984e945cf8906
-  branch: main
+  revision: 94708c35617d468557cfe31015131a3558701723
+  branch: webpacker6
   specs:
     sip (2.0.b12)
       cancancan
@@ -82,8 +82,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 0a118e05abfca9d8f677fa09f8740d86e6eba40c
-  branch: main
+  revision: 1d3357862bce6188c4bace234ff430510d75f5b7
+  branch: webpacker6
   specs:
     sivel2_gen (2.0b15)
       devise
@@ -92,12 +92,22 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 05da5931263e9c494d7485272a01a6ee8ce79d41
-  branch: main
+  revision: 462825b256967246c3f66e17d1c8a146ddf0cd8a
+  branch: webpacker6
   specs:
     sivel2_sjr (2.0b10)
       rails
       sivel2_gen
+
+GIT
+  remote: https://github.com/rails/webpacker
+  revision: beb645ecbf707eb4f3311e61b05abb67fe0ca010
+  specs:
+    webpacker (6.0.0.beta.7)
+      activesupport (>= 5.2)
+      rack-proxy (>= 0.6.1)
+      railties (>= 5.2)
+      semantic_range (>= 2.3.0)
 
 GIT
   remote: https://github.com/vtamara/cocoon.git
@@ -392,11 +402,6 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webpacker (5.4.0)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -458,7 +463,7 @@ DEPENDENCIES
   tzinfo
   unicorn
   web-console
-  webpacker
+  webpacker!
   will_paginate
 
 BUNDLED WITH
