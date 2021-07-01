@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 2f10d905b70b6dbb33d0194b591f3f7d8fecace6
+  revision: 10966c9cb74966f61d6fa167d8a6a9b81ef3e827
   branch: webpacker6
   specs:
     sivel2_sjr (2.0b10)
