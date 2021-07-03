@@ -1,7 +1,12 @@
 # Basado entre otros en: https://dev.to/mpressen/rails-minitest-gitlab-ci-31ap
 
 include:
-    - template: Dependency-Scanning.gitlab-ci.yml
+    - template: Security/Dependency-Scanning.gitlab-ci.yml
+    - template: Security/License-Scanning.gitlab-ci.yml
+    - template: Security/SAST.gitlab-ci.yml
+    - template: Security/Secret-Detection.gitlab-ci.yml
+    - template: Security/DAST.gitlab-ci.yml
+
 
 image: "ruby:3.0.1"
 
@@ -20,6 +25,7 @@ variables:
   POSTGRES_HOST_AUTH_METHOD: trust
   NOKOGIRI_USE_SYSTEM_LIBRARIES: "true"
   SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
+  DAST_WEBSITE: http://colombia.jrslac.info:5100
 
 
 stages:
