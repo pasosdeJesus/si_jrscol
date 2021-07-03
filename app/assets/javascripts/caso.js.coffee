@@ -200,3 +200,20 @@ $(document).on('click', 'a.agregaractos[href^="#"]', (e) ->
     root.tagregaactos= Date.now()
   return
 )
+
+# En victimas permite autocompletar nombres de victima
+$(document).on('focusin', 
+'input[id^=caso_victima_attributes][id$=persona_attributes_apellidos]', 
+(e) ->
+  root = window
+  sip_arregla_puntomontaje(root)
+  busca_persona_nombre($(this), root)
+)
+
+$(document).on('focusin', 
+'input[id^=caso_victima_attributes][id$=persona_attributes_numerodocumento]', 
+(e) ->
+  root = window
+  sip_arregla_puntomontaje(root)
+  busca_persona_nombre($(this), root)
+)
