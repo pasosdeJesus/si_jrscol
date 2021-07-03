@@ -1,5 +1,7 @@
 # Basado entre otros en: https://dev.to/mpressen/rails-minitest-gitlab-ci-31ap
 
+include:
+    - template: Dependency-Scanning.gitlab-ci.yml
 
 image: "ruby:3.0.1"
 
