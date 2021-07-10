@@ -66,7 +66,7 @@
   where(id_persona: @caso.casosjr.contacto.id) do |victima| %>
   <%= victima.input :id, as: :hidden %> 
   <%= victima.simple_fields_for :persona do |p| %>
-    <%= render partial: 'comun_persona', locals: {p: p, victima: victima} %>
+    <%= render partial: 'sip/personas/persona_campos', locals: {f: p, fvictima: victima} %>
 
     <div class="row">
       <div class="col-md-6">
