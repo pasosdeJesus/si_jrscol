@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: b0d77139246e2427f403242713f1fa10fd0064a7
+  revision: ae3ebfbf890f56be4a7441e0d2f1babac32d9303
   branch: main
   specs:
     cor1440_gen (1.0b4)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 74e7e4b7fe0c62830521bf511039df481f4e1030
+  revision: d1d70ea23fb6b1095ff461c8635f71f3057d9377
   branch: main
   specs:
     heb412_gen (1.0.b6)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: bd9b30acdbb212abbc1cdeabb117ceec9f3ad912
+  revision: e66d92f7f0957021ce125dade830d2f14bf775dd
   branch: main
   specs:
     mr519_gen (0.2.0)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 8884884e11ac5cad20bc87256614f3f19218a9d3
+  revision: 4458a96d9a9c198c427ac3c309a45575e77f68a3
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 3561caebfbe04a2854b3192a15190dc55b2c8ac5
+  revision: ec7446ff765e3460b3176e2a44cb222f563d1443
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 4b2699a4ab215020cb92009bbbcbcad3fba7d879
+  revision: 3f3cfa8e9c1767f1ab361352a4215ee28267b4c5
   branch: main
   specs:
     sip (2.0.b12)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 38a659cdd446bc6771e6b0fd8389ec74439b8af6
+  revision: dcb7634776ec61c8683c53d529d4bfe3916c0378
   branch: main
   specs:
     sivel2_gen (2.0b15)
@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: b09c350b8bf5c208a9a34d3c9e518c335ef85cde
+  revision: 3d0b6e97f119cdc88c42cf858e21de842ce2088d
   branch: main
   specs:
     sivel2_sjr (2.0b10)
@@ -198,7 +198,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    chartkick (4.0.4)
+    chartkick (4.0.5)
     childprocess (3.0.0)
     choice (0.2.0)
     chosen-rails (1.9.0)
@@ -338,7 +338,7 @@ GEM
       rake (>= 0.13)
       thor (~> 1.0)
     raindrops (0.19.2)
-    rake (13.0.4)
+    rake (13.0.6)
     redcarpet (3.5.1)
     regexp_parser (2.1.1)
     responders (3.0.1)
@@ -386,7 +386,7 @@ GEM
     tiny-color-rails (0.0.2)
       railties (>= 3.0)
     ttfunk (1.7.0)
-    twitter_cldr (6.6.1)
+    twitter_cldr (6.6.2)
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)
       tzinfo
