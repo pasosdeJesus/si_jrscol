@@ -1,20 +1,28 @@
 <%= p.input :id, as: :hidden %>
-<% 
-    ph = 'N'
-ac = {'data-autocompleta' => 'no' }
-if (!p.object.nombres || p.object.nombres == 'N' || p.object.nombres == '')
-  ph = 'Buscar'
-  ac = { }
-end %>
+<%
+  phn = 'N'
+  acn = {'data-autocompleta' => 'no' }
+  if (!p.object.nombres || p.object.nombres == 'N' || p.object.nombres == '')
+    phn = 'Buscar'
+    acn = { }
+  end 
+%>
 <div class="row">
   <div class="col-md-6">
-    <%= p.input :nombres, placeholder: ph,
+    <%= p.input :nombres, placeholder: phn,
       value_method: lambda {|t| '' if t.nombres == 'N'},
-      :input_html => ac %>
+      :input_html => acn %>
   </div>
+  <% pha = 'N'
+  aca = {'data-autocompleta' => 'no' }
+  if (!p.object.apellidos || p.object.apellidos == 'N' || p.object.apellidos == '')
+    pha = 'Buscar'
+    aca = { }
+  end %>
   <div class="col-md-6">
-    <%= p.input :apellidos, placeholder: 'N',
-      value_method: lambda {|t| '' if t.apellidos == 'N'} %>
+    <%= p.input :apellidos, placeholder: pha,
+      value_method: lambda {|t| '' if t.apellidos == 'N'}, 
+      :input_html => aca %>
   </div>
 </div>
 
@@ -25,11 +33,18 @@ end %>
       label_method: :nombre,
       value_method: :id %>
   </div>
+  <% phd = 'N'
+  acd = {'data-toggle' => 'tooltip',
+          title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos',
+     'data-autocompleta' => 'no' }
+  if (!p.object.numerodocumento || p.object.numerodocumento == 'N' || p.object.numerodocumento == '')
+    phd = 'Buscar'
+    acd = {'data-toggle' => 'tooltip',
+            title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos' }
+  end %>
   <div class="col-md-6">
-    <%= p.input :numerodocumento,
-      input_html: { 'data-toggle' => 'tooltip',
-                    title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos'
-    } %>
+    <%= p.input :numerodocumento, placeholder: phd,
+      :input_html => acd %>
   </div>
 </div>
 <div class="input string" style="display: none">
