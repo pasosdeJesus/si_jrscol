@@ -60,7 +60,7 @@ es:
       "consgifmm":
         Consactividadcaso: Reporte GIFMM detallado
         Consgifmm: GIFMM
-        actividadmarcologico_nombre: Actividad de marco lógico
+        actividadmarcologico_nombre: Actividad del marco lógico
         conveniofinanciado_nombre: Convenio Financiado
         departamento_gifmm: Departamento
         detalleah_unidad: Unidad
@@ -91,8 +91,8 @@ es:
         actividadarea: Subárea de Actividad
         Actividadareas: Subáreas de Actividad
       "cor1440_gen/actividadtipo":
-        Actividadtipo: Tipo de actividad de convenio financiado
-        Actividadtipos: Tipos de actividad de convenio financiado
+        Actividadtipo: Tipo de actividad del marco lógico
+        Actividadtipos: Tipos de actividad del marco lógico
       "cor1440_gen/financiador":
         nombregifmm: Nombre GIFMM
       "cor1440_gen/proyecto":
@@ -100,7 +100,7 @@ es:
         Proyecto: Área de Actividad
         Proyectos: Áreas de Actividad
       "cor1440_gen/proyectofinanciero":
-        actividadpf: Actividades de convenio
+        actividadpf: Actividades del marco lógico
         indicadorobjetivo: Indicadores de efecto
         indicadorpf: Indicadores de resultado
         nombre: Nombre

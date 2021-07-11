@@ -74,29 +74,31 @@ module Cor1440Gen
       ]
     end
 
-    def atributos_show
-      [ :id, 
-        :nombre, 
-        :fecha_localizada, 
-        :responsable,
-        :oficina, 
-        :listado_poblacion,
-        :lugar, 
-        :listado_proyectos,
-        :proyectosfinancieros, 
-        :proyectos,
-        :actividadareas, 
-        :corresponsables,
-        :respuestafor,
-        :objetivo,
-        :resultado, 
-        :observaciones,
-        :orgsocial,
-        :listado_asistencia,
-        :listado_casos,
-        :anexos
-      ]
-    end
+    # Hay vista show
+    # def atributos_show
+    #  [ :id, 
+    #    :nombre, 
+    #    :fecha_localizada, 
+    #    :responsable,
+    #    :oficina, 
+    #    :listado_poblacion,
+    #    :lugar, 
+    #    :listado_proyectos,
+    #    :proyectosfinancieros, 
+    #    :proyectos,
+    #    :actividadareas, 
+    #    :corresponsables,
+    #    :respuestafor,
+    #    :objetivo,
+    #    :resultado, 
+    #    :observaciones,
+    #    :orgsocial,
+    #    :listado_asistencia,
+    #    :listado_casos,
+    #    :anexos,
+    #    :resumen_registros_bitacora
+    #  ]
+    #end
 
     def atributos_form
       atributos_show - [:id] + [:observaciones]
@@ -116,6 +118,11 @@ module Cor1440Gen
         :proyectosfinancieros, 
         :objetivo
       ]
+    end
+
+
+    def registrar_en_bitacora
+      true
     end
 
     # GET /actividades/1/edit

@@ -69,6 +69,10 @@ module Sivel2Sjr
       ]
     end
 
+    def registrar_en_bitacora
+      true
+    end
+
     # Campos por presentar en listado index
     def incluir_inicial
       return ['casoid', 'contacto', 'fecharec', 'oficina', 
@@ -212,7 +216,7 @@ module Sivel2Sjr
         )
         de.save!
       end
-      
+     
       # Convertir valores de radios tri-estado, el valor 3 en el 
       # botón de radio es nil en la base de datos
       if params && params[:caso] && params[:caso][:victima_attributes]

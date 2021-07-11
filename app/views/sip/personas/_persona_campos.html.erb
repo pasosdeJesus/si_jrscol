@@ -1,35 +1,56 @@
-<%= p.input :id, as: :hidden %>
-<% 
-    ph = 'N'
-ac = {'data-autocompleta' => 'no' }
-if (!p.object.nombres || p.object.nombres == 'N' || p.object.nombres == '')
-  ph = 'Buscar'
-  ac = { }
-end %>
+<% # Este parcial debe ser sip/personas/_persona_campos.html.erb porque es %>
+<% # el usado por la autocompletación de sivel2_gen %>
+<% # Los parámetros que espera son: %>
+<% # f con formulario persona  %>
+<% # fvictima con formulario victima %>
+
+<%= f.input :id, as: :hidden %>
+<%
+  phn = 'N'
+  acn = {'data-autocompleta' => 'no' }
+  if (!f.object.nombres || f.object.nombres == 'N' || f.object.nombres == '')
+    phn = 'Buscar'
+    acn = { }
+  end 
+%>
 <div class="row">
   <div class="col-md-6">
-    <%= p.input :nombres, placeholder: ph,
+    <%= f.input :nombres, placeholder: phn,
       value_method: lambda {|t| '' if t.nombres == 'N'},
-      :input_html => ac %>
+      :input_html => acn %>
   </div>
+  <% pha = 'N'
+  aca = {'data-autocompleta' => 'no' }
+  if (!f.object.apellidos || f.object.apellidos == 'N' || f.object.apellidos == '')
+    pha = 'Buscar'
+    aca = { }
+  end %>
   <div class="col-md-6">
-    <%= p.input :apellidos, placeholder: 'N',
-      value_method: lambda {|t| '' if t.apellidos == 'N'} %>
+    <%= f.input :apellidos, placeholder: pha,
+      value_method: lambda {|t| '' if t.apellidos == 'N'}, 
+      :input_html => aca %>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-6">
-    <%= p.input :tdocumento_id,
+    <%= f.input :tdocumento_id,
       collection: Sip::Tdocumento.habilitados,
       label_method: :nombre,
       value_method: :id %>
   </div>
+  <% phd = 'N'
+  acd = {'data-toggle' => 'tooltip',
+          title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos',
+     'data-autocompleta' => 'no' }
+  if (!f.object.numerodocumento || f.object.numerodocumento == 'N' || f.object.numerodocumento == '')
+    phd = 'Buscar'
+    acd = {'data-toggle' => 'tooltip',
+            title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos' }
+  end %>
   <div class="col-md-6">
-    <%= p.input :numerodocumento,
-      input_html: { 'data-toggle' => 'tooltip',
-                    title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos'
-    } %>
+    <%= f.input :numerodocumento, placeholder: phd,
+      :input_html => acd %>
   </div>
 </div>
 <div class="input string" style="display: none">
@@ -37,7 +58,7 @@ end %>
   <% 
       r = ""
   sep = ""
-  v = Sivel2Gen::Victima.where(id_persona: p.object.id).order(:id_persona)
+  v = Sivel2Gen::Victima.where(id_persona: f.object.id).order(:id_persona)
   v.each do |vic|
     if @caso.id != vic.caso.id
   %>
@@ -66,27 +87,27 @@ end %>
 
 <div class="row">
   <div class="col-md-4">
-    <%= render partial: 'sip/personas/campo_sexo', locals: {f: p} %>
+    <%= render partial: 'sip/personas/campo_sexo', locals: {f: f} %>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-6">
     <% @anios = *(1900..Date.today.year) %>
-    <%= p.input :anionac, 
+    <%= f.input :anionac, 
       collection: @anios %>
   </div>
   <div class="col-md-6">
-    <%= victima.input :edad, as: :integer %>
+    <%= fvictima.input :edadactual %>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-6">
-    <%= p.input :mesnac, collection: @meses %>
+    <%= f.input :mesnac, collection: @meses %>
   </div>
   <div class="col-sm-6">
-    <%= victima.association :rangoedad,
+    <%= fvictima.association :rangoedad,
       collection: Sivel2Gen::Rangoedad.habilitados(:rango),
       include_blank: false,
       label_method: :rango, 
@@ -97,16 +118,16 @@ end %>
 
 <div class="row">
   <div class="col-md-6">
-    <%= p.input :dianac, collection: @dias %>
+    <%= f.input :dianac, collection: @dias %>
   </div>
   <div class="col-md-6">
-    <%= victima.input :edadactual, as: :hidden %>
+    <%= fvictima.input :edad, as: :integer %>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-6">
-    <%= p.association :pais,
+    <%= f.association :pais,
       collection: Sip::Pais.habilitados,
       label_method: :nombre,
       value_method: :id %>
@@ -114,24 +135,24 @@ end %>
 </div>
 <div class="row">
   <div class="col-md-6">
-    <%= p.association :departamento,
+    <%= f.association :departamento,
       collection: (Sip::Departamento.habilitados.where(
-        id_pais: p.object.id_pais)),
+        id_pais: f.object.id_pais)),
        label_method: :nombre,
        value_method: :id %>
   </div>
 </div>
 <div class="row">
   <div class="col-md-6">
-    <%= p.association :municipio, 
+    <%= f.association :municipio, 
       collection: (Sip::Municipio.habilitados.
-                   where(id_departamento: p.object.id_departamento)), 
+                   where(id_departamento: f.object.id_departamento)), 
     label_method: :nombre, value_method: :id %>
   </div>
   <div class="col-md-6">
-    <%= p.association :clase,
+    <%= f.association :clase,
       collection: (Sip::Clase.habilitados.where(
-        id_municipio: p.object.id_municipio)),
+        id_municipio: f.object.id_municipio)),
        as: :hidden,
        label_method: :nombre,
        value_method: :id %>
