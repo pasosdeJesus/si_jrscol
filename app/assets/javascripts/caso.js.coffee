@@ -217,3 +217,23 @@ $(document).on('focusin',
   sip_arregla_puntomontaje(root)
   busca_persona_nombre($(this), root)
 )
+$(document).on('change',
+'select[id$=persona_attributes_tdocumento_id]', (e) ->
+  root = window
+  sip_arregla_puntomontaje(root)
+  std = $(this)
+  obtener_ayuda(root, std)
+)
+@obtener_ayuda = (root, elem) ->
+  rutac = root.puntomontaje + 'admin/tdocumentos/'+ elem.val() + '.json'
+  $.getJSON(rutac, (data) ->
+    nd = elem.parent().parent().parent().find("input[id$=_numerodocumento]")
+    if (data.ayuda == null)
+      ini = 'Si el tipo de documento es cédula de ciudadanía teclee solo dígitos'
+      nd.attr('data-toggle', 'tooltip')
+      nd.attr("data-original-title", ini)
+    else
+      nd.attr('data-toggle', 'tooltip') 
+      nd.attr("data-original-title", data.ayuda)
+  )
+
