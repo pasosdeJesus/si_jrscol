@@ -229,13 +229,11 @@ $(document).on('change',
   $.getJSON(rutac, (data) ->
     nd = elem.parent().parent().parent().find("input[id$=_numerodocumento]")
     if (data.ayuda == null)
-      ini = 'inicial Si el tipo de documento es cédula de ciudadanía teclee solo dígitos'
+      ini = 'Si el tipo de documento es cédula de ciudadanía teclee solo dígitos'
       nd.attr('data-toggle', 'tooltip')
       nd.attr("data-original-title", ini)
-      nd.attr("title", ini)  
     else
       nd.attr('data-toggle', 'tooltip') 
       nd.attr("data-original-title", data.ayuda)
-      nd.attr("title", data.ayuda)
   )
 
