@@ -5096,7 +5096,8 @@ CREATE TABLE public.sip_tdocumento (
     fechadeshabilitacion date,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    ayuda character varying(1000)
 );
 
 
@@ -6215,8 +6216,9 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 103)
+           FROM (public.sivel2_gen_conscaso
+             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.id_caso = sivel2_gen_conscaso.caso_id)))
+          WHERE ((sivel2_gen_conscaso.fecharec >= '2021-05-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2021-05-31'::date) AND (sivel2_sjr_casosjr.oficina_id = 2))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -15144,6 +15146,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210614212220'),
 ('20210616003251'),
 ('20210617105509'),
-('20210619191706');
+('20210619191706'),
+('20210709221643'),
+('20210709222044');
 
 
