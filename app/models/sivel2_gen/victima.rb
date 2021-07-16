@@ -21,16 +21,5 @@ class Sivel2Gen::Victima < ActiveRecord::Base
   #validates_associated :persona # Genera un mensaje demasiado simple: 
   # En 'Victima' no es válido 'Persona'
 
-  validate :persona_valida
-
-  def persona_valida
-    if !persona || !persona.valid?
-      persona.errors.full_messages.each do |e|
-        if !errors.full_messages.include?(e)
-          errors.add("persona_#{persona.id}".to_sym, e)
-        end
-      end
-    end
-  end
 end
 

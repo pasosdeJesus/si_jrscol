@@ -12,10 +12,15 @@ module Sivel2Sjr
       created_at: "2021-04-14",
     }
 
+
     PRUEBA_PERSONA = {
       nombres: "Juan",
       apellidos: "Perez",
       sexo: 'M',
+      anionac: 1980,
+      id_pais: 170,
+      tdocumento_id: 3,
+      numerodocumento: 1,
       created_at: "2021-04-14",
     }
 
