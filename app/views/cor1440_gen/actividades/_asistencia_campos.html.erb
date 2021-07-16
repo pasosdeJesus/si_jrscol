@@ -30,10 +30,17 @@
         ph = 'Buscar'
         ac =  {}
       end %>
+      <%
+      if (p.object.tdocumento)
+        td = p.object.tdocumento.ayuda
+      else
+        td = "Si el tipo de documento es cédula de ciudadania teclee solo dígitos"
+      end
+      %>
       <%= p.input :numerodocumento, placeholder: ph,
         input_html: ac.merge!(
            style: 'width: 6em',
-           title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos'),
+           title: td),
         label: false %>
     </td>
     <td>
