@@ -229,7 +229,6 @@ module Sivel2Sjr
           end
         end
       end
-      byebug
       update_sivel2_sjr
     end
 

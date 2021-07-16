@@ -21,8 +21,28 @@ module Sip
       foreign_key: 'persona_id', dependent: :delete
     accepts_nested_attributes_for :datosbio, reject_if: :all_blank
 
-    validates :numerodocumento, uniqueness: { scope: :tdocumento_id,
-      message: 'Documento de identidad repetido' }
+    validates :nombres, presence: true, allow_blank: false,
+      length: { maximum: 100}, 
+      exclusion: { in: %w(N), message: "no se permite el nombre '%{value}'." }
+
+    validates :apellidos, presence: true, allow_blank: false,
+      length: { maximum: 100}, 
+      exclusion: { in: %w(N), message: "no se permite el apellido %{value}." }
+
+    validates :tdocumento_id, allow_blank: false, presence: true
+
+    validates :numerodocumento, allow_blank: false, presence: true,
+      exclusion: { in: ["0"], message: "no se permite el número de identificación '0'." },
+      uniqueness: { scope: :tdocumento_id, 
+                    message: 'Documento de identidad repetido' }
+
+    validates :sexo, presence: true,
+      exclusion: { in: %w(S), message: "no se permite sexo 'S'." }
+
+    validates :anionac, presence: true,
+      numericality: { allow_blank: false, greater_than_or_equal: 1900 }
+
+    validates :id_pais, presence: true, allow_blank: false
 
     attr_accessor :fechanac
     def fechanac

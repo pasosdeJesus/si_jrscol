@@ -112,12 +112,12 @@ gem 'sivel2_gen',
 
 # Motor de SIVeL 2 - SJR
 gem 'sivel2_sjr',
-  #git: 'https://github.com/pasosdeJesus/sivel2_sjr.git', branch: :main
-  path: '../sivel2_sjr'
+  git: 'https://github.com/pasosdeJesus/sivel2_sjr.git', branch: :main
+  #path: '../sivel2_sjr'
 
 group :development, :test do
 
-  gem 'byebug' # Depurar
+  #gem 'byebug' # Depurar
 
   gem 'dotenv-rails'
 end

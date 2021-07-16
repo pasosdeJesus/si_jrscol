@@ -4,6 +4,20 @@ require 'sivel2_sjr/concerns/models/caso'
 class Sivel2Gen::Caso < ActiveRecord::Base
   include Sivel2Sjr::Concerns::Models::Caso
 
+  validate :victima_valida
+
+  def victima_valida
+    victima.each do |v|
+      if !v.valid?
+        v.errors.full_messages.each do |e|
+        if !errors.full_messages.include?(e)
+          errors.add("victima_#{v.id}".to_sym, e)
+        end
+        end
+      end
+    end
+  end
+
   def presenta(atr)
     case atr.to_s
     when 'fecharec'
