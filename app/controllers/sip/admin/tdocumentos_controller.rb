@@ -1,35 +1,28 @@
+require 'sip/concerns/controllers/tdocumentos_controller'
+
 module Sip
   module Admin
     class TdocumentosController < Sip::Admin::BasicasController
-      before_action :set_tipoanexo, 
-        only: [:show, :edit, :update, :destroy]
-      load_and_authorize_resource  class: Sip::Tdocumento
+      before_action :set_tdocumento, only: [:show, :edit, :update, :destroy]
+      load_and_authorize_resource class: Sip::Tdocumento
 
-      def clase 
-        "Sip::Tdocumento"
-      end
-
-      def set_tipoanexo
-        @basica = Sip::Tdocumento.find(params[:id])
-      end
+      include Sip::Concerns::Controllers::TdocumentosController
 
       def atributos_index
         [
-          "id", 
-          "nombre", 
-          "observaciones",
-          "ayuda",
-          "fechacreacion_localizada", 
-          "habilitado"
+          :id, 
+          :nombre, 
+          :sigla, 
+          :formatoregex, 
+          :ayuda,
+          :observaciones,
+          :fechacreacion_localizada, 
+          :habilitado
         ]
       end
 
-      def genclase
-        'M'
-      end
-
-      def tipoanexo_params
-        params.require(:tdocumento).permit(*atributos_form)
+      def tdocumento_params
+        params.require(:tdocumento).permit( *(atributos_form))
       end
 
     end
