@@ -1,7 +1,7 @@
 <h1> Actividad </h1>
 <div class="row">
   <div class="col-md-6">
-    <b>Id:</b> <%= @actividad.id %> <br>
+    <b>Id:</b> <span id='actividad_id'><%= @actividad.id %></span> <br>
     <b>Fecha de realización:</b> <%= @actividad.fecha %><br>
 
     <b>Oficina:</b> <%= @actividad.oficina.nombre if @actividad.oficina %> <br>
