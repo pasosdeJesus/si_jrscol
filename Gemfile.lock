@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: ae3ebfbf890f56be4a7441e0d2f1babac32d9303
+  revision: 201eb9469c6c524d5b5044e190b799ac8a80c1c9
   branch: main
   specs:
     cor1440_gen (1.0b4)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: fe4dc547be9812a4e241241312aca81bb6194155
+  revision: ac558ad1b7dd212d3ae14952baf3e5a959451dc2
   branch: main
   specs:
     heb412_gen (1.0.b6)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: e66d92f7f0957021ce125dade830d2f14bf775dd
+  revision: a5dd13dc79f73c309fb3e05e80e737cc1d0b6101
   branch: main
   specs:
     mr519_gen (0.2.0)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 4458a96d9a9c198c427ac3c309a45575e77f68a3
+  revision: 682e2898853528651e247668e9917abb40af8239
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: ec7446ff765e3460b3176e2a44cb222f563d1443
+  revision: d84c177b8378efe05ef2de99b0dcee389f6f5524
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 0ea4c134bb648fadfb92b99b953afcc90b08f3ac
+  revision: 9b97a4b70bc65f3eb1ef7d2f7cb9518318afd823
   branch: main
   specs:
     sip (2.0.b12)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: c59d4c0cb962f159f6b32ff32c5b1db8c33edf4f
+  revision: 1de09961a24f7b79c415a53d1c11eea4404b2a1a
   branch: main
   specs:
     sivel2_gen (2.0b15)
@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 3d0b6e97f119cdc88c42cf858e21de842ce2088d
+  revision: 84864b72d703f828924baef5af2d59aea9856d26
   branch: main
   specs:
     sivel2_sjr (2.0b10)
@@ -386,7 +386,7 @@ GEM
     tiny-color-rails (0.0.2)
       railties (>= 3.0)
     ttfunk (1.7.0)
-    twitter_cldr (6.6.2)
+    twitter_cldr (6.7.0)
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)
       tzinfo

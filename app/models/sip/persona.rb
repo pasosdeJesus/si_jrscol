@@ -21,7 +21,11 @@ module Sip
       foreign_key: 'persona_id', dependent: :delete
     accepts_nested_attributes_for :datosbio, reject_if: :all_blank
 
-    validates :numerodocumento, :allow_blank => true, uniqueness: {message: "Documento de identidad ya registrado"}
+    validates :nombres, presence: true, allow_blank: false,
+      length: { maximum: 100}
+
+    validates :apellidos, presence: true, allow_blank: false,
+      length: { maximum: 100}
 
     attr_accessor :fechanac
     def fechanac

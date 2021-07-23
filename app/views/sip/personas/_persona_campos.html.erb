@@ -40,13 +40,20 @@
       value_method: :id %>
   </div>
   <% phd = 'N'
+  td = 'Si el tipo de documento es cédula de ciudadania teclee solo digitos'
   acd = {'data-toggle' => 'tooltip',
-          title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos',
+          title: td,
      'data-autocompleta' => 'no' }
   if (!f.object.numerodocumento || f.object.numerodocumento == 'N' || f.object.numerodocumento == '')
     phd = 'Buscar'
     acd = {'data-toggle' => 'tooltip',
-            title: 'Si el tipo de documento es cédula de ciudadania teclee solo digitos' }
+           title: td }
+  else
+    if (f.object.tdocumento)
+      td = f.object.tdocumento.ayuda
+      acd = {'data-toggle' => 'tooltip',
+             title: td }
+    end
   end %>
   <div class="col-md-6">
     <%= f.input :numerodocumento, placeholder: phd,

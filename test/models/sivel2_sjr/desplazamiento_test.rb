@@ -16,6 +16,10 @@ module Sivel2Sjr
       nombres: "Juan",
       apellidos: "Perez",
       sexo: 'M',
+      anionac: 1980,
+      id_pais: 170,
+      tdocumento_id: 1,
+      numerodocumento: 4,
       created_at: "2021-04-14",
     }
 
@@ -52,6 +56,8 @@ module Sivel2Sjr
       caso = Sivel2Gen::Caso.create(PRUEBA_CASO)
       assert caso.valid?
       persona= Sip::Persona.create(PRUEBA_PERSONA)
+      #puts persona.valid?
+      #puts persona.errors.full_messages.join('. ')
       assert persona.valid?
       victima= Sivel2Gen::Victima.create({
         id_caso: caso.id,

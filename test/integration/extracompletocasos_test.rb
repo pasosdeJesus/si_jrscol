@@ -27,9 +27,14 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
   }
 
   PRUEBA_PERSONA = {
-    nombres: 'Juan',
-    apellidos: 'Perez',
-    sexo: 'M'
+    nombres: "Juan",
+    apellidos: "Perez",
+    sexo: 'M',
+    anionac: 1980,
+    id_pais: 170,
+    tdocumento_id: 1,
+    numerodocumento: 2,
+    created_at: "2021-04-14",
   }
 
   PRUEBA_CASOSJR = {

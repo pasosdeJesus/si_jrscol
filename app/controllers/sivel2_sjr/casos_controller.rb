@@ -169,6 +169,81 @@ module Sivel2Sjr
       return conscaso
     end
 
+    def validar_params
+      # No se pone en persona para no afectar listado de asistencia
+      # en actividad, ni beneficiarios
+      # Se intento con una validación en el modelo de caso, pero 
+      # en ocasiones valida con datos históricos y no con los
+      # que recibía por parámetros.  Aquí aseguramos que se valida
+      # lo recibido por parámetros.
+      if !params || !params[:caso] || !params[:caso][:victima_attributes]
+        return false
+      end
+      cuentaini = @caso.errors.count
+      numper = 0
+      params[:caso][:victima_attributes].each do |i,v|
+        if v[:_destroy] != '1' && v[:persona_attributes]
+          p=v[:persona_attributes]
+          if numper == 0
+            n="Contacto"
+          else
+            n="Integrante #{numper}"
+          end
+          if !p[:nombres] || p[:nombres].strip == '' || p[:nombres].strip == 'N'
+            @caso.errors.add(:persona, "#{n} no tiene nombres")
+          end
+          if !p[:apellidos] || p[:apellidos].strip == '' || p[:apellidos].strip == 'N'
+            @caso.errors.add(:persona, "#{n} no tiene apellidos")
+          end
+
+          if !p[:numerodocumento] || p[:numerodocumento].strip == '' || 
+              p[:numerodocumento] == '0'
+            @caso.errors.add(:persona, "#{n} no tiene número de documento")
+          end
+          if !p[:tdocumento_id] || p[:tdocumento_id].strip == ''
+            @caso.errors.add(:persona, "#{n} no tiene tipo de documento")
+          else
+            pt = Sip::Tdocumento.where(id: p[:tdocumento_id].to_i)
+            if pt.count != 1
+              @caso.errors.add(:persona, 
+                               "#{n} tiene tipo de documento desconocido")
+            else
+              pt = pt.take
+              if pt.formatoregex != '' && 
+                  !(p[:numerodocumento] =~ Regexp.new("^#{pt.formatoregex}$"))
+                @caso.errors.add(:persona, 
+                                 "#{n} tiene número de documento con formato errado. "\
+                                 "#{pt.ayuda ? pt.ayuda : ''}")
+              else
+                idrep = Sip::Persona.where(numerodocumento: p[:numerodocumento]).
+                  where(tdocumento_id: p[:tdocumento_id]).
+                  where('id<>?', p[:id])
+                if idrep.count > 0
+                  @caso.errors.add(:persona, "#{n.capitalize} tiene identificación repetida con #{idrep.count} persona(s)")
+                end
+              end
+            end
+          end
+          if !p[:sexo] || p[:sexo].strip == ''
+            @caso.errors.add(:persona, "#{n.capitalize} no tiene sexo")
+          elsif p[:sexo] == 'S'
+            @caso.errors.add(:persona, "#{n.capitalize} tiene sexo 'S'")
+          end
+          if !p[:anionac] || p[:anionac].strip == ''
+            @caso.errors.add(:persona, "#{n.capitalize} no tiene año de nacimiento")
+          elsif p[:anionac].to_i < 1900
+            @caso.errors.add(:persona, "#{n.capitalize} tiene año de nacimiento anterior a 1900")
+          end
+          if !p[:id_pais] || p[:id_pais].strip == ''
+            @caso.errors.add(:persona, "#{n.capitalize} no tiene país de nacimiento")
+          end
+          numper += 1
+        end
+      end
+
+      return cuentaini == @caso.errors.count
+    end
+
     def update
       # Procesar ubicacionespre de migración
       (caso_params[:migracion_attributes] || []).each do |clave, mp|
