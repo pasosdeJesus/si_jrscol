@@ -6,64 +6,52 @@ module Sip
 
     class LineasorgsocialControllerTest < ActionController::TestCase
       include Engine.routes.url_helpers
-      include Devise::Test::IntegrationHelpers 
+      include Devise::Test::ControllerHelpers
       include Rails.application.routes.url_helpers
 
 
       setup do
+        @current_usuario = ::Usuario.create(PRUEBA_USUARIO)
+        sign_in @current_usuario
         @lineaorgsocial = Sip::Lineaorgsocial.create(
           Sip::LineaorgsocialTest::PRUEBA_LINEAORGSOCIAL)
-        #byebug
-        #@controller = Sip::Admin::LineasorgsocialController
+        @controller = Sip::Admin::LineasorgsocialController.new 
       end
 
       test "should get index" do
-        skip
-        get lineasorgsocial_url
+        get :index, params: {use_route: admin_lineasorgsocial_path}
         assert_response :success
-        assert_not_nil assigns(:lineaorgsocial)
       end
 
       test "should get new" do
-        skip
-        get :new
+        get :new, params: {use_route: admin_lineasorgsocial_path}
         assert_response :success
       end
 
       test "should create lineaorgsocial" do
-        skip
         assert_difference('Lineaorgsocial.count') do
-          post :create, lineaorgsocial: { created_at: @lineaorgsocial.created_at, fechacreacion: @lineaorgsocial.fechacreacion, fechadeshabilitacion: @lineaorgsocial.fechadeshabilitacion, nombre: @lineaorgsocial.nombre, observaciones: @lineaorgsocial.observaciones, updated_at: @lineaorgsocial.updated_at }
+          post :create, params: {use_route: admin_lineasorgsocial_path, lineaorgsocial: { nombre: 'prueba2', fechacreacion: '01-01-2021' }}
         end
-
-        assert_redirected_to lineaorgsocial_path(assigns(:lineaorgsocial))
       end
 
       test "should show lineaorgsocial" do
-        skip
-        get :show, id: @lineaorgsocial
+        get :show, params: {use_route: admin_lineaorgsocial_path, id: @lineaorgsocial}
         assert_response :success
       end
 
       test "should get edit" do
-        skip
-        get :edit, id: @lineaorgsocial
+        get :edit, params: {use_route: admin_lineaorgsocial_path, id: @lineaorgsocial}
         assert_response :success
       end
 
       test "should update lineaorgsocial" do
-        skip
-        patch :update, id: @lineaorgsocial, lineaorgsocial: { created_at: @lineaorgsocial.created_at, fechacreacion: @lineaorgsocial.fechacreacion, fechadeshabilitacion: @lineaorgsocial.fechadeshabilitacion, nombre: @lineaorgsocial.nombre, observaciones: @lineaorgsocial.observaciones, updated_at: @lineaorgsocial.updated_at }
-        assert_redirected_to lineaorgsocial_path(assigns(:lineaorgsocial))
+        patch :update, params: {use_route: admin_lineaorgsocial_path, id: @lineaorgsocial, lineaorgsocial: { created_at: @lineaorgsocial.created_at, fechacreacion: @lineaorgsocial.fechacreacion, fechadeshabilitacion: @lineaorgsocial.fechadeshabilitacion, nombre: @lineaorgsocial.nombre, observaciones: @lineaorgsocial.observaciones, updated_at: @lineaorgsocial.updated_at }}
       end
 
       test "should destroy lineaorgsocial" do
-        skip
         assert_difference('Lineaorgsocial.count', -1) do
-          delete :destroy, id: @lineaorgsocial
+          delete :destroy, params: {use_route: admin_lineaorgsocial_path, id: @lineaorgsocial}
         end
-
-        assert_redirected_to lineasorgsocial_path
       end
     end
 
