@@ -23,3 +23,7 @@
 .chosen-container.chosen-container-single {
       width: 100% !important;
 }
+
+.tooltip { 
+  pointer-events: none;
+}
