@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: c5705ba13654a54e3f65adfedbfbf634f2f5d435
+  revision: 691687ff593a262b8355753e1873529ba7c19a29
   branch: main
   specs:
     sip (2.0.b12)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 51e69b6015d7f1cf32186abbb0bedcf5d5c84137
+  revision: 9003c566eb6b8b5636bf9153349bb4f5e43cf4c7
   branch: main
   specs:
     sivel2_gen (2.0b15)
@@ -318,6 +318,10 @@ GEM
       bundler (>= 1.15.0)
       railties (= 6.1.4)
       sprockets-rails (>= 2.0.0)
+    rails-controller-testing (1.0.5)
+      actionpack (>= 5.0.1.rc1)
+      actionview (>= 5.0.1.rc1)
+      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -444,6 +448,7 @@ DEPENDENCIES
   prawnto_2 (>= 0.3.1)
   puma (>= 4.3.3)
   rails (~> 6.1)
+  rails-controller-testing
   rails-erd
   rails-i18n
   redcarpet
