@@ -91,15 +91,6 @@ GIT
       rails
 
 GIT
-  remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 84864b72d703f828924baef5af2d59aea9856d26
-  branch: main
-  specs:
-    sivel2_sjr (2.0b10)
-      rails
-      sivel2_gen
-
-GIT
   remote: https://github.com/rails/webpacker
   revision: 5dae8b51956e9cd739bdfae44f8214fa1e0f49b2
   specs:
@@ -115,6 +106,13 @@ GIT
   branch: new_id_with_ajax
   specs:
     cocoon (1.2.11)
+
+PATH
+  remote: ../sivel2_sjr
+  specs:
+    sivel2_sjr (2.0b10)
+      rails
+      sivel2_gen
 
 GEM
   remote: https://rubygems.org/
