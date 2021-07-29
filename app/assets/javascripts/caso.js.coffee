@@ -218,6 +218,13 @@ $(document).on('focusin',
   busca_persona_nombre($(this), root)
 )
 $(document).on('change',
+'select[id=persona_tdocumento_id]', (e) ->
+  root = window
+  sip_arregla_puntomontaje(root)
+  std = $(this)
+  obtener_ayuda(root, std)
+)
+$(document).on('change',
 'select[id$=persona_attributes_tdocumento_id]', (e) ->
   root = window
   sip_arregla_puntomontaje(root)
@@ -235,5 +242,6 @@ $(document).on('change',
     else
       nd.attr('data-toggle', 'tooltip') 
       nd.attr("data-original-title", data.ayuda)
+      $(nd).tooltip({track: true})
   )
 
