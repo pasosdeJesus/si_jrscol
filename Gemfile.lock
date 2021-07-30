@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 819f54f69268300507e0ce1923b718e1b1aa09f9
+  revision: b24e2da152c0d761bb26c3726be1bac8d4fbf9b6
   branch: main
   specs:
     cor1440_gen (1.0b4)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: c5705ba13654a54e3f65adfedbfbf634f2f5d435
+  revision: b77078823bfba8d8843cf57440a5eef8b5fed795
   branch: main
   specs:
     sip (2.0.b12)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 51e69b6015d7f1cf32186abbb0bedcf5d5c84137
+  revision: 702f11f6f102d0d700e18462e5b80078504e2a4f
   branch: main
   specs:
     sivel2_gen (2.0b15)
@@ -295,7 +295,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (4.0.6)
-    puma (5.3.2)
+    puma (5.4.0)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)

@@ -133,6 +133,11 @@ module Cor1440Gen
     end
 
 
+    def destroy
+      destroy_cor1440_gen
+    end
+
+
     def filtra_contar_control_acceso
       @contar_pfid = 10  # Plan Estrategico 1
     end
