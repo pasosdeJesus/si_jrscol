@@ -4,6 +4,7 @@ SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
+SET default_toast_compression = 'pglz';
 SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
@@ -14,20 +15,6 @@ SET row_security = off;
 --
 
 CREATE COLLATION public.es_co_utf_8 (provider = libc, locale = 'es_CO.UTF-8');
-
-
---
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
-
-
---
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
 
 
 --
@@ -251,6 +238,38 @@ CREATE FUNCTION public.sip_edad_de_fechanac_fecharef(anionac integer, mesnac int
           ELSE 
             anioref-anionac
         END 
+      $$;
+
+
+--
+-- Name: sivel2_gen_polo_id(integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.sivel2_gen_polo_id(presponsable_id integer) RETURNS integer
+    LANGUAGE sql
+    AS $$
+        WITH RECURSIVE des AS (
+          SELECT id, nombre, papa_id 
+          FROM sivel2_gen_presponsable WHERE id=presponsable_id 
+          UNION SELECT e.id, e.nombre, e.papa_id 
+          FROM sivel2_gen_presponsable e INNER JOIN des d ON d.papa_id=e.id) 
+        SELECT id FROM des WHERE papa_id IS NULL;
+      $$;
+
+
+--
+-- Name: sivel2_gen_polo_nombre(integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.sivel2_gen_polo_nombre(presponsable_id integer) RETURNS character varying
+    LANGUAGE sql
+    AS $$
+        SELECT CASE 
+          WHEN fechadeshabilitacion IS NULL THEN nombre
+          ELSE nombre || '(DESHABILITADO)' 
+        END 
+        FROM sivel2_gen_presponsable 
+        WHERE id=sivel2_gen_polo_id(presponsable_id)
       $$;
 
 
@@ -6078,22 +6097,22 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     conscaso.expulsion,
     conscaso.llegada,
     conscaso.memo AS descripcion,
-    (date_part('month'::text, ultimaatencion.fecha))::integer AS ultimaatencion_mes,
+    (EXTRACT(month FROM ultimaatencion.fecha))::integer AS ultimaatencion_mes,
     conscaso.ultimaatencion_fecha,
     conscaso.contacto,
     contacto.nombres AS contacto_nombres,
     contacto.apellidos AS contacto_apellidos,
     (((COALESCE(tdocumento.sigla, ''::character varying))::text || ' '::text) || (contacto.numerodocumento)::text) AS contacto_identificacion,
     contacto.sexo AS contacto_sexo,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
     ( SELECT sivel2_gen_rangoedad.rango
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_recepcion,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
     ( SELECT sivel2_gen_rangoedad.rango
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_salida,
     COALESCE(etnia.nombre, ''::character varying) AS contacto_etnia,
     ultimaatencion.contacto_edad AS contacto_edad_ultimaatencion,
@@ -6216,9 +6235,8 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM (public.sivel2_gen_conscaso
-             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.id_caso = sivel2_gen_conscaso.caso_id)))
-          WHERE ((sivel2_gen_conscaso.fecharec >= '2021-05-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2021-05-31'::date) AND (sivel2_sjr_casosjr.oficina_id = 2))
+           FROM public.sivel2_gen_conscaso
+          WHERE (sivel2_gen_conscaso.caso_id = 102)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -15152,6 +15170,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210716015756'),
 ('20210727111355'),
 ('20210728173950'),
-('20210728214424');
+('20210728214424'),
+('20210730120340');
 
 
