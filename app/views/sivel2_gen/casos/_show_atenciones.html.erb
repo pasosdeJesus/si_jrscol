@@ -7,18 +7,21 @@
     'ON sivel2_sjr_actividad_casosjr.actividad_id = cor1440_gen_actividad.id').
     where('sivel2_sjr_actividad_casosjr.casosjr_id = ?', @caso.casosjr.id) %>
   <dd>
-  <table style="width: 100%">
-    <tr>
-      <th>Actividad</th>
-      <th>Fecha de Atención</th>
-      <th>Nombre de la actividad</th>
-      <th>Convenio Financiador</th>
-    </tr>
+  <table style="width: 100%" class="table table-striped table-bordered">
+    <thead class="thead-light">
+      <tr>
+        <th>Actividad</th>
+        <th>Fecha de Atención</th>
+        <th>Nombre de la actividad</th>
+        <th>Convenio Financiador</th>
+      </tr>
+    </thead>
+    <tbody>
     <% ga.each do |g| %>
       <tr>
         <td>
           <%= link_to g.id.to_s,
-            cor1440_gen.edit_actividad_path(g),
+            cor1440_gen.actividad_path(g),
             target: '_blank' %>
       </td>
       <td><%= g.fecha %></td>
@@ -35,6 +38,7 @@
       </td>
       </tr>
     <% end %>
+    </tbody>
   </table>
   </dd>
 </dl>
