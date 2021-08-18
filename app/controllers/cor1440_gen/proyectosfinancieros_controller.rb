@@ -43,68 +43,27 @@ module Cor1440Gen
       end
 
     end
-     def proyectofinanciero_params_cor1440_gen
-       atributos_form + [:responsable_id] + [ 
-         :actividadpf_attributes =>  [
-           :id, 
-           :resultadopf_id,
-           :actividadtipo_id,
-           :nombrecorto, 
-           :titulo, 
-           :descripcion,
-           :indicadorgifmm_id, 
-           :_destroy ] 
-       ] + [
-         :anexo_proyectofinanciero_attributes => [
-           :id,
-           :proyectofinanciero_id,
-           :_destroy,
-           :anexo_attributes => [
-             :adjunto, 
-             :descripcion, 
-             :id, 
-             :_destroy ] ]
-       ] + [
-         :beneficiario_ids => []
-       ] + [
-         :caracterizacion_ids => []
-       ] + [
-         :plantillahcm_ids => []
-       ] + [
-         :indicadorobjetivo_attributes =>  [
-           :id, 
-           :objetivopf_id,
-           :numero, 
-           :indicador, 
-           :tipoindicador_id, 
-           :_destroy ] 
-       ] + [ 
-         :indicadorpf_attributes =>  [
-           :id, 
-           :resultadopf_id,
-           :numero, 
-           :indicador, 
-           :tipoindicador_id,
-           :_destroy ] 
-       ] + [ 
-         :objetivopf_attributes =>  [
-           :id, 
-           :numero, 
-           :objetivo, 
-           :_destroy ] 
-       ] + [
-         :proyectofinanciero_usuario_attributes => [
-           :id,
-           :usuario_id,
-           :_destroy ]
-       ] + [
-         :resultadopf_attributes =>  [
-           :id, 
-           :objetivopf_id,
-           :numero, 
-           :resultado, 
-           :_destroy ] 
-       ]
-     end
+
+    def proyectofinanciero_params_si_jrscol
+      a = proyectofinanciero_params_cor1440_gen
+      a = a.reject {|e| e.is_a?(Hash) && 
+                    e.keys.include?(:actividadpf_attributes)}
+      a << {:actividadpf_attributes =>  [
+        :id, 
+        :resultadopf_id,
+        :actividadtipo_id,
+        :nombrecorto, 
+        :titulo, 
+        :descripcion,
+        :indicadorgifmm_id, 
+        :_destroy ] 
+      }
+    end
+
+    def proyectofinanciero_params
+      params.require(:proyectofinanciero).permit(
+        proyectofinanciero_params_si_jrscol)
+    end
+
   end
 end
