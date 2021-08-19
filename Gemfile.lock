@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 424ba5152b6d7e18e50bff7963dab18847cab143
+  revision: 1dd8eb5a2daed920382da73960192b09776b44b7
   branch: main
   specs:
     cor1440_gen (1.0b4)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 5662ef728e62eeff3d8e5145389ad793880dc8c9
+  revision: 6f3a2ec0436b5c14584faf7df6632923b884db4e
   branch: main
   specs:
     heb412_gen (1.0.b6)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: fdf640fe95409e0598ad0b2440c906e8a816b47e
+  revision: 2c5cf6fe25487ad08c8ad8f5ae8a2f2da734b592
   branch: main
   specs:
     mr519_gen (0.2.0)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: ce8457da41d90a8c3f8bc0da0527f3d863d7e258
+  revision: 23248f23d13c213b2abe2ac54a35fed954ede412
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 38ea449292daacc1b67a37febc34dcbd8b66e0c3
+  revision: c9c0eb1d3a17453e3552b51f182ae7490ef71510
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 5e3bc053291f4bf91d2e5c7acae3a89b810a1788
+  revision: 8555a0a937f7f1bfbe74057a0e57ea316eb0640e
   branch: main
   specs:
     sip (2.0.b12)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 39e688d3ff73069eca57901f2b489612634e3717
+  revision: f4b82f5f7e4932cfc970bc055cdf311fd9f0f083
   branch: main
   specs:
     sivel2_gen (2.0b15)
@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: e40b3ccc1347563199557e728624c0cea57d4524
+  revision: 87b829df516541bfde3a1f55ccae5786bb3d431b
   branch: main
   specs:
     sivel2_sjr (2.0b10)
@@ -320,7 +320,7 @@ GEM
       activesupport (>= 4.2)
       choice (~> 0.2.0)
       ruby-graphviz (~> 1.2)
-    rails-html-sanitizer (1.3.0)
+    rails-html-sanitizer (1.4.1)
       loofah (~> 2.3)
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
@@ -396,7 +396,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webpacker (6.0.0.beta.7)
+    webpacker (6.0.0.rc.1)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -463,7 +463,7 @@ DEPENDENCIES
   tzinfo
   unicorn
   web-console
-  webpacker (= 6.0.0.beta.7)
+  webpacker (~> 6.0.0.rc.1)
   will_paginate
 
 BUNDLED WITH
