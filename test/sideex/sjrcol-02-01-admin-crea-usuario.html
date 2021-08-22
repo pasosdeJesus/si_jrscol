@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-	<title>sjrcol-02-admin-crea-usuario</title>
+	<title>sjrcol-02-01-admin-crea-usuario</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -54,6 +54,8 @@
 <tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='edit_usuario_108']/div[17]/input</option><option>//div[17]/input</option></datalist></td><td>45,26</td>
 </tr>
 <tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Usuario</td>
+</tr>
+<tr><td>clickAt</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>::Usuario creado.</td>
 </tr>
 <tr><td>runScript</td><td>localStorage.setItem('regjrscol_usuario_id', +$('dd')[0].innerText);<datalist><option>localStorage.setItem('regjrscol_usuario_id', +$('dd')[0].innerText);</option></datalist></td><td></td>
 </tr>
