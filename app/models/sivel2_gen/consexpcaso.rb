@@ -28,7 +28,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
           CAST(EXTRACT(MONTH FROM conscaso.fecharec) AS INTEGER),
           CAST(EXTRACT(DAY FROM conscaso.fecharec) AS INTEGER))
           AS contacto_edad_fecha_recepcion,
-        (SELECT rango FROM public.sivel2_gen_rangoedad 
+        (SELECT nombre FROM public.sivel2_gen_rangoedad 
           WHERE fechadeshabilitacion IS NULL 
           AND limiteinferior<=
             sip_edad_de_fechanac_fecharef(
@@ -49,7 +49,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
           CAST(EXTRACT(MONTH FROM conscaso.fecha) AS INTEGER),
           CAST(EXTRACT(DAY FROM conscaso.fecha) AS INTEGER))
           AS contacto_edad_fecha_salida,
-        (SELECT rango FROM public.sivel2_gen_rangoedad 
+        (SELECT nombre FROM public.sivel2_gen_rangoedad 
           WHERE fechadeshabilitacion IS NULL 
           AND limiteinferior<=
             sip_edad_de_fechanac_fecharef(
@@ -66,7 +66,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
           LIMIT 1) AS contacto_rangoedad_fecha_salida,
         COALESCE(etnia.nombre, '') AS contacto_etnia,
         ultimaatencion.contacto_edad AS contacto_edad_ultimaatencion,
-        (SELECT rango FROM public.sivel2_gen_rangoedad 
+        (SELECT nombre FROM public.sivel2_gen_rangoedad 
           WHERE fechadeshabilitacion IS NULL 
           AND limiteinferior<=ultimaatencion.contacto_edad AND 
           ultimaatencion.contacto_edad<=limitesuperior LIMIT 1) 
