@@ -8,76 +8,42 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">actividad-elimina-caso</td></tr>
+<tr><td rowspan="1" colspan="3">actividad-elimina-seguimiento-a-caso</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownCasos<datalist><option>id=navbarDropdownCasos</option><option>link=Casos</option><option>css=#navbarDropdownCasos</option><option>//a[contains(text(),'Casos')]</option><option>//a[@id='navbarDropdownCasos']</option><option>//div[@id='navbarSupportedContent']/ul/li/a</option><option>//a[contains(@href, '#')]</option><option>//li/a</option></datalist></td><td>25,25</td>
+<tr><td>open</td><td>/actividades<datalist><option>/actividades</option></datalist></td><td></td>
 </tr>
-<tr><td>clickAt</td><td>link=Listado<datalist><option>link=Listado</option><option>css=a.dropdown-item</option><option>//a[contains(text(),'Listado')]</option><option>//div[@id='navbarSupportedContent']/ul/li/div/a</option><option>//a[contains(@href, '/casos')]</option><option>//div/a</option></datalist></td><td>65,14</td>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Actividades</td>
 </tr>
-<tr><td>clickAt</td><td>id=boton_filtro_avanzado<datalist><option>id=boton_filtro_avanzado</option><option>link=Búsqueda Avanzada</option><option>css=#boton_filtro_avanzado</option><option>//a[contains(text(),'Búsqueda Avanzada')]</option><option>//a[@id='boton_filtro_avanzado']</option><option>//a[contains(@href, '#filtro_avanzado')]</option><option>//div[5]/a</option></datalist></td><td>47,24</td>
+<tr><td>runScript</td><td>$('#filtro_busnombre').val('Caso ' + localStorage.getItem('regjrscol_05_caso_id') )<datalist><option>$('#filtro_busnombre').val('Caso ' + localStorage.getItem('regjrscol_05_caso_id') )</option></datalist></td><td></td>
 </tr>
-<tr><td>clickAt</td><td>id=filtro_numerodocumento<datalist><option>id=filtro_numerodocumento</option><option>name=filtro[numerodocumento]</option><option>css=#filtro_numerodocumento</option><option>//input[@id='filtro_numerodocumento']</option><option>//div[@id='filtro_avanzado']/div/div[3]/div[3]/div/input</option><option>//div[3]/div[3]/div/input</option></datalist></td><td>167,28</td>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[16]/input</option></datalist></td><td>41,24</td>
 </tr>
-<tr><td>type</td><td>id=filtro_numerodocumento<datalist><option>id=filtro_numerodocumento</option><option>name=filtro[numerodocumento]</option><option>css=#filtro_numerodocumento</option><option>//input[@id='filtro_numerodocumento']</option><option>//div[@id='filtro_avanzado']/div/div[3]/div[3]/div/input</option><option>//div[3]/div[3]/div/input</option></datalist></td><td>123452345</td>
+<tr><td>clickAt</td><td>link=Editar<datalist><option>link=Editar</option><option>css=a.btn.btn-sm</option><option>//a[contains(text(),'Editar')]</option><option>//a[contains(@href, '/actividades/951/edita')]</option><option>//td[16]/a</option></datalist></td><td>15,14</td>
 </tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[4]/input</option></datalist></td><td>32,24</td>
+<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='actividad_proyecto_ids_chosen']/ul/li/a</option><option>//div/div/ul/li/a</option></datalist></td><td>5,8</td>
 </tr>
-<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
+<tr><td>clickAt</td><td>link=Listado de casos (grupos familiares) beneficiarios<datalist><option>link=Listado de casos (grupos familiares) beneficiarios</option><option>css=a.collapsed</option><option>//a[contains(text(),'Listado de casos (grupos familiares) beneficiarios')]</option><option>//div[@id='listadocasos']/h6/a</option><option>//h6/a</option></datalist></td><td>318,4</td>
 </tr>
 <tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn-danger.remove_fields.existing</option><option>//a[contains(text(),'Eliminar')]</option><option>//tbody[@id='actividad_casosjr']/tr/td[9]/a</option><option>xpath=(//a[contains(@href, '#')])[8]</option><option>//td[9]/a</option></datalist></td><td>38,17</td>
 </tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Casos</td>
+<tr><td>clickAt</td><td>link=Listado de asistencia<datalist><option>link=Listado de asistencia</option><option>css=a.collapsed</option><option>//a[contains(text(),'Listado de asistencia')]</option><option>//div[@id='listadoasistencia']/h6/a</option><option>//div[12]/div/div/div/h6/a</option></datalist></td><td>85,17</td>
 </tr>
-<tr><td></td><td><datalist><option>/actividades</option><option></option></datalist></td><td></td>
+<tr><td>clickAt</td><td>xpath=(//a[contains(text(),'Eliminar')])[2]<datalist><option>xpath=(//a[contains(text(),'Eliminar')])[2]</option><option>//tbody[@id='actividad_rangoedadac']/tr[2]/td[7]/a</option><option>xpath=(//a[contains(@href, '#')])[11]</option><option>//td[7]/a</option></datalist></td><td>45,10</td>
 </tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">actividad-elimina-persona-asistente</td></tr>
-</thead>
-<tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownActividades<datalist><option>id=navbarDropdownActividades</option><option>link=Actividades</option><option>css=#navbarDropdownActividades</option><option>//a[contains(text(),'Actividades')]</option><option>//a[@id='navbarDropdownActividades']</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/a</option><option>xpath=(//a[contains(@href, '#')])[3]</option><option>//li[3]/a</option></datalist></td><td>63,23</td>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='edit_actividad_951']/div/div[18]/input</option><option>//div[18]/input</option></datalist></td><td>89,16</td>
 </tr>
-<tr><td>clickAt</td><td>link=Beneficiarios<datalist><option>link=Beneficiarios</option><option>//a[contains(text(),'Beneficiarios')]</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/div/a[9]</option><option>xpath=(//a[contains(@href, '/personas')])[2]</option><option>//a[9]</option></datalist></td><td>133,19</td>
+<tr><td>clickAt</td><td>css=h3<datalist><option>css=h3</option><option>//h3</option></datalist></td><td>661,1</td>
 </tr>
-<tr><td>clickAt</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>27,8</td>
+<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/actividades/951')])[2]</option><option>//div[4]/a</option></datalist></td><td>62,20</td>
 </tr>
-<tr><td>sendKeys</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>${KEY_ENTER}</td>
-</tr>
-<tr><td>type</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>4356721</td>
-</tr>
-<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[12]/input</option></datalist></td><td>21,20</td>
+<tr><td>mouseOver</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/actividades/951')])[2]</option><option>//div[4]/a</option></datalist></td><td></td>
 </tr>
 <tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
 </tr>
-<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-sm.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/personas/543')])[3]</option><option>//td[12]/a[3]</option></datalist></td><td>22,21</td>
+<tr><td>mouseOut</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/actividades/951')])[2]</option><option>//div[4]/a</option></datalist></td><td></td>
 </tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Sip::Persona eliminada.</td>
-</tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">actividad-elimina-persona-caso-contacto</td></tr>
-</thead>
-<tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownActividades<datalist><option>id=navbarDropdownActividades</option><option>link=Actividades</option><option>css=#navbarDropdownActividades</option><option>//a[contains(text(),'Actividades')]</option><option>//a[@id='navbarDropdownActividades']</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/a</option><option>xpath=(//a[contains(@href, '#')])[3]</option><option>//li[3]/a</option></datalist></td><td>63,23</td>
-</tr>
-<tr><td>clickAt</td><td>link=Beneficiarios<datalist><option>link=Beneficiarios</option><option>//a[contains(text(),'Beneficiarios')]</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/div/a[9]</option><option>xpath=(//a[contains(@href, '/personas')])[2]</option><option>//a[9]</option></datalist></td><td>133,19</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>27,8</td>
-</tr>
-<tr><td>sendKeys</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>${KEY_ENTER}</td>
-</tr>
-<tr><td>type</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>123452345</td>
-</tr>
-<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[12]/input</option></datalist></td><td>21,20</td>
-</tr>
-<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
-</tr>
-<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-sm.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/personas/543')])[3]</option><option>//td[12]/a[3]</option></datalist></td><td>22,21</td>
-</tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Sip::Persona eliminada.</td>
+<tr><td>assertConfirmation</td><td>¿Está seguro(a)?<datalist><option>¿Está seguro(a)?</option></datalist></td><td></td>
 </tr>
 </tbody></table>
 </body>
