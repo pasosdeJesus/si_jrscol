@@ -1,5 +1,5 @@
 <dl>
-  <dt><strong>Atencion/es en las que este caso es beneficiario:</strong></dt>
+  <dt>Atencion/es en las que este caso es beneficiario:</dt>
 
   <% # SEGUIMIENTO A CASOS %> 
   <% ga = Cor1440Gen::Actividad.joins(
@@ -44,7 +44,7 @@
 </dl>
 
 <dl>
-  <dt><strong>Atención/es en las que alguna persona de este caso es beneficiaria:</strong></dt>
+  <dt>Atención/es en las que alguna persona de este caso es beneficiaria:</dt>
 
   <% ga4 = Cor1440Gen::Actividad.joins(
     'INNER JOIN cor1440_gen_asistencia ' +
