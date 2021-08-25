@@ -909,8 +909,8 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso
         can :new, Sivel2Gen::Caso
-        can [:update, :create, :destroy, :edit], Sivel2Gen::Caso,
-          casosjr: { oficina_id: usuario.oficina_id }
+        can [:fichaimp, :fichapdf, :update, :create, :destroy, :edit], 
+          Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
         can :read, ::Consgifmm
@@ -931,8 +931,8 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso
         can :new, Sivel2Gen::Caso
-        can [:update, :create, :destroy, :poneretcomp], Sivel2Gen::Caso,
-          casosjr: { oficina_id: usuario.oficina_id }
+        can [:fichaimp, :fichapdf, :update, :create, :destroy, :poneretcomp], 
+          Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
         can :read, ::Consgifmm
