@@ -164,7 +164,7 @@ $(document).on('click', 'a.fichacambia[href^="#desplazamiento"]', (e) ->
   if hijos > 0
     iditem = nombrecampo + 'colapsable' + id
     objeto.find('h3.tituloenlace').text('Integrante ' + id)
-    objeto.find('a.itemvictima').attr('data-toggle', 'collapse')
+    objeto.find('a.itemvictima').attr('data-bs-toggle', 'collapse')
     objeto.find('a.itemvictima').attr('href', '#' + iditem)
     objeto.find('div.divcolapse').attr('id', iditem)
 
