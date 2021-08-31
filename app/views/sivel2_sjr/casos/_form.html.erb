@@ -14,49 +14,62 @@
 
       <%= render partial: 'sivel2_gen/casos/datos_interjs', locals: { f: f } %>
 
-      <div role="tabpanel">
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="nav-item"><a href="#basicoscontacto"
-            class="fichacambia nav-link active" aria-selected="true" aria-controls="basicos" role="tab"
-            data-toggle="tab">Datos Básicos y Contacto</a></li>
-          <li role="presentation" class="nav-item"><a href="#victimas" class="fichacambia nav-link"
-            aria-controls="victimas" role="tab"
-            data-toggle="tab">Núcleo Familiar</a></li>
-          <li role="presentation" class="nav-item"><a href="#desplazamiento" class="fichacambia nav-link"
-            aria-controls="desplazamiento" role="tab"
-            data-toggle="tab">Desplazamientos</a></li>
-          <li role="presentation" class="nav-item"><a href="#migracion" class="fichacambia nav-link"
-            aria-controls="migracion" role="tab"
-            data-toggle="tab">Migración</a></li>
-          <li role="presentation" class="nav-item"><a href="#atencion" class="fichacambia nav-link"
-            aria-controls="atencion" role="tab"
-            data-toggle="tab">Respuesta Institucional y Seguimiento</a></li>
-        </ul>
-        <div class="tab-content">
-          <%= f.simple_fields_for :casosjr do |s| %>
-            <div role="tabpanel" class="tab-pane fade active show" id="basicoscontacto" >
-              <%= render 'basicoscontacto', :f => f, :s => s %>
-            </div>
+      <ul class="nav nav-tabs" role="tablist">
+        <%= item_nav_pestaña_bs(
+          'basicoscontacto',
+          'Datos Básicos y Contacto',
+          true,
+          'fichacambia')
+        %>
+        <%= item_nav_pestaña_bs(
+          'victimas',
+          'Núcleo Familiar',
+          false,
+          'fichacambia')
+        %>
+        <%= item_nav_pestaña_bs(
+          'migracion',
+          'Migración',
+          false,
+          'fichacambia')
+        %>
+        <%= item_nav_pestaña_bs(
+          'desplazamiento',
+          'Desplazamiento',
+          false,
+          'fichacambia')
+        %>
+        <%= item_nav_pestaña_bs(
+          'atencion',
+          'Respuesta Institucional y Seguimiento',
+          false,
+          'fichacambia')
+        %>
+      </ul>
+      <div class="tab-content">
+        <%= f.simple_fields_for :casosjr do |s| %>
+          <%= contenido_pestaña_bs('basicoscontacto', true) do %>
+            <%= render 'basicoscontacto', :f => f, :s => s %>
+          <% end %>
 
-            <div role="tabpanel" class="tab-pane fade" id="victimas" >
-              <%= render 'victimas', :f => f, :s => s %>
-            </div>
+          <%= contenido_pestaña_bs('victimas', false) do %>
+            <%= render 'victimas', :f => f, :s => s %>
+          <% end %>
 
-            <div role="tabpanel" class="tab-pane fade" id="migracion" >
-              <%= render 'migraciones', :f => f, :s => s %>
-            </div>
+          <%= contenido_pestaña_bs('migracion', false) do %>
+            <%= render 'migraciones', :f => f, :s => s %>
+          <% end %>
 
-          <div role="tabpanel" class="tab-pane fade" id="desplazamiento" >
+          <%= contenido_pestaña_bs('desplazamiento', false) do %>
             <%= render 'desplazamientos', :f => f %>
-          </div>
+          <% end %>
 
-          <div role="tabpanel" class="tab-pane fade" id="atencion" >
+          <%= contenido_pestaña_bs('atencion', false) do %>
             <%= render 'respuestas', :f => f, :s => s %>
-          </div>
+          <% end %>
 
         <% end %> <!-- form s -->
-        </div> <!-- tab-content -->
-      </div> <!-- tabpanel -->
+      </div> <!-- tab-content -->
     </div> <!-- form-inputs -->
 
     <div class="form-actions">
