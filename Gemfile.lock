@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 95a8b333cb9cbcf4a0f5f96204f8680184d79426
+  revision: bc51fe3e6edac5994f6bbd9ad646982ce0b91003
   branch: bs5
   specs:
     sivel2_sjr (2.0b10)
@@ -173,7 +173,7 @@ GEM
     andand (1.3.3)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.7.7)
+    bootsnap (1.8.1)
       msgpack (~> 1.0)
     bootstrap-datepicker-rails (1.9.0.1)
       railties (>= 3.0)
@@ -255,7 +255,7 @@ GEM
     minitest (5.14.4)
     msgpack (1.4.2)
     nio4r (2.5.8)
-    nokogiri (1.12.3)
+    nokogiri (1.12.4)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     odf-report (0.7.2)
@@ -396,7 +396,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webpacker (6.0.0.rc.1)
+    webpacker (6.0.0.rc.5)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
