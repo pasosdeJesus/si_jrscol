@@ -17,7 +17,9 @@
     </label>
   </div>
   <div class='col-sm-4'>
-    <%= f.input_field :objetivo %>
+    <%= f.input :objetivo,
+      label: false 
+    %>
   </div>
 </div>
 <div class='row'>
@@ -27,6 +29,7 @@
     </label>
   </div>
   <div class='col-sm-2'>
-    <%= f.input_field :covid %>
+    <%= f.input :covid,
+      label: false %>
   </div>
 </div>
