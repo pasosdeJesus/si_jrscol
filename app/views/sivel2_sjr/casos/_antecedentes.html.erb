@@ -134,6 +134,7 @@
         <div style="padding-bottom: 18px;" class="input select caso_acto_fecha">
             <%= text_field_tag "caso_acto_fecha_#{des_id}", 
               @caso.fecha, 
+              class: 'form-control',
               "data-behaviour" => "datepicker",
               "data-toggle" => 'tooltip',
               "title" => 'Del hecho victimizante'
