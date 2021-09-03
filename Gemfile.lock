@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: cf1288c3fb3a7b609aff72a4f61738c731c458bb
-  branch: bs5
+  revision: ceaee68bd8632073388cda57504d442828f2a3b5
+  branch: main
   specs:
     cor1440_gen (1.0b5)
       devise
@@ -25,8 +25,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 7b889380d99d4b0dfe3ec846db1207a42262056b
-  branch: bs5
+  revision: e02973d32b7c3f9df37862a0973c7a694667009b
+  branch: main
   specs:
     heb412_gen (1.0.b7)
       mr519_gen
@@ -36,8 +36,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: fd394552c3712d10b9d34bdec230fc218d39e8da
-  branch: bs5
+  revision: 3c81e39b831bc6c4d8f086b33bd7dc82125389c4
+  branch: main
   specs:
     mr519_gen (0.2.1)
       rails
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 2881688a901ea1733d850a38e9518d4ddf79ffd5
-  branch: bs5
+  revision: f7fb26fa46bb1b57824eba06a83b5d896f6dba46
+  branch: main
   specs:
     sal7711_gen (1.0.b4)
       rails
@@ -54,8 +54,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 24ae12f6f0959f917d32cc9977ca4d2f9323937c
-  branch: bs5
+  revision: c702da6f81816a2b09b4c7e4a95d43aa4d8406b4
+  branch: main
   specs:
     sal7711_web (1.0.a3)
       rails
@@ -63,8 +63,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 652aa3e135ae001888e0664de75fa26834a5ef41
-  branch: bs5
+  revision: 785140129f07bc40259ae21053718254755732d8
+  branch: main
   specs:
     sip (2.0.b12)
       cancancan
@@ -82,8 +82,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 6faeb0c11688ef966578d889121047ce3f077529
-  branch: bs5
+  revision: 4d4963c9a75e597d4896ec49c6fe40a2d0c6e38b
+  branch: main
   specs:
     sivel2_gen (2.0b16)
       devise
@@ -92,8 +92,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: b7e690e45d578a265fecd78164627258c149805c
-  branch: bs5
+  revision: 39539c245697c66fcd61bd077348ac3e0fff602c
+  branch: main
   specs:
     sivel2_sjr (2.0b11)
       rails
