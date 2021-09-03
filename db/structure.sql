@@ -5873,284 +5873,6 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_conscaso AS
 
 
 --
--- Name: sivel2_gen_etnia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_gen_etnia_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_etnia; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_etnia (
-    id integer DEFAULT nextval('public.sivel2_gen_etnia_id_seq'::regclass) NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    descripcion character varying(1000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000),
-    CONSTRAINT etnia_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sivel2_gen_presponsable_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_gen_presponsable_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_presponsable; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_presponsable (
-    id integer DEFAULT nextval('public.sivel2_gen_presponsable_id_seq'::regclass) NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    papa_id integer,
-    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000),
-    CONSTRAINT presponsable_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sivel2_gen_rangoedad_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_gen_rangoedad_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_rangoedad; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_rangoedad (
-    id integer DEFAULT nextval('public.sivel2_gen_rangoedad_id_seq'::regclass) NOT NULL,
-    nombre character varying(20) NOT NULL COLLATE public.es_co_utf_8,
-    rango character varying(20),
-    limiteinferior integer DEFAULT 0 NOT NULL,
-    limitesuperior integer DEFAULT 0 NOT NULL,
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000),
-    CONSTRAINT rangoedad_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sivel2_gen_supracategoria_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_gen_supracategoria_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_supracategoria; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_supracategoria (
-    codigo integer,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    id_tviolencia character varying(1) NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000),
-    id integer DEFAULT nextval('public.sivel2_gen_supracategoria_id_seq'::regclass) NOT NULL,
-    CONSTRAINT supracategoria_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sivel2_gen_consexpcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
- SELECT conscaso.caso_id,
-    conscaso.fecharec AS fecharecepcion,
-    conscaso.nusuario AS asesor,
-    conscaso.oficina,
-    conscaso.fecha AS fechadespemb,
-    conscaso.expulsion,
-    conscaso.llegada,
-    conscaso.memo AS descripcion,
-    (date_part('month'::text, ultimaatencion.fecha))::integer AS ultimaatencion_mes,
-    conscaso.ultimaatencion_fecha,
-    conscaso.contacto,
-    contacto.nombres AS contacto_nombres,
-    contacto.apellidos AS contacto_apellidos,
-    (((COALESCE(tdocumento.sigla, ''::character varying))::text || ' '::text) || (contacto.numerodocumento)::text) AS contacto_identificacion,
-    contacto.sexo AS contacto_sexo,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
-    ( SELECT sivel2_gen_rangoedad.rango
-           FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)))
-         LIMIT 1) AS contacto_rangoedad_fecha_recepcion,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
-    ( SELECT sivel2_gen_rangoedad.rango
-           FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)))
-         LIMIT 1) AS contacto_rangoedad_fecha_salida,
-    COALESCE(etnia.nombre, ''::character varying) AS contacto_etnia,
-    ultimaatencion.contacto_edad AS contacto_edad_ultimaatencion,
-    ( SELECT sivel2_gen_rangoedad.rango
-           FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= ultimaatencion.contacto_edad) AND (ultimaatencion.contacto_edad <= sivel2_gen_rangoedad.limitesuperior))
-         LIMIT 1) AS contacto_rangoedad_ultimaatencion,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'M'::bpchar) AND (victima.id_rangoedad = 7))) AS beneficiarios_0_5_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'M'::bpchar) AND (victima.id_rangoedad = 8))) AS beneficiarios_6_12_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'M'::bpchar) AND (victima.id_rangoedad = 9))) AS beneficiarios_13_17_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'M'::bpchar) AND (victima.id_rangoedad = 10))) AS beneficiarios_18_26_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'M'::bpchar) AND (victima.id_rangoedad = 11))) AS beneficiarios_27_59_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'M'::bpchar) AND (victima.id_rangoedad = 12))) AS beneficiarios_60m_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'M'::bpchar) AND (victima.id_rangoedad = 6))) AS beneficiarios_se_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'F'::bpchar) AND (victima.id_rangoedad = 7))) AS beneficiarias_0_5_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'F'::bpchar) AND (victima.id_rangoedad = 8))) AS beneficiarias_6_12_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'F'::bpchar) AND (victima.id_rangoedad = 9))) AS beneficiarias_13_17_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'F'::bpchar) AND (victima.id_rangoedad = 10))) AS beneficiarias_18_26_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'F'::bpchar) AND (victima.id_rangoedad = 11))) AS beneficiarias_27_59_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'F'::bpchar) AND (victima.id_rangoedad = 12))) AS beneficiarias_60m_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'F'::bpchar) AND (victima.id_rangoedad = 6))) AS beneficiarias_se_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'S'::bpchar) AND (victima.id_rangoedad = 7))) AS beneficiarios_ss_0_5_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'S'::bpchar) AND (victima.id_rangoedad = 8))) AS beneficiarios_ss_6_12_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'S'::bpchar) AND (victima.id_rangoedad = 9))) AS beneficiarios_ss_13_17_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'S'::bpchar) AND (victima.id_rangoedad = 10))) AS beneficiarios_ss_18_26_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'S'::bpchar) AND (victima.id_rangoedad = 11))) AS beneficiarios_ss_27_59_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'S'::bpchar) AND (victima.id_rangoedad = 12))) AS beneficiarios_ss_60m_fecha_salida,
-    ( SELECT count(*) AS count
-           FROM (public.sivel2_gen_victima victima
-             JOIN public.sip_persona ON ((sip_persona.id = victima.id_persona)))
-          WHERE ((victima.id_caso = caso.id) AND (sip_persona.sexo = 'S'::bpchar) AND (victima.id_rangoedad = 6))) AS beneficiarios_ss_se_fecha_salida,
-    array_to_string(ARRAY( SELECT (((((((supracategoria.id_tviolencia)::text || ':'::text) || categoria.supracategoria_id) || ':'::text) || categoria.id) || ' '::text) || (categoria.nombre)::text)
-           FROM public.sivel2_gen_categoria categoria,
-            public.sivel2_gen_supracategoria supracategoria,
-            public.sivel2_gen_acto acto
-          WHERE ((categoria.id = acto.id_categoria) AND (supracategoria.id = categoria.supracategoria_id) AND (acto.id_caso = caso.id))), ', '::text) AS tipificacion,
-    array_to_string(ARRAY( SELECT (((persona.nombres)::text || ' '::text) || (persona.apellidos)::text)
-           FROM public.sip_persona persona,
-            public.sivel2_gen_victima victima
-          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))), ', '::text) AS victimas,
-    array_to_string(ARRAY( SELECT (((departamento.nombre)::text || ' / '::text) || (municipio.nombre)::text)
-           FROM ((public.sip_ubicacion ubicacion
-             LEFT JOIN public.sip_departamento departamento ON ((ubicacion.id_departamento = departamento.id)))
-             LEFT JOIN public.sip_municipio municipio ON ((ubicacion.id_municipio = municipio.id)))
-          WHERE (ubicacion.id_caso = caso.id)), ', '::text) AS ubicaciones,
-    array_to_string(ARRAY( SELECT presponsable.nombre
-           FROM public.sivel2_gen_presponsable presponsable,
-            public.sivel2_gen_caso_presponsable caso_presponsable
-          WHERE ((presponsable.id = caso_presponsable.id_presponsable) AND (caso_presponsable.id_caso = caso.id))), ', '::text) AS presponsables,
-    casosjr.memo1612,
-    ultimaatencion.actividad_id AS ultimaatencion_actividad_id
-   FROM (((((((((public.sivel2_gen_conscaso conscaso
-     JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.id_caso = conscaso.caso_id)))
-     JOIN public.sivel2_gen_caso caso ON ((casosjr.id_caso = caso.id)))
-     JOIN public.sip_oficina oficina ON ((oficina.id = casosjr.oficina_id)))
-     JOIN public.usuario ON ((usuario.id = casosjr.asesor)))
-     JOIN public.sip_persona contacto ON ((contacto.id = casosjr.contacto_id)))
-     LEFT JOIN public.sip_tdocumento tdocumento ON ((tdocumento.id = contacto.tdocumento_id)))
-     JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.id_persona = contacto.id) AND (vcontacto.id_caso = caso.id))))
-     LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
-     LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM (public.sivel2_gen_conscaso
-             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.id_caso = sivel2_gen_conscaso.caso_id)))
-          WHERE (sivel2_sjr_casosjr.oficina_id = 3)
-          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
-  ORDER BY conscaso.fecha, conscaso.caso_id
-  WITH NO DATA;
-
-
---
 -- Name: sivel2_gen_contexto_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -6285,6 +6007,35 @@ CREATE TABLE public.sivel2_gen_estadocivil (
     updated_at timestamp without time zone,
     observaciones character varying(5000),
     CONSTRAINT estadocivil_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sivel2_gen_etnia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_etnia_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_etnia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_etnia (
+    id integer DEFAULT nextval('public.sivel2_gen_etnia_id_seq'::regclass) NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    descripcion character varying(1000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000),
+    CONSTRAINT etnia_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
 
@@ -6556,6 +6307,35 @@ CREATE TABLE public.sivel2_gen_pconsolidado (
 
 
 --
+-- Name: sivel2_gen_presponsable_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_presponsable_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_presponsable; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_presponsable (
+    id integer DEFAULT nextval('public.sivel2_gen_presponsable_id_seq'::regclass) NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    papa_id integer,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000),
+    CONSTRAINT presponsable_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
 -- Name: sivel2_gen_profesion_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -6592,6 +6372,36 @@ CREATE TABLE public.sivel2_gen_profesion_victimacolectiva (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     victimacolectiva_id integer
+);
+
+
+--
+-- Name: sivel2_gen_rangoedad_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_rangoedad_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_rangoedad; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_rangoedad (
+    id integer DEFAULT nextval('public.sivel2_gen_rangoedad_id_seq'::regclass) NOT NULL,
+    nombre character varying(20) NOT NULL COLLATE public.es_co_utf_8,
+    limiteinferior integer DEFAULT 0 NOT NULL,
+    limitesuperior integer DEFAULT 0 NOT NULL,
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000),
+    CONSTRAINT rangoedad_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
 
@@ -6716,6 +6526,36 @@ CREATE TABLE public.sivel2_gen_sectorsocial_victimacolectiva (
 CREATE TABLE public.sivel2_gen_sectorsocialsec_victima (
     sectorsocial_id integer,
     victima_id integer
+);
+
+
+--
+-- Name: sivel2_gen_supracategoria_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_supracategoria_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_supracategoria; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_supracategoria (
+    codigo integer,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    id_tviolencia character varying(1) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000),
+    id integer DEFAULT nextval('public.sivel2_gen_supracategoria_id_seq'::regclass) NOT NULL,
+    CONSTRAINT supracategoria_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
 
@@ -15207,6 +15047,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210728173950'),
 ('20210728214424'),
 ('20210730120340'),
+('20210823162356'),
+('20210823162357'),
 ('20210825202135');
 
 
