@@ -124,12 +124,14 @@ class Ability < Sivel2Sjr::Ability
 
   def basicas_id_noauto
     Sip::Ability::BASICAS_ID_NOAUTO +
-      Sivel2Gen::Ability::BASICAS_ID_NOAUTO
+      Sivel2Gen::Ability::BASICAS_ID_NOAUTO +
+      Cor1440Gen::Ability::BASICAS_ID_NOAUTO
   end
 
   def nobasicas_indice_seq_con_id
     Sip::Ability::NOBASICAS_INDSEQID +
-      Sivel2Gen::Ability::NOBASICAS_INDSEQID
+      Sivel2Gen::Ability::NOBASICAS_INDSEQID + 
+      Cor1440Gen::Ability::NOBASICAS_INDSEQID
   end
 
   def tablasbasicas_prio
