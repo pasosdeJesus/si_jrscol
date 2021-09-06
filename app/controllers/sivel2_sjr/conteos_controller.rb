@@ -448,7 +448,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     @cuerpotabla = ActiveRecord::Base.connection.select_all(
       "SELECT victima.id_caso, persona.id AS persona, 
-        persona.sexo, rangoedad.rango as rangoedad,
+        persona.sexo, rangoedad.nombre as rangoedad,
         COUNT(desplazamiento.id) as cuenta
       FROM sivel2_gen_victima AS victima, 
         sip_persona AS persona, 
