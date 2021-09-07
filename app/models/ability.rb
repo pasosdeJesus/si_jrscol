@@ -594,6 +594,16 @@ class Ability < Sivel2Sjr::Ability
       ruta: '/orgsocial'
     },
 
+    'Benefactividadpf' => {
+      campos: [
+       :beneficiario,
+       :sexo,
+       :rangoedad,
+       :actividadespf
+      ],
+      controlador: '::Benefesactividadpf',
+      ruta: '/conteos/benefactividadpf'
+    },
 
     'Caso' => {
       campos: 
@@ -890,6 +900,7 @@ class Ability < Sivel2Sjr::Ability
         can :new, Sivel2Gen::Caso
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
       when Ability::ROLANALI
@@ -917,6 +928,7 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
       when Ability::ROLCOOR
         can :manage, Cor1440Gen::Informe
@@ -939,6 +951,7 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
       when Ability::ROLADMIN, Ability::ROLDIR
@@ -969,6 +982,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
         can :manage, Usuario
