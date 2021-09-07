@@ -51,6 +51,9 @@ es:
       "autoridadrefugio": 
         Autoridadrefugio: Autoridad ante la cual declarar refugio
         Autoridadesrefugio: Autoridades ante las cuales declarar refugio
+      "benefactividadpf":
+        Benefactividadpf: Beneficiario por actividad de convenio
+        Benefesactividadpf: Beneficiarios por actividad de convenio
       "causaagresion":
         Causaagresion: Causa de la agresión
         Causasagresion: Causas de la agresion
