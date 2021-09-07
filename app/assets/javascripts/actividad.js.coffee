@@ -338,6 +338,7 @@ $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes][id$
 
 
 $(window).on('keyup keypress', (e) ->
+  if document.URL.match(/\/actividades\/[0-9]*\/edita/)
     if e.keyCode == 13
       return false;
 )

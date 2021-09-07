@@ -8,8 +8,6 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
 
-
-
 class ActiveSupport::TestCase
 
   fixtures :all
@@ -25,6 +23,7 @@ class ActiveSupport::TestCase
     load "#{Rails.root}/db/seeds.rb"
   end
 end
+
 
 # Usuario para ingresar y hacer pruebas
 PRUEBA_USUARIO = {
@@ -42,6 +41,7 @@ PRUEBA_USUARIO = {
   oficina_id: nil
 }
 
+
 # Usuario operador para ingresar y hacer pruebas
 PRUEBA_USUARIO_ANALI = {
   nusuario: "analista",
@@ -57,6 +57,7 @@ PRUEBA_USUARIO_ANALI = {
   fechacreacion: "2021-08-27",
   fechadeshabilitacion: nil
 }
+
 
 # Usuario sistematizador para ingresar y hacer pruebas
 PRUEBA_USUARIO_SIST = {
@@ -74,6 +75,7 @@ PRUEBA_USUARIO_SIST = {
   fechadeshabilitacion: nil
 }
 
+
 # Usuario analista de prensa para ingresar y hacer pruebas
 PRUEBA_USUARIO_AP= {
   nusuario: "ap",
@@ -89,6 +91,7 @@ PRUEBA_USUARIO_AP= {
   fechacreacion: "2021-08-27",
   fechadeshabilitacion: nil
 }
+
 
 # Usuario invitado para ingresar y hacer pruebas
 PRUEBA_USUARIO_INV = {
@@ -128,6 +131,7 @@ PRUEBA_GRUPOPER = {
   id: 1,
   nombre: 'grupoper1'
 }
+
 
 PRUEBA_ORGSOCIAL = {
   id: 1,
