@@ -880,6 +880,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
+        can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
 
         can :manage, Sivel2Gen::Acto
@@ -906,6 +907,7 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
+        can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
 
         can :manage, Sivel2Gen::Acto
