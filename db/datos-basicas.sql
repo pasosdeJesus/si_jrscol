@@ -218,3 +218,16 @@ SELECT pg_catalog.setval('public.trivalentepositiva_id_seq', 1, false);
 -- PostgreSQL database dump complete
 --
 
+
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (1, 'SIN INFORMACIÓN', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (2, 'ONG', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (3, 'ENTIDAD GUBERNAMENTAL', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (4, 'FUNDACIÓN', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (5, 'ORGANISMO DE COOPERACIÓN', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (6, 'CANCILLERÍA', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (7, 'EMBAJADA', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (8, 'ORGANIZACIÓN SOCIAL', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (9, 'INSTITUCIÓN EDUCATIVA', NULL, '2018-10-29', NULL, '2018-10-29 00:00:00', '2018-10-29 00:00:00');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (101, 'ESTUDIANTE', '', '2019-11-26', NULL, '2019-11-26 19:20:06.597181', '2019-11-26 19:20:06.597181');
+INSERT INTO public.sip_tipoorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (102, 'ASOCIACIÓN O COORPORACIÓN', '', '2020-02-17', NULL, '2020-02-17 21:17:35.177301', '2020-02-17 21:17:35.177301');
+

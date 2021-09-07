@@ -2679,16 +2679,28 @@ CREATE VIEW public.cvp1 AS
    FROM public.sivel2_sjr_casosjr casosjr,
     public.sivel2_sjr_respuesta respuesta,
     public.sivel2_sjr_derecho_respuesta derecho_respuesta
-  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id));
+  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id) AND (derecho_respuesta.id_derecho = 1));
 
 
 --
--- Name: sivel2_sjr_ayudaestado_derecho; Type: TABLE; Schema: public; Owner: -
+-- Name: sivel2_sjr_progestado_derecho; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
-    ayudaestado_id integer,
+CREATE TABLE public.sivel2_sjr_progestado_derecho (
+    progestado_id integer,
     derecho_id integer
+);
+
+
+--
+-- Name: sivel2_sjr_progestado_respuesta; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_progestado_respuesta (
+    id_progestado integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_respuesta integer NOT NULL
 );
 
 
@@ -2699,10 +2711,10 @@ CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
 CREATE VIEW public.cvp2 AS
  SELECT ar.id_respuesta,
     ad.derecho_id AS id_derecho,
-    ar.id_ayudaestado
-   FROM public.sivel2_sjr_ayudaestado_respuesta ar,
-    public.sivel2_sjr_ayudaestado_derecho ad
-  WHERE (ar.id_ayudaestado = ad.ayudaestado_id);
+    ar.id_progestado
+   FROM public.sivel2_sjr_progestado_respuesta ar,
+    public.sivel2_sjr_progestado_derecho ad
+  WHERE (ar.id_progestado = ad.progestado_id);
 
 
 --
@@ -6130,7 +6142,6 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 103)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -7093,6 +7104,16 @@ CREATE TABLE public.sivel2_sjr_ayudaestado (
 
 
 --
+-- Name: sivel2_sjr_ayudaestado_derecho; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
+    ayudaestado_id integer,
+    derecho_id integer
+);
+
+
+--
 -- Name: sivel2_sjr_ayudasjr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -7662,28 +7683,6 @@ CREATE TABLE public.sivel2_sjr_progestado (
     updated_at timestamp without time zone,
     observaciones character varying(5000),
     CONSTRAINT progestado_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sivel2_sjr_progestado_derecho; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_progestado_derecho (
-    progestado_id integer,
-    derecho_id integer
-);
-
-
---
--- Name: sivel2_sjr_progestado_respuesta; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_progestado_respuesta (
-    id_progestado integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_respuesta integer NOT NULL
 );
 
 
