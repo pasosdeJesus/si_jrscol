@@ -335,3 +335,9 @@ $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes][id$
          elena.empty()
          elena.trigger('chosen:updated')
     )
+
+
+$(window).on('keyup keypress', (e) ->
+    if e.keyCode == 13
+      return false;
+)
