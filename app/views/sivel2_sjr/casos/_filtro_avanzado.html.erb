@@ -29,9 +29,11 @@
         %>
       </div>
       <div class="offset-sm-0 col-sm-1 text-center">
-        <%= caja_de_verificacion_bs(
-          :filtro_inc_contacto, 'filtro_inc_contacto', 1, 
-          'filtro[inc_contacto]', nil) %>
+        <%= f.input :inc_contacto, 
+          as: :boolean, 
+          label: false,
+          input_html: { checked: "checked" }
+        %>
       </div>
       <div class="offset-sm-0 col-sm-1 text-center">
       </div>
