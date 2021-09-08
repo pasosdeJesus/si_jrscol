@@ -6130,7 +6130,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2021-03-01'::date)
+          WHERE (sivel2_gen_conscaso.caso_id = 101)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -8886,6 +8886,104 @@ ALTER TABLE ONLY public.viadeingreso ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: sip_persona persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_persona
+    ADD CONSTRAINT persona_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.benefactividadpf AS
+ SELECT p.id,
+    btrim(((btrim((p.nombres)::text) || ' '::text) || btrim((p.apellidos)::text))) AS persona_nombre,
+    btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text)) AS persona_identificacion,
+    p.sexo AS persona_sexo,
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 184) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A4",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 183) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A3",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 187) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A7",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 197) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER3A2",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 195) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A7",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 192) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A4",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 181) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A1",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 196) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER3A1",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 451) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A9",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 452) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A10",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 482) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A12.",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 182) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A2",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 185) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A5",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 453) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A11",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 483) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A13.",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 484) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER4A1.",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 190) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A2",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 191) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A3"
+   FROM (((public.sip_persona p
+     JOIN public.cor1440_gen_asistencia asis ON ((asis.persona_id = p.id)))
+     LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
+     JOIN public.cor1440_gen_actividad a ON ((asis.actividad_id = a.id)))
+  WHERE (p.id = 0)
+  GROUP BY (btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text))), p.id
+  WITH NO DATA;
+
+
+--
 -- Name: accion accion_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9891,14 +9989,6 @@ ALTER TABLE ONLY public.sivel2_gen_pconsolidado
 
 ALTER TABLE ONLY public.perfilmigracion
     ADD CONSTRAINT perfilmigracion_pkey PRIMARY KEY (id);
-
-
---
--- Name: sip_persona persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_persona
-    ADD CONSTRAINT persona_pkey PRIMARY KEY (id);
 
 
 --

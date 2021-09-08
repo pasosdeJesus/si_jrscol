@@ -81,8 +81,18 @@ GIT
       will_paginate
 
 GIT
+  remote: https://github.com/pasosdeJesus/sivel2_gen.git
+  revision: c5c556ede4f78da343d684c63822efa1c9031996
+  branch: main
+  specs:
+    sivel2_gen (2.0b16)
+      devise
+      jquery-rails
+      rails
+
+GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: efa46b11eaf3e67998b7ba3b5f4719893089b09d
+  revision: 06625401a7f628052e6451e4fa3a784bbe9f1645
   branch: main
   specs:
     sivel2_sjr (2.0b11)
@@ -95,14 +105,6 @@ GIT
   branch: new_id_with_ajax
   specs:
     cocoon (1.2.11)
-
-PATH
-  remote: ../sivel2_gen
-  specs:
-    sivel2_gen (2.0b16)
-      devise
-      jquery-rails
-      rails
 
 GEM
   remote: https://rubygems.org/
