@@ -16,13 +16,13 @@ $(document).on('change',
 )
 
 
-ubicacionpre2expandible_registra(
+sip_ubicacionpre_expandible_registra(
   'caso_desplazamiento_attributes', 'expulsion', window)
 
-ubicacionpre2expandible_registra(
+sip_ubicacionpre_expandible_registra(
   'caso_desplazamiento_attributes', 'llegada', window)
 
-ubicacionpre2expandible_registra(
+sip_ubicacionpre_expandible_registra(
   'caso_desplazamiento_attributes', 'destino', window)
 
 
@@ -45,7 +45,7 @@ $(document).on('cocoon:after-insert', '#desplazamiento',
     console.log(cocoonid);
 
     ['expulsion', 'llegada', 'destino'].forEach(function (v, i) {
-      ubicacionpre2expandible_cambia_ids(v, cocoonid)
+      sip_ubicacionpre_expandible_cambia_ids(v, cocoonid)
     })
     //asigna id de tabla actos al crear
     desplazamiento.find('.actos_div').attr("id", "actos_" + cocoonid)
