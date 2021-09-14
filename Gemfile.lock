@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: bcaf851df922df78d4e52533456a065dddbd58fb
+  revision: 504c7f7a0f511c40643355705f4a4e4f335fd7b7
   branch: main
   specs:
     cor1440_gen (1.0b5)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 1c5ae7c4a5b38ea689cb5716a8f5e363de0cc9ff
+  revision: 56f002c22a9d41947618d32b5733f9b2544fa138
   branch: main
   specs:
     heb412_gen (1.0.b7)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: c67f16bcee25e32c28a2750f1ca7077769ba3739
+  revision: db065c5355f2d1d36ecfd251ee83c5d0ea263f4f
   branch: main
   specs:
     mr519_gen (0.2.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 84dd89e82cab0ba1c2ca458ea6dffb6b19180f8b
+  revision: d15b0d1a9a7914d27af321d76d82592aaf19ad0d
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 0278f702acc0456bef289dbaf3de69174adff840
+  revision: 688a85401f2dd4ef9483ee29f6bc495ae7e2ca49
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: e64275c2b50ae422ff5474da2105653b1cb8f569
+  revision: 637813e3d4870a0401fbfdea729120ec2483ae7a
   branch: main
   specs:
     sip (2.0.b12)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: c5c556ede4f78da343d684c63822efa1c9031996
+  revision: 149b0839b46252526f7e235b869780da35482f7b
   branch: main
   specs:
     sivel2_gen (2.0b16)
@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 06625401a7f628052e6451e4fa3a784bbe9f1645
+  revision: 8bbe271eba69c4ffbd326e0ae999ca89180dd4d6
   branch: main
   specs:
     sivel2_sjr (2.0b11)
