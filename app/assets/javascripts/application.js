@@ -58,7 +58,8 @@ document.addEventListener('turbolinks:load', function() {
   mr519_gen_prepara_eventos_comunes(root)
   sivel2_gen_prepara_eventos_comunes(root,'antecedentes/causas')
   sivel2_sjr_prepara_eventos_comunes(root)
-  cor1440_gen_prepara_eventos_comunes(root)
+  cor1440_gen_prepara_eventos_comunes(root, 
+    {'sin_eventos_recalcular_poblacion': 1})
   sal7711_gen_prepara_eventos_comunes(root)
   sivel2_sjr_prepara_eventos_unicos(root)
   sip_registra_cambios_para_bitacora(root)
