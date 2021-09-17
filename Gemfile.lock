@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: d0c073b060fa436beb9c8709491a5bce28418d75
+  revision: fc0c02a222b72d2e5e6b4100450911b3b68d9ed3
   branch: main
   specs:
     sip (2.0.b12)
@@ -78,11 +78,10 @@ GIT
       rails-i18n
       simple_form
       twitter_cldr
-      will_paginate
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 217abf1ed8a8f890e9d6fee388bb56ef42d615aa
+  revision: e5f1960b82b5c54d92fe0bc48a1bd2d2324c2948
   branch: main
   specs:
     sivel2_gen (2.0b16)

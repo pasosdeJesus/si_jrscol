@@ -9,7 +9,7 @@ class Benefactividadpf < ActiveRecord::Base
     where(persona_identificacion: iden)
   }
 
-  scope :filtro_persona_identificacion, lambda { |sexo|
+  scope :filtro_persona_sexo, lambda { |sexo|
     where(persona_sexo: sexo)
   }
   module ClassMethods

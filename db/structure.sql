@@ -6130,7 +6130,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 102)
+          WHERE (sivel2_gen_conscaso.caso_id = 103)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -8898,87 +8898,103 @@ ALTER TABLE ONLY public.sip_persona
 --
 
 CREATE MATERIALIZED VIEW public.benefactividadpf AS
- SELECT p.id,
+ SELECT p.id AS persona_id,
     btrim(((btrim((p.nombres)::text) || ' '::text) || btrim((p.apellidos)::text))) AS persona_nombre,
     btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text)) AS persona_identificacion,
     p.sexo AS persona_sexo,
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 184) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A4",
+          WHERE ((aapf.actividadpf_id = 352) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A5.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 183) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A3",
+          WHERE ((aapf.actividadpf_id = 354) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A2.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 187) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A7",
+          WHERE ((aapf.actividadpf_id = 349) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A2.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 197) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER3A2",
+          WHERE ((aapf.actividadpf_id = 351) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A4.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 195) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A7",
+          WHERE ((aapf.actividadpf_id = 362) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A8.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 192) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A4",
+          WHERE ((aapf.actividadpf_id = 367) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A2.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 181) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A1",
+          WHERE ((aapf.actividadpf_id = 368) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A3.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 196) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER3A1",
+          WHERE ((aapf.actividadpf_id = 353) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A1.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 451) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A9",
+          WHERE ((aapf.actividadpf_id = 358) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A6.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 452) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A10",
+          WHERE ((aapf.actividadpf_id = 366) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A1.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 482) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A12.",
+          WHERE ((aapf.actividadpf_id = 363) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A1.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 182) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A2",
+          WHERE ((aapf.actividadpf_id = 359) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A7.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 185) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A5",
+          WHERE ((aapf.actividadpf_id = 355) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A3.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 453) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A11",
+          WHERE ((aapf.actividadpf_id = 356) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A4.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 483) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER1A13.",
+          WHERE ((aapf.actividadpf_id = 357) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A5. ",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 484) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER4A1.",
+          WHERE ((aapf.actividadpf_id = 364) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A2.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 190) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A2",
+          WHERE ((aapf.actividadpf_id = 365) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A3.",
     ( SELECT count(*) AS count
            FROM (public.cor1440_gen_asistencia asistencia
              JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-          WHERE ((aapf.actividadpf_id = 191) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = 0))) AS "OER2A3"
+          WHERE ((aapf.actividadpf_id = 350) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A3.",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 425) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A8.",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 424) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A7.",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 423) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A6.",
+    ( SELECT count(*) AS count
+           FROM (public.cor1440_gen_asistencia asistencia
+             JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+          WHERE ((aapf.actividadpf_id = 348) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A1."
    FROM (((public.sip_persona p
      JOIN public.cor1440_gen_asistencia asis ON ((asis.persona_id = p.id)))
      LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
      JOIN public.cor1440_gen_actividad a ON ((asis.actividad_id = a.id)))
-  WHERE (p.id = 0)
+  WHERE (p.id = ANY (ARRAY[983, 547, 687, 856, 98, 980, 501, 1258, 534, 522, 827, 1008, 1024, 1711, 1714, 1715, 1716, 1717, 1718, 1720, 1722, 704]))
   GROUP BY (btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text))), p.id
   WITH NO DATA;
 

@@ -1,7 +1,10 @@
-<% beneficiarios = Sip::Persona.where(id: @personasis)%>
+<% beneficiarios = Sip::Persona.where(id: Benefactividadpf.all.map(&:persona_id))%>
 <%= f.input :buspersona_identificacion,
     collection: beneficiarios,
     label_method: lambda{ |pk| pk.numerodocumento },
     label: false,
-    input_html: {class: 'chosen-select'}
+    input_html: {
+      class: 'chosen-select',
+      'data-enviarautomatico' => ''
+    } 
   %>

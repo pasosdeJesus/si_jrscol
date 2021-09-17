@@ -15,19 +15,22 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
     index_sip(Benefactividadpf.all)
   end
 
+  def index_reordenar(c)
+    c.reorder('LOWER(persona_nombre)')
+  end
 
   def contar_beneficiarios
     @contarb_actividad = Cor1440Gen::Actividad.all
     @contarb_pf = Cor1440Gen::Proyectofinanciero.all
-    contarb_pfid = nil
+    @contarb_pfid = nil
     oficina = Sip::Oficina.habilitados.pluck(:id) 
     # Control de acceso
     #filtra_contarb_control_acceso
 
     # Parámetros
-    contarb_pfid = params[:filtro] && 
+    @contarb_pfid = params[:filtro] && 
       params[:filtro][:proyectofinanciero_id] ?  
-      params[:filtro][:proyectofinanciero_id].to_i : contarb_pfid
+      params[:filtro][:proyectofinanciero_id].to_i : @contarb_pfid
 
     oficina = params[:filtro] && 
       params[:filtro][:oficina_id] && params[:filtro][:oficina_id] != "" ?  
@@ -36,7 +39,7 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
     @contarb_actividad = @contarb_actividad.where(
       'cor1440_gen_actividad.id IN 
         (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero
-          WHERE proyectofinanciero_id=?)', contarb_pfid).where(
+          WHERE proyectofinanciero_id=?)', @contarb_pfid).where(
             'cor1440_gen_actividad.id IN 
         (SELECT actividad_id FROM cor1440_gen_actividad_actividadpf)')
 
@@ -66,12 +69,14 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
 
     ## Activdiades de convenio según el filtro
     contarb_listaac = Cor1440Gen::Actividadpf.where(
-      proyectofinanciero_id: contarb_pfid).order(:nombrecorto) 
+      proyectofinanciero_id: @contarb_pfid).order(:nombrecorto) 
 
     ## Fin filtros tabla index
-    contarpro = Cor1440Gen::Actividadpf.where(proyectofinanciero_id: contarb_pfid)
+    contarpro = Cor1440Gen::Actividadpf.where(
+      proyectofinanciero_id: @contarb_pfid)
     contarb_listaac ? contarb_listaac : []
-    asistencias = Cor1440Gen::Asistencia.where(actividad_id: @contarb_actividad)
+    asistencias = Cor1440Gen::Asistencia.where(
+      actividad_id: @contarb_actividad)
     @personasis = asistencias.pluck(:persona_id).uniq
     actividades = asistencias.pluck(:actividad_id).uniq
     lisp = @personasis.count> 0 ?
@@ -98,7 +103,7 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
 
   
   def subasis(lisp, lisa, actividadespf)
-    c=" SELECT p.id,
+    c=" SELECT p.id AS persona_id,
        TRIM(TRIM(p.nombres) || ' '  ||
          TRIM(p.apellidos)) AS persona_nombre,
        TRIM(COALESCE(td.sigla || ':', '') ||
