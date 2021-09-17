@@ -101,7 +101,6 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
   end # def crea_consulta
 
 
-  
   def subasis(lisp, lisa, actividadespf)
     c=" SELECT p.id AS persona_id,
        TRIM(TRIM(p.nombres) || ' '  ||
