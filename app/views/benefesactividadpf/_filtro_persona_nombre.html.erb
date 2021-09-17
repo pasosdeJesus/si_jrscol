@@ -1,7 +1,11 @@
 <% beneficiarios = Sip::Persona.where(id: @personasis)%>
 <%= f.input :buspersona_nombre,
-    collection: beneficiarios,
-    label_method: lambda{|pk| pk.nombres + " " + pk.apellidos },
-    label: false,
-    input_html: {class: 'chosen-select'}
-  %>
+  collection: beneficiarios,
+  label_method: lambda{|pk| pk.nombres + " " + pk.apellidos },
+  label: false,
+  input_html: {
+    class: 'chosen-select'
+    'data-enviarautomatico' => ''
+  }
+%>
+
