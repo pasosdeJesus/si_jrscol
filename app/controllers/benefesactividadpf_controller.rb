@@ -105,7 +105,7 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
 
 
   def subasis(lisp, lisa, actividadespf)
-    c="SELECT sub2.* FROM (SELECT sub.*, 
+    c="SELECT sub.*, 
       (SELECT nombre FROM cor1440_gen_rangoedadac AS red
        WHERE id=CASE 
          WHEN (red.limiteinferior IS NULL OR 
@@ -148,7 +148,7 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
      JOIN cor1440_gen_asistencia AS asis ON asis.persona_id=p.id 
      LEFT JOIN sip_tdocumento AS td ON td.id=p.tdocumento_id
      JOIN cor1440_gen_actividad AS a ON asis.actividad_id=a.id
-     WHERE p.id IN (#{lisp}) GROUP BY persona_identificacion, p.id, a.fecha) AS sub) as sub2 WHERE true=true
+     WHERE p.id IN (#{lisp}) GROUP BY persona_identificacion, p.id, edad_en_actividad) AS sub
     "
   end
 
