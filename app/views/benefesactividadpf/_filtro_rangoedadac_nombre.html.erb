@@ -1,0 +1,12 @@
+<%= f.input :busrangoedadac_nombre,
+  collection: Cor1440Gen::Rangoedadac.habilitados,
+  label: false,
+  include_blank: true,
+  label_method: lambda { |k| k.nombre},
+  value_method: lambda { |k| k.nombre},
+  selected: Sip::ModeloHelper.poromision(params, :busrangoedadac_nombre),
+  input_html: {
+    class: 'chosen-select',
+    'data-enviarautomatico' => ''
+  }
+%>
