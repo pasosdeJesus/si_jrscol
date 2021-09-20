@@ -158,28 +158,4 @@ sip_ubicacionpre_expandible_registra(
   'caso_migracion_attributes', 'destino', window)
 
 
-// Funciones
-function fija_coordenadas(e, campoubi, elemento, ubi_plural){
-  ubp = $(e.target).closest('.ubicacionpre')
-  latitud = ubp.find('[id$='+campoubi+'_latitud]')
-  longitud = ubp.find('[id$='+campoubi+'_longitud]')
-
-  id = $(elemento).val()
-  root = window
-  $.getJSON(root.puntomontaje + "admin/" + ubi_plural +".json", function(o){
-    ubi = o.filter(function(item){
-      return item.id == id
-    })
-    if(ubi[0]){
-      if(ubi[0].latitud){
-        latitud.val(ubi[0].latitud).trigger('chosen:updated')
-        longitud.val(ubi[0].longitud).trigger('chosen:updated')
-      }
-    }else{
-      latitud.val(null).trigger('chosen:updated')
-      longitud.val(null).trigger('chosen:updated')
-    }
-  });
-}
-
 
