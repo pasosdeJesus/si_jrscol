@@ -6,7 +6,10 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
 
   def atributos_index
     if Benefactividadpf
-      Benefactividadpf.column_names - ["id"]
+      arr = Benefactividadpf.column_names
+      primeros =["persona_id", "persona_nombre", "persona_identificacion", 
+                 "persona_sexo", "edad_en_actividad", "rangoedadac_nombre"]
+      primeros + (arr - primeros) - ["id"] 
     end
   end
 
@@ -102,9 +105,25 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
 
 
   def subasis(lisp, lisa, actividadespf)
-    c=" SELECT p.id AS persona_id,
+    c="SELECT sub.*, 
+      (SELECT nombre FROM cor1440_gen_rangoedadac AS red
+       WHERE id=CASE 
+         WHEN (red.limiteinferior IS NULL OR 
+           red.limiteinferior<=sub.edad_en_actividad) AND 
+           (red.limitesuperior IS NULL OR
+           red.limitesuperior>=sub.edad_en_actividad) THEN
+           red.id
+         ELSE
+           7 -- SIN INFORMACION
+       END LIMIT 1) AS rangoedadac_nombre
+      FROM (SELECT p.id AS persona_id,
        TRIM(TRIM(p.nombres) || ' '  ||
          TRIM(p.apellidos)) AS persona_nombre,
+       public.sip_edad_de_fechanac_fecharef(
+         p.anionac, p.mesnac, p.dianac,
+       EXTRACT(YEAR FROM a.fecha)::integer,
+       EXTRACT(MONTH from a.fecha)::integer,
+       EXTRACT(DAY FROM a.fecha)::integer) AS edad_en_actividad,
        TRIM(COALESCE(td.sigla || ':', '') ||
          COALESCE(p.numerodocumento, '')) AS persona_identificacion,
        p.sexo AS persona_sexo" 
@@ -129,7 +148,8 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
      JOIN cor1440_gen_asistencia AS asis ON asis.persona_id=p.id 
      LEFT JOIN sip_tdocumento AS td ON td.id=p.tdocumento_id
      JOIN cor1440_gen_actividad AS a ON asis.actividad_id=a.id
-     WHERE p.id IN (#{lisp}) GROUP BY persona_identificacion, p.id"
+     WHERE p.id IN (#{lisp}) GROUP BY persona_identificacion, p.id, edad_en_actividad) AS sub
+    "
   end
 
 end

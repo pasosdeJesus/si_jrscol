@@ -2,15 +2,19 @@ class Benefactividadpf < ActiveRecord::Base
   include Sip::Modelo
 
   scope :filtro_persona_nombre, lambda { |d|
-    where("unaccent(observaciones) ILIKE '%' || unaccent(?) || '%'", d)
+    where("unaccent(persona_nombre) ILIKE '%' || unaccent(?) || '%'", d)
   }
 
   scope :filtro_persona_identificacion, lambda { |iden|
-    where(persona_identificacion: iden)
+    where("unaccent(persona_identificacion) ILIKE '%' || unaccent(?) || '%'", iden)
   }
 
   scope :filtro_persona_sexo, lambda { |sexo|
     where(persona_sexo: sexo)
+  }
+
+  scope :filtro_rangoedadac_nombre, lambda { |rac|
+    where(rangoedadac_nombre: rac)
   }
   module ClassMethods
 
