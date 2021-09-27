@@ -95,11 +95,10 @@ class BenefesactividadpfController < Heb412Gen::ModelosController
       return
     end
     ActiveRecord::Base.connection.execute(
-      "DROP MATERIALIZED VIEW IF EXISTS benefactividadpf")
-    ActiveRecord::Base.connection.execute("
-        CREATE MATERIALIZED VIEW benefactividadpf AS
-        #{Benefactividadpf.subasis(lisp, lisa, contarb_listaac)}
-      ")
+      "DROP MATERIALIZED VIEW IF EXISTS benefactividadpf;"\
+      "CREATE MATERIALIZED VIEW benefactividadpf AS "\
+      "  #{Benefactividadpf.subasis(lisp, lisa, contarb_listaac)};"
+    )
     Benefactividadpf.reset_column_information
   end # def crea_consulta
 
