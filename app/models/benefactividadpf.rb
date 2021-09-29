@@ -17,6 +17,60 @@ class Benefactividadpf < ActiveRecord::Base
     where(rangoedadac_nombre: rac)
   }
 
+
+  # Genera consulta
+  # @params ordenar_por Criterio de ordenamiento
+  # @params pf_id Entero con dentificación del proyecto financiero  o nil
+  # @params oficina_id Entero con identificación de la oficina o nil
+  # @params fechaini Fecha inicial en formato estándar o nil
+  # @params fechafin Fecha final en formato estándar o nil
+  #
+  def self.crea_consulta(ordenar_por = nil, pf_id, oficina_id, 
+                    fechaini, fechafin)
+    if ARGV.include?("db:migrate")
+      return
+    end
+    contarb_actividad = Cor1440Gen::Actividad.all
+    if oficina_id
+      contarb_actividad = contarb_actividad.where(oficina_id: oficina_id)
+    end
+    if pf_id
+      contarb_actividad = contarb_actividad.where(
+        'cor1440_gen_actividad.id IN 
+        (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero
+          WHERE proyectofinanciero_id=?)', pf_id).where(
+            'cor1440_gen_actividad.id IN 
+        (SELECT actividad_id FROM cor1440_gen_actividad_actividadpf)')
+    end
+    if fechaini
+      contarb_actividad = contarb_actividad.where(
+        'cor1440_gen_actividad.fecha >= ?', fechaini)
+    end
+    if fechafin
+      contarb_actividad = contarb_actividad.where(
+        'cor1440_gen_actividad.fecha <= ?', fechafin)
+    end
+
+    contarb_listaac = Cor1440Gen::Actividadpf.where(
+      proyectofinanciero_id: pf_id).order(:nombrecorto) 
+
+    contarpro = Cor1440Gen::Actividadpf.where(
+      proyectofinanciero_id: pf_id)
+    asistencias = Cor1440Gen::Asistencia.where(
+      actividad_id: contarb_actividad)
+    personasis = asistencias.pluck(:persona_id).uniq
+    actividades = asistencias.pluck(:actividad_id).uniq
+    lisp = personasis.count> 0 ? personasis.join(",") : "0"
+    lisa = actividades.count> 0 ? actividades.join(",") : "0"
+
+    ActiveRecord::Base.connection.execute(
+      "DROP MATERIALIZED VIEW IF EXISTS benefactividadpf;"\
+      "CREATE MATERIALIZED VIEW benefactividadpf AS "\
+      "  #{Benefactividadpf.subasis(lisp, lisa, contarpro)};"
+    )
+    Benefactividadpf.reset_column_information
+  end # def crea_consulta
+
   def self.subasis(lisp, lisa, actividadespf)
     c="SELECT sub.*, 
       (SELECT nombre FROM cor1440_gen_rangoedadac AS red

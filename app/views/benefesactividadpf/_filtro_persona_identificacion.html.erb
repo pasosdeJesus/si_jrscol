@@ -1,7 +1,7 @@
 <%= f.input :buspersona_identificacion,
-    label: false,
+  label: false,
+  input_html: {
     value: Sip::ModeloHelper.poromision(params, :buspersona_identificacion),
-    input_html: {
-      'data-enviarautomatico' => ''
-    } 
-  %>
+    'data-enviarautomatico' => ''
+  } 
+%>
