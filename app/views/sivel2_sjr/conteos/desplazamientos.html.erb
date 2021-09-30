@@ -67,10 +67,33 @@
       </div>
     </div>
   </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <% @enctabla.try(:each) do |enc| %>
+          <th><%= CGI.escapeHTML(enc) %></th>
+        <% end %>
+      </tr>
+      <% if @filtrostab && @filtrostab.count && @filtrostab.count > 0 %>
+        <tr>
+          <% @enctabla.try(:each) do |enc| %>
+            <th>
+              <% if @filtrostab.keys.include? enc %>
+                <% atr = @filtrostab[enc] %>
+                <% atrf = Sip::ModeloHelper.nom_filtro(atr) %>
+                <% atrsl= atrf.chomp('_localizada').chomp('_localizado') %>
+                <% n = "bus#{atrf}" %>
+                <%= render partial: "filtro_#{atrf}", locals: {f: f} %>
+              <% end %>
+            </th>
+          <% end %>
+        </tr>
+      <% end %>
+    </thead>
+    <tbody id="resultado">
+        <%= render partial: 'sivel2_gen/conteos/resultado_tabla', locals: {f: f} %>
+    </tbody>
+</table>
+
 <% end %>
-
-
-<div id="resultado">
-  <%= render 'sivel2_gen/conteos/resultado_tabla' %>
-</div> <!-- id: resultado -->
-
