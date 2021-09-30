@@ -20,72 +20,11 @@ class AgregaEdadesPlantillaCasos < ActiveRecord::Migration[6.1]
       DELETE FROM public.heb412_gen_campoplantillahcm WHERE id>='393' AND id<='404';
     SQL
   end
-  def sigcol(col)
-    return col.next
-  end
-  ## Columna siguiente n veces
-  def sigcolp(col, n)
-    veces = (1..n).to_a
-    cr = col
-    veces.each do |vv|
-      cr = sigcol(cr)
-    end
-    return cr
-  end
-  # Columna previa n  veces
-  def prevcolp(col, n)
-    veces = (1..n).to_a
-    cr = col
-    veces.each do |vv|
-      cr = prevcol(cr)
-    end
-    return cr
-  end
-  def prevcol(col)
-      if col[1] && col[1] == 'A'
-        c0 = col[0] == 'A' ? '' : (col[0].ord - 1)
-        c1 = 'Z'
-      else
-        if col[1]
-          c0 = col[0].ord
-          c1 = col[1].ord - 1
-        else
-          c0 = ''
-          c1 = col[0].ord - 1
-        end
-      end
-      return c0.chr + c1.chr
-  end
-  def corre_resto_a_izquierda(inicial, final)
-    columnas = []
-    col = inicial
-    while col!=final do
-      columnas.push(col)
-      col = sigcol(col)
-    end 
-    columnas.each do |co|
-      execute <<-SQL
-        UPDATE public.heb412_gen_campoplantillahcm SET columna='#{prevcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= 44;
-      SQL
-    end 
-  end
-  def corre_resto_a_derecha(final, inicial)
-    columnas = []
-    col = final
-    while col!=inicial do
-      columnas.push(col)
-      col = prevcol(col)
-    end 
-    columnas.each do |co|
-      execute <<-SQL
-        UPDATE public.heb412_gen_campoplantillahcm SET columna='#{sigcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= 44;
-      SQL
-    end 
-  end
+
   def up
     limitesder = [['LY', 'L'], ['MA', 'AW'], ['MC', 'CC'], ['ME', 'DI'], ['MG', 'EO'], ['MI', 'FU']]
     limitesder.each do |limite|
-      corre_resto_a_derecha(limite[0], limite[1])
+      PlantillaHelper.corre_columnas_a_derecha(limite[0], limite[1], 44)
     end 
     agrega_campos_edad
   end
@@ -93,7 +32,7 @@ class AgregaEdadesPlantillaCasos < ActiveRecord::Migration[6.1]
     quita_campos_edad
     limitesizq = [['FX', 'ML'], ['ER', 'MJ'], ['DL', 'MH'], ['CF', 'MF'], ['AZ', 'MD'], ['O', 'MB']]
     limitesizq.each do |limite|
-      corre_resto_a_izquierda(limite[0], limite[1])
+      PlantillaHelper.corre_columnas_a_izquierda(limite[0], limite[1], 44)
     end 
   end
 end
