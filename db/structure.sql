@@ -5989,6 +5989,166 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     (((COALESCE(tdocumento.sigla, ''::character varying))::text || ' '::text) || (contacto.numerodocumento)::text) AS contacto_identificacion,
     contacto.sexo AS contacto_sexo,
     public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 1
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 1
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 1
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar1_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 1
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 1
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 1
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar1_edad_ultimaatencion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 2
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 2
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 2
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar2_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 2
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 2
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 2
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar2_edad_ultimaatencion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 3
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 3
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 3
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar3_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 3
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 3
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 3
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar3_edad_ultimaatencion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 4
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 4
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 4
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar4_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 4
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 4
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 4
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar4_edad_ultimaatencion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 5
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 5
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 5
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar5_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 5
+         LIMIT 1), ( SELECT persona.mesnac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 5
+         LIMIT 1), ( SELECT persona.dianac
+           FROM public.sip_persona persona,
+            public.sivel2_gen_victima victima
+          WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
+         OFFSET 5
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar5_edad_ultimaatencion,
     ( SELECT sivel2_gen_rangoedad.nombre
            FROM public.sivel2_gen_rangoedad
           WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)))
@@ -6120,7 +6280,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2021-03-01'::date)
+          WHERE (sivel2_gen_conscaso.caso_id = 103)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -8881,28 +9041,6 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
     sub.edad_en_actividad,
     sub.persona_identificacion,
     sub.persona_sexo,
-    sub."O1.R1.A5.",
-    sub."O2.R2.A2.",
-    sub."O1.R1.A2.",
-    sub."O1.R1.A4.",
-    sub."O2.R2.A8.",
-    sub."O4.R4.A2.",
-    sub."O4.R4.A3.",
-    sub."O2.R2.A1.",
-    sub."O2.R2.A6.",
-    sub."O4.R4.A1.",
-    sub."O3.R3.A1.",
-    sub."O2.R2.A7.",
-    sub."O2.R2.A3.",
-    sub."O2.R2.A4.",
-    sub."O2.R2.A5. ",
-    sub."O3.R3.A2.",
-    sub."O3.R3.A3.",
-    sub."O1.R1.A3.",
-    sub."O1.R1.A8.",
-    sub."O1.R1.A7.",
-    sub."O1.R1.A6.",
-    sub."O1.R1.A1.",
     ( SELECT red.nombre
            FROM public.cor1440_gen_rangoedadac red
           WHERE (red.id =
@@ -8915,100 +9053,12 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
             btrim(((btrim((p.nombres)::text) || ' '::text) || btrim((p.apellidos)::text))) AS persona_nombre,
             public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer) AS edad_en_actividad,
             btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text)) AS persona_identificacion,
-            p.sexo AS persona_sexo,
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 352) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A5.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 354) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A2.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 349) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A2.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 351) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A4.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 362) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A8.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 367) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A2.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 368) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A3.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 353) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A1.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 358) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A6.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 366) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A1.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 363) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A1.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 359) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A7.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 355) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A3.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 356) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A4.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 357) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A5. ",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 364) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A2.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 365) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A3.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 350) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A3.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 425) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A8.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 424) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A7.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 423) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A6.",
-            ( SELECT count(*) AS count
-                   FROM (public.cor1440_gen_asistencia asistencia
-                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 348) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A1."
+            p.sexo AS persona_sexo
            FROM (((public.sip_persona p
              JOIN public.cor1440_gen_asistencia asis ON ((asis.persona_id = p.id)))
              LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
              JOIN public.cor1440_gen_actividad a ON ((asis.actividad_id = a.id)))
-          WHERE (p.id = ANY (ARRAY[983, 547, 687, 856, 98, 980, 501, 1258, 534, 522, 827, 1008, 1024, 1711, 1714, 1715, 1716, 1717, 1718, 1720, 1722, 704]))
+          WHERE (p.id = 2482)
           GROUP BY (btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text))), p.id, (public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer))) sub
   WITH NO DATA;
 
