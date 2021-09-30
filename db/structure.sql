@@ -86,12 +86,12 @@ CREATE FUNCTION public.f_unaccent(text) RETURNS text
 CREATE FUNCTION public.municipioubicacion(integer) RETURNS character varying
     LANGUAGE sql
     AS $_$
-        SELECT (SELECT nombre FROM public.sip_pais WHERE id=ubicacion.id_pais) 
+        SELECT (SELECT nombre FROM public.sip_pais WHERE id=ubicacion.pais_id) 
             || COALESCE((SELECT '/' || nombre FROM public.sip_departamento 
-            WHERE sip_departamento.id = ubicacion.id_departamento),'') 
+            WHERE sip_departamento.id = ubicacion.departamento_id),'') 
             || COALESCE((SELECT '/' || nombre FROM public.sip_municipio 
-            WHERE sip_municipio.id = ubicacion.id_municipio),'') 
-            FROM public.sip_ubicacion AS ubicacion 
+            WHERE sip_municipio.id = ubicacion.municipio_id),'') 
+            FROM public.sip_ubicacionpre AS ubicacion 
             WHERE ubicacion.id=$1;
       $_$;
 
@@ -850,11 +850,11 @@ CREATE TABLE public.sivel2_sjr_desplazamiento (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     id integer DEFAULT nextval('public.desplazamiento_seq'::regclass) NOT NULL,
+    establecerse boolean,
+    declaracionruv_id integer,
     expulsionubicacionpre_id integer,
     llegadaubicacionpre_id integer,
-    establecerse boolean,
     destinoubicacionpre_id integer,
-    declaracionruv_id integer,
     CONSTRAINT desplazamiento_declaro_check CHECK (((declaro = 'S'::bpchar) OR (declaro = 'N'::bpchar) OR (declaro = 'R'::bpchar)))
 );
 
@@ -2679,28 +2679,16 @@ CREATE VIEW public.cvp1 AS
    FROM public.sivel2_sjr_casosjr casosjr,
     public.sivel2_sjr_respuesta respuesta,
     public.sivel2_sjr_derecho_respuesta derecho_respuesta
-  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id) AND (derecho_respuesta.id_derecho = 1));
+  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id));
 
 
 --
--- Name: sivel2_sjr_progestado_derecho; Type: TABLE; Schema: public; Owner: -
+-- Name: sivel2_sjr_ayudaestado_derecho; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sivel2_sjr_progestado_derecho (
-    progestado_id integer,
+CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
+    ayudaestado_id integer,
     derecho_id integer
-);
-
-
---
--- Name: sivel2_sjr_progestado_respuesta; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_progestado_respuesta (
-    id_progestado integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_respuesta integer NOT NULL
 );
 
 
@@ -2711,10 +2699,10 @@ CREATE TABLE public.sivel2_sjr_progestado_respuesta (
 CREATE VIEW public.cvp2 AS
  SELECT ar.id_respuesta,
     ad.derecho_id AS id_derecho,
-    ar.id_progestado
-   FROM public.sivel2_sjr_progestado_respuesta ar,
-    public.sivel2_sjr_progestado_derecho ad
-  WHERE (ar.id_progestado = ad.progestado_id);
+    ar.id_ayudaestado
+   FROM public.sivel2_sjr_ayudaestado_respuesta ar,
+    public.sivel2_sjr_ayudaestado_derecho ad
+  WHERE (ar.id_ayudaestado = ad.ayudaestado_id);
 
 
 --
@@ -6131,12 +6119,8 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM ((((public.sivel2_gen_conscaso
-             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.id_caso = sivel2_gen_conscaso.caso_id)))
-             JOIN public.sivel2_gen_caso ON ((sivel2_gen_caso.id = sivel2_gen_conscaso.caso_id)))
-             JOIN public.sivel2_gen_victima ON ((sivel2_gen_victima.id_caso = sivel2_gen_caso.id)))
-             JOIN public.sip_persona ON ((sip_persona.id = sivel2_gen_victima.id_persona)))
-          WHERE ((sivel2_sjr_casosjr.contacto_id = sip_persona.id) AND ((sip_persona.apellidos)::text ~~* '%Cruz%'::text))
+           FROM public.sivel2_gen_conscaso
+          WHERE (sivel2_gen_conscaso.fecharec >= '2021-03-01'::date)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -7087,16 +7071,6 @@ CREATE TABLE public.sivel2_sjr_ayudaestado (
 
 
 --
--- Name: sivel2_sjr_ayudaestado_derecho; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
-    ayudaestado_id integer,
-    derecho_id integer
-);
-
-
---
 -- Name: sivel2_sjr_ayudasjr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -7666,6 +7640,28 @@ CREATE TABLE public.sivel2_sjr_progestado (
     updated_at timestamp without time zone,
     observaciones character varying(5000),
     CONSTRAINT progestado_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sivel2_sjr_progestado_derecho; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_progestado_derecho (
+    progestado_id integer,
+    derecho_id integer
+);
+
+
+--
+-- Name: sivel2_sjr_progestado_respuesta; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_progestado_respuesta (
+    id_progestado integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_respuesta integer NOT NULL
 );
 
 
@@ -8868,6 +8864,156 @@ ALTER TABLE ONLY public.viadeingreso ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: sip_persona persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_persona
+    ADD CONSTRAINT persona_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.benefactividadpf AS
+ SELECT sub.persona_id,
+    sub.persona_nombre,
+    sub.edad_en_actividad,
+    sub.persona_identificacion,
+    sub.persona_sexo,
+    sub."O1.R1.A5.",
+    sub."O2.R2.A2.",
+    sub."O1.R1.A2.",
+    sub."O1.R1.A4.",
+    sub."O2.R2.A8.",
+    sub."O4.R4.A2.",
+    sub."O4.R4.A3.",
+    sub."O2.R2.A1.",
+    sub."O2.R2.A6.",
+    sub."O4.R4.A1.",
+    sub."O3.R3.A1.",
+    sub."O2.R2.A7.",
+    sub."O2.R2.A3.",
+    sub."O2.R2.A4.",
+    sub."O2.R2.A5. ",
+    sub."O3.R3.A2.",
+    sub."O3.R3.A3.",
+    sub."O1.R1.A3.",
+    sub."O1.R1.A8.",
+    sub."O1.R1.A7.",
+    sub."O1.R1.A6.",
+    sub."O1.R1.A1.",
+    ( SELECT red.nombre
+           FROM public.cor1440_gen_rangoedadac red
+          WHERE (red.id =
+                CASE
+                    WHEN (((red.limiteinferior IS NULL) OR (red.limiteinferior <= sub.edad_en_actividad)) AND ((red.limitesuperior IS NULL) OR (red.limitesuperior >= sub.edad_en_actividad))) THEN red.id
+                    ELSE 7
+                END)
+         LIMIT 1) AS rangoedadac_nombre
+   FROM ( SELECT p.id AS persona_id,
+            btrim(((btrim((p.nombres)::text) || ' '::text) || btrim((p.apellidos)::text))) AS persona_nombre,
+            public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer) AS edad_en_actividad,
+            btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text)) AS persona_identificacion,
+            p.sexo AS persona_sexo,
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 352) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A5.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 354) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A2.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 349) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A2.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 351) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A4.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 362) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A8.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 367) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A2.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 368) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A3.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 353) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A1.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 358) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A6.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 366) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O4.R4.A1.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 363) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A1.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 359) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A7.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 355) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A3.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 356) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A4.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 357) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O2.R2.A5. ",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 364) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A2.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 365) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O3.R3.A3.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 350) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A3.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 425) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A8.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 424) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A7.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 423) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A6.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 348) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id = ANY (ARRAY[658, 163, 187, 665, 144, 737, 594, 596, 607, 609, 595, 610, 621, 730, 734, 735])))) AS "O1.R1.A1."
+           FROM (((public.sip_persona p
+             JOIN public.cor1440_gen_asistencia asis ON ((asis.persona_id = p.id)))
+             LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
+             JOIN public.cor1440_gen_actividad a ON ((asis.actividad_id = a.id)))
+          WHERE (p.id = ANY (ARRAY[983, 547, 687, 856, 98, 980, 501, 1258, 534, 522, 827, 1008, 1024, 1711, 1714, 1715, 1716, 1717, 1718, 1720, 1722, 704]))
+          GROUP BY (btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text))), p.id, (public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer))) sub
+  WITH NO DATA;
+
+
+--
 -- Name: accion accion_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9873,14 +10019,6 @@ ALTER TABLE ONLY public.sivel2_gen_pconsolidado
 
 ALTER TABLE ONLY public.perfilmigracion
     ADD CONSTRAINT perfilmigracion_pkey PRIMARY KEY (id);
-
-
---
--- Name: sip_persona persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_persona
-    ADD CONSTRAINT persona_pkey PRIMARY KEY (id);
 
 
 --
@@ -11242,6 +11380,41 @@ CREATE INDEX sip_persona_tdocumento_id_idx ON public.sip_persona USING btree (td
 
 
 --
+-- Name: sip_ubicacionpre_clase_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_ubicacionpre_clase_id_idx ON public.sip_ubicacionpre USING btree (pais_id);
+
+
+--
+-- Name: sip_ubicacionpre_departamento_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_ubicacionpre_departamento_id_idx ON public.sip_ubicacionpre USING btree (departamento_id);
+
+
+--
+-- Name: sip_ubicacionpre_municipio_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_ubicacionpre_municipio_id_idx ON public.sip_ubicacionpre USING btree (municipio_id);
+
+
+--
+-- Name: sip_ubicacionpre_pais_id_departamento_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_ubicacionpre_pais_id_departamento_id_idx ON public.sip_ubicacionpre USING btree (clase_id);
+
+
+--
+-- Name: sip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx ON public.sip_ubicacionpre USING btree (tsitio_id);
+
+
+--
 -- Name: sivel2_gen_obs_fildep_d_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11288,6 +11461,62 @@ CREATE UNIQUE INDEX sivel2_sjr_casosjr_contacto_idx ON public.sivel2_sjr_casosjr
 --
 
 CREATE UNIQUE INDEX sivel2_sjr_casosjr_id_caso_idx ON public.sivel2_sjr_casosjr USING btree (id_caso);
+
+
+--
+-- Name: sivel2_sjr_desplazamiento_expulsionubicacionpre_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_desplazamiento_expulsionubicacionpre_id_idx ON public.sivel2_sjr_desplazamiento USING btree (expulsionubicacionpre_id);
+
+
+--
+-- Name: sivel2_sjr_desplazamiento_fechaexpulsion_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_desplazamiento_fechaexpulsion_idx ON public.sivel2_sjr_desplazamiento USING btree (fechaexpulsion);
+
+
+--
+-- Name: sivel2_sjr_desplazamiento_fechallegada_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_desplazamiento_fechallegada_idx ON public.sivel2_sjr_desplazamiento USING btree (fechallegada);
+
+
+--
+-- Name: sivel2_sjr_desplazamiento_llegadaubicacionpre_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_desplazamiento_llegadaubicacionpre_id_idx ON public.sivel2_sjr_desplazamiento USING btree (llegadaubicacionpre_id);
+
+
+--
+-- Name: sivel2_sjr_migracion_fechallegada_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_migracion_fechallegada_idx ON public.sivel2_sjr_migracion USING btree (fechallegada);
+
+
+--
+-- Name: sivel2_sjr_migracion_fechasalida_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_migracion_fechasalida_idx ON public.sivel2_sjr_migracion USING btree (fechasalida);
+
+
+--
+-- Name: sivel2_sjr_migracion_llegadaubicacionpre_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_migracion_llegadaubicacionpre_id_idx ON public.sivel2_sjr_migracion USING btree (llegadaubicacionpre_id);
+
+
+--
+-- Name: sivel2_sjr_migracion_salidaubicacionpre_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_sjr_migracion_salidaubicacionpre_id_idx ON public.sivel2_sjr_migracion USING btree (salidaubicacionpre_id);
 
 
 --
@@ -15153,6 +15382,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210501112541'),
 ('20210505135714'),
 ('20210509193202'),
+('20210510192357'),
 ('20210514201449'),
 ('20210524121112'),
 ('20210531223906'),
@@ -15177,5 +15407,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210823162357'),
 ('20210825202135'),
 ('20210921111350'),
+('20210921194018'),
 ('20210924022913');
-('20210921194018');
+
+
