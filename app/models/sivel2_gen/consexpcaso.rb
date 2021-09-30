@@ -5,8 +5,15 @@ require 'sivel2_sjr/concerns/models/consexpcaso'
 class Sivel2Gen::Consexpcaso < ActiveRecord::Base
   include Sivel2Sjr::Concerns::Models::Consexpcaso
   
+  def self.edad_familiar(tiempo, numfamiliar)
+    r= "(SELECT #{tiempo} 
+           FROM public.sip_persona AS persona, 
+           public.sivel2_gen_victima AS victima WHERE persona.id=victima.id_persona 
+         AND victima.id_caso=caso.id LIMIT 1 OFFSET #{numfamiliar})"
+  end
+
   def self.consulta_consexpcaso
-        "SELECT conscaso.caso_id,
+      c= "SELECT conscaso.caso_id,
         conscaso.fecharec AS fecharecepcion,
         conscaso.nusuario AS asesor,
         conscaso.oficina,
@@ -27,8 +34,28 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
           CAST(EXTRACT(YEAR FROM conscaso.fecharec) AS INTEGER),
           CAST(EXTRACT(MONTH FROM conscaso.fecharec) AS INTEGER),
           CAST(EXTRACT(DAY FROM conscaso.fecharec) AS INTEGER))
-          AS contacto_edad_fecha_recepcion,
-        (SELECT nombre FROM public.sivel2_gen_rangoedad 
+          AS contacto_edad_fecha_recepcion,"
+        [1, 2, 3, 4, 5].each do |num| 
+          c+= "sip_edad_de_fechanac_fecharef(" + 
+            edad_familiar('anionac', num) + ',' +
+            edad_familiar('mesnac', num) + ',' +
+            edad_familiar('dianac', num) + ',' +
+            "CAST(EXTRACT(YEAR FROM conscaso.fecharec) AS INTEGER),
+            CAST(EXTRACT(MONTH FROM conscaso.fecharec) AS INTEGER),
+            CAST(EXTRACT(DAY FROM conscaso.fecharec) AS INTEGER))
+            AS familiar#{num}_edad_fecha_recepcion,
+
+            sip_edad_de_fechanac_fecharef(" +
+            edad_familiar('anionac', num) + ',' +
+            edad_familiar('mesnac', num) + ',' +
+            edad_familiar('dianac', num) + ',' +
+            "CAST(EXTRACT(YEAR FROM ultimaatencion_fecha) AS INTEGER),
+            CAST(EXTRACT(MONTH FROM ultimaatencion_fecha) AS INTEGER),
+            CAST(EXTRACT(DAY FROM ultimaatencion_fecha) AS INTEGER))
+            AS familiar#{num}_edad_ultimaatencion,
+          "
+        end
+        c+= "(SELECT nombre FROM public.sivel2_gen_rangoedad 
           WHERE fechadeshabilitacion IS NULL 
           AND limiteinferior<=
             sip_edad_de_fechanac_fecharef(
@@ -193,7 +220,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
           FROM public.sip_persona AS persona, 
           public.sivel2_gen_victima AS victima WHERE persona.id=victima.id_persona 
           AND victima.id_caso=caso.id), ', ')
-        AS victimas, 
+        AS victimas,
         ARRAY_TO_STRING(ARRAY(SELECT departamento.nombre ||  ' / ' 
           || municipio.nombre 
           FROM public.sip_ubicacion AS ubicacion 
@@ -515,7 +542,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     cvictimasjrdoble = [
          'maternidad', 'estadocivil', 'discapacidad', 'rolfamilia', 
          'regimensalud', 'escolaridad']
-    especiales = ['actividadoficio', 'numeroanexos', 'numeroanexosconsen']
+    especiales = ['actividadoficio', 'numeroanexos', 'numeroanexosconsen', 'edad_fecha_recepcion', 'edad_ultimaatencion']
     orientaciones = Sip::Persona::ORIENTACION_OPCIONES
     m = /familiar(.*)$/.match(atr.to_s)
     if m
@@ -568,6 +595,9 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
             when 'numeroanexosconsen'
               return Sivel2Gen::AnexoVictima.where(
                 victima_id: victimaf.id, tipoanexo_id: 11).count.to_s
+            when 'edad_fecha_recepcion'
+              byebug 
+            when 'edad_ultimaatencion'
             end
           end
         else
