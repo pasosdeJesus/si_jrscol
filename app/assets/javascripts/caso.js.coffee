@@ -237,11 +237,11 @@ $(document).on('change',
     nd = elem.parent().parent().parent().find("input[id$=_numerodocumento]")
     if (data.ayuda == null)
       ini = 'Si el tipo de documento es cédula de ciudadanía teclee solo dígitos'
-      nd.attr('data-toggle', 'tooltip')
-      nd.attr("data-original-title", ini)
+      nd.attr('data-bs-toggle', 'tooltip')
+      nd.attr("data-bs-original-title", ini)
     else
-      nd.attr('data-toggle', 'tooltip') 
-      nd.attr("data-original-title", data.ayuda)
+      nd.attr('data-bs-toggle', 'tooltip') 
+      nd.attr("data-bs-original-title", data.ayuda)
       $(nd).tooltip({track: true})
   )
 
