@@ -39,8 +39,9 @@ module Cor1440Gen
     def set_actividad
       @actividadpf = @registro = nil
       if params && params[:id] && params[:id].to_i > 0 && 
-        Cor1440Gen::Actividadpf.where(id: params[:id].to_i).count > 0
-      	@actividadpf = @registro = Cor1440Gen::Actividadpf.find(params[:id].to_i)
+          Cor1440Gen::Actividadpf.where(id: params[:id].to_i).count > 0
+        @actividadpf = @registro = 
+          Cor1440Gen::Actividadpf.find(params[:id].to_i)
       end
     end
 

@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 1cc8006aa3e0e003cafe782ce06e1eb772276778
+  revision: b84d070fb3509a6a7a8a538bb4b5b06532253a09
   branch: main
   specs:
     cor1440_gen (1.0b5)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 8b8d162027ad1629558a656835f03960702ac5c4
+  revision: f36a8528c1f2ab7d7b0d97d0e2ebfbc71406ba9b
   branch: main
   specs:
     heb412_gen (1.0.b7)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 2a57fde4367fb8a0f261c887729513a3e89b0ba3
+  revision: 1b01105e7bf65b40aef9e6798e2363518a01a13d
   branch: main
   specs:
     mr519_gen (0.2.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 29f2fe346d840702c5aa8ce2181ffac24ced834c
+  revision: 2078a5036ebaf850db3d0e1a77c2977cf74158b4
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: d7b95a389ef2cc162b9930e03b5daff93851ef36
+  revision: e12e9caf61a9ec922c63b47bc3e505ead985c4fa
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: fc0c02a222b72d2e5e6b4100450911b3b68d9ed3
+  revision: bfda0ace6af60e5df39fe62f85359ef4d67179fe
   branch: main
   specs:
     sip (2.0.b12)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: e5f1960b82b5c54d92fe0bc48a1bd2d2324c2948
+  revision: 3ee18832bd20f237ebaa3f6f6ba58dcdd83988dd
   branch: main
   specs:
     sivel2_gen (2.0b16)
@@ -91,7 +91,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 55f60621615be83943b21f6bb2a812da2fdcde80
+  revision: 0c833cd06a72ff2994c854738a58e8deba1c768d
   branch: main
   specs:
     sivel2_sjr (2.0b11)
@@ -172,7 +172,7 @@ GEM
     andand (1.3.3)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.9.0)
+    bootsnap (1.9.1)
       msgpack (~> 1.0)
     bootstrap-datepicker-rails (1.9.0.1)
       railties (>= 3.0)
@@ -241,7 +241,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    marcel (1.0.1)
+    marcel (1.0.2)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
@@ -254,7 +254,7 @@ GEM
     minitest (5.14.4)
     msgpack (1.4.2)
     nio4r (2.5.8)
-    nokogiri (1.12.4)
+    nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     odf-report (0.7.2)
@@ -284,7 +284,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (4.0.6)
-    puma (5.4.0)
+    puma (5.5.0)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
@@ -395,7 +395,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webpacker (6.0.0.rc.5)
+    webpacker (6.0.0.rc.1)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -462,8 +462,8 @@ DEPENDENCIES
   tzinfo
   unicorn
   web-console
-  webpacker (~> 6.0.0.rc.1)
+  webpacker (= 6.0.0.rc.1)
   will_paginate
 
 BUNDLED WITH
-   2.2.25
+   2.2.28

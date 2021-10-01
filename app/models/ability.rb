@@ -161,6 +161,8 @@ class Ability < Sivel2Sjr::Ability
     'cabezafamilia',
     'dianac',
     'discapacidad',
+    'edad_fecha_recepcion',
+    'edad_ultimaatencion',
     'estadocivil',
     'escolaridad',
     'filiacion',
@@ -596,12 +598,13 @@ class Ability < Sivel2Sjr::Ability
 
     'Benefactividadpf' => {
       campos: [
-       :beneficiario,
-       :sexo,
-       :rangoedad,
-       :actividadespf
+       :persona_nombre,
+       :edad_en_actividad,
+       :persona_identificacion,
+       :persona_sexo,
+       :rangoedadac_nombre
       ],
-      controlador: '::Benefesactividadpf',
+      controlador: '::BenefesactividadpfController',
       ruta: '/conteos/benefactividadpf'
     },
 
@@ -684,9 +687,7 @@ class Ability < Sivel2Sjr::Ability
         :contacto_comosupo,
         :contacto_consentimientosjr,
         :contacto_consentimientobd,
-        :contacto_edad_fecha_recepcion,
         :contacto_edad_fecha_salida,
-        :contacto_edad_ultimaatencion,
         :contacto_rangoedad_fecha_recepcion,
         :contacto_rangoedad_fecha_salida,
         :contacto_rangoedad_ultimaatencion,
