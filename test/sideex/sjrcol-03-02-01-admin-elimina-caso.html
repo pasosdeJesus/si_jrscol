@@ -17,13 +17,27 @@
 </tr>
 <tr><td>clickAt</td><td>link=Editar<datalist><option>link=Editar</option><option>//a[contains(text(),'Editar')]</option><option>//a[contains(@href, '/actividades/1011/edita')]</option><option>//div/div/a[2]</option></datalist></td><td>36,20</td>
 </tr>
-<tr><td>clickAt</td><td>link=Listado de asistencia<datalist><option>link=Listado de asistencia</option><option>css=#listadoasistencia &gt; h6.mb-0 &gt; a.collapsed</option><option>//a[contains(text(),'Listado de asistencia')]</option><option>//div[@id='listadoasistencia']/h6/a</option><option>//div[12]/div/div/div/h6/a</option></datalist></td><td>72,6</td>
-</tr>
-<tr><td>clickAt</td><td>link=Listado de casos (grupos familiares) beneficiarios<datalist><option>link=Listado de casos (grupos familiares) beneficiarios</option><option>css=#listadocasos &gt; h6.mb-0 &gt; a.collapsed</option><option>//a[contains(text(),'Listado de casos (grupos familiares) beneficiarios')]</option><option>//div[@id='listadocasos']/h6/a</option><option>//div[11]/div/div/div/h6/a</option></datalist></td><td>187,11</td>
+<tr><td>clickAt</td><td>css=#enc_listadocasos &gt; #enc_listadocasos<datalist><option>css=#enc_listadocasos &gt; #enc_listadocasos</option><option>//button[@id='enc_listadocasos']</option><option>//h5[@id='enc_listadocasos']/button</option><option>//div[11]/div/h5/button</option></datalist></td><td>175,22</td>
 </tr>
 <tr><td>clickAt</td><td>xpath=(//a[contains(text(),'Eliminar')])[2]<datalist><option>xpath=(//a[contains(text(),'Eliminar')])[2]</option><option>//tbody[@id='actividad_casosjr']/tr/td[9]/a</option><option>xpath=(//a[contains(@href, '#')])[9]</option><option>//td[9]/a</option></datalist></td><td>29,12</td>
 </tr>
-<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='actividad_proyecto_ids_chosen']/ul/li/a</option><option>//div/div/ul/li/a</option></datalist></td><td>9,8</td>
+<tr><td>clickAt</td><td>xpath=(//a[contains(text(),'Eliminar')])[2]<datalist><option>xpath=(//a[contains(text(),'Eliminar')])[2]</option><option>//tbody[@id='actividad_casosjr']/tr/td[9]/a</option><option>xpath=(//a[contains(@href, '#')])[9]</option><option>//td[9]/a</option></datalist></td><td>29,12</td>
+</tr>
+<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='actividad_proyecto_ids_chosen']/ul/li/a</option><option>//div[6]/div/div/ul/li/a</option></datalist></td><td>9,11</td>
+</tr>
+<tr><td>clickAt</td><td>xpath=(//a[contains(text(),'Eliminar')])[2]<datalist><option>xpath=(//a[contains(text(),'Eliminar')])[2]</option><option>//tbody[@id='actividad_casosjr']/tr/td[9]/a</option><option>xpath=(//a[contains(@href, '#')])[9]</option><option>//td[9]/a</option></datalist></td><td>29,12</td>
+</tr>
+<tr><td></td><td><datalist><option></option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='actividad_proyecto_ids_chosen']/ul/li/a</option><option>//div[6]/div/div/ul/li/a</option></datalist></td><td>9,11</td>
+</tr>
+<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='actividad_proyecto_ids_chosen']/ul/li/a</option><option>//div[6]/div/div/ul/li/a</option></datalist></td><td>9,11</td>
+</tr>
+<tr><td>clickAt</td><td>xpath=(//a[contains(text(),'Eliminar')])[2]<datalist><option>xpath=(//a[contains(text(),'Eliminar')])[2]</option><option>//tbody[@id='actividad_casosjr']/tr/td[9]/a</option><option>xpath=(//a[contains(@href, '#')])[9]</option><option>//td[9]/a</option></datalist></td><td>29,12</td>
+</tr>
+<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='actividad_proyecto_ids_chosen']/ul/li/a</option><option>//div[6]/div/div/ul/li/a</option></datalist></td><td>9,11</td>
+</tr>
+<tr><td>close</td><td>win_ser_local<datalist><option>win_ser_local</option></datalist></td><td></td>
 </tr>
 <tr><td>clickAt</td><td>//div[@id='actividad_actividad_proyectofinanciero_attributes_0_actividadpf_ids_chosen']/ul/li[5]/a<datalist><option>//div[@id='actividad_actividad_proyectofinanciero_attributes_0_actividadpf_ids_chosen']/ul/li[5]/a</option><option>//li[5]/a</option></datalist></td><td>3,5</td>
 </tr>
@@ -44,6 +58,14 @@
 <tr><td>esperaAsercionTexto5s</td><td>css=h1<datalist><option>id=caso_acto_id_persona_461</option><option>name=caso_acto_id_persona_461[]</option><option>css=#caso_acto_id_persona_461</option><option>//select[@id='caso_acto_id_persona_461']</option><option>//table[@id='actos_tabla_461']/tbody/tr/td[3]/div/select</option><option>//td[3]/div/select</option><option>css=h1</option></datalist></td><td>Actividad</td>
 </tr>
 <tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Cor1440Gen::Actividad eliminada.</td>
+</tr>
+<tr><td>clickAt</td><td>link=Listado de asistencia<datalist><option>link=Listado de asistencia</option><option>css=#listadoasistencia &gt; h6.mb-0 &gt; a.collapsed</option><option>//a[contains(text(),'Listado de asistencia')]</option><option>//div[@id='listadoasistencia']/h6/a</option><option>//div[12]/div/div/div/h6/a</option></datalist></td><td>72,6</td>
+</tr>
+<tr><td>clickAt</td><td>link=Listado de casos (grupos familiares) beneficiarios<datalist><option>link=Listado de casos (grupos familiares) beneficiarios</option><option>css=#listadocasos &gt; h6.mb-0 &gt; a.collapsed</option><option>//a[contains(text(),'Listado de casos (grupos familiares) beneficiarios')]</option><option>//div[@id='listadocasos']/h6/a</option><option>//div[11]/div/div/div/h6/a</option></datalist></td><td>187,11</td>
+</tr>
+<tr><td>clickAt</td><td>css=a.search-choice-close<datalist><option>css=a.search-choice-close</option><option>//div[@id='actividad_proyecto_ids_chosen']/ul/li/a</option><option>//div/div/ul/li/a</option></datalist></td><td>9,8</td>
+</tr>
+<tr><td>esperaAsercionTexto5s</td><td>css=h1<datalist><option>css=h1</option><option>id=caso_acto_id_persona_461</option><option>name=caso_acto_id_persona_461[]</option><option>css=#caso_acto_id_persona_461</option><option>//select[@id='caso_acto_id_persona_461']</option><option>//table[@id='actos_tabla_461']/tbody/tr/td[3]/div/select</option><option>//td[3]/div/select</option></datalist></td><td>Actividad</td>
 </tr>
 </tbody></table>
 </body>
