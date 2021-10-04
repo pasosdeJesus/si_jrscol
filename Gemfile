@@ -68,8 +68,7 @@ gem 'twitter_cldr' # ICU con CLDR
 
 gem 'tzinfo' # Zonas horarias
 
-gem 'webpacker', 
-  git: 'https://github.com/rails/webpacker'
+gem 'webpacker', '6.0.0.rc.1'
 
 gem 'will_paginate' # Listados en páginas
 
@@ -137,6 +136,8 @@ end
 group :test do
 
   gem 'capybara'
+
+  gem 'rails-controller-testing'
 
   gem 'selenium-webdriver' # Pruebas de regresión que no requieren javascript
 

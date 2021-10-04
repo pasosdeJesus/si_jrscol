@@ -415,6 +415,8 @@ class Sivel2Sjr::ConteosController < ApplicationController
     pFafin = param_escapa([:filtro, 'fechafin'])
     pOficina = param_escapa([:filtro, 'oficina_id'])
     pOrdenar = param_escapa([:filtro, 'ordenar'])
+    pSexo = param_escapa([:filtro, 'bussexo'])
+    pRangoedadId = param_escapa([:filtro, 'busrangoedad_id'])
 
     if pOrdenar == 'SEXO'
         cord = "3, 5 DESC, 1"
@@ -446,9 +448,19 @@ class Sivel2Sjr::ConteosController < ApplicationController
       where = consulta_and(where, 'casosjr.oficina_id', pOficina)
     end
 
+    if (pSexo != '')
+      where = consulta_and(where, 'persona.sexo', pSexo)
+    end
+
+    if (pRangoedadId != '')
+      where = consulta_and(where, 'victima.id_rangoedad', pRangoedadId.to_i)
+    end
+
+
+
     @cuerpotabla = ActiveRecord::Base.connection.select_all(
       "SELECT victima.id_caso, persona.id AS persona, 
-        persona.sexo, rangoedad.rango as rangoedad,
+        persona.sexo, rangoedad.nombre as rangoedad,
         COUNT(desplazamiento.id) as cuenta
       FROM sivel2_gen_victima AS victima, 
         sip_persona AS persona, 
@@ -461,6 +473,10 @@ class Sivel2Sjr::ConteosController < ApplicationController
     )
     @enctabla = ['Caso', 'Cod. Persona', 'Sexo', 'Rango de Edad', 'N. Desplazamientos']
     @coltotales = []
+    @filtrostab = {
+      'Sexo' => 'des_sexo',
+      'Rango de Edad' => 'des_rangoedad_id'
+    }
 
     respond_to do |format|
       format.html { }

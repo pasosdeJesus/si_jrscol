@@ -164,7 +164,7 @@ $(document).on('click', 'a.fichacambia[href^="#desplazamiento"]', (e) ->
   if hijos > 0
     iditem = nombrecampo + 'colapsable' + id
     objeto.find('h3.tituloenlace').text('Integrante ' + id)
-    objeto.find('a.itemvictima').attr('data-toggle', 'collapse')
+    objeto.find('a.itemvictima').attr('data-bs-toggle', 'collapse')
     objeto.find('a.itemvictima').attr('href', '#' + iditem)
     objeto.find('div.divcolapse').attr('id', iditem)
 
@@ -237,11 +237,11 @@ $(document).on('change',
     nd = elem.parent().parent().parent().find("input[id$=_numerodocumento]")
     if (data.ayuda == null)
       ini = 'Si el tipo de documento es cédula de ciudadanía teclee solo dígitos'
-      nd.attr('data-toggle', 'tooltip')
-      nd.attr("data-original-title", ini)
+      nd.attr('data-bs-toggle', 'tooltip')
+      nd.attr("data-bs-original-title", ini)
     else
-      nd.attr('data-toggle', 'tooltip') 
-      nd.attr("data-original-title", data.ayuda)
+      nd.attr('data-bs-toggle', 'tooltip') 
+      nd.attr("data-bs-original-title", data.ayuda)
       $(nd).tooltip({track: true})
   )
 

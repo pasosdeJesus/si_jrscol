@@ -1,11 +1,11 @@
 require 'sivel2_sjr/concerns/models/desplazamiento'
-require 'accesores_ubicacionpre'
+require 'sip/accesores_ubicacionpre'
 
 module Sivel2Sjr
   class Desplazamiento < ActiveRecord::Base
     include Sivel2Sjr::Concerns::Models::Desplazamiento
 
-    extend ::AccesoresUbicacionpre
+    extend Sip::AccesoresUbicacionpre
 
     accesores_ubicacionpre :destino
 

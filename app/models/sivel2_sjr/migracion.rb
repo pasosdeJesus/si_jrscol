@@ -1,8 +1,8 @@
-require 'accesores_ubicacionpre'
+require 'sip/accesores_ubicacionpre'
 
 class Sivel2Sjr::Migracion < ActiveRecord::Base
 
-  extend ::AccesoresUbicacionpre
+  extend Sip::AccesoresUbicacionpre
 
   accesores_ubicacionpre :destino
 

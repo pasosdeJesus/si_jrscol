@@ -16,9 +16,9 @@ conexion.execute('SET search_path TO "$user", public')
 
 # Usuario inicial: sjrcol con clave sjrcol123
 conexion.execute("INSERT INTO public.usuario 
-	(nusuario, email, encrypted_password, password, 
+	(id, nusuario, email, encrypted_password, password, 
   fechacreacion, created_at, updated_at, rol) 
-	VALUES ('sjrcol', 'sjrcol@localhost.org', 
+	VALUES (1, 'sjrcol', 'sjrcol@localhost.org', 
 	'$2a$10$qoo7Sh6ZoxplKPygeF2JDePwnpA1AhhkNUXkqOVy2YXK2jcs/BQU.', 
 	'', '2014-01-12', '2013-12-24', '2013-12-24', 1);")
 

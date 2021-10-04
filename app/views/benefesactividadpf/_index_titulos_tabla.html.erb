@@ -1,0 +1,9 @@
+<% atrs_humanos  = ['persona_nombre', 'persona_identificacion', 'persona_sexo', 'persona_id', 'edad_en_actividad', 'rangoedadac_nombre']%>
+<% atributos_index.each do |atr| %>
+  <% if atrs_humanos.include? atr %>
+    <th><%= Benefactividadpf.human_attribute_name(atr)%></th>
+  <% else %>
+    <th><%= atr %></th>
+  <%  end %>
+<% end %>
+

@@ -1,0 +1,39 @@
+<div class='row'>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+
+        <% Cor1440Gen::ActividadesController.posibles_nuevaresp.each do |idc, lnomc| %>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="<%= idc %>">
+            <label class="form-check-label" for="<%= idc %>"><%= lnomc[0] %></label>
+          </div> <!-- form-check -->
+        <% end %>
+      </div> <!-- card-body -->
+    </div> <!-- card -->
+  </div> <!-- col-md-8 -->
+
+  <div class="col-md-2">
+    <%= select_tag('nsegresp_proyectofinanciero_id', 
+                   options_from_collection_for_select(
+                     Cor1440Gen::Proyectofinanciero.where("DATE(fechacierre) > ?", Date.today).where('fechainicio < ?', Date.today), 
+                     'id', 'nombre'), class: 'chosen-select',
+                    :include_blank => true ) %>
+  </div>
+  <div class="col-md-2">
+    <% if can?(:edit, f.object) %>
+      <% elem = Cor1440Gen::ActividadesController.posibles_nuevaresp.keys + 
+        ['nsegresp_proyectofinanciero_id'] %>
+      <% lfun = "jrs_agrega_paramscv(this,  [" +
+        elem.map {|cv| "'#{cv}'"}.join(", ") + "], " + 
+        Cor1440Gen::ActividadesController.datos_nuevaresp(
+          f.object, controller).to_json + ")" %>
+      <%= link_to 'Nueva respuesta/seguimiento',
+        cor1440_gen.new_actividad_path,
+        target: '_blank',
+        class: 'btn btn-sm',
+        onclick: lfun %>
+    <% end %>
+  </div>
+</div> <!-- row -->
+

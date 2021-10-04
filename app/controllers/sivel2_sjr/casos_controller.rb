@@ -304,6 +304,7 @@ module Sivel2Sjr
           end
         end
       end
+
       update_sivel2_sjr
     end
 

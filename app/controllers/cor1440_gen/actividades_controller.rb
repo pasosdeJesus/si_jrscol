@@ -20,7 +20,11 @@ module Cor1440Gen
         ahumanitaria: ['Asistenia humanitaria', 116],
         ojuridica: ['Orientación jurídica', 118],
         ajuridica: ['Accion Jurídica', 125],
-        oservicios: ['Otros servicios y asesorias', 126]
+        oservicios: ['Otros servicios y asesorias', 126],
+        apsicosocial: ['Acompañamiento psicosocial', 70],
+        capsemilla: ['Entrega de Capital Semilla', 45],
+        formacion: ['Formación o Capacitación', 51],
+        siniciativa: ['Seguimiento a Iniciativa', 156],
       } 
     end
 
@@ -130,6 +134,11 @@ module Cor1440Gen
       edit_cor1440_gen
       @listadoasistencia = true
       render layout: 'application'
+    end
+
+
+    def destroy
+      destroy_cor1440_gen
     end
 
 

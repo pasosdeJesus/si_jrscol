@@ -124,12 +124,14 @@ class Ability < Sivel2Sjr::Ability
 
   def basicas_id_noauto
     Sip::Ability::BASICAS_ID_NOAUTO +
-      Sivel2Gen::Ability::BASICAS_ID_NOAUTO
+      Sivel2Gen::Ability::BASICAS_ID_NOAUTO +
+      Cor1440Gen::Ability::BASICAS_ID_NOAUTO
   end
 
   def nobasicas_indice_seq_con_id
     Sip::Ability::NOBASICAS_INDSEQID +
-      Sivel2Gen::Ability::NOBASICAS_INDSEQID
+      Sivel2Gen::Ability::NOBASICAS_INDSEQID + 
+      Cor1440Gen::Ability::NOBASICAS_INDSEQID
   end
 
   def tablasbasicas_prio
@@ -159,6 +161,8 @@ class Ability < Sivel2Sjr::Ability
     'cabezafamilia',
     'dianac',
     'discapacidad',
+    'edad_fecha_recepcion',
+    'edad_ultimaatencion',
     'estadocivil',
     'escolaridad',
     'filiacion',
@@ -592,6 +596,17 @@ class Ability < Sivel2Sjr::Ability
       ruta: '/orgsocial'
     },
 
+    'Benefactividadpf' => {
+      campos: [
+       :persona_nombre,
+       :edad_en_actividad,
+       :persona_identificacion,
+       :persona_sexo,
+       :rangoedadac_nombre
+      ],
+      controlador: '::BenefesactividadpfController',
+      ruta: '/conteos/benefactividadpf'
+    },
 
     'Caso' => {
       campos: 
@@ -672,9 +687,7 @@ class Ability < Sivel2Sjr::Ability
         :contacto_comosupo,
         :contacto_consentimientosjr,
         :contacto_consentimientobd,
-        :contacto_edad_fecha_recepcion,
         :contacto_edad_fecha_salida,
-        :contacto_edad_ultimaatencion,
         :contacto_rangoedad_fecha_recepcion,
         :contacto_rangoedad_fecha_salida,
         :contacto_rangoedad_ultimaatencion,
@@ -878,6 +891,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
+        can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
 
         can :manage, Sivel2Gen::Acto
@@ -887,6 +901,7 @@ class Ability < Sivel2Sjr::Ability
         can :new, Sivel2Gen::Caso
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
       when Ability::ROLANALI
@@ -904,15 +919,17 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
+        can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
 
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso
         can :new, Sivel2Gen::Caso
-        can [:update, :create, :destroy, :edit], Sivel2Gen::Caso,
-          casosjr: { oficina_id: usuario.oficina_id }
+        can [:fichaimp, :fichapdf, :update, :create, :destroy, :edit], 
+          Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
       when Ability::ROLCOOR
         can :manage, Cor1440Gen::Informe
@@ -931,10 +948,11 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso
         can :new, Sivel2Gen::Caso
-        can [:update, :create, :destroy, :poneretcomp], Sivel2Gen::Caso,
-          casosjr: { oficina_id: usuario.oficina_id }
+        can [:fichaimp, :fichapdf, :update, :create, :destroy, :poneretcomp], 
+          Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
       when Ability::ROLADMIN, Ability::ROLDIR
@@ -965,6 +983,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
 
         can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
         can :manage, Usuario
