@@ -49,9 +49,9 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
             edad_familiar('anionac', num) + ',' +
             edad_familiar('mesnac', num) + ',' +
             edad_familiar('dianac', num) + ',' +
-            "CAST(EXTRACT(YEAR FROM ultimaatencion_fecha) AS INTEGER),
-            CAST(EXTRACT(MONTH FROM ultimaatencion_fecha) AS INTEGER),
-            CAST(EXTRACT(DAY FROM ultimaatencion_fecha) AS INTEGER))
+            "CAST(EXTRACT(YEAR FROM conscaso.ultimaatencion_fecha) AS INTEGER),
+            CAST(EXTRACT(MONTH FROM conscaso.ultimaatencion_fecha) AS INTEGER),
+            CAST(EXTRACT(DAY FROM conscaso.ultimaatencion_fecha) AS INTEGER))
             AS familiar#{num}_edad_ultimaatencion,
           "
         end
