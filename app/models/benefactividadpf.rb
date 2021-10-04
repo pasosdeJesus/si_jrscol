@@ -95,9 +95,14 @@ class Benefactividadpf < ActiveRecord::Base
          COALESCE(p.numerodocumento, '')) AS persona_identificacion,
        p.sexo AS persona_sexo" 
        if actividadespf.count > 0
-         c+= ", "   
-         actividadespf.each do |apf|
+         c+= ", "
+         codigos = []
+         actividadespf.each.with_index(1) do |apf, ind|
            cod = apf.objetivopf.numero + apf.resultadopf.numero + apf.nombrecorto
+           if codigos.include? cod 
+             cod = cod + "_" + ind.to_s 
+           end
+           codigos.push(cod)
            c+='(
                  SELECT COUNT(*) FROM cor1440_gen_asistencia AS asistencia
                  JOIN cor1440_gen_actividad_actividadpf AS aapf ON aapf.actividad_id=asistencia.actividad_id
