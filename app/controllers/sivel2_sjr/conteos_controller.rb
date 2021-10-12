@@ -159,8 +159,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
       'ayudasjr' => 'Ayuda Humanitaria del SJR',
       'derecho' => 'Derecho vulnerado',
       'motivosjr' => 'Servicio/Asesoria del SJR',
-      'progestado' => 'Subsidio/Programa del Estado',
-      'remision' => 'Remisión a otras organizaciones'
+      'progestado' => 'Subsidio/Programa del Estado'
     }, 'ayudaestado', 'Respuestas y Derechos vulnerados']
 
   end
