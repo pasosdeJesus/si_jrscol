@@ -2574,6 +2574,39 @@ ALTER SEQUENCE public.cor1440_gen_valorcampotind_id_seq OWNED BY public.cor1440_
 
 
 --
+-- Name: mr519_gen_valorcampo; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mr519_gen_valorcampo (
+    id bigint NOT NULL,
+    campo_id integer NOT NULL,
+    valor character varying(5000),
+    respuestafor_id integer NOT NULL,
+    valorjson json
+);
+
+
+--
+-- Name: cres1; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cres1 AS
+ SELECT sub.actividad_id,
+    sub.fecha,
+    sub.oficina_id,
+    sub.ayudasjr_id
+   FROM ( SELECT DISTINCT a.id AS actividad_id,
+            a.fecha,
+            a.oficina_id,
+            json_array_elements_text(v.valorjson) AS ayudasjr_id
+           FROM ((public.mr519_gen_valorcampo v
+             JOIN public.cor1440_gen_actividad_respuestafor ar ON ((ar.respuestafor_id = v.respuestafor_id)))
+             JOIN public.cor1440_gen_actividad a ON ((a.id = ar.actividad_id)))
+          WHERE (v.campo_id = 110)) sub
+  WHERE ((sub.fecha >= '2019-12-01'::date) AND (sub.fecha <= '2021-12-31'::date) AND (sub.oficina_id = 1) AND (sub.ayudasjr_id IS NOT NULL) AND (sub.ayudasjr_id <> ''::text));
+
+
+--
 -- Name: respuesta_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2586,11 +2619,11 @@ CREATE SEQUENCE public.respuesta_seq
 
 
 --
--- Name: sivel2_sjr_ayudaestado_respuesta; Type: TABLE; Schema: public; Owner: -
+-- Name: sivel2_sjr_derecho_respuesta; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sivel2_sjr_ayudaestado_respuesta (
-    id_ayudaestado integer DEFAULT 0 NOT NULL,
+CREATE TABLE public.sivel2_sjr_derecho_respuesta (
+    id_derecho integer DEFAULT 9 NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     id_respuesta integer NOT NULL
@@ -2641,34 +2674,6 @@ CREATE TABLE public.sivel2_sjr_respuesta (
 
 
 --
--- Name: cres1; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.cres1 AS
- SELECT caso.id AS id_caso,
-    respuesta.fechaatencion,
-    casosjr.oficina_id,
-    ayudaestado_respuesta.id_ayudaestado
-   FROM public.sivel2_gen_caso caso,
-    public.sivel2_sjr_casosjr casosjr,
-    public.sivel2_sjr_respuesta respuesta,
-    public.sivel2_sjr_ayudaestado_respuesta ayudaestado_respuesta
-  WHERE ((caso.id = casosjr.id_caso) AND (caso.id = respuesta.id_caso) AND (respuesta.id = ayudaestado_respuesta.id_respuesta));
-
-
---
--- Name: sivel2_sjr_derecho_respuesta; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_derecho_respuesta (
-    id_derecho integer DEFAULT 9 NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_respuesta integer NOT NULL
-);
-
-
---
 -- Name: cvp1; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -2689,6 +2694,18 @@ CREATE VIEW public.cvp1 AS
 CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
     ayudaestado_id integer,
     derecho_id integer
+);
+
+
+--
+-- Name: sivel2_sjr_ayudaestado_respuesta; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_ayudaestado_respuesta (
+    id_ayudaestado integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_respuesta integer NOT NULL
 );
 
 
@@ -3990,19 +4007,6 @@ CREATE SEQUENCE public.mr519_gen_respuestafor_id_seq
 --
 
 ALTER SEQUENCE public.mr519_gen_respuestafor_id_seq OWNED BY public.mr519_gen_respuestafor.id;
-
-
---
--- Name: mr519_gen_valorcampo; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.mr519_gen_valorcampo (
-    id bigint NOT NULL,
-    campo_id integer NOT NULL,
-    valor character varying(5000),
-    respuestafor_id integer NOT NULL,
-    valorjson json
-);
 
 
 --
@@ -6280,7 +6284,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 635)
+          WHERE (sivel2_gen_conscaso.caso_id = 102)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
