@@ -692,7 +692,6 @@ class Ability < Sivel2Sjr::Ability
         :contacto_rangoedad_fecha_salida,
         :contacto_rangoedad_ultimaatencion,
         :contacto,
-        :descripcion,
         :direccion,
         :expulsion,
         :fechadespemb,
