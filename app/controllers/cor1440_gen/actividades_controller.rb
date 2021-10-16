@@ -136,6 +136,41 @@ module Cor1440Gen
       render layout: 'application'
     end
 
+    # Responde a DELETE
+    def destroy_cor1440_gen
+      pf_act = Cor1440Gen::ActividadProyectofinanciero.
+        where(actividad_id: @registro.id)
+      if pf_act.count > 0
+        pf_act[0].destroy!
+      end
+      rpb = @registro.respuestafor_ids
+      puts "** OJO por borrar respuestafor: #{rpb}"
+      if rpb.count > 0
+        Cor1440Gen::ActividadRespuestafor.connection.execute <<-EOF
+          DELETE FROM cor1440_gen_actividad_respuestafor 
+          WHERE actividad_id=#{@registro.id};
+          DELETE FROM mr519_gen_valorcampo 
+          WHERE respuestafor_id IN (#{rpb.join(',')});
+          DELETE FROM mr519_gen_respuestafor 
+          WHERE id IN (#{rpb.join(',')});
+        EOF
+      end
+
+      re = Cor1440Gen::ActividadRangoedadac.where(
+        actividad_id: @registro.id)
+      re.destroy_all
+
+      acp = Cor1440Gen::ActividadProyecto.where(actividad_id: @registro.id)
+      acp.destroy_all if acp.count > 0
+
+      asi = Cor1440Gen::Asistencia.where(actividad_id: @registro.id)
+      asi.destroy_all if asi.count > 0
+
+      acs = Sivel2Sjr::ActividadCasosjr.where(actividad_id: @registro.id)
+      acs.destroy_all if acs.count > 0
+
+      destroy_gen
+    end
 
     def destroy
       destroy_cor1440_gen
