@@ -137,7 +137,7 @@ module Cor1440Gen
     end
 
     # Responde a DELETE
-    def destroy_cor1440_gen
+    def destroy_si_jrscol
       pf_act = Cor1440Gen::ActividadProyectofinanciero.
         where(actividad_id: @registro.id)
       if pf_act.count > 0
@@ -173,7 +173,7 @@ module Cor1440Gen
     end
 
     def destroy
-      destroy_cor1440_gen
+      destroy_si_jrscol
     end
 
 
