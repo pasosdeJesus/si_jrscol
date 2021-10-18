@@ -25,7 +25,7 @@ variables:
   POSTGRES_HOST_AUTH_METHOD: trust
   NOKOGIRI_USE_SYSTEM_LIBRARIES: "true"
   SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
-  DAST_WEBSITE: http://colombia.jrslac.info:5100
+  DAST_WEBSITE: http://colombia.sjrlac.info:5100
 
 
 stages:
