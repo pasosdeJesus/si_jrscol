@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 20b6b966cbe4ecdd82705fa3f53a830b5b1dade1
+  revision: 13a4d83eb3f3568124891dda3d0d38e7aed5b1d9
   branch: main
   specs:
     cor1440_gen (1.0b5)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 72abce59df3efea20099773738e00fc22fa2c823
+  revision: cbb393fe587761697aa80b4fb30d3988ce93cb0a
   branch: main
   specs:
     heb412_gen (1.0.b7)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 730cec73578ee3c78c6e8494417abbd0a8fac73d
+  revision: a41fa673b7c1b01629a560b7288e5f51beacec7d
   branch: main
   specs:
     mr519_gen (0.2.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: c2c5068a249ab0818f3e47b1e10dfac9b4e05db4
+  revision: ec8abe5d71acf482a810de4ae6034a47a5c05813
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: ceb3bda7b0911b1cd04b05bff7a5db41af891266
+  revision: 0241f30e7476bcca2c713c2178d87410f92fea18
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 10491e19f326b4ad4ed4b4e77b8b80b78cd34a2d
+  revision: e9ad2ec6e86800db83d7cd189abc397240cc2600
   branch: main
   specs:
     sip (2.0.b12)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 9a64e6d6c01b35399ae04ab19de159bf31588c59
+  revision: e1373d1f97befaa767cd5f6313511f3819ec34fc
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -91,7 +91,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 41f2f3da3ff47bc0cd7a78d227125070be12de93
+  revision: 0c8fe399185b26b426c0c7eb43bedea90bf5eb77
   branch: main
   specs:
     sivel2_sjr (2.0b11)
@@ -286,7 +286,7 @@ GEM
     public_suffix (4.0.6)
     puma (5.5.2)
       nio4r (~> 2.0)
-    racc (1.5.2)
+    racc (1.6.0)
     rack (2.2.3)
     rack-proxy (0.7.0)
       rack
@@ -352,7 +352,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.0.0)
+    selenium-webdriver (4.0.1)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
