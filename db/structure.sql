@@ -31,13 +31,12 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
--- Name: nomcod; Type: TYPE; Schema: public; Owner: -
+-- Name: cadubicacion(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE TYPE public.nomcod AS (
-	nombre character varying(100),
-	caso integer
-);
+CREATE FUNCTION public.cadubicacion(integer) RETURNS character varying
+    LANGUAGE sql
+    AS $_$ SELECT (select nombre from pais where pais.id=ubicacion.id_pais) FROM ubicacion WHERE ubicacion.id=$1 $_$;
 
 
 --
@@ -70,28 +69,6 @@ CREATE FUNCTION public.completa_obs(obs character varying, nuevaobs character va
 
 
 --
--- Name: divarr(anyarray); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.divarr(in_array anyarray) RETURNS SETOF text
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-    SELECT ($1)[s] FROM generate_series(1,array_upper($1, 1)) AS s;
-$_$;
-
-
---
--- Name: divarr_concod(anyarray, integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.divarr_concod(in_array anyarray, in_integer integer) RETURNS SETOF public.nomcod
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-    SELECT ($1)[s],$2 FROM generate_series(1,array_upper($1, 1)) AS s;
-$_$;
-
-
---
 -- Name: f_unaccent(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -117,94 +94,6 @@ CREATE FUNCTION public.municipioubicacion(integer) RETURNS character varying
             FROM public.sip_ubicacionpre AS ubicacion 
             WHERE ubicacion.id=$1;
       $_$;
-
-
---
--- Name: probapellido(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.probapellido(in_text text) RETURNS numeric
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-	SELECT sum(ppar) FROM (SELECT p, probcadap(p) AS ppar FROM (
-		SELECT p FROM divarr(string_to_array(trim($1), ' ')) AS p) 
-		AS s) AS s2;
-$_$;
-
-
---
--- Name: probcadap(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.probcadap(in_text text) RETURNS numeric
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-    SELECT CASE WHEN (SELECT SUM(frec) FROM napellidos)=0 THEN 0
-        WHEN (SELECT COUNT(*) FROM napellidos WHERE apellido=$1)=0 THEN 0
-        ELSE (SELECT frec/(SELECT SUM(frec) FROM napellidos) 
-            FROM napellidos WHERE apellido=$1)
-        END
-$_$;
-
-
---
--- Name: probcadh(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.probcadh(in_text text) RETURNS numeric
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-	SELECT CASE WHEN (SELECT SUM(frec) FROM nhombres)=0 THEN 0
-		WHEN (SELECT COUNT(*) FROM nhombres WHERE nombre=$1)=0 THEN 0
-		ELSE (SELECT frec/(SELECT SUM(frec) FROM nhombres) 
-			FROM nhombres WHERE nombre=$1)
-		END
-$_$;
-
-
---
--- Name: probcadm(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.probcadm(in_text text) RETURNS numeric
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-	SELECT CASE WHEN (SELECT SUM(frec) FROM nmujeres)=0 THEN 0
-		WHEN (SELECT COUNT(*) FROM nmujeres WHERE nombre=$1)=0 THEN 0
-		ELSE (SELECT frec/(SELECT SUM(frec) FROM nmujeres) 
-			FROM nmujeres WHERE nombre=$1)
-		END
-$_$;
-
-
---
--- Name: probhombre(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.probhombre(in_text text) RETURNS numeric
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-	SELECT sum(ppar) FROM (SELECT p, peso*probcadh(p) AS ppar FROM (
-		SELECT p, CASE WHEN rnum=1 THEN 100 ELSE 1 END AS peso 
-		FROM (SELECT p, row_number() OVER () AS rnum FROM 
-			divarr(string_to_array(trim($1), ' ')) AS p) 
-		AS s) AS s2) AS s3;
-$_$;
-
-
---
--- Name: probmujer(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.probmujer(in_text text) RETURNS numeric
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-	SELECT sum(ppar) FROM (SELECT p, peso*probcadm(p) AS ppar FROM (
-		SELECT p, CASE WHEN rnum=1 THEN 100 ELSE 1 END AS peso 
-		FROM (SELECT p, row_number() OVER () AS rnum FROM 
-			divarr(string_to_array(trim($1), ' ')) AS p) 
-		AS s) AS s2) AS s3;
-$_$;
 
 
 --
@@ -372,20 +261,6 @@ $$;
 
 
 --
--- Name: soundexespm(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.soundexespm(in_text text) RETURNS text
-    LANGUAGE sql IMMUTABLE
-    AS $_$
-SELECT ARRAY_TO_STRING(ARRAY_AGG(soundexesp(s)),' ')
-FROM (SELECT UNNEST(STRING_TO_ARRAY(
-		REGEXP_REPLACE(TRIM($1), '  *', ' '), ' ')) AS s                
-	      ORDER BY 1) AS n;
-$_$;
-
-
---
 -- Name: accion_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -418,21 +293,6 @@ CREATE TABLE public.accion (
 
 
 --
--- Name: acto_errado; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.acto_errado (
-    id_presponsable integer,
-    id_categoria integer,
-    id_persona integer,
-    id_caso integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id integer
-);
-
-
---
 -- Name: acto_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -442,19 +302,6 @@ CREATE SEQUENCE public.acto_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
---
--- Name: actosjr_errado; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.actosjr_errado (
-    fecha date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_acto integer,
-    desplazamiento_id integer
-);
 
 
 --
@@ -660,8 +507,10 @@ CREATE SEQUENCE public.causaref_seq
 CREATE TABLE public.causaref (
     id integer DEFAULT nextval('public.causaref_seq'::regclass) NOT NULL,
     nombre character varying(50) NOT NULL,
-    fechacreacion date DEFAULT '2013-06-17'::date NOT NULL,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
     fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     CONSTRAINT causaref_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -751,7 +600,6 @@ CREATE TABLE public.sivel2_sjr_casosjr (
     oficina_id integer DEFAULT 1,
     direccion character varying(1000),
     telefono character varying(1000),
-    detcomosupo character varying(5000),
     contacto_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -764,6 +612,7 @@ CREATE TABLE public.sivel2_sjr_casosjr (
     observacionesref character varying(5000),
     concentimientosjr boolean,
     concentimientobd boolean,
+    detcomosupo character varying(5000),
     id_proteccion integer,
     id_statusmigratorio integer DEFAULT 0,
     memo1612 character varying(5000),
@@ -1001,11 +850,11 @@ CREATE TABLE public.sivel2_sjr_desplazamiento (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     id integer DEFAULT nextval('public.desplazamiento_seq'::regclass) NOT NULL,
+    establecerse boolean,
+    declaracionruv_id integer,
     expulsionubicacionpre_id integer,
     llegadaubicacionpre_id integer,
-    establecerse boolean,
     destinoubicacionpre_id integer,
-    declaracionruv_id integer,
     CONSTRAINT desplazamiento_declaro_check CHECK (((declaro = 'S'::bpchar) OR (declaro = 'N'::bpchar) OR (declaro = 'R'::bpchar)))
 );
 
@@ -1215,21 +1064,6 @@ CREATE TABLE public.cor1440_gen_proyectofinanciero (
 
 
 --
--- Name: depgifmm; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.depgifmm (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: detallefinanciero; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1264,21 +1098,6 @@ CREATE TABLE public.detallefinanciero_persona (
 
 
 --
--- Name: mungifmm; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.mungifmm (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: consgifmm; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
@@ -1305,18 +1124,11 @@ CREATE MATERIALIZED VIEW public.consgifmm AS
     ( SELECT cor1440_gen_proyectofinanciero.nombre
            FROM public.cor1440_gen_proyectofinanciero
           WHERE (detallefinanciero.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)) AS conveniofinanciado_nombre,
-    ( SELECT cor1440_gen_actividadpf.titulo
+    ( SELECT cor1440_gen_actividad.nombre
            FROM public.cor1440_gen_actividadpf
-          WHERE (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AS actividadmarcologico_nombre,
-    depgifmm.nombre AS departamento_gifmm,
-    mungifmm.nombre AS municipio_gifmm
-   FROM ((((((public.detallefinanciero
+          WHERE (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AS actividadmarcologico_nombre
+   FROM (public.detallefinanciero
      JOIN public.cor1440_gen_actividad ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
-     LEFT JOIN public.sip_ubicacionpre ON ((cor1440_gen_actividad.ubicacionpre_id = sip_ubicacionpre.id)))
-     LEFT JOIN public.sip_departamento ON ((sip_ubicacionpre.departamento_id = sip_departamento.id)))
-     LEFT JOIN public.depgifmm ON ((sip_departamento.id_deplocal = depgifmm.id)))
-     LEFT JOIN public.sip_municipio ON ((sip_ubicacionpre.municipio_id = sip_municipio.id)))
-     LEFT JOIN public.mungifmm ON ((((sip_departamento.id_deplocal * 1000) + sip_municipio.id_munlocal) = mungifmm.id)))
   WITH NO DATA;
 
 
@@ -2523,7 +2335,7 @@ ALTER SEQUENCE public.cor1440_gen_proyectofinanciero_usuario_id_seq OWNED BY pub
 
 CREATE TABLE public.cor1440_gen_rangoedadac (
     id integer NOT NULL,
-    nombre character varying,
+    nombre character varying(255),
     limiteinferior integer,
     limitesuperior integer,
     fechacreacion date,
@@ -2762,6 +2574,39 @@ ALTER SEQUENCE public.cor1440_gen_valorcampotind_id_seq OWNED BY public.cor1440_
 
 
 --
+-- Name: mr519_gen_valorcampo; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mr519_gen_valorcampo (
+    id bigint NOT NULL,
+    campo_id integer NOT NULL,
+    valor character varying(5000),
+    respuestafor_id integer NOT NULL,
+    valorjson json
+);
+
+
+--
+-- Name: cres1; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cres1 AS
+ SELECT sub.actividad_id,
+    sub.fecha,
+    sub.oficina_id,
+    sub.ayudasjr_id
+   FROM ( SELECT DISTINCT a.id AS actividad_id,
+            a.fecha,
+            a.oficina_id,
+            json_array_elements_text(v.valorjson) AS ayudasjr_id
+           FROM ((public.mr519_gen_valorcampo v
+             JOIN public.cor1440_gen_actividad_respuestafor ar ON ((ar.respuestafor_id = v.respuestafor_id)))
+             JOIN public.cor1440_gen_actividad a ON ((a.id = ar.actividad_id)))
+          WHERE (v.campo_id = 110)) sub
+  WHERE ((sub.fecha >= '2019-12-01'::date) AND (sub.fecha <= '2021-12-31'::date) AND (sub.oficina_id = 1) AND (sub.ayudasjr_id IS NOT NULL) AND (sub.ayudasjr_id <> ''::text));
+
+
+--
 -- Name: respuesta_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2774,11 +2619,11 @@ CREATE SEQUENCE public.respuesta_seq
 
 
 --
--- Name: sivel2_sjr_ayudaestado_respuesta; Type: TABLE; Schema: public; Owner: -
+-- Name: sivel2_sjr_derecho_respuesta; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sivel2_sjr_ayudaestado_respuesta (
-    id_ayudaestado integer DEFAULT 0 NOT NULL,
+CREATE TABLE public.sivel2_sjr_derecho_respuesta (
+    id_derecho integer DEFAULT 9 NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     id_respuesta integer NOT NULL
@@ -2808,7 +2653,6 @@ CREATE TABLE public.sivel2_sjr_respuesta (
     gestionessjr character varying(5000),
     observaciones character varying(5000),
     id_personadesea integer DEFAULT 0,
-    id_causaref integer DEFAULT 0,
     verifcsjr character varying(5000),
     verifcper character varying(5000),
     efectividad character varying(5000),
@@ -2826,34 +2670,6 @@ CREATE TABLE public.sivel2_sjr_respuesta (
     montoal integer,
     detalleal character varying(5000),
     descatencion character varying(5000)
-);
-
-
---
--- Name: cres1; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.cres1 AS
- SELECT caso.id AS id_caso,
-    respuesta.fechaatencion,
-    casosjr.oficina_id,
-    ayudaestado_respuesta.id_ayudaestado
-   FROM public.sivel2_gen_caso caso,
-    public.sivel2_sjr_casosjr casosjr,
-    public.sivel2_sjr_respuesta respuesta,
-    public.sivel2_sjr_ayudaestado_respuesta ayudaestado_respuesta
-  WHERE ((caso.id = casosjr.id_caso) AND (caso.id = respuesta.id_caso) AND (respuesta.id = ayudaestado_respuesta.id_respuesta));
-
-
---
--- Name: sivel2_sjr_derecho_respuesta; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_derecho_respuesta (
-    id_derecho integer DEFAULT 9 NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_respuesta integer NOT NULL
 );
 
 
@@ -2878,6 +2694,18 @@ CREATE VIEW public.cvp1 AS
 CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
     ayudaestado_id integer,
     derecho_id integer
+);
+
+
+--
+-- Name: sivel2_sjr_ayudaestado_respuesta; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_ayudaestado_respuesta (
+    id_ayudaestado integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_respuesta integer NOT NULL
 );
 
 
@@ -2926,6 +2754,21 @@ CREATE SEQUENCE public.declaracionruv_id_seq
 --
 
 ALTER SEQUENCE public.declaracionruv_id_seq OWNED BY public.declaracionruv.id;
+
+
+--
+-- Name: depgifmm; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.depgifmm (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -4167,19 +4010,6 @@ ALTER SEQUENCE public.mr519_gen_respuestafor_id_seq OWNED BY public.mr519_gen_re
 
 
 --
--- Name: mr519_gen_valorcampo; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.mr519_gen_valorcampo (
-    id bigint NOT NULL,
-    campo_id integer NOT NULL,
-    valor character varying(5000),
-    respuestafor_id integer NOT NULL,
-    valorjson json
-);
-
-
---
 -- Name: mr519_gen_valorcampo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4199,6 +4029,21 @@ ALTER SEQUENCE public.mr519_gen_valorcampo_id_seq OWNED BY public.mr519_gen_valo
 
 
 --
+-- Name: mungifmm; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mungifmm (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: mungifmm_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4215,96 +4060,6 @@ CREATE SEQUENCE public.mungifmm_id_seq
 --
 
 ALTER SEQUENCE public.mungifmm_id_seq OWNED BY public.mungifmm.id;
-
-
---
--- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_persona_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_persona (
-    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
-    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    anionac integer,
-    mesnac integer,
-    dianac integer,
-    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
-    numerodocumento character varying(100),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_pais integer,
-    nacionalde integer,
-    tdocumento_id integer,
-    id_departamento integer,
-    id_municipio integer,
-    id_clase integer,
-    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
-    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
-    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
-);
-
-
---
--- Name: napellidos; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.napellidos AS
- SELECT (r.p).nombre AS apellido,
-    count((r.p).caso) AS frec
-   FROM ( SELECT public.divarr_concod(string_to_array(btrim((sip_persona.apellidos)::text), ' '::text), sivel2_gen_victima.id_caso) AS p
-           FROM public.sip_persona,
-            public.sivel2_gen_victima
-          WHERE (sivel2_gen_victima.id_persona = sip_persona.id)
-          ORDER BY (public.divarr_concod(string_to_array(btrim((sip_persona.apellidos)::text), ' '::text), sivel2_gen_victima.id_caso))) r
-  GROUP BY (r.p).nombre
-  ORDER BY (count((r.p).caso))
-  WITH NO DATA;
-
-
---
--- Name: nhombres; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.nhombres AS
- SELECT (r.p).nombre AS nombre,
-    count((r.p).caso) AS frec
-   FROM ( SELECT public.divarr_concod(string_to_array((sip_persona.nombres)::text, ' '::text), sivel2_gen_victima.id_caso) AS p
-           FROM public.sip_persona,
-            public.sivel2_gen_victima
-          WHERE ((sivel2_gen_victima.id_persona = sip_persona.id) AND (sip_persona.sexo = 'M'::bpchar))
-          ORDER BY (public.divarr_concod(string_to_array((sip_persona.nombres)::text, ' '::text), sivel2_gen_victima.id_caso))) r
-  GROUP BY (r.p).nombre
-  ORDER BY (count((r.p).caso))
-  WITH NO DATA;
-
-
---
--- Name: nmujeres; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.nmujeres AS
- SELECT (r.p).nombre AS nombre,
-    count((r.p).caso) AS frec
-   FROM ( SELECT public.divarr_concod(string_to_array(btrim((sip_persona.nombres)::text), ' '::text), sivel2_gen_victima.id_caso) AS p
-           FROM public.sip_persona,
-            public.sivel2_gen_victima
-          WHERE ((sivel2_gen_victima.id_persona = sip_persona.id) AND (sip_persona.sexo = 'F'::bpchar))
-          ORDER BY (public.divarr_concod(string_to_array(btrim((sip_persona.nombres)::text), ' '::text), sivel2_gen_victima.id_caso))) r
-  GROUP BY (r.p).nombre
-  ORDER BY (count((r.p).caso))
-  WITH NO DATA;
 
 
 --
@@ -4547,7 +4302,7 @@ ALTER SEQUENCE public.sal7711_gen_categoriaprensa_id_seq OWNED BY public.sal7711
 --
 
 CREATE TABLE public.schema_migrations (
-    version character varying NOT NULL,
+    version character varying(255) NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -4852,8 +4607,8 @@ ALTER SEQUENCE public.sip_grupo_id_seq OWNED BY public.sip_grupo.id;
 --
 
 CREATE TABLE public.sip_grupo_usuario (
-    usuario_id bigint NOT NULL,
-    sip_grupo_id bigint NOT NULL
+    usuario_id integer NOT NULL,
+    sip_grupo_id integer NOT NULL
 );
 
 
@@ -5117,6 +4872,45 @@ CREATE SEQUENCE public.sip_perfilorgsocial_id_seq
 --
 
 ALTER SEQUENCE public.sip_perfilorgsocial_id_seq OWNED BY public.sip_perfilorgsocial.id;
+
+
+--
+-- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_persona (
+    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
+    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    anionac integer,
+    mesnac integer,
+    dianac integer,
+    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
+    numerodocumento character varying(100),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_pais integer,
+    nacionalde integer,
+    tdocumento_id integer,
+    id_departamento integer,
+    id_municipio integer,
+    id_clase integer,
+    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
+    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
+    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
+);
 
 
 --
@@ -5991,13 +5785,13 @@ CREATE TABLE public.usuario (
     failed_attempts integer,
     unlock_token character varying(64),
     locked_at timestamp without time zone,
-    reset_password_token character varying,
+    reset_password_token character varying(255),
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
     current_sign_in_at timestamp without time zone,
     last_sign_in_at timestamp without time zone,
-    current_sign_in_ip character varying,
-    last_sign_in_ip character varying,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     oficina_id integer,
@@ -6489,9 +6283,8 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM (public.sivel2_gen_conscaso
-             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.id_caso = sivel2_gen_conscaso.caso_id)))
-          WHERE ((sivel2_gen_conscaso.fecharec >= '2020-09-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2021-09-30'::date) AND (sivel2_sjr_casosjr.oficina_id = 5))
+           FROM public.sivel2_gen_conscaso
+          WHERE (sivel2_gen_conscaso.caso_id = 635)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -7683,6 +7476,26 @@ CREATE TABLE public.sivel2_sjr_derecho (
 
 
 --
+-- Name: sivel2_sjr_derecho_motivosjr; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_derecho_motivosjr (
+    sivel2_sjr_motivosjr_id integer NOT NULL,
+    sivel2_sjr_derecho_id integer NOT NULL
+);
+
+
+--
+-- Name: sivel2_sjr_derecho_progestado; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_derecho_progestado (
+    sivel2_sjr_progestado_id integer NOT NULL,
+    sivel2_sjr_derecho_id integer NOT NULL
+);
+
+
+--
 -- Name: sivel2_sjr_difmigracion_migracion; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -8415,28 +8228,13 @@ CREATE MATERIALIZED VIEW public.vvictimasoundexesp AS
  SELECT sivel2_gen_victima.id_caso,
     sip_persona.id AS id_persona,
     (((sip_persona.nombres)::text || ' '::text) || (sip_persona.apellidos)::text) AS nomap,
-    public.soundexespm((((sip_persona.nombres)::text || ' '::text) || (sip_persona.apellidos)::text)) AS nomsoundexesp
+    ( SELECT array_to_string(array_agg(public.soundexesp(n.s)), ' '::text) AS array_to_string
+           FROM ( SELECT unnest(string_to_array(regexp_replace((((sip_persona.nombres)::text || ' '::text) || (sip_persona.apellidos)::text), '  *'::text, ' '::text), ' '::text)) AS s
+                  ORDER BY (unnest(string_to_array(regexp_replace((((sip_persona.nombres)::text || ' '::text) || (sip_persona.apellidos)::text), '  *'::text, ' '::text), ' '::text)))) n) AS nomsoundexesp
    FROM public.sip_persona,
     public.sivel2_gen_victima
   WHERE (sip_persona.id = sivel2_gen_victima.id_persona)
   WITH NO DATA;
-
-
---
--- Name: xy; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.xy AS
- SELECT casosjr.id_caso AS caso_id,
-    (((contacto.nombres)::text || ' '::text) || (contacto.apellidos)::text) AS contacto,
-    contacto.nombres AS contacto_nombres,
-    contacto.apellidos AS contacto_apellidos,
-    (((COALESCE(tdocumento.sigla, ''::character varying))::text || ' '::text) || (contacto.numerodocumento)::text) AS contacto_identificacion,
-    contacto.sexo AS contacto_sexo
-   FROM (((public.sivel2_sjr_casosjr casosjr
-     JOIN public.sivel2_gen_caso caso ON ((casosjr.id_caso = caso.id)))
-     JOIN public.sip_persona contacto ON ((contacto.id = casosjr.contacto_id)))
-     LEFT JOIN public.sip_tdocumento tdocumento ON ((tdocumento.id = contacto.tdocumento_id)));
 
 
 --
@@ -9265,7 +9063,7 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
              JOIN public.cor1440_gen_asistencia asis ON ((asis.persona_id = p.id)))
              LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
              JOIN public.cor1440_gen_actividad a ON ((asis.actividad_id = a.id)))
-          WHERE (p.id = ANY (ARRAY[61989, 61978, 61979, 62001, 62005, 61854, 15440, 37297, 61988, 31676, 24287, 61991, 19966, 36522, 37782, 24313, 61998, 61981, 61982, 61984, 36753, 54921, 19032, 15492, 62067, 62075, 15026, 60021, 27956, 62039, 62042, 62045, 62048, 62062, 62289, 62293, 62295, 42581, 59132, 59849, 59984, 686, 26115, 63105, 62240, 62292, 62337, 20420, 62083, 62297, 62298, 59928, 62335, 62338, 58019, 62146, 62012, 38828, 62225, 27650, 62303, 62304, 62342, 59049, 59883, 58210, 62192, 62020, 62264, 62164, 62236, 11409, 62302, 59776, 62385, 62394, 62396, 62399, 58067, 62204, 60154, 62121, 62390, 62395, 62398, 45056, 62535, 62541, 51749, 51744, 62684, 62387, 62397, 45075, 62544, 51746, 62545, 62389, 62393, 62528, 62543, 51763, 62391, 62400, 62402, 62546, 62392, 62401, 39565, 62532, 62542, 62084, 32538, 62531, 62540, 42616, 59714, 59684, 31770, 32948, 59678, 59703, 59679, 59681, 59682, 59685, 59713, 59675, 59689, 59698, 59683, 59686, 59725, 61129, 61132, 61133, 59476, 10675, 59687, 59696, 59680, 61094, 61126, 61128, 52420, 35590, 35588, 37632, 61253, 61254, 61270, 61272, 61289, 61304, 13272, 13242, 61383, 61387, 61269, 59690, 59701, 59709, 61294, 61135, 35586, 61255, 61259, 61305, 61306, 61310, 61342, 61344, 61365, 61030, 13289, 13237, 13265, 61385, 61352, 59720, 61130, 35694, 61266, 61271, 61251, 61252, 61261, 61295, 61301, 61309, 61349, 61358, 61360, 61364, 25508, 61072, 61062, 61386, 59915, 59918, 59920, 59929, 59934, 59916, 59922, 59911, 59931, 59960, 59966, 59974, 59975, 60002, 59917, 59935, 59945, 59949, 59924, 59977, 60006, 61245, 61258, 61264, 61267, 61296, 61020, 61069, 15957, 42516, 59938, 59939, 59942, 59943, 59946, 59948, 59923, 59936, 59940, 60001, 59932, 59978, 33012, 59958, 59973, 61250, 61265, 61302, 61354, 61366, 61363, 10687, 59910, 59925, 60584, 42523, 61044, 60586, 60598, 60603, 61628, 42522, 60599, 61308, 19144, 60594, 60602, 34719, 61629, 61648, 61654, 61660, 61663, 61665, 61670, 61696, 61697, 61753, 61799, 61827, 61837, 61843, 61853, 60534, 34923, 42514, 62666, 42126, 59402, 62909, 62910, 61643, 61647, 27699, 61653, 23167, 60597, 61658, 18031, 61801, 61825, 61828, 61836, 61851, 42517, 41107, 41355, 44689, 59403, 62088, 39462, 62911, 62922, 62892, 62894, 62930, 62932, 62933, 62941, 62895, 27579, 35461, 34808, 57239, 60592, 61642, 61646, 38124, 34782, 60596, 60601, 37446, 61661, 61656, 5169, 39368, 61659, 61666, 61671, 61754, 61761, 61795, 61803, 61824, 61842, 34716, 20044, 34318, 39370, 39364, 61695, 61644, 61676, 61756, 34965, 35463, 51754, 61662, 61694, 61790, 61823, 61849, 36755, 14842, 36507, 38798, 27257, 62915, 62917, 62924, 62938, 62943, 44326, 29049, 61793, 61664, 61667, 61698, 61826, 61832, 35524, 61745, 42513, 62090, 52295, 62913, 62916, 62918, 62919, 62921, 34695, 11705, 12350, 59524, 61846, 61848, 59373, 59518, 62927, 62928, 14702, 54583, 54580, 34315, 31741, 35469, 23148, 54586, 18572, 57264, 15956, 33261, 61847, 61850, 31991, 59401, 32537, 59657, 45227, 29746, 33219, 62008, 62038, 62051, 62053, 62069, 62070, 28732, 37298, 16983, 62912, 62923, 62926, 62931, 62935, 57255, 61965, 61972, 62044, 24632, 62057, 62060, 62073, 61997, 62009, 20175, 62059, 62068, 37940, 33466, 15432, 31028, 27885, 60203, 59959, 63108, 60279, 62319, 63303, 63304, 63305, 63314, 63315, 63316, 63526, 63405, 63413, 63530, 63537, 63538, 63539, 63540, 63542, 63543, 63519, 63520, 63521, 63544, 63545, 63546, 63548, 63549, 63551, 63553, 63555, 5503, 63558, 63565, 63566, 63567, 63568, 63569, 63570, 63571, 63572, 63574, 63575, 63580, 63581, 63582, 63583, 63584, 63585, 63587, 63591, 63594, 63599, 63600, 63601, 63602, 63603, 63604, 63605, 63606, 63607, 63609, 63611, 63613, 63614, 63615, 63785, 63788, 63789, 63775, 63783, 63784, 63792, 63797, 63774, 63778, 63780, 63786, 63791, 63798, 63776, 63777, 63779, 63781, 63782, 63787, 63790, 63793, 63794, 63795, 63796, 63799, 63800, 63801, 63802, 63803, 63804, 43103, 64023, 64027, 64028, 64013, 64014, 64015, 64016, 64017, 64018, 64020, 64029, 64030, 64033, 64038, 64039, 64040, 64044, 64045, 64047, 64048, 64049, 64050, 64051, 64052, 64053, 64054, 64055, 64056, 64057, 64058, 64059, 64060, 64062, 64064, 64065, 64066, 51748, 51752, 51757, 64147, 64148, 64150, 64151, 64156, 64157, 64159, 64164, 58218, 59042, 59608, 39647, 64173, 64175, 59605, 59851, 59814, 26988, 15435, 27941, 15428, 20072, 47791, 59904, 60016, 60038, 60024, 59583, 64916, 64928, 64932, 64933, 64935, 64937, 62973, 62963, 62962, 64093, 65091, 65093, 65095, 65098, 65099, 65100, 65101, 65102, 65103, 65104, 65110, 65111, 65112, 65115, 65116, 65117, 65118, 65119, 65120, 65121, 65122, 65123, 65124, 65125, 65126, 65127, 65128, 65131, 65132, 65133, 65134, 65135, 65136, 22875, 29041, 14766, 60401, 14706, 18359, 15445, 19538, 14390, 17043, 65194, 65195, 65196, 65197, 65198, 65199, 65200, 65202, 65207, 65208, 65209, 65210, 65211, 65212, 65268, 65269, 65270, 65554, 65557, 65559, 65561, 65562, 65563, 65564, 65569, 65571, 65574, 65576, 65577, 65579, 65581, 65582, 65567, 65213, 65214, 65215, 65216, 65217, 65218, 65220, 65221, 65222, 65223, 65224, 65225, 65226, 65227, 65228, 65229, 65230, 65231, 65232, 65233, 65235, 65236, 65237, 65238, 65240, 65244, 65246, 65247, 65248, 65249, 65251, 65252, 65254, 65255, 65256, 65257, 65258, 65260, 65261, 65262, 65263, 65264, 65265, 65266, 65267, 30909, 65273, 65300, 65304, 65308, 65311, 65314, 65315, 65323, 65328, 65347, 65349, 65354, 65361, 65271, 65301, 65302, 65303, 65305, 65306, 65307, 65309, 65310, 65312, 65313, 65316, 65317, 65318, 65319, 65320, 65321, 65322, 65325, 65326, 65327, 65329, 65330, 65331, 65333, 65334, 65335, 65337, 65339, 65341, 65342, 65343, 65344, 65345, 65346, 65348, 65350, 65351, 65352, 65353, 65355, 65357, 65358, 65359, 65511, 65423, 65424, 65425, 65434, 65436, 65444, 15460, 65512, 65374, 65415, 65416, 65417, 65419, 65421, 65429, 65430, 65431, 65432, 65435, 65437, 65438, 65440, 65442, 65446, 65448, 23722, 65459, 65513, 65460, 54926, 65484, 65515, 65518, 65519, 65521, 65522, 65523, 34441, 28596, 65469, 65470, 65477, 65478, 65480, 65485, 28626, 39366, 34807, 39363, 65509, 65525, 65528, 65529, 65530, 65531, 65532, 65533, 65534, 65535, 65536, 65537, 65539, 65542, 65545, 65546, 65547, 65549, 65552, 20010, 27988, 14753, 37913, 28090, 37930, 59412, 65558, 28884, 37919, 62434, 28097, 65585, 65589, 65597, 65599, 65614, 65616, 65619, 65623, 65752, 65757, 65643, 65645, 65661, 65662, 65669, 65676, 65716, 65717, 65720, 65732, 65736, 65760, 65761, 65762, 65772, 65791, 65802, 65809, 65811, 65817, 65822, 65578, 65580, 65590, 65595, 65617, 65626, 65688, 65693, 65725, 65646, 65659, 65664, 65670, 65674, 65683, 65684, 65687, 65705, 65737, 65753, 65754, 65786, 65789, 65792, 65810, 65813, 65821, 65606, 65584, 65586, 65600, 65611, 65613, 65622, 65733, 65654, 65680, 65718, 65722, 65749, 65750, 65751, 65764, 65776, 65785, 65808, 65818, 65819, 65588, 65612, 65615, 65621, 65651, 65653, 65667, 65675, 65677, 65686, 65703, 65715, 65721, 65755, 65763, 65777, 65784, 65790, 65803, 65815, 65587, 65591, 65596, 65598, 65607, 65608, 65610, 65618, 65620, 65624, 65625, 65627, 65712, 65714, 65724, 65756, 65647, 65660, 65663, 65665, 65666, 65671, 65673, 65678, 65679, 65700, 65702, 65704, 65719, 65734, 65735, 65748, 65765, 65774, 65804, 65812, 65814, 65823, 65824, 65826, 65827, 65832, 65833, 65835, 65825, 65828, 65838, 65841, 65845, 65847, 32936, 32935, 44789, 65846, 65850, 65877, 65858, 65925, 65932, 31768, 65996, 65956, 65962, 65965, 65966, 65969, 65994, 33320, 65957, 65990, 65993, 65997, 66017, 66024, 32010, 65883, 65893, 65894, 65900, 65901, 65908, 65909, 65910, 65911, 65934, 65935, 65936, 65937, 65938, 65939, 65949, 65950, 65955, 65964, 65971, 65958, 65961, 65972, 66018, 66022, 65960, 65963, 65970, 65976, 65995, 66020, 65981, 65986, 66000, 66021, 66023, 66126, 66076, 66077, 66078, 66082, 66084, 66090, 66091, 66095, 66096, 66097, 66127, 66128, 66115, 66116, 66117, 66119, 66120, 66123, 66125, 66103, 66105, 66106, 66107, 66108, 66109, 66110, 66111, 66113, 66114, 66057, 66061, 66064, 66112, 66130, 66131, 66132, 66133, 66140, 66146, 66147, 66148, 66149, 66150, 66151, 66152, 65882, 65881, 65895, 66197, 66204, 66207, 54770, 18579, 66213, 66219, 66234, 66243, 66245, 66255, 66263, 66266, 66277, 66295, 66296, 66306, 66316, 66317, 66309, 66322, 66218, 61876, 66235, 66238, 66249, 66256, 66270, 60211, 66276, 66279, 66284, 66285, 66299, 66313, 66318, 66324, 66334, 66220, 66221, 66230, 66236, 66239, 66246, 66258, 27299, 39472, 66290, 66293, 66311, 66314, 66326, 66332, 66214, 66216, 66222, 66228, 66229, 39499, 20926, 66237, 66248, 66250, 66251, 66261, 66275, 66291, 66301, 66310, 66312, 66327, 66331, 47163, 465, 39241, 66223, 66240, 66271, 66286, 66297, 66300, 66304, 66307, 66320, 66302, 66305, 66315, 66329, 24059, 66224, 66225, 66226, 66227, 66233, 66241, 66244, 66252, 66268, 66272, 66273, 66278, 66282, 66283, 66292, 66303, 66319, 66333, 54905, 64837, 64839, 64840, 66466, 64870, 64873, 64875, 64843, 64845, 64846, 64848, 64849, 64851, 59695, 59697, 66395, 66396, 64881, 64882, 64886, 66409, 66411, 66413, 64891, 64894, 66416, 66430, 59677, 64818, 64819, 64822, 64824, 64825, 64826, 64835, 64836, 64853, 64855, 64856, 64858, 64860, 64862, 64864, 64865, 64867, 64869, 64795, 64804, 64809, 64812, 64821, 64800, 64796, 65031, 66414, 66620, 66619, 61170, 40884, 38265, 59395, 66764, 60302, 37633, 41762, 66673, 38851, 66842, 66856, 64905, 64953, 64989, 64993, 64992, 64996, 64998, 65001, 65003, 65005, 65007, 65008, 65011, 65012, 65024, 65025, 65026, 65028, 65029, 65035, 64801, 66613, 66623, 66633, 66635, 66657, 66687, 66711, 66762, 66763, 66821, 66847, 66854, 66855, 41853, 65034, 64816, 66743, 34508, 66695, 66732, 66753, 66756, 66773, 66823, 64101, 65476, 41070, 66845, 66849, 66625, 66629, 41954, 33005, 15949, 60379, 66701, 66766, 66768, 66774, 40271, 66839, 66841, 28251, 66853, 64897, 64899, 64902, 64909, 64913, 64919, 64929, 64936, 64940, 64945, 64946, 64951, 64957, 64961, 64980, 64982, 64984, 66862, 64802, 64803, 64766, 66630, 66649, 66690, 62197, 60357, 45112, 66716, 66717, 66747, 66748, 66749, 66772, 66778, 66837, 66838, 41919, 66840, 66844, 66846, 66848, 66850, 66851, 66852, 66875, 66876, 65672, 66880, 66904, 61878, 62425, 59870, 64176, 64146, 61893, 62422, 62415, 66922, 62430, 62072, 62021, 58410, 66938, 66939, 66942, 66943, 66944, 66945, 66946, 66958, 66959, 66960, 66961, 66962, 66963, 30906, 67038, 67040, 67041, 67046, 67048, 67049, 67050, 67051, 67052, 67053, 67054, 67055, 67056, 35332, 67105, 67134, 67144, 67169, 45726, 67232, 30445, 67274, 67309, 67314, 67352, 67108, 67109, 67110, 67111, 67112, 67114, 67116, 67117, 67118, 67119, 67120, 67121, 38837, 15889, 38627, 67146, 48068, 67194, 67223, 67288, 67326, 67333, 67346, 67135, 41635, 67166, 67230, 39465, 67537, 67290, 67298, 67159, 67190, 67192, 67213, 67221, 67222, 67227, 67319, 67315, 67330, 67338, 67530, 67655, 67657, 67659, 67678, 37274, 67581, 67588, 67609, 67680, 67693, 67710, 67662, 67708, 27080, 59869, 67709, 67717, 67720, 67695, 67696, 67697, 67699, 67702, 67707, 67694, 67698, 67700, 67701, 67703, 67704, 67713, 67716, 67723, 67711, 67712, 67714, 67715, 67718, 67721, 67722, 67724, 27522, 59054, 63317, 60149, 12926, 34995, 62521, 62438, 62406, 34563, 46382, 29044, 17205, 28919, 59511, 65461, 59486, 67837, 65787, 37835, 67859, 67862, 67868, 22402, 64021, 63318, 67849, 67851, 67852, 67853, 67854, 67860, 67865, 67869, 67871, 67873, 67875, 67877, 28878, 67881, 67883, 67884, 67887, 67888, 67889, 67890, 67892, 67893, 30897, 63320, 58988, 60459, 67979, 67993, 67994, 67995, 67996, 67997, 67998, 68005, 68006, 68007, 68008, 68009, 68010, 68011, 68012, 68013, 68014, 68016, 68063, 68064, 68067, 68070, 68071, 68072, 68073, 68074, 68075, 18692, 68017, 68018, 68019, 68020, 68046, 68047, 68048, 68049, 68050, 68051, 68052, 68053, 68055, 68056, 68057, 68059, 68060, 68061, 68062, 68085, 68086, 68087, 68098, 68099, 68100, 68101, 68102, 68103, 68104, 68106, 68107, 68108, 68109, 68110, 68111, 68112, 68114, 68115, 68116, 68118, 68119, 68120, 68121, 68122, 68123, 68124, 68125, 68126, 68127, 68129, 68130, 68131, 68132, 68134, 68135, 68136, 68138, 68139, 68140, 68141, 68142, 68143, 68144, 68145, 68146, 68147, 68148, 68149, 68150, 68151, 68152, 68153, 68154, 68155, 68156, 68157, 68158, 41958, 68164, 68165, 68166, 68167, 68168, 68159, 68160, 68161, 68162, 68163, 68169, 68170, 68171, 68172, 68173, 68175, 68178, 68183, 68184, 68185, 26119, 52294, 26113, 68188, 68189, 68190, 68191, 68192, 68193, 68186, 68187, 68194, 68195, 68196, 68197, 68198, 68199, 68348, 27217, 68350, 68354, 68363, 68360, 68366, 68381, 36908, 27208, 68352, 68356, 68361, 68367, 68383, 68390, 68359, 68364, 68365, 68349, 68358, 36957, 52847, 27206, 27221, 68351, 68353, 68355, 68362, 68368, 36956, 59656, 62896, 68464, 68465, 68466, 68467, 68468, 68469, 68473, 68474, 68475, 68476, 68482, 68484, 50132, 31240, 62763, 50133, 62765, 62764, 28345, 28148, 68999, 69000, 68571, 68579, 68581, 68584, 68586, 68588, 42981, 24604, 69001, 69002, 69003, 69006, 69007, 68591, 29433, 68597, 68598, 68602, 68604, 68606, 68609, 68612, 30537, 69008, 69009, 68959, 68960, 68961, 68962, 68963, 68964, 68965, 68966, 68967, 68968, 68979, 68980, 68981, 68982, 68983, 68984, 68985, 68986, 68987, 68988, 68993, 68994, 68995, 68996, 68997, 68998, 69010, 69011, 69012, 69013, 69014, 69015, 69023, 69024, 69025, 69026, 69027, 69028, 69029, 69030, 69031, 69032, 69052, 69053, 69054, 69055, 69056, 69057, 69058, 69059, 69060, 69064, 69065, 69066, 69067, 69068, 69069, 69070, 69071, 69072, 69074, 69080, 69081, 69082, 69083, 69084, 69085, 69086, 69087, 69088, 69089, 69092, 69093, 69094, 34991, 69095, 69096, 69097, 69098, 69099, 69100, 69101, 69102, 69103, 69104, 69105, 69106, 69107, 69108, 69109, 69110, 69111, 14851, 69402, 69408, 69410, 69413, 69415, 64966, 68493, 68497, 68462, 68518, 68459, 69234, 68551, 68544, 68472, 68514, 68520, 68495, 68478, 68560, 68519, 60205, 69191, 68492, 68507, 68500, 68510, 68505, 68485, 69277, 68460, 68549, 68553, 68523, 69235, 68542, 68557, 68555, 61169, 61227, 61620, 59528, 33532, 41000, 41002, 69181, 68517, 68533, 68461, 68534, 33140, 33130, 68522, 68563, 68562, 68565, 68559, 68491, 68528, 61215, 61061, 69746, 69747, 69751, 69755, 59539, 61186, 65279, 40401, 40412, 41065, 31097, 41064, 25263, 27254, 29929, 27290, 27274, 24770, 27560, 45577, 26305, 69873, 25209, 25183, 25269, 25223, 28333, 55228, 83697, 31519, 31968, 27256, 24756, 69949, 27268, 28320, 24757, 25157, 30951, 30949, 69942, 69953, 69959, 32877, 31970, 57530, 69972, 69974, 69975, 69976, 69977, 49836, 28600, 28579, 28578, 50639, 28623, 28625, 28581, 28621, 28592, 31929, 25211, 30162, 31654, 25284, 28325, 70008, 70012, 28598, 70100, 70093, 70112, 70113, 70114, 70115, 62889, 46359, 67921, 64103, 59531, 65656, 64108, 18028, 60033, 46386, 70236, 70238, 70251, 70252, 70258, 70269, 70272, 70273, 70274, 70281, 20102, 43827, 16734, 20878, 21435, 27752, 34681, 31543, 34609, 15187, 33454, 33336, 37814, 11681, 14290, 16532, 15642, 21767, 36300, 27781, 28731, 17697, 43912, 54896, 47593, 43294, 37301, 45266, 29039, 70350, 70352, 70355, 70357, 70370, 70373, 70374, 70394, 70398, 70399, 70400, 70405, 70407, 70408, 70409, 70441, 70444, 70445, 70446, 70447, 70449, 70433, 70438, 70439, 70440, 62286, 64634, 64621, 65052, 66563, 66976, 67959, 68257, 68414, 68573, 68536, 69451, 70525, 70533, 70534, 70538, 27094, 38197, 34389, 38196, 1033, 34439, 27170, 1032, 70553, 60072, 34379, 1035, 27174, 27095, 70570, 70574, 34382, 27176, 35104, 35150, 37686, 34408, 70606, 27171, 27175, 34385, 70638, 70641, 70654, 70655, 50650, 28576, 28583, 28587, 28584, 3042, 50773, 70700, 70708, 70711, 70714, 37681, 29189, 70723, 70746, 70751, 70755, 51438, 51441, 51439, 1574, 1521, 173, 70761, 70766, 51375, 37703, 13758, 36301, 34871, 34868, 37695, 38102, 59552, 9756, 70813, 70816, 51929, 34875, 34869, 27187, 35757, 37704, 70998, 35701, 70765, 70814, 70817, 52203, 70900, 34874, 70943, 27186, 70987, 22746, 60039, 34877, 70872, 34404, 70945, 35692, 35622, 35695, 15792, 52194, 35149, 70925, 35700, 35693, 70811, 38218, 34870, 52260, 35691, 71207, 71199, 38104, 52744, 27195, 71241, 71242, 71243, 71383, 71385, 71456, 71382, 71214, 71215, 71216, 71217, 71218, 71219, 71220, 71221, 71222, 71223, 71224, 71225, 71226, 71227, 71228, 71229, 71230, 71231, 71232, 71233, 71234, 71235, 71236, 71237, 71238, 71239, 71240, 36903, 71379, 71380, 71384, 71396, 71397, 52841, 71440, 71442, 71452, 71453, 71454, 71455, 71807, 71808, 71809, 71810, 71811, 71812, 71813, 71814, 71815, 71816, 71817, 71818, 71819, 71820, 71821, 71822, 71823, 71824, 71825, 71826, 71827, 71828, 71829, 71830, 71831, 71832, 71833, 71834, 71835, 71836, 71837, 71839, 71840, 71841, 71842, 71844, 71845, 71846, 71847, 71848, 71849, 71850, 71854, 71855, 71856, 71858, 70240, 24662, 70287, 20375, 71871, 71872, 71873, 71874, 71875, 71876, 71877, 71878, 71879, 71890, 71891, 71893, 28813, 28814, 71896, 71897, 71898, 71899, 71902, 71903, 71904, 71905, 71906, 71907, 71908, 71909, 71910, 71911, 71912, 71913, 71914, 71915, 71916, 71917, 71918, 71919, 71920, 71921, 71922, 71923, 71924, 71925, 71926, 71927, 71928, 71930, 71932, 71933, 71934, 71935, 71937, 71938, 71958, 71960, 71961, 71962, 71963, 71964, 71965, 71966, 71967, 71968, 42448, 72208, 72212, 31098, 62296, 67000, 65045, 68431, 68539, 72187, 72218, 72220, 72222, 72223, 72224, 72225, 72226, 72227, 72228, 69495, 68451, 68385, 62093, 65077, 67946, 67952, 69646, 69691, 68454, 69388, 69441, 69445, 69479, 69447, 65636, 65635, 69705, 69741, 69587, 69681, 69782, 69802, 69847, 72258, 72274, 72262, 72268, 72269, 72279, 72278, 72300, 72301, 72302, 72303, 72304, 72305, 72306, 72307, 72308, 72309, 72310, 72311, 72312, 72313, 72314, 72315, 72316, 72317, 72318, 72319, 72320, 72321, 72322, 72323, 72324, 72325, 72326, 72327, 72328, 72329, 72330, 72331, 72332, 72333, 72334, 72335, 72336, 72337, 72338, 72339, 72340, 72341, 72342, 72343, 72344, 72345, 72346, 72347, 72348, 72349, 72350, 72351, 72352, 72363, 72364, 72365, 72366, 72367, 72368, 72369, 72396, 72397, 72398, 72399, 72400, 72401, 72402, 72403, 72404, 72405, 72406, 72407, 72408, 72410, 72411, 72412, 72413, 72414, 72415, 72417, 72418, 72419, 72420, 72421, 72422, 72423, 72424, 72425, 72426, 72427, 72428, 72429, 72446, 72447, 72448, 72449, 72450, 72451, 72463, 72465, 72466, 72467, 72468, 72469, 72470, 72471, 72472, 72379, 72380, 72381, 72500, 72508, 72502, 72503, 72506, 72507, 72511, 72112, 11811, 72501, 72505, 72110, 72111, 72382, 72383, 72384, 72385, 72387, 72388, 72389, 72390, 72391, 72392, 72393, 72394, 72431, 72432, 72433, 72434, 72435, 72436, 72437, 72438, 72439, 72440, 72441, 72442, 72443, 72444, 72445, 72754, 72504, 72509, 72118, 25940, 72741, 72742, 72743, 72744, 72746, 72747, 72748, 72749, 72750, 72751, 72752, 72753, 72755, 72115, 72767, 25936, 25943, 28315, 31364, 28312, 31479, 42830, 28300, 28305, 47859, 24714, 31181, 47972, 24708, 72780, 47917, 47846, 50339, 32307, 47903, 48451, 42837, 32044, 47702, 32042, 31346, 31485, 68399, 28308, 25958, 42840, 31345, 31482, 48536, 42834, 28306, 28307, 25937, 32043, 24710, 25939, 30574, 47919, 72880, 72881, 72882, 72883, 72885, 72886, 72887, 72888, 72889, 72890, 72891, 72892, 47699, 32289, 72921, 47700, 47921, 72936, 72809, 24713, 72932, 72935, 73004, 73015, 73016, 73019, 73020, 73021, 73023, 30480, 73030, 73032, 73033, 73034, 73036, 73037, 73038, 73040, 73042, 73056, 73060, 73026, 73104, 73105, 73107, 73108, 73109, 73110, 73111, 73113, 73114, 73115, 73119, 73121, 38125, 73083, 73125, 73161, 73129, 73131, 73133, 73134, 73127, 73162, 73163, 73187, 73190, 73195, 73200, 73201, 73136, 73160, 73165, 73176, 73181, 73194, 73173, 73180, 73188, 73122, 59981, 73155, 73142, 73145, 73191, 73178, 73199, 73202, 73146, 73148, 73153, 45187, 73090, 73171, 73193, 73198, 73172, 73177, 73184, 73197, 17641, 73164, 73166, 73170, 73174, 73179, 73185, 73189, 73196, 73182, 73167, 73183, 73175, 73186, 73192, 73251, 73252, 73253, 73254, 73255, 73256, 73258, 73259, 73260, 73266, 73267, 73279, 73280, 73281, 73298, 42450, 73300, 73301, 73302, 73303, 73304, 73306, 73307, 72919, 72920, 73342, 73351, 73352, 42428, 42191, 42437, 73394, 33329, 73408, 73426, 73401, 73406, 73420, 65967, 70720, 59559, 34913, 61324, 46871, 36417, 30680, 35213, 70690, 73474, 73475, 73476, 73491, 73498, 73502, 73507, 73509, 73511, 73514, 73515, 73521, 73522, 73530, 73532, 73536, 73537, 73543, 73544, 73545, 73477, 73478, 73479, 73483, 73485, 73486, 73489, 73510, 73512, 73516, 73538, 73480, 73484, 73488, 73496, 73518, 73540, 73481, 73487, 73490, 73519, 73527, 73541, 73482, 73800, 73809, 73817, 73822, 73837, 73851, 18070, 59544, 37837, 19368, 15449, 16644, 27799, 19314, 24564, 16833, 73933, 74125, 74126, 74127, 74129, 74130, 74134, 74140, 74142, 74145, 74149, 74151, 74179, 74180, 74182, 74186, 74200, 74204, 74113, 74121, 74128, 74136, 74141, 42910, 64378, 73431, 73819, 73829, 73820, 74101, 74103, 74117, 74118, 74122, 74123, 39850, 64377, 44613, 74159, 74163, 74164, 34801, 54435, 34791, 46383, 34764, 37793, 35767, 33327, 54439, 29050, 12356, 33332, 74168, 74169, 74174, 74175, 74205, 19653, 74247, 74248, 74249, 74250, 74251, 74252, 74253, 74254, 74255, 74257, 74258, 74259, 74260, 74262, 74263, 74264, 74265, 74267, 74268, 74269, 74270, 74272, 5255, 51573, 29057, 74278, 74316, 74315, 74317, 74318, 74319, 74320, 74321, 74433, 74434, 74435, 74436, 74437, 74439, 60456, 74408, 74409, 74413, 74418, 74419, 74420, 74422, 74426, 74427, 74428, 73838, 73839, 73840, 73811, 73801, 73818, 55229, 73832, 55231, 69879, 69880, 69881, 74460, 15947, 74720, 45062, 34942, 64394, 21692, 59613, 59615, 59621, 59612, 59622, 59619, 74803, 74810, 74812, 74807, 74809, 74811, 74801, 74806, 74808, 74814, 74799, 74800, 74802, 74804, 74805, 74813, 74815, 74816, 74817, 74818, 74819, 74820, 74821, 74822, 74823, 74824, 74825, 43139, 73324, 31483, 73323, 73619, 73330, 74945, 74950, 74956, 74957, 74958, 74959, 74961, 74378, 74962, 73080, 74965, 74967, 74969, 51747, 26056, 51799, 51750, 25950, 32041, 73331, 73326, 75019, 75027, 75029, 73621, 47653, 75225, 75285, 20930, 75273, 75200, 75422, 6935, 75548, 75351, 75276, 75277, 75278, 20099, 23433, 66776, 66770, 73429, 75588, 75590, 73422, 67904, 24045, 59540, 44823, 75537, 75538, 75539, 75540, 75541, 75542, 75543, 75562, 75563, 75566, 75567, 75568, 75576, 75577, 75578, 75579, 75580, 75581, 75640, 75641, 75582, 75583, 75584, 75585, 75586, 75595, 75596, 75598, 75599, 75600, 75601, 75602, 75603, 75604, 75635, 75654, 66257, 75684, 75685, 75688, 75690, 75693, 75650, 75676, 75677, 75678, 75679, 75680, 75681, 75682, 75683, 75686, 75687, 75689, 75691, 75692, 75796, 75797, 75799, 75800, 75801, 75802, 75803, 75804, 75565, 75792, 75793, 75794, 75795, 75805, 75806, 75807, 75808, 75809, 75810, 75811, 75812, 75837, 75838, 75839, 75840, 75841, 75842, 75843, 75844, 75845, 75846, 75847, 75848, 75849, 75850, 75853, 75854, 75855, 75856, 75857, 75859, 75860, 75862, 75863, 75864, 75865, 75866, 75867, 75891, 75890, 75898, 75903, 19737, 75947, 75892, 75894, 75895, 75896, 76015, 75893, 75897, 75902, 75941, 75942, 75943, 75944, 75946, 76033, 76039, 76056, 38805, 75901, 75621, 75939, 75945, 75948, 75618, 76046, 76047, 76052, 76055, 24168, 65502, 76168, 76169, 76170, 76171, 76218, 76219, 23528, 60638, 75617, 75619, 75622, 75623, 76115, 76116, 76117, 76118, 76220, 52581, 76221, 76223, 76154, 76155, 76156, 76157, 76160, 76162, 76163, 76167, 76224, 76225, 52186, 76249, 76253, 76259, 76266, 64061, 12327, 60257, 28374, 72679, 70173, 70217, 70214, 68547, 62191, 65046, 41110, 68499, 69737, 70616, 74590, 65070, 67305, 68501, 71328, 73772, 73784, 73953, 74005, 70466, 65074, 70471, 70489, 70493, 70475, 76621, 31712, 54955, 22350, 77013, 77014, 77016, 77017, 77018, 76780, 75073, 70515, 70681, 73278, 73322, 73754, 74031, 74208, 75472, 76799, 76805, 76808, 76810, 76812, 55531, 27339, 30158, 30370, 31685, 49782, 44622, 55494, 31902, 30422, 49789, 31680, 49773, 31231, 31682, 31908, 76841, 76842, 76850, 76851, 76852, 76855, 76857, 76860, 76863, 67880, 37780, 67909, 66030, 60047, 76987, 76991, 76994, 76996, 76998, 77000, 54479, 24219, 77002, 77003, 77004, 77005, 77007, 77009, 77010, 77011, 77020, 77021, 23562, 77027, 77028, 77029, 77030, 77032, 77034, 23115, 11678, 77039, 77040, 77041, 77042, 77044, 77047, 77051, 54481, 19154, 54944, 15434, 65087, 65088, 65090, 77102, 77103, 77105, 77106, 77123, 21638, 77152, 77155, 77156, 22997, 60709, 76216, 76217, 76236, 12127, 76210, 15510, 76233, 77188, 77191, 77192, 77193, 77195, 60705, 60736, 76209, 12126, 66588, 60730, 76208, 76215, 36710, 76213, 36709, 24712, 69496, 77535, 26412, 71026, 60151, 67251, 74212, 74332, 64141, 73691, 71056, 70976, 73222, 70921, 70932, 70919, 71048, 70992, 71004, 70904, 69544, 71005, 70934, 69580, 55595, 69571, 55655, 71054, 71246, 71052, 51898, 76891, 13667, 35623, 33780, 34147, 56102, 46277, 59359, 70680, 77684, 77685, 77686, 77687, 77688, 77689, 77690, 77691, 77692, 77694, 73204, 77743, 77744, 77742, 77745, 77746, 77747, 77748, 77749, 77750, 77751, 52582, 75988, 52629, 52598, 52613, 52597, 52611, 52565, 52584, 52566, 52644, 28335, 52616, 52641, 52569, 52600, 52596, 52518, 57921, 55715, 53002, 13659, 52992, 52989, 52987, 52988, 67950, 75488, 59874, 77947, 77948, 77949, 77950, 77952, 77953, 77954, 78333, 77955, 77946, 40867, 77945, 77956, 77960, 78433, 78434, 78435, 78436, 78437, 78438, 78458, 78439, 78440, 78442, 78445, 78457, 78476, 78481, 78472, 78475, 78493, 78499, 78505, 78508, 78509, 78511, 78516, 78519, 78520, 78524, 78526, 78452, 78441, 78448, 78449, 78450, 78462, 78465, 78467, 78474, 78503, 78444, 78447, 78451, 78453, 78468, 78471, 78487, 78489, 78492, 78496, 78497, 78498, 78504, 78506, 78507, 78517, 78521, 78446, 78454, 78380, 78459, 78478, 78469, 78479, 78486, 78515, 78522, 78470, 78488, 78490, 78491, 78495, 78510, 75090, 75078, 75082, 75091, 75143, 75312, 75255, 75249, 75251, 75093, 75309, 75314, 75245, 73332, 79202, 79208, 79209, 79211, 79221, 79229, 79231, 79232, 79238, 79239, 79242, 79243, 79244, 79245, 79246, 79247, 79248, 79267, 79269, 79274, 79275, 79276, 79277, 79278, 79279, 79280, 67444, 31003, 67139, 41616, 27227, 67149, 41760, 17976, 77706, 41001, 67141, 30944, 79176, 77963, 77961, 77957, 77973, 78128, 79537, 79432, 79433, 79434, 79435, 33006, 77969, 77962, 79562, 79558, 77976, 77958, 77971, 79555, 79567, 79575, 79577, 70537, 70544, 79512, 72916, 79661, 21952, 77970, 77966, 77972, 79556, 79570, 79572, 79578, 70557, 77964, 77977, 79557, 79568, 79573, 79583, 79585, 79587, 79559, 79569, 79574, 79576, 79579, 79580, 79581, 79584, 70622, 70632, 79191, 77965, 43165, 79566, 79571, 55094, 70586, 70620, 70621, 73290, 79436, 70577, 79437, 79438, 79439, 79440, 79441, 79442, 79443, 79444, 79445, 79446, 79447, 79448, 79660, 79664, 79669, 79670, 60356, 77975, 79449, 77974, 26828, 79462, 79465, 79467, 79468, 79470, 79471, 79473, 79476, 79478, 79482, 79483, 9708, 79487, 79488, 79489, 79490, 79491, 79700, 41629, 47379, 79492, 79493, 79494, 79496, 79498, 79499, 79501, 79502, 79503, 79505, 79508, 79509, 79510, 79511, 79513, 79525, 79526, 79527, 79528, 79529, 79532, 79534, 79535, 79536, 19097, 79540, 79541, 79542, 79544, 79545, 79546, 79547, 79548, 79549, 79550, 79551, 79552, 79553, 79554, 79582, 79586, 79767, 79758, 79792, 79793, 79802, 79849, 79851, 79853, 79858, 79976, 79977, 79759, 59267, 79797, 79800, 79854, 79855, 60700, 76595, 79795, 79831, 79890, 79754, 79770, 79796, 79801, 79857, 79769, 79794, 79850, 79852, 77968, 79893, 61519, 79969, 79974, 79975, 79798, 59804, 79856, 77967, 79971, 70142, 68613, 73641, 73574, 73570, 73689, 73780, 73380, 73333, 73365, 73338, 73564, 74349, 74341, 74354, 74338, 74244, 73939, 73629, 40390, 80244, 80245, 80246, 80320, 80419, 18075, 78215, 33141, 22472, 68267, 73135, 80389, 80390, 80397, 80398, 80399, 80400, 80401, 80404, 80405, 80420, 80421, 80410, 80411, 80412, 80416, 80418, 80422, 80423, 80425, 80426, 80427, 80428, 80431, 21808, 41117, 80436, 80088, 80089, 80090, 80091, 80092, 80093, 80095, 71290, 74061, 73903, 74504, 80445, 80446, 80448, 73217, 38718, 38631, 65059, 68293, 80562, 33716, 78592, 80601, 78226, 77934, 78248, 70718, 76214, 21712, 80678, 27069, 51753, 74374, 80776, 80795, 80800, 80856, 70584, 81044, 69888, 81096, 73830, 81118, 81121, 45061, 48662, 45052, 45070, 45057, 45048, 31684, 30477, 14115, 81217, 81222, 81267, 81268, 81269, 81270, 81271, 81272, 81273, 61922, 81274, 81275, 81276, 81277, 81278, 81279, 81280, 81282, 81285, 81291, 81294, 81297, 81298, 81299, 81301, 81302, 81304, 81306, 81308, 81309, 81312, 81315, 81316, 81317, 81318, 81505, 69593, 29055, 33386, 11706, 11707, 33328, 29213, 74015, 61016, 81829, 81830, 81831, 81836, 81841, 81843, 81847, 51755, 77210, 23188, 32533, 32526, 61585, 32535, 81225, 81224, 81228, 14357, 81259, 68548, 81262, 68545, 81261, 68575, 62195, 78556, 78254, 78256, 77901, 77888, 68513, 68515, 71330, 73786, 73790, 74485, 74486, 74369, 74042, 68556, 81266, 81260, 81264, 68541, 68535, 81265, 68572, 68567, 68543, 79121, 77608, 81660, 78608, 78540, 78622, 74023, 74470, 74355, 78689, 65048, 41112, 79340, 82061, 82077, 82078, 82074, 82075, 59618, 74503, 82243, 15544, 82698, 67908, 79967, 79677, 78221, 82709, 62202, 82710, 82711, 82713, 82714, 82715, 35794, 34945, 35314, 82727, 82728, 82729, 82730, 82731, 82732, 82733, 82734, 51692, 26339, 12914, 72201, 26296, 47587, 59089, 59270, 70174, 72736, 59500, 80859, 81627, 35774, 45565, 42156, 43184, 36991, 82772, 82791, 60926, 59499, 59504, 31862, 33414, 60455, 28424, 38754, 59885, 12840, 22811, 65548, 37006, 77673, 72970, 23526, 70149, 77838, 59250, 60674, 61485, 37334, 60886, 70228, 77113, 61233, 61171, 66011, 41861, 70359, 71957, 43198, 75874, 75526, 30718, 82761, 38753, 43188, 21075, 40516, 82874, 59338, 59129, 59168, 59233, 64647, 60256, 61900, 60099, 61187, 61497, 35370, 72667, 43829, 59223, 58006, 70224, 60492, 59333, 23535, 77076, 72758, 62241, 60609, 76955, 2678, 13565, 72727, 82082, 82661, 82659, 82658, 82889, 82890, 82891, 82893, 82892, 83146, 83165, 83167, 83168, 82913, 82914, 83228, 83229, 83230, 83231, 83053, 83054, 83055, 83056, 25645, 83232, 83233, 83159, 83160, 83166, 83195, 83196, 82912, 82916, 82917, 82915, 83207, 83208, 83209, 83211, 83226, 83227, 83284, 83285, 83286, 83288, 83296, 83250, 83252, 83323, 83326, 83327, 83410, 83412, 83381, 83397, 83400, 39595, 39594, 83308, 83324, 83418, 83428, 83429, 83430, 83419, 83420, 83423, 83432, 78334, 78335, 78336, 78337, 78338, 78339, 78342, 78346, 78348, 78349, 78350, 78351, 78352, 78354, 78355, 78356, 78358, 78361, 78363, 78364, 78366, 78367, 78368, 78369, 78370, 78382, 78372, 78373, 78384, 78374, 78376, 78377, 78378, 78381, 78386, 78388, 78389, 78391, 78392, 78394, 78398, 78399, 78401, 83433, 77882, 78551, 77892, 83399, 83491, 83253, 83255, 83256, 39592, 83346, 83492, 83421, 83496, 83497, 83500, 83501, 83502, 83503, 83504, 83509, 83517, 83402, 83408, 83416, 83424, 83426, 78247, 83446, 83452, 83457, 83461, 83462, 83463, 33351, 31775, 83468, 83469, 83470, 83471, 83475, 83480, 10492, 4462, 78403, 78405, 78406, 78407, 78408, 78409, 78410, 78411, 78412, 78414, 78395, 78415, 541, 83448, 83451, 83454, 83458, 83459, 83466, 83473, 83474, 83477, 83478, 83479, 83489, 83490, 83493, 83494, 83495, 83499, 83505, 83506, 83507, 83508, 83511, 83512, 83513, 83514, 10421, 78460, 78461, 78466, 78477, 78512, 78513, 80096, 80097, 80099, 80101, 80247, 80248, 80249, 80250, 80251, 80252, 80253, 80254, 83553, 83555, 83557, 83558, 78557, 82648, 83559, 83561, 51675, 83563, 83565, 79338, 79213, 83169, 82949, 77708, 82943, 83583, 74342, 74079, 83174, 41127, 75888, 83573, 77932, 65161, 51678, 51677, 35526, 12011, 50738, 22199, 22064, 76962, 83623, 22203, 77064, 2930, 2855, 77281, 76822, 77271, 76984, 83634, 83638, 76473, 83237, 83646, 83647, 83648, 83656, 83657, 76952, 76949, 76971, 77074, 2975, 3211, 77256, 76826, 77292, 56718, 83670, 83673, 83674, 83678, 56719, 43358, 83684, 27886, 83675, 83676, 83688, 83691, 83692, 83694, 83695, 83696, 83698, 83700, 83701, 83704, 83706, 83707, 83709, 30525, 3248, 83711, 83716, 12157, 83720, 83721, 83722, 83723, 83724, 83725, 83726, 64547, 64546, 82924, 82926, 34598, 6830, 32018, 50743, 83591, 83837, 83838, 2158, 45059, 45060, 83847, 83850, 83844, 83848, 83852, 83851, 83845, 83846, 32013, 83849, 83878, 83879, 83880, 83881, 83882, 83883, 83884, 83885, 83889, 83890, 83892, 83893, 83894, 83896, 83897, 83898, 83899, 83900, 83907, 83908, 83910, 83915, 83926, 83930, 83906, 83914, 83917, 83918, 83920, 83922, 83923, 83927, 83928, 83929, 83931, 83932, 83935, 83936, 83938, 83939, 83940, 83941, 83942, 83943, 83944, 83949, 83950, 83951, 83953, 83954, 83957, 83958, 83959, 83960, 83961, 83962, 83963, 83964, 83965, 83966, 83967, 83969, 31623, 31605, 31846, 73079, 10797, 73798, 78642, 77831, 81079, 83991, 70516, 70513, 15096, 84003, 83785, 72113, 84050, 84051, 83811, 83797, 83798, 83807, 83808, 83873, 83874, 83886, 83887, 84024, 12269, 81084, 24695, 73847, 84195, 73081, 73084, 73085, 73086, 73088, 73091, 29925, 73093, 29981, 52084, 46233, 82921, 42025, 77077, 83041, 82907, 82897, 81127, 77668, 84412, 84375, 84376, 84377, 84378, 84379, 84380, 84381, 84382, 84383, 84384, 84385, 84386, 84387, 84388, 84389, 84390, 84391, 84392, 84393, 84394, 84395, 84396, 84397, 84398, 84399, 84400, 84401, 84402, 84404, 79316, 84405, 84406, 84417, 84408, 84409, 84410, 84411, 84413, 84407, 84414, 84415, 84416, 84418, 84419, 84420, 84421, 84422, 84423, 84424, 64785, 60085, 83805, 83812, 83609, 83841, 84000, 83607, 72965, 84471, 73054, 84570, 84572, 84576, 84577, 84581, 83014, 84584, 84587, 74350, 35612, 37636, 10470, 76910, 71936, 793, 35619, 37635, 35610, 80333, 76922, 37637, 76444, 84016, 84001, 83615, 64165, 22074, 38737, 65234, 84633, 84640, 69859, 69860, 84666, 35671, 35728, 60465, 72232, 35648, 35717, 35712, 60478, 35716, 60462, 35669, 60409, 60461, 60482, 62100, 62234, 45660, 59815, 84004, 66769, 84005, 42635, 84803, 84012, 83013, 65276, 84784, 84785, 84786, 84787, 84790, 84791, 84797, 84804, 60126, 84801, 84805, 84806, 84807, 84809, 84810, 84812, 84813, 84814, 84815, 84816, 84821, 84822, 84823, 84824, 84828, 84830, 84832, 81694, 84833, 84835, 84836, 84837, 84838, 84839, 84840, 84841, 84842, 84843, 84844, 84845, 84846, 84847, 84848, 84849, 84850, 84851, 84852, 84853, 84854, 84855, 84856, 84857, 84858, 84859, 84860, 84861, 84862, 84864, 84865, 84866, 84869, 84873, 84875, 84879, 84883, 84884, 29972, 45188, 38600, 84055, 84056, 83934, 83905, 84958, 84959, 84960, 84961, 84962, 84963, 84964, 84965, 84970, 84971, 84972, 84973, 84976, 84977, 84978, 84979, 84980, 84981, 84982, 84983, 84984, 84985, 84986, 84987, 84988, 84989, 84990, 84991, 82947, 62256, 84992, 84993, 84995, 84996, 85000, 85001, 85002, 85003, 41824, 84994, 84997, 84998, 85105, 85106, 85107, 85108, 85109, 85094, 85095, 85096, 85097, 85098, 85099, 85100, 85101, 85102, 85103, 85110, 85111, 16092, 85113, 85114, 85115, 85116, 85117, 85118, 85119, 85120, 85121, 85122, 85123, 85124, 85125, 85126, 85127, 85128, 85129, 85130, 85131, 84431, 85171, 84294, 85252, 85253, 85258, 85265, 85268, 85269, 85271, 85274, 85292, 85303, 44793, 45184, 59238, 15613, 40027, 40051, 79256, 79198, 85222, 85346, 85347, 85348, 85349, 85256, 85257, 85350, 85351, 85352, 85353, 85354, 85355, 59241, 85263, 85264, 85283, 85284, 85286, 85287, 85289, 85290, 85291, 85302, 18626, 24348, 68932, 85356, 85357, 85358, 85322, 85323, 85324, 85325, 85326, 85327, 85328, 85329, 85330, 85331, 85332, 85333, 85334, 85335, 85336, 85337, 85338, 85339, 85340, 85341, 85342, 85343, 85344, 85345, 85359, 85360, 85361, 69324, 85362, 85363, 85364, 85365, 85366, 85367, 85368, 85369, 85370, 85373, 85374, 85375, 85376, 85378, 85379, 85380, 85381, 85382, 85383, 85384, 85385, 85386, 68722, 40816, 79994, 19273, 85393, 85394, 85395, 85396, 85397, 85398, 85400, 85401, 85402, 85403, 85404, 85405, 85406, 85407, 85409, 85410, 85412, 85414, 85415, 85416, 85417, 85418, 85419, 85420, 85421, 85422, 85423, 85424, 85425, 85427, 85428, 85429, 85430, 85431, 85432, 85433, 85434, 85435, 85436, 85438, 85439, 85440, 85441, 85442, 85446, 17834, 85511, 85448, 85449, 85450, 29073, 60568, 85512, 85513, 85514, 62692, 85457, 85459, 74877, 74934, 16424, 15360, 62693, 29909, 29915, 85515, 85516, 85465, 85466, 85467, 85468, 85469, 85470, 85471, 78580, 68772, 79282, 84525, 85475, 85477, 85517, 64590, 20317, 85480, 85481, 85482, 85483, 85484, 85485, 85486, 85487, 85488, 85489, 85490, 85491, 85492, 85493, 85494, 85495, 85496, 85497, 85498, 85499, 85500, 85501, 85502, 85503, 85504, 85505, 85518, 85519, 85520, 85521, 85522, 85523, 85524, 85525, 85526, 85527, 85528, 85529, 85530, 85531, 85532, 85544, 85545, 85546, 85547, 85548, 85549, 85550, 85551, 85552, 85553, 24473, 24474, 24475, 85559, 85560, 85561, 85565, 85566, 85567, 85568, 85569, 85570, 85571, 85572, 85573, 85574, 85575, 85576, 85577, 85578, 85582, 85583, 85584, 85585, 85590, 85591, 85592, 85593, 85594, 85595, 85596, 85597, 85598, 85599, 85600, 19274, 61199, 61198, 26906, 26908, 26909, 28481, 85602, 85603, 85604, 85605, 85606, 44784, 85610, 85609, 44778, 24349, 21727, 75049, 18981, 63388, 31172, 28384, 33575, 85650, 85655, 85658, 85674, 85675, 16317, 21574, 61635, 85686, 38105, 35606, 52367, 76874, 85727, 85728, 85729, 85736, 35583, 35581, 75871, 35600, 35705, 35573, 35596, 35594, 59475, 59457, 59441, 76413, 38108, 85750, 35719, 35659, 35722, 35721, 60466, 60477, 60464, 35723, 60407, 85795, 85809, 59466, 35598, 35576, 65401, 85832, 85833, 85869, 59458, 85945, 53928, 60435, 129, 85955, 85985, 35690, 86138, 86140, 86156, 32889, 60863, 52615, 60864, 86159, 86175, 86176, 86177, 86179, 86180, 86181, 86185, 86186, 27059, 27132, 60897, 52993, 53008, 52998, 86187, 86191, 86192, 86194, 86196, 86198, 86199, 86200, 86202, 86203, 86205, 86206, 86219, 86212, 86213, 86214, 86215, 86216, 86217, 78799, 78579, 62560, 66376, 17933, 29593, 29594, 77422, 18498, 77385, 77425, 53001, 77417, 77415, 27381, 77426, 22440, 55697, 77403, 21866, 62597, 77429, 77381, 24521, 27089, 86251, 86252, 86254, 86255, 64317, 27377, 29598, 86264, 27499, 27498, 20577, 77387, 62942, 61391, 77379, 80872, 18472, 14320, 86283, 86285, 19387, 24885, 42983, 16693, 86318, 77393, 18860, 86339, 86344, 86355, 77411, 77412, 77397, 23994, 15504, 77384, 15214, 77424, 77454, 77399, 77406, 77392, 61143, 17724, 77398, 23009, 86406, 86408, 82942, 86418, 86421, 86434, 86435, 86436, 86438, 86430, 86444, 9720, 86449, 86450, 86453, 86455, 86456, 7685, 86462, 86463, 86464, 86466, 86467, 86468, 86469, 86472, 86473, 86474, 86475, 86476, 86477, 86478, 86479, 86480, 86481, 86482, 86483, 86484, 86485, 86486, 86487, 86413, 86488, 86493, 86511, 86512, 3219, 5379, 86531, 82940, 23219, 49781, 27391, 86538, 86539, 86543, 4430, 86533, 86552, 86556, 86557, 81632, 34677, 34328, 30561, 30588, 81785, 27273, 47608, 12842, 10337, 86571, 38871, 86575, 86578, 86582, 86592, 86594, 86586, 86605, 86610, 86615, 86630, 86635, 29939, 27321, 28316, 29946, 27317, 27276, 27320, 34256, 25271, 34253, 31648, 86623, 27305, 27325, 44596, 86629, 86632, 86641, 86643, 86644, 86650, 86654, 86660, 86666, 86667, 86669, 86677, 86682, 86683, 86684, 86685, 86686, 86688, 86689, 86690, 86692, 86693, 86694, 27307, 44651, 27312, 49838, 57534, 31322, 30432, 30437, 30423, 3198, 49777, 86696, 86697, 86698, 86699, 86700, 86701, 86702, 86703, 86704, 86705, 86706, 86707, 86708, 86709, 86710, 86711, 86712, 86713, 86714, 86715, 86716, 86717, 86718, 86719, 86720, 86721, 86722, 86723, 86724, 86725, 86726, 86727, 86728, 86729, 86730, 86731, 86732, 86743, 86744, 86748, 79766, 86770, 86771, 86756, 86757, 86758, 86759, 86760, 86761, 86762, 86763, 86764, 86765, 86766, 86767, 86768, 86769, 86772, 86773, 86774, 86775, 86791, 86792, 86793, 86795, 86796, 86797, 86798, 86799, 86800, 86801, 86802, 86803, 86804, 86805, 86806, 86807, 86808, 86809, 86810, 86811, 86812, 86813, 86814, 86815, 86816, 86834, 86836, 86837, 71423, 86918, 86838, 86839, 86840, 86841, 86842, 86843, 86844, 86845, 86846, 86847, 86848, 86849, 86850, 86851, 86852, 86853, 86854, 86855, 86856, 86857, 86858, 86859, 86860, 86901, 86902, 86903, 86905, 86908, 86909, 86910, 86914, 86915, 86916, 86917, 86921, 86922, 86923, 86924, 86927, 86944, 86945, 86861, 86862, 86863, 86864, 86865, 86867, 86868, 86869, 86870, 86871, 86872, 86873, 86874, 86875, 86876, 86877, 86878, 86879, 86880, 86881, 86882, 86883, 86884, 86886, 86887, 86888, 86889, 86890, 86891, 86892, 86893, 86895, 86896, 86898, 86919, 86920, 86946, 12957, 86999, 87000, 87001, 87002, 87003, 87004, 87005, 86948, 86951, 86957, 86958, 86959, 86960, 86961, 86962, 3359, 87006, 87007, 87008, 86982, 86984, 86985, 86986, 86987, 86988, 86989, 86990, 86991, 86992, 86993, 86995, 86996, 86997, 79992, 87009, 87010, 87011, 87012, 87013, 87064, 64282, 43654, 43756, 43722, 14210, 60098, 43698, 87242, 87243, 87245, 87246, 87247, 87248, 87249, 87250, 87251, 87206, 87207, 87209, 87210, 87211, 87212, 87213, 87214, 87215, 87216, 87217, 87218, 87219, 87220, 87221, 87222, 87223, 87226, 87228, 87229, 87230, 87231, 87232, 87235, 87236, 87237, 87238, 87252, 87253, 87254, 87255, 87256, 87257, 87258, 87259, 87260, 87261, 87262, 87263, 87264, 87265, 87266, 87267, 87268, 87269, 87270, 87271, 87272, 87273, 87274, 87275, 87276, 87277, 87278, 87279, 87280, 87281, 87282, 87283, 67562, 87239, 87240, 87241, 31481, 87338, 87420, 87421, 87422, 87423, 87424, 87360, 87361, 87363, 87425, 87426, 87427, 31340, 30570, 87330, 77779, 87344, 77778, 32046, 87428, 48452, 87429, 87431, 87432, 87433, 87434, 87435, 87437, 20567, 87438, 87439, 87394, 87395, 87396, 87397, 87398, 87399, 87401, 87402, 87403, 87404, 87405, 87406, 87407, 87408, 87409, 87410, 87411, 87412, 87413, 87414, 87415, 87416, 87417, 87419, 18439, 87440, 87441, 87442, 87443, 87444, 87445, 87446, 87447, 87448, 87449, 87450, 87451, 87452, 87453, 87454, 87455, 87456, 87457, 87458, 87459, 87460, 87461, 87462, 87463, 87464, 87465, 87466, 87467, 87468, 87469, 87470, 87471, 87472, 87473, 87474, 87475, 87476, 87477, 87478, 87479, 87481, 87482, 87484, 87485, 87486, 87487, 87490, 87491, 87483, 87488, 87489, 87554, 87556, 87557, 87558, 87559, 87561, 87492, 87493, 87494, 87495, 87497, 87499, 87500, 87501, 87502, 87504, 87507, 87508, 87510, 87511, 87512, 87513, 87515, 87516, 87562, 87563, 87564, 87565, 87517, 87519, 87521, 87522, 87523, 87524, 87525, 87526, 87527, 87528, 87529, 87530, 87531, 87532, 87534, 87535, 87536, 87537, 87538, 87539, 87541, 87542, 87543, 87544, 87545, 87546, 87548, 87549, 87551, 87552, 87553, 48642, 20480, 17652, 87618, 87621, 87635, 87637, 72732, 87587, 87588, 87589, 87590, 87591, 87593, 87594, 87595, 87597, 87598, 87599, 87600, 87601, 87602, 87603, 87604, 87607, 87609, 87638, 87641, 87642, 87643, 87644, 87610, 87611, 70892, 21048, 87679, 87682, 87685, 74372, 87645, 87646, 87652, 87653, 87654, 87680, 87684, 87687, 87724, 87725, 87726, 87727, 87728, 87729, 87730, 87731, 87732, 87733, 87734, 29821, 18322, 87738, 87742, 87743, 87744, 87745, 87746, 61602, 18624, 58168, 19846, 87752, 87754, 87755, 87757, 87758, 87759, 87761, 87763, 87764, 87765, 87767, 87768, 87769, 87770, 87771, 87772, 87773, 87774, 87775, 87776, 87777, 87778, 87779, 87780, 87781, 87783, 87785, 87786, 49632, 87791, 87792, 87793, 87794, 87795, 87796, 87797, 87798, 87799, 87800, 87802, 87803, 87804, 87805, 87806, 87807, 87811, 87812, 87813, 87891, 87894, 87900, 87935, 87936, 87937, 88055, 88057, 88060, 88175, 88176, 88180, 88185, 88188, 88191, 88192, 88193, 88194, 87915, 22077, 88196, 88197, 88198, 88202, 88218, 88224, 88225, 88227, 88228, 88230, 88232, 88234, 88237, 88239, 88261, 88263, 88265, 88266, 88275, 88276, 88278, 88279, 88280, 88281, 88056, 85045, 88059, 88061, 88063, 88064, 85040, 85039, 88076, 88282, 88285, 88199, 88200, 88040, 88041, 85048, 85049, 88044, 88045, 85052, 85060, 85064, 85065, 88050, 88302, 88303, 88305, 88306, 88313, 88314, 88315, 88318, 88319, 88320, 88321, 85051, 85050, 88051, 88052, 88330, 88331, 88335, 88336, 88338, 85061, 88027, 88028, 88029, 88030, 88031, 88033, 88034, 85067, 85069, 88339, 88341, 88342, 88344, 88345, 88346, 88347, 88348, 88349, 87946, 85072, 87913, 87914, 85074, 88360, 88411, 88412, 88413, 88414, 88415, 88420, 88361, 88362, 88363, 88365, 88366, 88368, 88371, 88372, 88373, 88374, 88375, 88376, 88377, 88378, 88401, 88402, 88403, 88404, 88405, 88406, 88407, 88409, 88410, 87938, 80005, 88416, 88417, 88418, 88419, 88436, 88614, 88615, 88616, 88617, 88618, 88619, 88620, 88810, 88811, 88812, 88816, 88817, 88819, 88821, 88823, 88824, 76273, 88842, 88851, 88807, 88809, 88813, 88814, 88815, 88818, 88820, 88826, 88843, 63190, 88853, 29056, 88872, 85041, 85042, 88874, 88877, 88054, 88596, 88600, 88880, 88882, 88884, 88888, 88606, 87948, 87949, 87941, 88681, 87910, 85251, 67127, 67130, 67138, 30956, 67125, 31007, 89650, 67131, 67132, 61483, 67136, 67137, 67140, 67147, 67148, 89663, 67150, 67154, 67153, 90445, 67263, 67299, 67264, 67301, 72900, 91245, 91266, 24958, 67265, 67266, 67267, 67270, 67308, 67366, 67370, 67411, 67307, 67364, 67365, 67443, 92262, 92263, 92266, 92267, 33216, 92385, 92387, 92397, 92404, 15250, 92428, 92456, 92470, 33312, 59553, 92407, 92486, 16793, 23151, 92885, 92886, 92891, 92895, 92934, 92971, 92973, 92978, 92981, 92997, 93021, 93032, 93033, 92505, 15252, 67445, 69617, 69757, 69742, 69749, 69752, 93106, 30182, 93346, 93353, 93487, 93488, 93489, 93490, 93491, 93515, 16004, 93920, 93924, 93925, 65871, 39395, 65855, 65884, 65888, 66102, 93922, 65879, 66139, 66141, 66142, 66172, 66143, 66184, 66182, 66183, 65872, 95247, 95249, 95250, 95253, 95254, 95255, 95257, 95260, 95261, 95263, 95264, 36905, 27204, 36909, 95251, 95262, 95266, 95310, 95311, 95312, 95314, 95315, 95316, 95317, 95318, 95319, 95320, 96000, 96001, 96003, 96009, 96010, 96011, 86070, 96029, 93807, 96288, 96289, 96290, 65451, 65709, 65744, 65655, 66954, 66969, 66972, 66973, 96800, 65638, 65447, 65640, 65452, 66955, 66956, 66957, 66988, 98522, 98470, 66990, 66991, 66992, 98488, 66998, 20078, 54769, 96748, 65707, 98579, 67045, 98507, 66997, 39388, 14871, 98553, 67044, 98560, 98563, 67098, 98580, 65453, 95851, 98918, 98919, 98920, 65642, 65644, 87832, 99520, 99523, 99526, 99532, 98608, 98266, 98764, 98765, 99325, 99541, 44320, 98817, 99555, 93423, 93447, 98725, 21026, 99569, 98657, 96366, 96233, 96017, 96195, 96364, 96159, 96341, 96196, 96367, 96342, 4569, 96234, 100326, 100231, 100246, 100248, 100249, 100250, 100251, 98813, 100449, 100455, 100458, 98370, 100461, 100470, 29602, 61821, 100491, 100493, 98893, 100539, 98354, 98334, 100837, 101060, 101070, 34806, 98235]))
+          WHERE (p.id = 2482)
           GROUP BY (btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text))), p.id, (public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer))) sub
   WITH NO DATA;
 
@@ -9308,14 +9106,6 @@ ALTER TABLE ONLY public.sivel2_gen_acto
 
 ALTER TABLE ONLY public.sivel2_gen_acto
     ADD CONSTRAINT acto_pkey PRIMARY KEY (id);
-
-
---
--- Name: sivel2_sjr_actosjr actosjr_id_acto_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_actosjr
-    ADD CONSTRAINT actosjr_id_acto_key UNIQUE (id_acto);
 
 
 --
@@ -11337,13 +11127,6 @@ CREATE INDEX index_sip_orgsocial_on_pais_id ON public.sip_orgsocial USING btree 
 
 
 --
--- Name: index_sip_ubicacion_on_id_caso; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sip_ubicacion_on_id_caso ON public.sip_ubicacion USING btree (id_caso);
-
-
---
 -- Name: index_sip_ubicacion_on_id_clase; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11393,20 +11176,6 @@ CREATE INDEX index_sivel2_gen_actividad_rangoedadac_on_rangoedadac_id ON public.
 
 
 --
--- Name: index_sivel2_gen_caso_on_fecha; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_gen_caso_on_fecha ON public.sivel2_gen_caso USING btree (fecha);
-
-
---
--- Name: index_sivel2_gen_caso_on_ubicacion_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_gen_caso_on_ubicacion_id ON public.sivel2_gen_caso USING btree (ubicacion_id);
-
-
---
 -- Name: index_sivel2_gen_sectorsocialsec_victima_on_sectorsocial_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11449,27 +11218,6 @@ CREATE INDEX index_sivel2_sjr_agremigracion_migracion_on_migracion_id ON public.
 
 
 --
--- Name: index_sivel2_sjr_caso_on_asesor; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_sjr_caso_on_asesor ON public.sivel2_sjr_casosjr USING btree (asesor);
-
-
---
--- Name: index_sivel2_sjr_caso_on_caso_contacto; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_sjr_caso_on_caso_contacto ON public.sivel2_sjr_casosjr USING btree (id_caso, contacto_id);
-
-
---
--- Name: index_sivel2_sjr_caso_on_oficina_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_sjr_caso_on_oficina_id ON public.sivel2_sjr_casosjr USING btree (oficina_id);
-
-
---
 -- Name: index_sivel2_sjr_casosjr_on_comosupo_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11505,27 +11253,6 @@ CREATE INDEX index_sivel2_sjr_causaagrpais_migracion_on_migracion_id ON public.s
 
 
 --
--- Name: index_sivel2_sjr_desplazamiento_on_fechaexpulsion; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_sjr_desplazamiento_on_fechaexpulsion ON public.sivel2_sjr_desplazamiento USING btree (fechaexpulsion);
-
-
---
--- Name: index_sivel2_sjr_desplazamiento_on_id_caso; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_sjr_desplazamiento_on_id_caso ON public.sivel2_sjr_desplazamiento USING btree (id_caso);
-
-
---
--- Name: index_sivel2_sjr_desplazamiento_on_id_llegada; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_sjr_desplazamiento_on_id_llegada ON public.sivel2_sjr_desplazamiento USING btree (id_llegada_porborrar);
-
-
---
 -- Name: index_sivel2_sjr_difmigracion_migracion_on_difmigracion_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11537,13 +11264,6 @@ CREATE INDEX index_sivel2_sjr_difmigracion_migracion_on_difmigracion_id ON publi
 --
 
 CREATE INDEX index_sivel2_sjr_difmigracion_migracion_on_migracion_id ON public.sivel2_sjr_difmigracion_migracion USING btree (migracion_id);
-
-
---
--- Name: index_sivel2_sjr_respuesta_on_fechaatencion; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_sjr_respuesta_on_fechaatencion ON public.sivel2_sjr_respuesta USING btree (fechaatencion);
 
 
 --
@@ -11708,13 +11428,6 @@ CREATE INDEX sip_nombre_ubicacionpre_b ON public.sip_ubicacionpre USING gin (to_
 
 
 --
--- Name: sip_persona_numerodocumento_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sip_persona_numerodocumento_idx ON public.sip_persona USING btree (numerodocumento);
-
-
---
 -- Name: sip_persona_tdocumento_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11722,17 +11435,10 @@ CREATE INDEX sip_persona_tdocumento_id_idx ON public.sip_persona USING btree (td
 
 
 --
--- Name: sip_persona_tdocumento_id_idx1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sip_persona_tdocumento_id_idx1 ON public.sip_persona USING btree (tdocumento_id);
-
-
---
 -- Name: sip_ubicacionpre_clase_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX sip_ubicacionpre_clase_id_idx ON public.sip_ubicacionpre USING btree (clase_id);
+CREATE INDEX sip_ubicacionpre_clase_id_idx ON public.sip_ubicacionpre USING btree (pais_id);
 
 
 --
@@ -11753,35 +11459,14 @@ CREATE INDEX sip_ubicacionpre_municipio_id_idx ON public.sip_ubicacionpre USING 
 -- Name: sip_ubicacionpre_pais_id_departamento_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX sip_ubicacionpre_pais_id_departamento_id_idx ON public.sip_ubicacionpre USING btree (pais_id, departamento_id);
+CREATE INDEX sip_ubicacionpre_pais_id_departamento_id_idx ON public.sip_ubicacionpre USING btree (clase_id);
 
 
 --
 -- Name: sip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX sip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx ON public.sip_ubicacionpre USING btree (pais_id, departamento_id, municipio_id, clase_id);
-
-
---
--- Name: sip_ubicacionpre_pais_id_departamento_id_municipio_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sip_ubicacionpre_pais_id_departamento_id_municipio_id_idx ON public.sip_ubicacionpre USING btree (pais_id, departamento_id, municipio_id);
-
-
---
--- Name: sip_ubicacionpre_pais_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sip_ubicacionpre_pais_id_idx ON public.sip_ubicacionpre USING btree (pais_id);
-
-
---
--- Name: sip_ubicacionpre_tsitio_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sip_ubicacionpre_tsitio_id_idx ON public.sip_ubicacionpre USING btree (tsitio_id);
+CREATE INDEX sip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx ON public.sip_ubicacionpre USING btree (tsitio_id);
 
 
 --
@@ -11803,34 +11488,6 @@ CREATE INDEX sivel2_gen_obs_fildep_u_idx ON public.sivel2_gen_observador_filtrod
 --
 
 CREATE UNIQUE INDEX sivel2_gen_victima_id_caso_id_persona_idx ON public.sivel2_gen_victima USING btree (id_caso, id_persona);
-
-
---
--- Name: sivel2_gen_victima_id_caso_id_persona_idx1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX sivel2_gen_victima_id_caso_id_persona_idx1 ON public.sivel2_gen_victima USING btree (id_caso, id_persona);
-
-
---
--- Name: sivel2_gen_victima_id_caso_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sivel2_gen_victima_id_caso_idx ON public.sivel2_gen_victima USING btree (id_caso);
-
-
---
--- Name: sivel2_gen_victima_id_etnia_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sivel2_gen_victima_id_etnia_idx ON public.sivel2_gen_victima USING btree (id_etnia);
-
-
---
--- Name: sivel2_gen_victima_id_persona_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sivel2_gen_victima_id_persona_idx ON public.sivel2_gen_victima USING btree (id_persona);
 
 
 --
@@ -11883,24 +11540,10 @@ CREATE INDEX sivel2_sjr_desplazamiento_fechallegada_idx ON public.sivel2_sjr_des
 
 
 --
--- Name: sivel2_sjr_desplazamiento_id_caso_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sivel2_sjr_desplazamiento_id_caso_idx ON public.sivel2_sjr_desplazamiento USING btree (id_caso);
-
-
---
 -- Name: sivel2_sjr_desplazamiento_llegadaubicacionpre_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX sivel2_sjr_desplazamiento_llegadaubicacionpre_id_idx ON public.sivel2_sjr_desplazamiento USING btree (llegadaubicacionpre_id);
-
-
---
--- Name: sivel2_sjr_migracion_caso_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sivel2_sjr_migracion_caso_id_idx ON public.sivel2_sjr_migracion USING btree (caso_id);
 
 
 --
@@ -11932,24 +11575,10 @@ CREATE INDEX sivel2_sjr_migracion_salidaubicacionpre_id_idx ON public.sivel2_sjr
 
 
 --
--- Name: sivel2_sjr_respuesta_fechaatencion_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sivel2_sjr_respuesta_fechaatencion_idx ON public.sivel2_sjr_respuesta USING btree (fechaatencion);
-
-
---
 -- Name: sivel2_sjr_respuesta_id_caso_fechaatencion_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX sivel2_sjr_respuesta_id_caso_fechaatencion_idx ON public.sivel2_sjr_respuesta USING btree (id_caso, fechaatencion);
-
-
---
--- Name: sivel2_sjr_respuesta_id_caso_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sivel2_sjr_respuesta_id_caso_idx ON public.sivel2_sjr_respuesta USING btree (id_caso);
 
 
 --
@@ -12172,6 +11801,22 @@ ALTER TABLE ONLY public.sivel2_gen_antecedente_victimacolectiva
 
 ALTER TABLE ONLY public.sivel2_gen_antecedente_victimacolectiva
     ADD CONSTRAINT antecedente_victimacolectiva_victimacolectiva_id_fkey FOREIGN KEY (victimacolectiva_id) REFERENCES public.sivel2_gen_victimacolectiva(id);
+
+
+--
+-- Name: sivel2_sjr_aslegal_respuesta aslegal_respuesta_id_aslegal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_aslegal_respuesta
+    ADD CONSTRAINT aslegal_respuesta_id_aslegal_fkey FOREIGN KEY (id_aslegal) REFERENCES public.sivel2_sjr_aslegal(id);
+
+
+--
+-- Name: sivel2_sjr_aslegal_respuesta aslegal_respuesta_id_respuesta_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_aslegal_respuesta
+    ADD CONSTRAINT aslegal_respuesta_id_respuesta_fkey FOREIGN KEY (id_respuesta) REFERENCES public.sivel2_sjr_respuesta(id);
 
 
 --
@@ -12775,14 +12420,6 @@ ALTER TABLE ONLY public.sivel2_gen_sectorsocialsec_victima
 
 
 --
--- Name: sivel2_sjr_progestado_derecho fk_rails_1066716dca; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_progestado_derecho
-    ADD CONSTRAINT fk_rails_1066716dca FOREIGN KEY (progestado_id) REFERENCES public.sivel2_sjr_progestado(id);
-
-
---
 -- Name: sip_etiqueta_municipio fk_rails_10d88626c3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -12900,6 +12537,14 @@ ALTER TABLE ONLY public.heb412_gen_campohc
 
 ALTER TABLE ONLY public.sivel2_gen_anexo_victima
     ADD CONSTRAINT fk_rails_1ee17419cc FOREIGN KEY (anexo_id) REFERENCES public.sip_anexo(id);
+
+
+--
+-- Name: sivel2_sjr_motivosjr_derecho fk_rails_2403b12f71; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_motivosjr_derecho
+    ADD CONSTRAINT fk_rails_2403b12f71 FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
 
 
 --
@@ -13127,6 +12772,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividad_proyecto
 
 
 --
+-- Name: sivel2_sjr_motivosjr_derecho fk_rails_3a735f78d3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_motivosjr_derecho
+    ADD CONSTRAINT fk_rails_3a735f78d3 FOREIGN KEY (motivosjr_id) REFERENCES public.sivel2_sjr_motivosjr(id);
+
+
+--
 -- Name: sip_ubicacionpre fk_rails_3b59c12090; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13215,6 +12868,14 @@ ALTER TABLE ONLY public.cor1440_gen_indicadorpf
 
 
 --
+-- Name: sip_ubicacion fk_rails_4dd7a7f238; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacion
+    ADD CONSTRAINT fk_rails_4dd7a7f238 FOREIGN KEY (id_departamento) REFERENCES public.sip_departamento(id);
+
+
+--
 -- Name: sip_oficina fk_rails_4ddab7b9ca; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13244,14 +12905,6 @@ ALTER TABLE ONLY public.cor1440_gen_valorcampotind
 
 ALTER TABLE ONLY public.cor1440_gen_caracterizacionpf
     ADD CONSTRAINT fk_rails_4fcf0ffb4f FOREIGN KEY (proyectofinanciero_id) REFERENCES public.cor1440_gen_proyectofinanciero(id);
-
-
---
--- Name: sivel2_sjr_progestado_derecho fk_rails_5167158166; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_progestado_derecho
-    ADD CONSTRAINT fk_rails_5167158166 FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
 
 
 --
@@ -13356,6 +13009,14 @@ ALTER TABLE ONLY public.sivel2_sjr_migracion
 
 ALTER TABLE ONLY public.sip_orgsocial
     ADD CONSTRAINT fk_rails_5b21e3a2af FOREIGN KEY (grupoper_id) REFERENCES public.sip_grupoper(id);
+
+
+--
+-- Name: sivel2_sjr_progestado_derecho fk_rails_5b37b8c7e9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_progestado_derecho
+    ADD CONSTRAINT fk_rails_5b37b8c7e9 FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
 
 
 --
@@ -13511,6 +13172,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividadpf_mindicadorpf
 
 
 --
+-- Name: sip_ubicacion fk_rails_6ed05ed576; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacion
+    ADD CONSTRAINT fk_rails_6ed05ed576 FOREIGN KEY (id_pais) REFERENCES public.sip_pais(id);
+
+
+--
 -- Name: sip_oficina fk_rails_6f52b85db3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13575,6 +13244,14 @@ ALTER TABLE ONLY public.sivel2_sjr_migracion
 
 
 --
+-- Name: sivel2_sjr_progestado_derecho fk_rails_7598f6bf76; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_progestado_derecho
+    ADD CONSTRAINT fk_rails_7598f6bf76 FOREIGN KEY (progestado_id) REFERENCES public.sivel2_sjr_progestado(id);
+
+
+--
 -- Name: sivel2_sjr_casosjr fk_rails_77cbc429a5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13596,14 +13273,6 @@ ALTER TABLE ONLY public.sip_orgsocial
 
 ALTER TABLE ONLY public.sip_orgsocial_persona
     ADD CONSTRAINT fk_rails_7c335482f6 FOREIGN KEY (orgsocial_id) REFERENCES public.sip_orgsocial(id);
-
-
---
--- Name: sivel2_sjr_ayudasjr_derecho fk_rails_7d05004a64; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_ayudasjr_derecho
-    ADD CONSTRAINT fk_rails_7d05004a64 FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
 
 
 --
@@ -13751,19 +13420,19 @@ ALTER TABLE ONLY public.sal7711_gen_articulo
 
 
 --
--- Name: sivel2_sjr_ayudaestado_derecho fk_rails_8e883e437d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_ayudaestado_derecho
-    ADD CONSTRAINT fk_rails_8e883e437d FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
-
-
---
 -- Name: detallefinanciero fk_rails_90682521dc; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.detallefinanciero
     ADD CONSTRAINT fk_rails_90682521dc FOREIGN KEY (actividadpf_id) REFERENCES public.cor1440_gen_actividadpf(id);
+
+
+--
+-- Name: sivel2_sjr_ayudasjr_derecho fk_rails_9102b1afd0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_ayudasjr_derecho
+    ADD CONSTRAINT fk_rails_9102b1afd0 FOREIGN KEY (ayudasjr_id) REFERENCES public.sivel2_sjr_ayudasjr(id);
 
 
 --
@@ -13831,14 +13500,6 @@ ALTER TABLE ONLY public.sivel2_sjr_desplazamiento
 
 
 --
--- Name: sivel2_sjr_ayudaestado_derecho fk_rails_9b831754a4; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_ayudaestado_derecho
-    ADD CONSTRAINT fk_rails_9b831754a4 FOREIGN KEY (ayudaestado_id) REFERENCES public.sivel2_sjr_ayudaestado(id);
-
-
---
 -- Name: sivel2_sjr_migracion fk_rails_9d5a5e57b1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13868,6 +13529,14 @@ ALTER TABLE ONLY public.detallefinanciero
 
 ALTER TABLE ONLY public.mr519_gen_campo
     ADD CONSTRAINT fk_rails_a186e1a8a0 FOREIGN KEY (formulario_id) REFERENCES public.mr519_gen_formulario(id);
+
+
+--
+-- Name: sip_ubicacion fk_rails_a1d509c79a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacion
+    ADD CONSTRAINT fk_rails_a1d509c79a FOREIGN KEY (id_clase) REFERENCES public.sip_clase(id);
 
 
 --
@@ -13983,6 +13652,14 @@ ALTER TABLE ONLY public.cor1440_gen_indicadorpf
 
 
 --
+-- Name: sip_ubicacion fk_rails_b82283d945; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacion
+    ADD CONSTRAINT fk_rails_b82283d945 FOREIGN KEY (id_municipio) REFERENCES public.sip_municipio(id);
+
+
+--
 -- Name: cor1440_gen_actividad_actividadpf fk_rails_baad271930; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14028,22 +13705,6 @@ ALTER TABLE ONLY public.cor1440_gen_informe
 
 ALTER TABLE ONLY public.sip_ubicacionpre
     ADD CONSTRAINT fk_rails_c08a606417 FOREIGN KEY (municipio_id) REFERENCES public.sip_municipio(id);
-
-
---
--- Name: sivel2_sjr_motivosjr_derecho fk_rails_c31c559a22; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_motivosjr_derecho
-    ADD CONSTRAINT fk_rails_c31c559a22 FOREIGN KEY (motivosjr_id) REFERENCES public.sivel2_sjr_motivosjr(id);
-
-
---
--- Name: sivel2_sjr_motivosjr_derecho fk_rails_c3337af2ab; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_motivosjr_derecho
-    ADD CONSTRAINT fk_rails_c3337af2ab FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
 
 
 --
@@ -14183,11 +13844,11 @@ ALTER TABLE ONLY public.sal7711_gen_articulo
 
 
 --
--- Name: sivel2_sjr_ayudasjr_derecho fk_rails_d4e8fe33bc; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sivel2_sjr_ayudasjr_derecho fk_rails_d3ef67afc9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sivel2_sjr_ayudasjr_derecho
-    ADD CONSTRAINT fk_rails_d4e8fe33bc FOREIGN KEY (ayudasjr_id) REFERENCES public.sivel2_sjr_ayudasjr(id);
+    ADD CONSTRAINT fk_rails_d3ef67afc9 FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
 
 
 --
@@ -14375,6 +14036,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividad_orgsocial
 
 
 --
+-- Name: sivel2_sjr_ayudaestado_derecho fk_rails_eec7d2ed5d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_sjr_ayudaestado_derecho
+    ADD CONSTRAINT fk_rails_eec7d2ed5d FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
+
+
+--
 -- Name: sivel2_sjr_difmigracion_migracion fk_rails_ef83297098; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14535,11 +14204,11 @@ ALTER TABLE ONLY public.sivel2_sjr_desplazamiento
 
 
 --
--- Name: sivel2_sjr_casosjr fk_vcontacto; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sivel2_sjr_ayudaestado_derecho fk_rails_ffa7e94eb1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sivel2_sjr_casosjr
-    ADD CONSTRAINT fk_vcontacto FOREIGN KEY (id_caso, contacto_id) REFERENCES public.sivel2_gen_victima(id_caso, id_persona);
+ALTER TABLE ONLY public.sivel2_sjr_ayudaestado_derecho
+    ADD CONSTRAINT fk_rails_ffa7e94eb1 FOREIGN KEY (ayudaestado_id) REFERENCES public.sivel2_sjr_ayudaestado(id);
 
 
 --
@@ -14764,14 +14433,6 @@ ALTER TABLE ONLY public.sivel2_gen_rangoedad_victimacolectiva
 
 ALTER TABLE ONLY public.sivel2_sjr_respuesta
     ADD CONSTRAINT respuesta_id_caso_fkey FOREIGN KEY (id_caso) REFERENCES public.sivel2_sjr_casosjr(id_caso);
-
-
---
--- Name: sivel2_sjr_respuesta respuesta_id_causaref_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_respuesta
-    ADD CONSTRAINT respuesta_id_causaref_fkey FOREIGN KEY (id_causaref) REFERENCES public.causaref(id);
 
 
 --
@@ -15776,6 +15437,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210501112541'),
 ('20210505135714'),
 ('20210509193202'),
+('20210510192357'),
 ('20210514201449'),
 ('20210524121112'),
 ('20210531223906'),
