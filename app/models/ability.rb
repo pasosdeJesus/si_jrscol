@@ -993,6 +993,7 @@ class Ability < Sivel2Sjr::Ability
         end
       end
       cannot :solocambiaretiquetas, Sivel2Gen::Caso
+      cannot :graficar, Sivel2Gen::Caso
     end
 
   end

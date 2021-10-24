@@ -2594,16 +2594,16 @@ CREATE VIEW public.cres1 AS
  SELECT sub.actividad_id,
     sub.fecha,
     sub.oficina_id,
-    sub.ayudasjr_id
+    sub.ayudaestado_id
    FROM ( SELECT DISTINCT a.id AS actividad_id,
             a.fecha,
             a.oficina_id,
-            json_array_elements_text(v.valorjson) AS ayudasjr_id
+            json_array_elements_text(v.valorjson) AS ayudaestado_id
            FROM ((public.mr519_gen_valorcampo v
              JOIN public.cor1440_gen_actividad_respuestafor ar ON ((ar.respuestafor_id = v.respuestafor_id)))
              JOIN public.cor1440_gen_actividad a ON ((a.id = ar.actividad_id)))
-          WHERE (v.campo_id = 110)) sub
-  WHERE ((sub.fecha >= '2019-12-01'::date) AND (sub.fecha <= '2021-12-31'::date) AND (sub.oficina_id = 1) AND (sub.ayudasjr_id IS NOT NULL) AND (sub.ayudasjr_id <> ''::text));
+          WHERE (v.campo_id = 103)) sub
+  WHERE ((sub.ayudaestado_id IS NOT NULL) AND (sub.ayudaestado_id <> ''::text));
 
 
 --
@@ -6284,7 +6284,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 103)
+          WHERE (sivel2_gen_conscaso.caso_id = 635)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
