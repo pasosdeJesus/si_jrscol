@@ -202,17 +202,16 @@ class Sivel2Sjr::ConteosController < ApplicationController
     ", que3, tablas3, where3]
   end
 
-
-  def personas_filtros_especializados
-    @opsegun =  [
-      "", "ACTIVIDAD / OFICIO", "AÑO DE NACIMIENTO", 
-      "CABEZA DE HOGAR", "ESTADO CIVIL", 
-      "ETNIA", "MES RECEPCIÓN", "NIVEL ESCOLAR", "RANGO DE EDAD", 
-      "RÉGIMEN DE SALUD", "SEXO"
-    ]
-    @titulo_personas = 'Personas atendidas'
-    @titulo_personas_fecha = 'Fecha de Recepción'
-    @pOficina = param_escapa([:filtro, 'oficina_id'])
+  def personas_arma_filtros
+    f = personas_arma_filtros_sivel2_sjr
+    f['RÉGIMEN DE SALUD'] = {
+      nomfiltro: :regimenesdesalud,
+      coleccion: Sivel2Sjr::Regimensalud.all.order(:nombre),
+      metodo_etiqueta: :nombre,
+      metodo_id: :id,
+      campocons: 'victimasjr.id_regimensalud'
+    }
+    return f.sort.to_h
   end
 
   def municipios

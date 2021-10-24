@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 13a4d83eb3f3568124891dda3d0d38e7aed5b1d9
+  revision: ee7a8172dea2270ffe373a1f23bea2734cf9c1ef
   branch: main
   specs:
     cor1440_gen (1.0b5)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: cbb393fe587761697aa80b4fb30d3988ce93cb0a
+  revision: 736b55117638bac78bac63b718c9935566de7360
   branch: main
   specs:
     heb412_gen (1.0.b7)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: a41fa673b7c1b01629a560b7288e5f51beacec7d
+  revision: f75765a12814a384eebd2f5e0c84f93f7b1fe6e8
   branch: main
   specs:
     mr519_gen (0.2.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: ec8abe5d71acf482a810de4ae6034a47a5c05813
+  revision: 9b4d65f2de03305a6e331260c297cf94ebcb817a
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 0241f30e7476bcca2c713c2178d87410f92fea18
+  revision: e14e1af59ef2ac75ccd38b4e9d78f974f18786b2
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: e9ad2ec6e86800db83d7cd189abc397240cc2600
+  revision: fc24fa659acb8e2a06009496858a5673fadd1655
   branch: main
   specs:
     sip (2.0.b12)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: e1373d1f97befaa767cd5f6313511f3819ec34fc
+  revision: 140e29188df0cfd68909386934e2046d1ac7b7ac
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -91,7 +91,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 0c8fe399185b26b426c0c7eb43bedea90bf5eb77
+  revision: efa9589647b86688c56cbb70413195fba07ac24a
   branch: main
   specs:
     sivel2_sjr (2.0b11)
@@ -187,7 +187,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    chartkick (4.0.5)
+    chartkick (4.1.0)
     childprocess (4.1.0)
     choice (0.2.0)
     chosen-rails (1.9.0)
@@ -352,7 +352,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.0.1)
+    selenium-webdriver (4.0.3)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
@@ -407,7 +407,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.4.2)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   ruby

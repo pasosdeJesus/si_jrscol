@@ -115,7 +115,6 @@ gem 'sivel2_sjr',
   #path: '../sivel2_sjr'
 
 group :development, :test do
-
   #gem 'byebug' # Depurar
 
   gem 'dotenv-rails'

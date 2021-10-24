@@ -58,20 +58,23 @@ class Benefactividadpf < ActiveRecord::Base
       proyectofinanciero_id: pf_id)
     asistencias = Cor1440Gen::Asistencia.where(
       actividad_id: contarb_actividad)
-    personasis = asistencias.pluck(:persona_id).uniq
-    actividades = asistencias.pluck(:actividad_id).uniq
-    lisp = personasis.count> 0 ? personasis.join(",") : "0"
-    lisa = actividades.count> 0 ? actividades.join(",") : "0"
+    personasis = asistencias.select(:persona_id)
+    actividades = asistencias.select(:actividad_id)
+
+    selbenef = Benefactividadpf.subasis(personasis, actividades, contarpro)
+    File.open('/tmp/ba.sql', 'w') do |ma|
+      ma.puts selbenef
+    end
 
     ActiveRecord::Base.connection.execute(
       "DROP MATERIALIZED VIEW IF EXISTS benefactividadpf;"\
       "CREATE MATERIALIZED VIEW benefactividadpf AS "\
-      "  #{Benefactividadpf.subasis(lisp, lisa, contarpro)};"
+      "  #{selbenef};"
     )
     Benefactividadpf.reset_column_information
   end # def crea_consulta
 
-  def self.subasis(lisp, lisa, actividadespf)
+  def self.subasis(personas, actividades, actividadespf)
     c="SELECT sub.*, 
       (SELECT nombre FROM cor1440_gen_rangoedadac AS red
        WHERE id=CASE 
@@ -93,34 +96,36 @@ class Benefactividadpf < ActiveRecord::Base
        EXTRACT(DAY FROM a.fecha)::integer) AS edad_en_actividad,
        TRIM(COALESCE(td.sigla || ':', '') ||
          COALESCE(p.numerodocumento, '')) AS persona_identificacion,
-       p.sexo AS persona_sexo" 
-       if actividadespf.count > 0
-         c+= ", "
-         codigos = []
-         actividadespf.each.with_index(1) do |apf, ind|
-           cod = apf.objetivopf.numero + apf.resultadopf.numero + apf.nombrecorto
-           if codigos.include? cod 
-             cod = cod + "_" + ind.to_s 
-           end
-           codigos.push(cod)
-           c+='(
-                 SELECT COUNT(*) FROM cor1440_gen_asistencia AS asistencia
-                 JOIN cor1440_gen_actividad_actividadpf AS aapf ON aapf.actividad_id=asistencia.actividad_id
-                 WHERE aapf.actividadpf_id = ' + apf.id.to_s + '  
-                 AND persona_id = p.id
-                 AND asistencia.actividad_id IN (' + lisa + ') 
-                 ) AS "'+ cod +'"' 
-                  if apf != actividadespf.last
-                    c += ', '
-                  end
-          end
+       p.sexo AS persona_sexo
+    " 
+    if actividadespf.count > 0
+      c+= ", "
+      codigos = []
+      actividadespf.each.with_index(1) do |apf, ind|
+        cod = apf.objetivopf.numero + apf.resultadopf.numero + apf.nombrecorto
+        if codigos.include? cod 
+          cod = cod + "_" + ind.to_s 
         end
-       c+="
-       FROM sip_persona AS p
-     JOIN cor1440_gen_asistencia AS asis ON asis.persona_id=p.id 
-     LEFT JOIN sip_tdocumento AS td ON td.id=p.tdocumento_id
-     JOIN cor1440_gen_actividad AS a ON asis.actividad_id=a.id
-     WHERE p.id IN (#{lisp}) GROUP BY persona_identificacion, p.id, edad_en_actividad) AS sub
+        codigos.push(cod)
+        c += '(
+           SELECT COUNT(*) FROM cor1440_gen_asistencia AS asistencia
+             JOIN cor1440_gen_actividad_actividadpf AS aapf 
+               ON aapf.actividad_id=asistencia.actividad_id
+             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '  
+             AND persona_id = p.id
+             AND asistencia.actividad_id IN (' + actividades.to_sql + ') 
+        ) AS "'+ cod +'"' 
+        if apf != actividadespf.last
+          c += ', '
+        end
+      end
+    end
+    c+="FROM sip_persona AS p
+        JOIN cor1440_gen_asistencia AS asis ON asis.persona_id=p.id 
+        LEFT JOIN sip_tdocumento AS td ON td.id=p.tdocumento_id
+        JOIN cor1440_gen_actividad AS a ON asis.actividad_id=a.id
+        WHERE p.id IN (#{personas.to_sql}) 
+        GROUP BY persona_identificacion, p.id, edad_en_actividad) AS sub
     "
   end
 end
