@@ -102,7 +102,9 @@ class Benefactividadpf < ActiveRecord::Base
       c+= ", "
       codigos = []
       actividadespf.each.with_index(1) do |apf, ind|
-        cod = apf.objetivopf.numero + apf.resultadopf.numero + apf.nombrecorto
+        cod = (apf.objetivopf ? apf.objetivopf.numero : '') + 
+          (apf.resultadopf ? apf.resultadopf.numero : '') + 
+          (apf.nombrecorto )
         if codigos.include? cod 
           cod = cod + "_" + ind.to_s 
         end
