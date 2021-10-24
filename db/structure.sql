@@ -6527,8 +6527,9 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 101)
+           FROM (public.sivel2_gen_conscaso
+             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.id_caso = sivel2_gen_conscaso.caso_id)))
+          WHERE ((sivel2_gen_conscaso.fecharec >= '2020-09-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2021-09-30'::date) AND (sivel2_sjr_casosjr.oficina_id = 5))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -9273,44 +9274,46 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
     sub.edad_en_actividad,
     sub.persona_identificacion,
     sub.persona_sexo,
-    sub."OE1.R1.A11.",
-    sub."OE2.R1.A1.",
-    sub."OE2.R1.A10.",
-    sub."OE3.R1.A1.",
-    sub."OE4.R1.A1.",
-    sub."OE4.R1.A2.",
-    sub."OE1.R1.A10.",
-    sub."OE1.R1.A8.",
-    sub."OE3.R1.A3.",
-    sub."OE1.R1.A4.",
-    sub."OE1.R1.A9.",
-    sub."OE1.R1.A2.",
-    sub."OE1.R1.A7.",
     sub."OE1.R1.A1.",
-    sub."OE2.R1.A3.",
-    sub."OE2.R1.A6.",
-    sub."OE2.R1.A9.",
-    sub."OE3.R1.A2.",
-    sub."OE3.R1.A4.",
-    sub."OE5. R1. A6. ",
-    sub."OE5. R1. A1. ",
-    sub."OE5. R1. A7.",
-    sub."OE2.R1.A4.",
-    sub."OE2.R1.A2.",
-    sub."OE5. R1. A2. ",
-    sub."OE5. R1. A8. ",
-    sub."OE2.R1.A5.",
+    sub."OE1.R1.A2.",
     sub."OE1.R1.A3.",
-    sub."OE2.R1.A8.",
-    sub."OE5. R1. A3. ",
-    sub."OE5. R1. A5. ",
-    sub."OE5. R1. A9.",
-    sub."OE5. R1. A10.",
-    sub."OE2.R1.A7.",
-    sub."OE1.R1.A6.",
+    sub."OE1.R1.A4.",
     sub."OE1.R1.A5.",
-    sub."OE4.R1.A3. ",
-    sub."OE5. R1. A4.",
+    sub."OE1.R1.A6.",
+    sub."OE1.R1.A7.",
+    sub."OE1.R1.A8.",
+    sub."OE1.R1.A9.",
+    sub."OE1.R1.A10.",
+    sub."OE1.R1.A11.",
+    sub."OE2. R1.A1.",
+    sub."OE2. R1.A2.",
+    sub."OE2. R1.A3.",
+    sub."OE2. R1.A4.",
+    sub."OE2. R1.A5.",
+    sub."OE2. R1.A6.",
+    sub."OE2. R1.A7.",
+    sub."OE2. R1.A8.",
+    sub."OE2. R1.A9.",
+    sub."OE5.R1.A3.",
+    sub."OE5.R1.A9.",
+    sub."OE5.R1.A4.",
+    sub."OE5.R1.A5.",
+    sub."OE4.R1.A1.",
+    sub."OE5.R1.A6.",
+    sub."OE5.R1.A10.",
+    sub."OE5.R1.A7.",
+    sub."OE5.R1.A8.",
+    sub."OE3. R1.A1.",
+    sub."OE3. R1.A2.",
+    sub."OE2. R1.A11.",
+    sub."OE4.R1.A2.",
+    sub."OE4.R1.A3.",
+    sub."OE4.R1.A4.",
+    sub."OE5.R1.A1.",
+    sub."OE5.R1.A2.",
+    sub."OE3. R1.A3.",
+    sub."OE3. R1.A4.",
+    sub."OE2. R1.A10.",
     ( SELECT red.nombre
            FROM public.cor1440_gen_rangoedadac red
           WHERE (red.id =
@@ -9327,421 +9330,443 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 507) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 676) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A11.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A1.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 508) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 677) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A1.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A2.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 517) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 678) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A10.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A3.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 518) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 679) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE3.R1.A1.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A4.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 522) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 680) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE4.R1.A1.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A5.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 523) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 681) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE4.R1.A2.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A6.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 503) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 682) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A10.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A7.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 501) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 683) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A8.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A8.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 520) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 684) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE3.R1.A3.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A9.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 497) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 687) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A4.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A10.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 502) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 688) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A9.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE1.R1.A11.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 495) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 690) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A2.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A1.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 500) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 691) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A7.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A2.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 494) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 692) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A1.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A3.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 510) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 693) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A3.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A4.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 513) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 694) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A6.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A5.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 516) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 695) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A9.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A6.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 519) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 696) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE3.R1.A2.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A7.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 521) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 697) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE3.R1.A4.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A8.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 622) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 698) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A6. ",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A9.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 617) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 741) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A1. ",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A3.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 626) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 747) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A7.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A9.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 511) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 742) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A4.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A4.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 509) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 743) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A2.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A5.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 618) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 735) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A2. ",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE4.R1.A1.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 627) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 744) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A8. ",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A6.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 512) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 748) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A5.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A10.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 496) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 745) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A3.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A7.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 515) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 746) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A8.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A8.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 619) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 731) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A3. ",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE3. R1.A1.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 621) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 732) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A5. ",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE3. R1.A2.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 628) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 730) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A9.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A11.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 629) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 736) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A10.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE4.R1.A2.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 514) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 737) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE2.R1.A7.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE4.R1.A3.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 499) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 738) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A6.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE4.R1.A4.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 498) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 739) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE1.R1.A5.",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A1.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 620) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 740) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE4.R1.A3. ",
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE5.R1.A2.",
             ( SELECT count(*) AS count
                    FROM (public.cor1440_gen_asistencia asistencia
                      JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
-                  WHERE ((aapf.actividadpf_id = 667) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                  WHERE ((aapf.actividadpf_id = 733) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
                            FROM public.cor1440_gen_asistencia
                           WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
                                    FROM public.cor1440_gen_actividad
                                   WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
    FROM public.cor1440_gen_actividad_proyectofinanciero
-  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date)))))))) AS "OE5. R1. A4."
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE3. R1.A3.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 734) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                           FROM public.cor1440_gen_asistencia
+                          WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+                                   FROM public.cor1440_gen_actividad
+                                  WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+   FROM public.cor1440_gen_actividad_proyectofinanciero
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE3. R1.A4.",
+            ( SELECT count(*) AS count
+                   FROM (public.cor1440_gen_asistencia asistencia
+                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                  WHERE ((aapf.actividadpf_id = 729) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+                           FROM public.cor1440_gen_asistencia
+                          WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+                                   FROM public.cor1440_gen_actividad
+                                  WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+   FROM public.cor1440_gen_actividad_proyectofinanciero
+  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date)))))))) AS "OE2. R1.A10."
            FROM (((public.sip_persona p
              JOIN public.cor1440_gen_asistencia asis ON ((asis.persona_id = p.id)))
              LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
@@ -9752,8 +9777,8 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
                            FROM public.cor1440_gen_actividad
                           WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
                                    FROM public.cor1440_gen_actividad_proyectofinanciero
-                                  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 194))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-                                   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2021-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-06-30'::date))))))
+                                  WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+                                   FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2017-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date))))))
           GROUP BY (btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text))), p.id, (public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer))) sub
   WITH NO DATA;
 
@@ -11734,6 +11759,27 @@ CREATE INDEX busca_conscaso ON public.sivel2_gen_conscaso USING gin (q);
 
 
 --
+-- Name: cor1440_gen_actividad_actividadpf_actividad_id_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cor1440_gen_actividad_actividadpf_actividad_id_ind ON public.cor1440_gen_actividad_actividadpf USING btree (actividad_id);
+
+
+--
+-- Name: cor1440_gen_actividad_actividadpf_actividadpf_id_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cor1440_gen_actividad_actividadpf_actividadpf_id_ind ON public.cor1440_gen_actividad_actividadpf USING btree (actividadpf_id);
+
+
+--
+-- Name: cor1440_gen_actividad_fecha_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cor1440_gen_actividad_fecha_ind ON public.cor1440_gen_actividad USING btree (fecha);
+
+
+--
 -- Name: cor1440_gen_actividad_oficina_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11752,6 +11798,20 @@ CREATE INDEX cor1440_gen_actividad_proyectofinanci_proyectofinanciero_id_idx ON 
 --
 
 CREATE INDEX cor1440_gen_actividad_proyectofinanciero_actividad_id_idx ON public.cor1440_gen_actividad_proyectofinanciero USING btree (actividad_id);
+
+
+--
+-- Name: cor1440_gen_asistencia_actividad_id_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cor1440_gen_asistencia_actividad_id_ind ON public.cor1440_gen_asistencia USING btree (actividad_id);
+
+
+--
+-- Name: cor1440_gen_asistencia_persona_id_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cor1440_gen_asistencia_persona_id_ind ON public.cor1440_gen_asistencia USING btree (persona_id);
 
 
 --
@@ -16387,6 +16447,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211019121200'),
 ('20211024092307'),
 ('20211024105450'),
-('20211024105507');
+('20211024105507'),
+('20211024174829');
 
 

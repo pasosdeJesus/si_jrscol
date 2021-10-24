@@ -61,10 +61,15 @@ class Benefactividadpf < ActiveRecord::Base
     personasis = asistencias.select(:persona_id)
     actividades = asistencias.select(:actividad_id)
 
+    selbenef = Benefactividadpf.subasis(personasis, actividades, contarpro)
+    File.open('/tmp/ba.sql', 'w') do |ma|
+      ma.puts selbenef
+    end
+
     ActiveRecord::Base.connection.execute(
       "DROP MATERIALIZED VIEW IF EXISTS benefactividadpf;"\
       "CREATE MATERIALIZED VIEW benefactividadpf AS "\
-      "  #{Benefactividadpf.subasis(personasis, actividades, contarpro)};"
+      "  #{selbenef};"
     )
     Benefactividadpf.reset_column_information
   end # def crea_consulta
