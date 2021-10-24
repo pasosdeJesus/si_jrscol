@@ -14,14 +14,10 @@ if (test "$USUARIO_AP" = "") then {
 	echo 'Falta USUARIO_AP en .env'
 	exit 1;
 } fi;
-if (test ! -f config/database.yml) then {
-	echo "Falta archivo config/database.yml"
-	exit 1;
-} fi;
 
-bd=`grep -A2 production config/database.yml | grep database | sed -e "s/  database: //g"`
-cl=`grep "password:" config/database.yml | sed -e "s/  password: //g"`
-us=`grep "username:" config/database.yml | sed -e "s/  username: //g"`
+bd="$BD_PRO"
+cl="$BD_CLAVE"
+us="$BD_USUARIO"
 ps axww | grep "[R]EFRESH" > /dev/null 2>&1
 while (test "$?" = "0"); do
 	echo "Refresco en curso, esperando 5 segundos"
