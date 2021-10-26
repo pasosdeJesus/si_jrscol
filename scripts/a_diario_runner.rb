@@ -1,4 +1,3 @@
-# encoding: utf-8
 # Ejecutar con bin/cron_diario
 
 def alertas

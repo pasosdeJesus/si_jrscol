@@ -1,8 +1,7 @@
-# encoding: UTF-8
-
 module Sip
   module Admin
     class LineasorgsocialController < Sip::Admin::BasicasController
+
       before_action :set_lineaorgsocial, 
         only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource  class: Sip::Lineaorgsocial

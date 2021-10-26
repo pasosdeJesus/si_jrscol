@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 module Sip
   class Lineaorgsocial < ActiveRecord::Base
     include Sip::Basica

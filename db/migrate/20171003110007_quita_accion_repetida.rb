@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class QuitaAccionRepetida < ActiveRecord::Migration[5.1]
   def up
     execute <<-SQL

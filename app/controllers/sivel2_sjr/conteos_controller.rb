@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require 'sivel2_sjr/concerns/controllers/conteos_controller'
 
 class Sivel2Sjr::ConteosController < ApplicationController

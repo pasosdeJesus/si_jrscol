@@ -1,5 +1,7 @@
 class BenefesactividadpfController < Heb412Gen::ModelosController
 
+  
+  load_and_authorize_resource class: ::Benefactividadpf
   def clase
     '::Benefactividadpf'
   end

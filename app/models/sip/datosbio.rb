@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 class Sip::Datosbio < ActiveRecord::Base
 
   belongs_to :persona, class_name: 'Sip::Persona', foreign_key: 'persona_id',
