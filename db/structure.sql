@@ -6285,7 +6285,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 103)
+          WHERE (sivel2_gen_conscaso.caso_id = 102)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -6658,6 +6658,16 @@ CREATE TABLE public.sivel2_gen_organizacion (
 CREATE TABLE public.sivel2_gen_organizacion_victimacolectiva (
     id_organizacion integer NOT NULL,
     victimacolectiva_id integer NOT NULL
+);
+
+
+--
+-- Name: sivel2_gen_otraorga_victima; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_otraorga_victima (
+    organizacion_id integer,
+    victima_id integer
 );
 
 
@@ -11423,6 +11433,20 @@ CREATE INDEX index_sivel2_gen_actividad_rangoedadac_on_rangoedadac_id ON public.
 
 
 --
+-- Name: index_sivel2_gen_otraorga_victima_on_organizacion_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sivel2_gen_otraorga_victima_on_organizacion_id ON public.sivel2_gen_otraorga_victima USING btree (organizacion_id);
+
+
+--
+-- Name: index_sivel2_gen_otraorga_victima_on_victima_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sivel2_gen_otraorga_victima_on_victima_id ON public.sivel2_gen_otraorga_victima USING btree (victima_id);
+
+
+--
 -- Name: index_sivel2_gen_sectorsocialsec_victima_on_sectorsocial_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -13007,6 +13031,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividad_rangoedadac
 
 
 --
+-- Name: sivel2_gen_otraorga_victima fk_rails_3029d2736a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_gen_otraorga_victima
+    ADD CONSTRAINT fk_rails_3029d2736a FOREIGN KEY (organizacion_id) REFERENCES public.sivel2_gen_organizacion(id);
+
+
+--
 -- Name: cor1440_gen_valorcampoact fk_rails_3060a94455; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14236,6 +14268,14 @@ ALTER TABLE ONLY public.sivel2_sjr_migracion
 
 ALTER TABLE ONLY public.sivel2_sjr_migracion
     ADD CONSTRAINT fk_rails_dfdacffa93 FOREIGN KEY (salida_pais_id_porborrar) REFERENCES public.sip_pais(id);
+
+
+--
+-- Name: sivel2_gen_otraorga_victima fk_rails_e023799a03; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_gen_otraorga_victima
+    ADD CONSTRAINT fk_rails_e023799a03 FOREIGN KEY (victima_id) REFERENCES public.sivel2_gen_victima(id);
 
 
 --
@@ -15799,6 +15839,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211011214752'),
 ('20211011233005'),
 ('20211019121200'),
+('20211020221141'),
 ('20211024092307'),
 ('20211024105450'),
 ('20211024105507'),
