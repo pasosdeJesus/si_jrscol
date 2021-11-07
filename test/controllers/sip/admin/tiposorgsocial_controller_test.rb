@@ -5,66 +5,69 @@ require_relative '../../../models/sip/tipoorgsocial_test'
 module Sip
   module Admin
 
-    class TiposorgsocialControllerTest < ActionController::TestCase
+    class TiposorgsocialControllerTest < ActionDispatch::IntegrationTest
       include Engine.routes.url_helpers
       include Devise::Test::IntegrationHelpers 
       include Rails.application.routes.url_helpers
 
 
       setup do
+        @current_usuario = ::Usuario.create(PRUEBA_USUARIO)
+        sign_in @current_usuario
         @tipoorgsocial = Sip::Tipoorgsocial.create(
           Sip::TipoorgsocialTest::PRUEBA_TIPOORGSOCIAL)
-        #byebug
-        #@controller = Sip::Admin::TiposorgsocialController
       end
 
       test "should get index" do
-        skip
-        get tiposorgsocial_url
+        get admin_tiposorgsocial_path
         assert_response :success
-        assert_not_nil assigns(:tipoorgsocial)
       end
 
       test "should get new" do
-        skip
-        get :new
+        get new_admin_tipoorgsocial_path
         assert_response :success
       end
 
       test "should create tipoorgsocial" do
-        skip
-        assert_difference('Tipoorgsocial.count') do
-          post :create, tipoorgsocial: { created_at: @tipoorgsocial.created_at, fechacreacion: @tipoorgsocial.fechacreacion, fechadeshabilitacion: @tipoorgsocial.fechadeshabilitacion, nombre: @tipoorgsocial.nombre, observaciones: @tipoorgsocial.observaciones, updated_at: @tipoorgsocial.updated_at }
+        assert_difference 'Tipoorgsocial.count', 1 do
+          post admin_tiposorgsocial_path, params: {tipoorgsocial: {
+            nombre: "Tipoorgsocial_pruebale",
+            observaciones: "obs",
+            fechacreacion: "2018-10-25",
+            created_at: "2018-10-25",
+            updated_at: "2018-10-25"
+          }}
         end
 
-        assert_redirected_to tipoorgsocial_path(assigns(:tipoorgsocial))
+        assert_redirected_to admin_tipoorgsocial_path(assigns(:tipoorgsocial))
       end
 
       test "should show tipoorgsocial" do
-        skip
-        get :show, id: @tipoorgsocial
+        get admin_tipoorgsocial_path(@tipoorgsocial.id)
         assert_response :success
       end
 
       test "should get edit" do
-        skip
-        get :edit, id: @tipoorgsocial
+        get edit_admin_tipoorgsocial_path(@tipoorgsocial.id)
         assert_response :success
       end
 
       test "should update tipoorgsocial" do
-        skip
-        patch :update, id: @tipoorgsocial, tipoorgsocial: { created_at: @tipoorgsocial.created_at, fechacreacion: @tipoorgsocial.fechacreacion, fechadeshabilitacion: @tipoorgsocial.fechadeshabilitacion, nombre: @tipoorgsocial.nombre, observaciones: @tipoorgsocial.observaciones, updated_at: @tipoorgsocial.updated_at }
-        assert_redirected_to tipoorgsocial_path(assigns(:tipoorgsocial))
+        patch admin_tipoorgsocial_path(@tipoorgsocial.id, params: { tipoorgsocial: { 
+            nombre: "Tipoorgsocial_pruebacambio",
+            observaciones: "obs",
+            fechacreacion: "2018-10-25",
+            created_at: "2018-10-25",
+            updated_at: "2018-10-25"
+        }})
       end
 
       test "should destroy tipoorgsocial" do
-        skip
-        assert_difference('Tipoorgsocial.count', -1) do
-          delete :destroy, id: @tipoorgsocial
+        assert_difference('Sip::Tipoorgsocial.count', -1) do
+          delete admin_tipoorgsocial_path(@tipoorgsocial.id)
         end
 
-        assert_redirected_to tiposorgsocial_path
+        assert_redirected_to admin_tiposorgsocial_path
       end
     end
 
