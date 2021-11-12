@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 4de4768a25b87fc93a020dc56feb43c7c7074d05
+  revision: 45395ccce595b5ac6d3af564f12b2f911b4843fd
   branch: main
   specs:
     cor1440_gen (1.0b5)
@@ -25,10 +25,10 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: eb94bc6425515ddb1719c57b68aac4186031fcf1
+  revision: cd1d4436aaab2b062e91d519b4598af53905bf42
   branch: main
   specs:
-    heb412_gen (1.0.b7)
+    heb412_gen (2.0)
       mr519_gen
       redcarpet
       rspreadsheet
@@ -36,16 +36,16 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 5eac188c660718da9365dc83858cfb743b2032fa
+  revision: 1ea902ef2d4c2f1265ab4d271412d23a2dbd061e
   branch: main
   specs:
-    mr519_gen (0.2.1)
+    mr519_gen (2.0)
       rails
       sip
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: a0e6b54c5757d3aa5b7f26f85979e32bec0d6165
+  revision: 631dc81a781ee001aafe14dd0817a6d85114e0c6
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 3ee1a07d368e22bec7530680dfe95a60cd53e2ba
+  revision: 54c494f98be39f8a70478b86894bf9818129779c
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,10 +63,10 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 317c720257276b1520f1f95f01bff99d60e1d5f7
+  revision: 438983aab2bccaba5b4cceae787cf6f5b516ac2d
   branch: main
   specs:
-    sip (2.0.b12)
+    sip (2.0)
       cancancan
       chosen-rails
       devise
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 257e52aea90b8f71e65f0d7819987c8341053d4b
+  revision: 4e1faa9989d09e0b48269457b852e20d3cd87563
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 598c8e152f40b0165d7c05b83630eb8d7a8e529f
+  revision: 624e026fb5f6c256c73f108d68350a46c38eaab6
   branch: main
   specs:
     sivel2_sjr (2.0b11)
@@ -247,9 +247,9 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
-    mime-types (3.3.1)
+    mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0901)
+    mime-types-data (3.2021.1115)
     mimemagic (0.3.10)
       nokogiri (~> 1)
       rake
@@ -373,7 +373,7 @@ GEM
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.3.0)
+    sprockets-rails (3.4.0)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
@@ -395,7 +395,7 @@ GEM
       raindrops (~> 0.7)
     warden (1.2.9)
       rack (>= 2.0.9)
-    web-console (4.1.0)
+    web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
