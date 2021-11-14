@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require_dependency 'sivel2_sjr/concerns/controllers/casos_controller'
 require_dependency 'heb412_gen/docs_controller'
 

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require_dependency "sivel2_sjr/concerns/controllers/actividades_controller"
 
 module Cor1440Gen
@@ -140,9 +138,12 @@ module Cor1440Gen
     def destroy_si_jrscol
       pf_act = Cor1440Gen::ActividadProyectofinanciero.
         where(actividad_id: @registro.id)
-      if pf_act.count > 0
-        pf_act[0].destroy!
-      end
+      pf_act.delete_all if pf_act.count > 0
+
+      actpf = Cor1440Gen::ActividadActividadpf.
+        where(actividad_id: @registro.id)
+      actpf.delete_all if actpf.count > 0
+
       rpb = @registro.respuestafor_ids
       puts "** OJO por borrar respuestafor: #{rpb}"
       if rpb.count > 0
@@ -158,16 +159,16 @@ module Cor1440Gen
 
       re = Cor1440Gen::ActividadRangoedadac.where(
         actividad_id: @registro.id)
-      re.destroy_all
+      re.delete_all if re.count > 0
 
       acp = Cor1440Gen::ActividadProyecto.where(actividad_id: @registro.id)
-      acp.destroy_all if acp.count > 0
+      acp.delete_all if acp.count > 0
 
       asi = Cor1440Gen::Asistencia.where(actividad_id: @registro.id)
-      asi.destroy_all if asi.count > 0
+      asi.delete_all if asi.count > 0
 
       acs = Sivel2Sjr::ActividadCasosjr.where(actividad_id: @registro.id)
-      acs.destroy_all if acs.count > 0
+      acs.delete_all if acs.count > 0
 
       destroy_gen
     end

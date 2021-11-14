@@ -2,6 +2,7 @@ class DetallesfinancierosController < ApplicationController
 
   include ActionView::Helpers::AssetUrlHelper
 
+  # Authorize en cada función
 
   # Responde a requerimiento AJAX generado por cocoon creando una
   # nueva fuente de prensa para el caso que recibe por parametro 

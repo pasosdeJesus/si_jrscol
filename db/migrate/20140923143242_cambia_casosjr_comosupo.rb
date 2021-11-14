@@ -1,4 +1,3 @@
-#encoding: UTF-8
 class CambiaCasosjrComosupo < ActiveRecord::Migration
   def up
     execute <<-SQL

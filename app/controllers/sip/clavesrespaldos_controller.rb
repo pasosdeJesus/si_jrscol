@@ -1,6 +1,8 @@
 module Sip
   class ClavesrespaldosController < Sip::ModelosController
 
+    load_and_authorize_resource class: Sip::Claverespaldo
+
     def clase
       'Sip::Claverespaldo'
     end

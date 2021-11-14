@@ -1,5 +1,7 @@
 class ConsgifmmController < Heb412Gen::ModelosController
 
+  load_and_authorize_resource class: ::Consgifmm
+
   def clase
     '::Consgifmm'
   end

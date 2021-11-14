@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'sivel2_sjr/concerns/models/consactividadcaso'
 
 class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base

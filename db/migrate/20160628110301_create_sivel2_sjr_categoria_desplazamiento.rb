@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 class CreateSivel2SjrCategoriaDesplazamiento < ActiveRecord::Migration
   def change
     create_join_table :categoria, :desplazamiento, {

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 module Admin
   class DiscapacidadesController < Sip::Admin::BasicasController
     before_action :set_discapacidad, 

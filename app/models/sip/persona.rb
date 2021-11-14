@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require 'date'
 require 'sivel2_sjr/concerns/models/persona'
 

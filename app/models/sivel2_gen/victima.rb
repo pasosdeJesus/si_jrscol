@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'sivel2_sjr/concerns/models/victima'
 
 class Sivel2Gen::Victima < ActiveRecord::Base

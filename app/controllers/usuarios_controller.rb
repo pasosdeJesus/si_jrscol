@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'bcrypt'
 
 require 'sivel2_sjr/concerns/controllers/usuarios_controller'
@@ -7,6 +6,8 @@ class UsuariosController < Sip::ModelosController
 
   include Sivel2Sjr::Concerns::Controllers::UsuariosController
 
+  # Autoriza en cada función 
+  
   def index
     authorize! :read, ::Usuario
     @registros= @usuarios = Usuario.order(

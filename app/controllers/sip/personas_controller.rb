@@ -1,9 +1,10 @@
-# encoding: UTF-8
-
 require 'sivel2_sjr/concerns/controllers/personas_controller'
 
 module Sip
   class PersonasController < Heb412Gen::ModelosController
+
+    before_action :set_persona, only: [:show, :edit, :update, :destroy]
+    load_and_authorize_resource class: Sip::Persona
 
     include Sivel2Sjr::Concerns::Controllers::PersonasController
 
