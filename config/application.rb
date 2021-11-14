@@ -36,7 +36,8 @@ module Sivel2Sjrcol
                              Heb412Gen::Engine, Mr519Gen::Engine, 
                              Sip::Engine, :all]
 
-    config.hosts <<  ENV.fetch('CONFIG_HOSTS', 'defensor.info').downcase
+    config.hosts.concat(
+      ENV.fetch('CONFIG_HOSTS', 'defensor.info').downcase.split(";"))
 
     config.relative_url_root = ENV.fetch('RUTA_RELATIVA', '/')
 
