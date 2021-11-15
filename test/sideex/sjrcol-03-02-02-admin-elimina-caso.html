@@ -8,6 +8,28 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
+<tr><td rowspan="1" colspan="3">elimina-actividad</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>/actividades<datalist><option>http://colombia.sjrlac.info:5200/</option><option>/actividades</option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div/input</option></datalist></td><td>20,12</td>
+</tr>
+<tr><td>runScript</td><td>e=document.getElementById('filtro_busnombre'); e.value='caso '+localStorage.getItem('regjrscol_05_caso_id')<datalist><option>e=document.getElementById('filtro_busnombre'); e.value='caso '+localStorage.getItem('regjrscol_05_caso_id')</option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[16]/input</option></datalist></td><td>24,27</td>
+</tr>
+<tr><td>assertText</td><td>css=div.offset-sm-4.col-sm-4<datalist><option>css=div.offset-sm-4.col-sm-4</option><option>//div/div[2]</option></datalist></td><td>Actividades: 1</td>
+</tr>
+<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-sm.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/actividades/30622')])[3]</option><option>//a[2]</option></datalist></td><td>19,13</td>
+</tr>
+<tr><td>assertText</td><td>css=div.alert.alert-success.alert-dismissible.fade.show &gt; span<datalist><option>css=div.alert.alert-success.alert-dismissible.fade.show &gt; span</option><option>//div/span</option></datalist></td><td>Cor1440Gen::Actividad eliminada.</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
 <tr><td rowspan="1" colspan="3">caso-elimina</td></tr>
 </thead>
 <tbody>
@@ -31,8 +53,6 @@
 </tr>
 <tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Casos</td>
 </tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Caso eliminado.</td>
-</tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
@@ -43,11 +63,11 @@
 </tr>
 <tr><td>clickAt</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>50,28</td>
 </tr>
-<tr><td>type</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>123452345</td>
+<tr><td>type</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>123452225</td>
 </tr>
 <tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[12]/input</option></datalist></td><td>9,14</td>
 </tr>
-<tr><td>assertText</td><td>//tbody/tr/td[5]<datalist><option>//tbody/tr/td[5]</option></datalist></td><td>123452345</td>
+<tr><td>assertText</td><td>//tbody/tr/td[5]<datalist><option>//tbody/tr/td[5]</option></datalist></td><td>123452225</td>
 </tr>
 <tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
 </tr>
