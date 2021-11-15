@@ -136,13 +136,22 @@ module Cor1440Gen
 
     # Responde a DELETE
     def destroy_si_jrscol
-      pf_act = Cor1440Gen::ActividadProyectofinanciero.
-        where(actividad_id: @registro.id)
-      pf_act.delete_all if pf_act.count > 0
-
-      actpf = Cor1440Gen::ActividadActividadpf.
-        where(actividad_id: @registro.id)
-      actpf.delete_all if actpf.count > 0
+      ['Cor1440Gen::ActividadareasActividad',
+       'Cor1440Gen::ActividadActividadpf',
+       'Cor1440Gen::ActividadActividadtipo',
+       'Sivel2Sjr::ActividadCasosjr',
+       'Cor1440Gen::ActividadOrgsocial',
+       'Cor1440Gen::ActividadProyecto',
+       'Cor1440Gen::ActividadProyectofinanciero',
+       'Cor1440Gen::ActividadRangoedadac',
+       'Cor1440Gen::ActividadRespuestafor',
+       'Cor1440Gen::ActividadSipAnexo',
+       'Cor1440Gen::ActividadUsuario',
+       'Cor1440Gen::Asistencia'
+      ].each do |relac|
+        r = relac.constantize.where(actividad_id: @registro.id)
+        r.delete_all if r.count > 0
+      end
 
       rpb = @registro.respuestafor_ids
       puts "** OJO por borrar respuestafor: #{rpb}"
@@ -156,19 +165,6 @@ module Cor1440Gen
           WHERE id IN (#{rpb.join(',')});
         EOF
       end
-
-      re = Cor1440Gen::ActividadRangoedadac.where(
-        actividad_id: @registro.id)
-      re.delete_all if re.count > 0
-
-      acp = Cor1440Gen::ActividadProyecto.where(actividad_id: @registro.id)
-      acp.delete_all if acp.count > 0
-
-      asi = Cor1440Gen::Asistencia.where(actividad_id: @registro.id)
-      asi.delete_all if asi.count > 0
-
-      acs = Sivel2Sjr::ActividadCasosjr.where(actividad_id: @registro.id)
-      acs.delete_all if acs.count > 0
 
       destroy_gen
     end
