@@ -98,7 +98,8 @@ module Sivel2Sjr
     end
     def eliminar
       acto = Sivel2Gen::Acto.where(id: params[:id_acto].to_i).take
-      authorize! :destroy, @acto
+      #authorize! :destroy, @acto
+      authorize! :destroy, Sivel2Gen::Acto
       params[:desplazamiento_id] = Sivel2Sjr::Actosjr.where(id_acto: acto.id)[0].desplazamiento_id.to_s
       @params = params
       if acto && acto.actosjr

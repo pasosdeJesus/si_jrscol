@@ -2,6 +2,10 @@ require 'sivel2_sjr/concerns/models/caso'
 class Sivel2Gen::Caso < ActiveRecord::Base
   include Sivel2Sjr::Concerns::Models::Caso
 
+  # Permitimos casos sin descripción
+  def caso_no_vacio
+  end
+
   def presenta(atr)
     case atr.to_s
     when 'fecharec'
