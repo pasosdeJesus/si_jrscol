@@ -858,6 +858,9 @@ class Ability < Sivel2Sjr::Ability
       can :read, Heb412Gen::Plantilladoc
       can :read, Heb412Gen::Plantillahcm
       can :read, Heb412Gen::Plantillahcr
+    
+      can :read, Sip::Ubicacionpre
+      can :mundep, Sip::Ubicacionpre
 
       case usuario.rol
       when Ability::ROLINV
@@ -890,6 +893,7 @@ class Ability < Sivel2Sjr::Ability
 
         can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
+        can :manage, Sip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
@@ -918,6 +922,7 @@ class Ability < Sivel2Sjr::Ability
 
         can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
+        can :manage, Sip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso
@@ -941,6 +946,7 @@ class Ability < Sivel2Sjr::Ability
 
         can [:new, :create, :read, :index, :edit, :update], Sip::Orgsocial
         can :manage, Sip::Persona
+        can :manage, Sip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso
@@ -975,6 +981,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sip::Orgsocial
         can :manage, Sip::Sectororgsocial
         can :manage, Sip::Persona
+        can :manage, Sip::Ubicacionpre
 
         can :manage, Sivel2Gen::Caso
         can :manage, Sivel2Gen::Acto
