@@ -134,7 +134,6 @@ PRUEBA_GRUPOPER = {
 
 
 PRUEBA_ORGSOCIAL = {
-  id: 1,
   grupoper_id: 1,
   tipoorgsocial_id: 1,
   created_at: '2021-08-27',
