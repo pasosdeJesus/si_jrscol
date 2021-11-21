@@ -62,6 +62,8 @@ gem 'sassc-rails'
 
 gem 'simple_form'
 
+gem 'sprockets-rails', '3.3.0'
+
 gem 'tiny-color-rails'
 
 gem 'twitter_cldr' # ICU con CLDR

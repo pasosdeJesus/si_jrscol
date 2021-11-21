@@ -373,7 +373,7 @@ GEM
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.4.0)
+    sprockets-rails (3.3.0)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
@@ -462,6 +462,7 @@ DEPENDENCIES
   sip!
   sivel2_gen!
   sivel2_sjr!
+  sprockets-rails (= 3.3.0)
   tiny-color-rails
   twitter_cldr
   tzinfo
