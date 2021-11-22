@@ -603,7 +603,8 @@ class Ability < Sivel2Sjr::Ability
        :rangoedadac_nombre
       ],
       controlador: '::BenefesactividadpfController',
-      ruta: '/conteos/benefactividadpf'
+      ruta: '/conteos/benefactividadpf',
+      solo_multiple: true
     },
 
     'Caso' => {

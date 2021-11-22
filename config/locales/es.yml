@@ -52,8 +52,7 @@ es:
         Autoridadrefugio: Autoridad ante la cual declarar refugio
         Autoridadesrefugio: Autoridades ante las cuales declarar refugio
       "benefactividadpf":
-        Benefactividadpf: Beneficiario por actividad de convenio
-        Benefesactividadpf: Beneficiarios por actividad de convenio
+        Benefactividadpf: Beneficiarios por actividad de marco lógico
         persona_nombre: Nombre
         persona_identificacion: Identificación
         persona_sexo: Sexo
@@ -141,9 +140,10 @@ es:
         Frecuenciaentrega: Frecuancia de Entrega
         Frecuenciasentrega: Frecuencias de Entrega
       "heb412_gen/plantillahcm":
-        Orgsociales: Organizaciones Sociales
+        Benefesactividadpf: Beneficiarios por actividad de marco lógico
         Consactividadcaso: Actividades con Caso
         Consgifmm: GIFMM
+        Orgsociales: Organizaciones Sociales
         Personas: Beneficiarios
         Proyectos: Convenios Financiados
         Plantillahcm: Plantilla para listado

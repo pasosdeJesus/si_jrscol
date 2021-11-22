@@ -8,6 +8,8 @@ gem 'bootstrap-datepicker-rails'
 
 gem 'cancancan'
 
+gem 'caxlsx'
+
 gem 'chartkick'
 
 gem 'cocoon',

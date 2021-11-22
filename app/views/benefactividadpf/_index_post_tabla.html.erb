@@ -1,0 +1,64 @@
+<div class="row">
+
+  <div class="col-sm-4">
+    <% begin %>
+      <%= will_paginate @registros, { 
+        param_name: :pagina,
+        class: 'page-link'}  %>
+    <% rescue => e %>
+      Problemas presentando paginador (<%= e %>)
+    <% end %>
+  </div>
+
+  <div class="col-sm-2">
+    <% if can?(:new, clase.constantize) %>
+      <% rutaf = clase.pluralize.underscore + '/index_boton_nuevo' %>
+      <% if lookup_context.find_all(rutaf, [], true).any? %>
+        <%= render partial: rutaf, locals: {f: f} %>
+      <% else %>
+        <%= render partial: 'index_boton_nuevo', locals: {f: f} %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="offset-sm-1 col-sm-3">
+    <% if @plantillas && @plantillas.count > 0 %>
+      <% oppres = [['', '']] %>  
+      <% oppres += @plantillas if @plantillas %>
+      <%= f.input :disgenera, collection: oppres, 
+        label: false, include_blank: false %>
+    <% end %>
+  </div>
+
+  <div class="col-sm-2">
+    <% if @plantillas && @plantillas.count > 0 %>
+      <%= link_to t('.imprimir', :default => 'Generar ODS'), 
+        '#', class: 'btn', 
+        onclick: "heb412_gen_completa_generarp(this, \'#filtro_disgenera\',"\
+        "\'#{modelos_path(clase.constantize)}\',"\
+        "\'#{modelos_path(clase.constantize)}\')",
+        target: '_blank' %>
+      <%= link_to t('.xlsx', :default => 'Generar XLSX'), '#', class: 'btn', 
+        onclick: "heb412_gen_completa_generarp(this, \'#filtro_disgenera\',"\
+        "\'#{modelos_path(clase.constantize)}\',"\
+        "\'#{modelos_path(clase.constantize)}\', \'xlsx\')",
+        target: '_blank' %>
+      <%= link_to t('.pdf', :default => 'Generar PDF'), '#', class: 'btn', 
+        onclick: "heb412_gen_completa_generarp(this, \'#filtro_disgenera\',"\
+        "\'#{modelos_path(clase.constantize)}\',"\
+        "\'#{modelos_path(clase.constantize)}\', \'pdf\')",
+        target: '_blank' %>
+
+
+        <!--%= link_to t('.imprimir', :default => 'Generar documemto'),  
+          '#', class: 'btn', 
+          onclick: "heb412_gen_completa_generarp(this, " +
+          "\'#genera_plantilla_id\', null, \'#{modelo_path(@registro)}/fichaimp\')" %-->
+        <!-- %= link_to t('.pdf', :default => 'Generar PDF'),
+          '#', class: 'btn', 
+          onclick: "heb412_gen_completa_generarp(this, " +
+          "\'#genera_plantilla_id\', null, \'#{modelo_path(@registro)}/fichapdf\')" %-->
+      <% end %>
+
+  </div>
+</div>
