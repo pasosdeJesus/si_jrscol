@@ -108,7 +108,7 @@ class BenefactividadpfController < Heb412Gen::ModelosController
         ], style: estilo_base
         hoja.add_row []
         l = ['Persona', 'Nombre', 'Identificación', 'Sexo', 
-             'Edad en activiadad', 'Rango de edad']
+             'Edad en actividad', 'Rango de edad']
         caml = Benefactividadpf.columns.map(&:name)[5..-2].sort
         l += caml
 
@@ -129,6 +129,19 @@ class BenefactividadpfController < Heb412Gen::ModelosController
           hoja.add_row l, style: estilo_base
         end
         hoja.column_widths 20,20,20,20,20,20,20
+        ultf = 0
+        hoja.rows.last.tap do |row|
+          ultf = row.row_index
+        end
+        if ultf>0
+          l = [nil]*6
+          fs = hoja.add_row l
+          lc = 'G'
+          caml.each do |c|
+            fs.add_cell("=SUM(#{lc}7:#{lc}#{ultf})")
+            lc = PlantillaHelper.sigcol(lc)
+          end
+        end
 
       end
 
