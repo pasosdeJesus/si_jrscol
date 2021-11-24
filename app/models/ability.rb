@@ -926,9 +926,9 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
-        can :read, Sivel2Gen::Caso
+        can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
         can :new, Sivel2Gen::Caso
-        can [:fichaimp, :fichapdf, :update, :create, :destroy, :edit], 
+        can [:update, :create, :destroy, :edit], 
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
