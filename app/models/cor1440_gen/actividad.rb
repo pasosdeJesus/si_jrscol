@@ -305,7 +305,7 @@ module Cor1440Gen
         end
       end
       if p2.nil? || p1 >= p2
-        p1.to_s
+        p1.to_i
       else
         "#{p1} pero se esperaban al menos #{p2}"
       end
@@ -623,9 +623,9 @@ module Cor1440Gen
         end
 
       when /^poblacion_sinsexo_g[0-9]*$/
-        g = atr[21..-1].to_i
+        g = atr[19..-1].to_i
         poblacion_gen_infijo('sinsexo_g', g)
-      
+
       when 'observaciones'
         self.observaciones
       else
