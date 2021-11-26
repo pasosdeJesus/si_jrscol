@@ -969,13 +969,14 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sip::Respaldo7z
         can [:new, :create, :show, :index], Sip::Claverespaldo # No editables
 
-        can :manage, Heb412Gen::Doc
         can :manage, Heb412Gen::Carpetaexclusiva
+        can :manage, Heb412Gen::Doc
         can :manage, Heb412Gen::Plantilladoc
         can :manage, Heb412Gen::Plantillahcm
         can :manage, Heb412Gen::Plantillahcr
 
         can :manage, Mr519Gen::Formulario
+        can :manage, Mr519Gen::Encuestausuario
 
         can :manage, Sal7711Gen::Articulo
 
