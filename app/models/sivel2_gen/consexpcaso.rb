@@ -589,10 +589,10 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
               return aof ? aof.nombre : ''
             when 'numeroanexos'
               return Sivel2Gen::AnexoVictima.where(victima_id: victimaf.id).
-                where.not(tipoanexo_id: 11).count.to_s
+                where.not(tipoanexo_id: 11).count
             when 'numeroanexosconsen'
               return Sivel2Gen::AnexoVictima.where(
-                victima_id: victimaf.id, tipoanexo_id: 11).count.to_s
+                victima_id: victimaf.id, tipoanexo_id: 11).count
             when 'edad_fecha_recepcion'
               byebug 
             when 'edad_ultimaatencion'
@@ -928,10 +928,10 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       casosjr.direccion ? casosjr.direccion : ''
     when 'contacto_numeroanexos'
       Sivel2Gen::AnexoVictima.where(victima_id: victimac.id).where.
-        not(tipoanexo_id: 11).count.to_s
+        not(tipoanexo_id: 11).count
     when 'contacto_numeroanexosconsen'
       Sivel2Gen::AnexoVictima.where(
-        victima_id: victimac.id, tipoanexo_id: 11).count.to_s
+        victima_id: victimac.id, tipoanexo_id: 11).count
     when 'contacto_etnia'
       victimac.etnia ? victimac.etnia.nombre : ''
     when 'contacto_orientacionsexual'

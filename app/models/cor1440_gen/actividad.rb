@@ -148,7 +148,7 @@ module Cor1440Gen
       p1 = poblacion_cor1440_gen
       p2 = poblacion_ids.split(",").count
       if p1 >= p2
-        p1.to_s
+        p1.to_i
       else
         "#{p1} pero se esperaban al menos #{p2}"
       end
