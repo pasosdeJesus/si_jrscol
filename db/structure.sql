@@ -6285,7 +6285,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 101)
+          WHERE (sivel2_gen_conscaso.fecharec >= '2021-09-01'::date)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -11752,6 +11752,27 @@ CREATE INDEX sip_busca_mundep ON public.sip_mundep USING gin (mundep);
 
 
 --
+-- Name: sip_clase_id_municipio; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_clase_id_municipio ON public.sip_clase USING btree (id_municipio);
+
+
+--
+-- Name: sip_departamento_id_pais; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_departamento_id_pais ON public.sip_departamento USING btree (id_pais);
+
+
+--
+-- Name: sip_municipio_id_departamento; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_municipio_id_departamento ON public.sip_municipio USING btree (id_departamento);
+
+
+--
 -- Name: sip_nombre_ubicacionpre_b; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11759,10 +11780,24 @@ CREATE INDEX sip_nombre_ubicacionpre_b ON public.sip_ubicacionpre USING gin (to_
 
 
 --
+-- Name: sip_persona_anionac; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_persona_anionac ON public.sip_persona USING btree (anionac);
+
+
+--
 -- Name: sip_persona_anionac_ind; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX sip_persona_anionac_ind ON public.sip_persona USING btree (anionac);
+
+
+--
+-- Name: sip_persona_sexo; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_persona_sexo ON public.sip_persona USING btree (sexo);
 
 
 --
@@ -11822,6 +11857,13 @@ CREATE INDEX sivel2_gen_actividadoficio_nombre_ind ON public.sivel2_gen_activida
 
 
 --
+-- Name: sivel2_gen_caso_anio_mes; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_caso_anio_mes ON public.sivel2_gen_caso USING btree (((((date_part('year'::text, (fecha)::timestamp without time zone))::text || '-'::text) || lpad((date_part('month'::text, (fecha)::timestamp without time zone))::text, 2, '0'::text))));
+
+
+--
 -- Name: sivel2_gen_obs_fildep_d_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11836,6 +11878,13 @@ CREATE INDEX sivel2_gen_obs_fildep_u_idx ON public.sivel2_gen_observador_filtrod
 
 
 --
+-- Name: sivel2_gen_victima_id_caso; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_caso ON public.sivel2_gen_victima USING btree (id_caso);
+
+
+--
 -- Name: sivel2_gen_victima_id_caso_id_persona_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11843,10 +11892,80 @@ CREATE UNIQUE INDEX sivel2_gen_victima_id_caso_id_persona_idx ON public.sivel2_g
 
 
 --
+-- Name: sivel2_gen_victima_id_etnia; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_etnia ON public.sivel2_gen_victima USING btree (id_etnia);
+
+
+--
+-- Name: sivel2_gen_victima_id_filiacion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_filiacion ON public.sivel2_gen_victima USING btree (id_filiacion);
+
+
+--
+-- Name: sivel2_gen_victima_id_iglesia; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_iglesia ON public.sivel2_gen_victima USING btree (id_iglesia);
+
+
+--
+-- Name: sivel2_gen_victima_id_organizacion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_organizacion ON public.sivel2_gen_victima USING btree (id_organizacion);
+
+
+--
+-- Name: sivel2_gen_victima_id_persona; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_persona ON public.sivel2_gen_victima USING btree (id_persona);
+
+
+--
+-- Name: sivel2_gen_victima_id_profesion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_profesion ON public.sivel2_gen_victima USING btree (id_profesion);
+
+
+--
+-- Name: sivel2_gen_victima_id_rangoedad; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_rangoedad ON public.sivel2_gen_victima USING btree (id_rangoedad);
+
+
+--
 -- Name: sivel2_gen_victima_id_rangoedad_ind; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX sivel2_gen_victima_id_rangoedad_ind ON public.sivel2_gen_victima USING btree (id_rangoedad);
+
+
+--
+-- Name: sivel2_gen_victima_id_sectorsocial; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_sectorsocial ON public.sivel2_gen_victima USING btree (id_sectorsocial);
+
+
+--
+-- Name: sivel2_gen_victima_id_vinculoestado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_id_vinculoestado ON public.sivel2_gen_victima USING btree (id_vinculoestado);
+
+
+--
+-- Name: sivel2_gen_victima_orientacionsexual; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sivel2_gen_victima_orientacionsexual ON public.sivel2_gen_victima USING btree (orientacionsexual);
 
 
 --
@@ -15905,6 +16024,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211024105507'),
 ('20211024174829'),
 ('20211117200456'),
+('20211119085218'),
+('20211119110211'),
 ('20211121095245');
 
 
