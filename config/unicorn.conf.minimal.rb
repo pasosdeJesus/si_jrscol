@@ -14,8 +14,8 @@ if ENV['PUERTOUNICORN'].nil?
   puts "Establezca en PUERTOUNICORN el puerto en el que unicorn debe escuchar"
   return
 end
-procesos=2
-if !ENV['PROCESOSUNICORN'].nil? 
+procesos=8
+if ENV['PROCESOSUNICORN'].nil? 
   procesos=ENV['PROCESOSUNICORN'].to_i
 end
 

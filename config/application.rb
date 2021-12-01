@@ -36,6 +36,7 @@ module Sivel2Sjrcol
                              Heb412Gen::Engine, Mr519Gen::Engine, 
                              Sip::Engine, :all]
 
+    puts "CONFIG_HOSTS="+ENV.fetch('CONFIG_HOSTS', 'defensor.info').to_s
     config.hosts.concat(
       ENV.fetch('CONFIG_HOSTS', 'defensor.info').downcase.split(";"))
 

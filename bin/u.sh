@@ -32,10 +32,12 @@ if (test "$?" != "0") then {
   DOAS="sudo"
 } fi;
 
+echo "PROCESOSUNICORN=$PROCESOSUNICORN"
 $DOAS su - ${USUARIO_AP} -c "cd $DIRAP; 
   echo \"== Iniciando unicorn... ==\"; 
   ${defuroot} PUERTOUNICORN=${PUERTOUNICORN} \
-    CONFIG_HOSTS=${CONFIG_HOSTS}\
+    PROCESOSUNICORN=${PROCESOSUNICORN} \
+    CONFIG_HOSTS=\"${CONFIG_HOSTS}\"\
     DIRAP=$DIRAP \
     RAILS_ENV=production \
     SECRET_KEY_BASE=${SECRET_KEY_BASE} \
