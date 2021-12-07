@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 0879f77819e5f70e07389fe5c1bd76287785a296
+  revision: 4676c5a8da47705df75705d311ec05e985b88b56
   branch: main
   specs:
     cor1440_gen (1.0b5)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 961d472e71f1264783137eb45477b233ab9e7439
+  revision: cb0512f67ee69b43dbe1ae31815433e2487ecfd2
   branch: main
   specs:
     heb412_gen (2.0)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 1ea902ef2d4c2f1265ab4d271412d23a2dbd061e
+  revision: ff21794c3ea7b9633a8545f381a54238f852a3a8
   branch: main
   specs:
     mr519_gen (2.0)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 631dc81a781ee001aafe14dd0817a6d85114e0c6
+  revision: 44dbd4313da78bc4d24380cb14c06d3246d22ac9
   branch: main
   specs:
     sal7711_gen (1.0.b4)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 54c494f98be39f8a70478b86894bf9818129779c
+  revision: d3a63d0d2bac06853b3223500543840f13d846a1
   branch: main
   specs:
     sal7711_web (1.0.a3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 7142d34a49876a1a0cd51f5b58570fc7c5fe7872
+  revision: 9bd49d8d0d364cd79e6706ae68de21b6143bcc53
   branch: main
   specs:
     sip (2.0)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 55af159216749cbff50991717bf793eb109990e5
+  revision: fa352b5e3eeb21c0bc63f5357b933de60f04e5a8
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: e774bd52b8eeebc12ddd35b41583f55d4be8e539
+  revision: 2d4ce222b122fc3083a5be4b8b55652766ceece1
   branch: main
   specs:
     sivel2_sjr (2.0b11)
@@ -340,10 +340,10 @@ GEM
       method_source
       rake (>= 0.13)
       thor (~> 1.0)
-    raindrops (0.19.2)
+    raindrops (0.20.0)
     rake (13.0.6)
     redcarpet (3.5.1)
-    regexp_parser (2.1.1)
+    regexp_parser (2.2.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -390,7 +390,7 @@ GEM
     tiny-color-rails (0.0.2)
       railties (>= 3.0)
     ttfunk (1.7.0)
-    twitter_cldr (6.8.0)
+    twitter_cldr (6.9.0)
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)
       tzinfo
