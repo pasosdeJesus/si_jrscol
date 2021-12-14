@@ -16,13 +16,24 @@ export default class Asistentes {
   static autocompletar_llena_datalist(resp) {
     console.log("OJO autocompletar_llena_datalist, resp="+resp)
     // Get items from rsp not available in cache
-    let frag = document.createDocumentFragment();
+    let frag = document.createDocumentFragment()
     resp.forEach(item => {
-      let opcion = document.createElement("option");
-      [opcion.id, opcion.text] = [item['id'], item['value']];
-      frag.appendChild(opcion);
-    });
-    let sel = document.getElementById(Asistentes.idDatalist);
+      let opcion = document.createElement("option")
+      console.log(item)
+      if (typeof(item['id']) == 'string') {
+        let pid = item.id
+        console.log(pid)
+        let ppid = pid.split(';')
+        console.log(ppid)
+        if (typeof(ppid[0]) == 'string') {
+          [opcion.value, opcion.text] = [ppid[0], item['value']]
+        } else {
+          alert('extraño problema')
+        }
+        frag.appendChild(opcion)
+      }
+    })
+    let sel = document.getElementById(Asistentes.idDatalist)
     sel.innerHTML=''
     if (frag.hasChildNodes()) {
       sel.appendChild(frag);
@@ -49,7 +60,14 @@ export default class Asistentes {
       url: url,
       data: null,
       success:  function (resp, estado, xhr) {
-        Asistentes.autocompletar_llena_datalist(resp)
+        if (e.target.getAttribute('data-autocompleta') === 'no') {
+          // Se agrega este if por si entra aquí después de haber
+          // elegido uno de los autocompletados
+          console.log("OJO ya no autocompleta")
+          return
+        } else {
+          Asistentes.autocompletar_llena_datalist(resp)
+        }
       },
       error: function (req, estado, xhr) {
         alert(`No pudo consultarse listado de personas.`)
@@ -76,14 +94,6 @@ export default class Asistentes {
     sip_arregla_puntomontaje(root)
     let cs = id.split(";")
     let id_persona = cs[0]
-    let pl = []
-    let ini = 0
-    cs.forEach((s, i) => {
-      let t = parseInt(s)
-      pl[i] = cadpersona.substring(ini, ini + t)
-      ini = ini + t + 1
-    })
-    // pl[1] cnom, pl[2] es cape, pl[3] es cdoc
     let d = "&id_persona=" + id_persona
     d += "&ac_asistente_persona=true"
     let a = root.puntomontaje + 'personas/datos'
@@ -100,17 +110,16 @@ export default class Asistentes {
         divcp.querySelector('[id$=_attributes_sexo]').value = resp.sexo
         let tdocid = divcp.querySelector('[id$=_attributes_tdocumento_id]')
         if (tdocid != null) {
-          tdocid.value = resp.tdocumento
-          /*option:contains(' +
-        resp.tdocumento + ')').value
-        var xpath = "//datalist[@id='fuente-personas']/option[text()='" +
-          e.target.value + "']"
-        var o= document.evaluate(xpath, document, null, 
-          XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-        if (typeof(o.id) == 'string') {
-          autocompletacion_elegida(e.target.value, o.id, e)
-
-          divcp.querySelector('[id$=_tdocumento_id]').value = tdocid */
+          var idop = null
+          tdocid.childNodes.forEach(function (o) {
+            if (typeof(o.innerText) == 'string' && 
+              o.innerText == resp.tdocumento) {
+              idop = o.value
+            }
+          })
+          if (idop != null) {
+            tdocid.value = idop
+          }
         }
         let numdoc = divcp.querySelector('[id$=_numerodocumento]')
         if (numdoc != null) {
@@ -193,14 +202,16 @@ export default class Asistentes {
           console.log("OJO aquí está el problema con datalist porque no tenemos forma de saber el id de la opción elegida, e.target.value tiene el texto, pero podría haber varias entradas con el mismo texto. Lo menos peor que se puede hacer es buscar entra las opciones la primera cuyo texto coincida y elegir esa")
           var el=document.querySelector('#' + Asistentes.idDatalist)
           var idop = null
+          var nomop = null
           el.childNodes.forEach(function (o) {
-            if (o.innerText.replace(/  */g, ' ') == e.target.value) {
-              idop = o.id
+            if (o.value == e.target.value) {
+              idop = o.value
+              nomop = o.innerText
             }
           })
 
           if (idop != null) {
-            Asistentes.autocompletacion_elegida(e.target.value, idop, e)
+            Asistentes.autocompletacion_elegida(nomop, idop, e)
             e.stopPropagation()  // No hace burbuja
             e.preventDefault() // No ejecuta acción predeterminada
           } else {
