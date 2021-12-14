@@ -1,4 +1,4 @@
-<tr class='nested-fields'>
+<tr class='nested-fields campos_asistente'>
   
   <% if f.object.persona.nil? %>
     <% f.object.persona = Sip::Persona.new %>
@@ -28,7 +28,9 @@
       ac = {'data-autocompleta' => 'no'}
       if (!p.object.numerodocumento || p.object.numerodocumento == 'N' || p.object.numerodocumento == '')
         ph = 'Buscar'
-        ac =  {}
+        ac =  { autocomplete:  'off',
+          list: 'fuente-asistentes'
+        }
       end %>
       <%
       if (p.object.tdocumento)

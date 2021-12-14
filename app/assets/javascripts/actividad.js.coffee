@@ -22,14 +22,16 @@ $(document).on('change', 'select[id^=caso_migracion_attributes_][id$=causamigrac
    div_otracausa.css("display", "none")
 )
 
+@cor1440_gen_busca_asistente = (ej) ->
+  return
 
 # En listado de asistencia permite autocompletar nombres
-$(document).on('focusin',
-'input[id^=actividad_asistencia_attributes_]'+
-'[id$=_persona_attributes_numerodocumento]',
-(e) ->
-  cor1440_gen_busca_asistente($(this))
-)
+#$(document).on('focusin',
+#'input[id^=actividad_asistencia_attributes_]'+
+#'[id$=_persona_attributes_numerodocumento]',
+#(e) ->
+#  cor1440_gen_busca_asistente($(this))
+#)
 
 @filtra_actividadespf_tipo_accionhum = (apfs_ids) ->
   root = window

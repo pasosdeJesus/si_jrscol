@@ -23,6 +23,7 @@
 console.log('Hola Mundo desde Webpacker')
 
 import Rails from "@rails/ujs"
+window.Rails = Rails
 Rails.start()
 
 import Turbolinks from "turbolinks"
@@ -34,6 +35,9 @@ import 'jquery-ui/ui/widgets/autocomplete'
 import 'jquery-ui/ui/focusable'
 import 'jquery-ui/ui/data'
 import 'jquery-ui/ui/widgets/tooltip'
+
+import Asistentes from '../asistentes'
+Asistentes.iniciar()
 
 import 'popper.js'              // Dialogos emergentes usados por bootstrap
 import * as bootstrap from 'bootstrap'              // Maquetacion y elementos de diseño
