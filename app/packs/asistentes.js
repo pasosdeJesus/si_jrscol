@@ -149,6 +149,7 @@ export default class Asistentes {
         eorig.target.removeAttribute('list')
         let sel = document.getElementById(Asistentes.idDatalist);
         sel.innerHTML = ''
+        $(document).trigger("cor1440gen:autocompletado-asistente")
       },
       error: function (resp, estado, xhr) {
         alert("Error con ajax " + resp)
