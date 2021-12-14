@@ -69,6 +69,17 @@ CREATE FUNCTION public.completa_obs(obs character varying, nuevaobs character va
 
 
 --
+-- Name: es_unaccent(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.es_unaccent(cadena text) RETURNS text
+    LANGUAGE sql IMMUTABLE
+    AS $_$
+          select unaccent($1);
+        $_$;
+
+
+--
 -- Name: f_unaccent(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -11783,6 +11794,13 @@ CREATE INDEX sip_persona_anionac_ind ON public.sip_persona USING btree (anionac)
 
 
 --
+-- Name: sip_persona_nomapnumdoc_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_persona_nomapnumdoc_ind ON public.sip_persona USING btree ((((((public.es_unaccent((nombres)::text) || ' '::text) || public.es_unaccent((apellidos)::text)) || ' '::text) || COALESCE((numerodocumento)::text, ''::text))));
+
+
+--
 -- Name: sip_persona_sexo; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -16015,6 +16033,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211117200456'),
 ('20211119085218'),
 ('20211119110211'),
-('20211121095245');
+('20211121095245'),
+('20211214130956');
 
 

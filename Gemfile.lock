@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/kreeti/kt-paperclip.git
-  revision: 0b7bb0b455aea0fa961a25c0c74e2bd33ae99ba9
+  revision: c9e6f9d0018f3913b67fed5860a5d439ac72ac78
   specs:
     kt-paperclip (7.0.1)
       activemodel (>= 4.2.0)
@@ -92,7 +92,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: c6f4b3bf4660d066c67df517b3f0345e10b58a1a
+  revision: c660cf2073b0dcd9cacc842cd9b94bbf67fcd610
   branch: main
   specs:
     sivel2_sjr (2.0b11)
