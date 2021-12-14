@@ -166,8 +166,8 @@ export default class Asistentes {
      * @param {event} e evento
      */
     document.addEventListener('keyup', function (e) {
-      console.log('OJO keyup ' + e.target.id)
       if (/^actividad_asistencia_attributes_[0-9]*_persona_attributes_numerodocumento$/.test(e.target.id)) {
+        console.log('OJO keyup ' + e.target.id)
         Asistentes.autocompletar_busca(e)
       }
 
@@ -183,8 +183,8 @@ export default class Asistentes {
      * @param {event} e evento
      */
     document.addEventListener('keydown', function (e) {
-      console.log('OJO keydown ' + e.target.id)
       if (/^actividad_asistencia_attributes_[0-9]*_persona_attributes_numerodocumento$/.test(e.target.id)) {
+        console.log('OJO keydown ' + e.target.id)
         if(e.key) {
           teclapresionada = true;
         }
@@ -197,8 +197,8 @@ export default class Asistentes {
      * @param {event} e evento
      */
     document.addEventListener('input', function (e) {
-      console.log('OJO input ' + e.target.id)
       if (/^actividad_asistencia_attributes_[0-9]*_persona_attributes_numerodocumento$/.test(e.target.id)) {
+        console.log('OJO input ' + e.target.id)
         if (teclapresionada === false) {
           console.log("OJO aquí está el problema con datalist porque no tenemos forma de saber el id de la opción elegida, e.target.value tiene el texto, pero podría haber varias entradas con el mismo texto. Lo menos peor que se puede hacer es buscar entra las opciones la primera cuyo texto coincida y elegir esa")
           var el=document.querySelector('#' + Asistentes.idDatalist)
