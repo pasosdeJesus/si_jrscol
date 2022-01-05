@@ -3,16 +3,16 @@ class Detallefinanciero < ActiveRecord::Base
   belongs_to :actividad, 
     foreign_key: 'actividad_id',
     validate: true, 
-    class_name: 'Cor1440Gen::Actividad'
+    class_name: 'Cor1440Gen::Actividad', optional: false
 
   belongs_to :proyectofinanciero, 
     foreign_key: 'proyectofinanciero_id', 
     validate: true, 
-    class_name: 'Cor1440Gen::Proyectofinanciero'
+    class_name: 'Cor1440Gen::Proyectofinanciero', optional: false
 
   belongs_to :actividadpf, 
     foreign_key: 'actividadpf_id', 
-    class_name: 'Cor1440Gen::Actividadpf'
+    class_name: 'Cor1440Gen::Actividadpf', optional: false
 
   belongs_to :unidadayuda, 
     foreign_key: 'unidadayuda_id',

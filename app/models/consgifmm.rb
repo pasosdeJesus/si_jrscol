@@ -3,19 +3,19 @@ class Consgifmm < ActiveRecord::Base
 
   belongs_to :detallefinanciero, 
     class_name: 'Detallefinanciero', 
-    foreign_key: 'id'
+    foreign_key: 'id', optional: false
 
   belongs_to :proyectofinanciero, 
     class_name: 'Cor1440Gen::Proyectofinanciero', 
-    foreign_key: 'proyectofinanciero_id'
+    foreign_key: 'proyectofinanciero_id', optional: false
 
   belongs_to :actividadpf, 
     class_name: 'Cor1440Gen::Actividadpf', 
-    foreign_key: 'actividadpf_id'
+    foreign_key: 'actividadpf_id', optional: false
 
   belongs_to :actividad,
     class_name: 'Cor1440Gen::Actividad', 
-    foreign_key: 'actividad_id'
+    foreign_key: 'actividad_id', optional: false
 
 
   # Retorna el del primer proyecto y de la primera actividad o nil 

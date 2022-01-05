@@ -5,9 +5,10 @@ module Sivel2Sjr
     include Sip::FormatoFechaHelper
 
     belongs_to :desplazamiento, foreign_key: "desplazamiento_id", validate: true, 
-      class_name: "Sivel2Sjr::Desplazamiento", inverse_of: :anexo_desplazamiento
+      class_name: "Sivel2Sjr::Desplazamiento", 
+      inverse_of: :anexo_desplazamiento, optional: false
     belongs_to :sip_anexo, foreign_key: "anexo_id", validate: true, 
-      class_name: "Sip::Anexo"
+      class_name: "Sip::Anexo", optional: false
     accepts_nested_attributes_for :sip_anexo, reject_if: :all_blank
 
 

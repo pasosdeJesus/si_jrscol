@@ -43,9 +43,10 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
     join_table: 'sivel2_sjr_difmigracion_migracion'
   
   belongs_to :autoridadrefugio,
-    class_name: 'Autoridadrefugio', foreign_key: "autoridadrefugio_id", optional: true
+    class_name: 'Autoridadrefugio', foreign_key: "autoridadrefugio_id", 
+    optional: true
   belongs_to :caso,
-    class_name: 'Sivel2Gen::Caso', foreign_key: "caso_id"
+    class_name: 'Sivel2Gen::Caso', foreign_key: "caso_id", optional: false
 
   belongs_to :causaRefugio, class_name: 'Sivel2Gen::Categoria', 
     foreign_key: "causaRefugio_id", optional: true
@@ -53,11 +54,14 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
   belongs_to :viadeingreso,
     class_name: 'Viadeingreso', foreign_key: "viadeingreso_id", optional: true
   belongs_to :causamigracion, 
-    class_name: 'Causamigracion', foreign_key: "causamigracion_id", optional: true
+    class_name: 'Causamigracion', foreign_key: "causamigracion_id", 
+    optional: true
   belongs_to :pagoingreso, 
-    class_name: 'Sip::Trivalente', foreign_key: "pagoingreso_id", optional: true  
+    class_name: 'Sip::Trivalente', foreign_key: "pagoingreso_id", 
+    optional: true  
   belongs_to :miembrofamiliar,
-    class_name: 'Miembrofamiliar', foreign_key: "miembrofamiliar_id", optional: true
+    class_name: 'Miembrofamiliar', foreign_key: "miembrofamiliar_id", 
+    optional: true
   belongs_to :migracontactopre,
     class_name: '::Migracontactopre', foreign_key: "migracontactopre_id", 
     optional: true
@@ -78,7 +82,8 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
     foreign_key: "statusmigratorio_id", 
     optional: true
   belongs_to :tipoproteccion,
-    class_name: 'Tipoproteccion', foreign_key: "tipoproteccion_id", optional: true
+    class_name: 'Tipoproteccion', foreign_key: "tipoproteccion_id", 
+    optional: true
 
   validates :fechasalida, presence: true
 
