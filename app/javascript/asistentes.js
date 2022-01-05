@@ -71,8 +71,7 @@ export default class Asistentes {
       },
       error: function (req, estado, xhr) {
         alert(`No pudo consultarse listado de personas.`)
-      },
-      data: null
+      }
     })
 
     /*    let req = new XMLHttpRequest();

@@ -56,3 +56,4 @@ tmpsql/
 *.cp
 *.log
 ref/
+app/assets/builds

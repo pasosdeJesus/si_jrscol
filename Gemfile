@@ -4,8 +4,6 @@ gem 'bcrypt'
 
 gem 'bootsnap', '>=1.1.0', require: false
 
-gem 'bootstrap-datepicker-rails'
-
 gem 'cancancan'
 
 gem 'caxlsx'
@@ -23,11 +21,9 @@ gem 'devise' # Autenticación y roles
 
 gem 'devise-i18n'
 
-gem 'execjs'
-
 gem 'jbuilder' # API JSON facil. Ver: https://github.com/rails/jbuilder
 
-gem 'jquery-ui-rails'
+gem 'jsbundling-rails'
 
 gem 'kt-paperclip',                 # Anexos
   git: 'https://github.com/kreeti/kt-paperclip.git'
@@ -41,8 +37,6 @@ gem 'odf-report' # Genera ODT
 gem 'parslet'
 
 gem 'pg'#, '~> 0.21' # Postgresql
-
-gem 'pick-a-color-rails' # Facilita elegir colores en tema
 
 gem 'prawn' # Generación de PDF
 
@@ -64,15 +58,12 @@ gem 'sassc-rails'
 
 gem 'simple_form'
 
-gem 'sprockets-rails', '3.3.0'
-
-gem 'tiny-color-rails'
+gem 'sprockets-rails'
 
 gem 'twitter_cldr' # ICU con CLDR
 
 gem 'tzinfo' # Zonas horarias
 
-gem 'webpacker', '6.0.0.rc.1'
 
 gem 'will_paginate' # Listados en páginas
 
