@@ -11,6 +11,7 @@
           <% if f.object.persona.nil?
               f.object.persona = Sip::Persona.new(nombres: '')
               f.object.victimasjr = Sivel2Sjr::Victimasjr.new
+              f.object.victimasjr.id_victima = f.object
              end %>
              
           <%= f.simple_fields_for :victimasjr do |fvictimasjr| %>
@@ -41,9 +42,9 @@
       <div class="collapse multi-collapse" id="ampliosfamiliar">
               <% [2,4,5,1].each do |i| %>
                 <%= render partial: 'victima_campos' + i.to_s, 
-                  locals: { victima: f, 
-                            victimasjr: fvictimasjr,
-                            persona: fp }
+                  locals: { fvictima: f, 
+                            fvictimasjr: fvictimasjr,
+                            fpersona: fp }
                 %>
               <% end %>
       </div>
