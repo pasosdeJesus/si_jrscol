@@ -22,18 +22,16 @@
 //= require highcharts
 //= require_tree .
 
-document.addEventListener('turbolinks:load', function() {
+document.addEventListener('turbo:load', function() {
   var root
-  root = typeof exports !== "undefined" && exports !== null ? 
-    exports : window
+  root = window
   sip_prepara_eventos_comunes(root)
 
   // Antes de iniciar motor sivel2_gen ponemos este, para que se ejecute antes del incluido en ese motor
   $(document).on('change', 
     '[id^=caso_victima_attributes][id$=persona_attributes_anionac]', function(event) {
 
-      root = typeof exports !== "undefined" && exports !== null ? 
-        exports : window
+      root = window
       anionac = $(this).val()
       prefIdVic = $(this).attr('id').slice(0, -27)
       r = $("[id=" + prefIdVic + "_rangoedadactual_id]")

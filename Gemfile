@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'babel-transpiler'
+
 gem 'bcrypt'
 
 gem 'bootsnap', '>=1.1.0', require: false
@@ -60,6 +62,10 @@ gem 'simple_form'
 
 gem 'sprockets-rails'
 
+gem 'stimulus-rails'
+
+gem 'turbo-rails'
+
 gem 'twitter_cldr' # ICU con CLDR
 
 gem 'tzinfo' # Zonas horarias
@@ -73,8 +79,9 @@ gem 'will_paginate' # Listados en páginas
 # lógico y no alfabetico como las gemas anteriores)
 
 gem 'sip', # Motor generico
-  git: 'https://github.com/pasosdeJesus/sip.git', branch: :rails7jses
+  #git: 'https://github.com/pasosdeJesus/sip.git', branch: :rails7jses
   #path: '../sip'
+  path: '../sip-rails7'
 
 gem 'mr519_gen', # Motor de gestion de formularios y encuestas
   git: 'https://github.com/pasosdeJesus/mr519_gen.git', branch: :rails7jses
@@ -106,8 +113,8 @@ gem 'sivel2_gen',
 
 # Motor de SIVeL 2 - SJR
 gem 'sivel2_sjr',
-  git: 'https://github.com/pasosdeJesus/sivel2_sjr.git', branch: :rails7jses
-  #path: '../sivel2_sjr'
+  #git: 'https://github.com/pasosdeJesus/sivel2_sjr.git', branch: :rails7jses
+  path: '../sivel2_sjr'
 
 group :development, :test do
   gem 'debug' # Depurar

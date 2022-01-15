@@ -173,7 +173,7 @@ $(document).on('cocoon:after-insert', '', (e, victima) ->
   agregar_colapsables_cocoon('victima', hijos-1)
 )
 
-document.addEventListener('turbolinks:load', () ->
+document.addEventListener('turbo:load', () ->
   items_victimas = $('.nested-fields.vic')
   if items_victimas.length > 0
     for item in [0 .. items_victimas.length-1]
@@ -183,7 +183,7 @@ document.addEventListener('turbolinks:load', () ->
 # Agrega actos  
 $(document).on('click', 'a.agregaractos[href^="#"]', (e) ->
   e.preventDefault()
-  root =  exports ? window
+  root =  window
   desplazamiento = $(this).attr('data-desplazamiento')
   if(desplazamiento == "")
     if($(this).closest(".actos_tabla").parent().attr("id") != "actos_tabla")

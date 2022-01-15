@@ -14,7 +14,7 @@
           <%= anexo.descripcion if anexo.descripcion %>
         </td>
         <td>
-          <a href="<%= sip.descarga_anexo_path(anexo.id) %>", style="text-decoration:none" data-turbolinks='false'><%= anexo.adjunto_file_name %></a>
+          <a href="<%= sip.descarga_anexo_path(anexo.id) %>", style="text-decoration:none" data-turbo='false'><%= anexo.adjunto_file_name %></a>
         </td>
       </tr>
     <% end %>

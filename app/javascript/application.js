@@ -1,36 +1,16 @@
 /* eslint no-console:0 */
 
-// Este archivo de compila automaticamente con Webpack, junto con otros
-// archivos presentes en este directorio.  Lo animamos a poner la lógica
-// de su aplicación en una estructura relevante en app/javascript y usar
-// solo estos archivos pack para referenciar ese código de manera que sea
-// compilado.
-//
-// Para referenciar este archivo agregue 
-// <%= javascript_pack_tag 'application' %> 
-// en el archivo de maquetación adecuado, como 
-// app/views/layouts/application.html.erb
-
-
-// Quite el comentario para copiar todas las imágenes estáticas de
-// ../images en la carpeta de salida y referencielas con el auxiliar
-// image_pack_tag en las vistas (e.g <%= image_pack_tag 'rails.png' %>)
-// o con el siguiente auxiliar `imagePath`:
-//
-// const images = require.context('../images', true)
-// const imagePath = (name) => images(name, true)
-
 console.log('Hola Mundo desde Webpacker')
 
-import Rails from "@rails/ujs"
+import Rails from "@rails/ujs";
+import "@hotwired/turbo-rails";
+Rails.start();
 window.Rails = Rails
-Rails.start()
-
-import Turbolinks from "turbolinks"
-Turbolinks.start()
 
 import './jquery'
 import '../../vendedor/recursos/javascripts/jquery-ui'
+
+import 'gridstack'
 
 import Asistentes from './asistentes'
 Asistentes.iniciar()
