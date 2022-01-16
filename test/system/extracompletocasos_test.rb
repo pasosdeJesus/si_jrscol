@@ -37,7 +37,8 @@ class ExtracompletocasosTest < ApplicationSystemTestCase
     click_on "Listado"
     assert page.has_content?("Búsqueda Avanzada")
     click_on "Búsqueda Avanzada"
-    assert page.has_content?("Fecha de ingreso")
+    puts page.body
+    assert page.has_content?("Fecha recepción")
 
   end
 

@@ -18,8 +18,8 @@ class AccesoTest < ApplicationSystemTestCase
 
     assert (@numcaso.to_i > 0)
     click_button "Guardar"
-    #puts page.body
-    assert page.has_content?("5 errores.")
+    puts page.body
+    assert page.has_content?("12 errores.")
     #puts page.body
     # Driver no acepta: abrir solicitante para poner nombreclick_on "Eliminar" end
     #expect(page).to have_content("Casos")
