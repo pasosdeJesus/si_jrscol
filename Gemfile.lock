@@ -61,24 +61,9 @@ GIT
       sal7711_gen
 
 GIT
-  remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 55ff0fb57f4408bad74bf5eb555d04bb23ed5a0e
+  remote: https://github.com/pasosdeJesus/sip.git
+  revision: e4e2b995e1f67db1640c3140ee1f25951a4bccdb
   branch: rails7jses
-  specs:
-    sivel2_gen (2.1a1)
-      color
-      devise
-      rails
-
-GIT
-  remote: https://github.com/vtamara/cocoon.git
-  revision: 9f1892403c3dbdb8f7d457a06f237ff58e7dfb07
-  branch: new_id_with_ajax
-  specs:
-    cocoon (1.2.11)
-
-PATH
-  remote: ../sip-rails7
   specs:
     sip (2.1a1)
       cancancan
@@ -93,12 +78,31 @@ PATH
       simple_form
       twitter_cldr
 
-PATH
-  remote: ../sivel2_sjr
+GIT
+  remote: https://github.com/pasosdeJesus/sivel2_gen.git
+  revision: 55ff0fb57f4408bad74bf5eb555d04bb23ed5a0e
+  branch: rails7jses
+  specs:
+    sivel2_gen (2.1a1)
+      color
+      devise
+      rails
+
+GIT
+  remote: https://github.com/pasosdeJesus/sivel2_sjr.git
+  revision: 152570e1573efadc31f7d3719ad4b0843ceb3303
+  branch: rails7jses
   specs:
     sivel2_sjr (2.0b11)
       rails
       sivel2_gen
+
+GIT
+  remote: https://github.com/vtamara/cocoon.git
+  revision: 9f1892403c3dbdb8f7d457a06f237ff58e7dfb07
+  branch: new_id_with_ajax
+  specs:
+    cocoon (1.2.11)
 
 GEM
   remote: https://rubygems.org/
@@ -256,7 +260,7 @@ GEM
     jsbundling-rails (1.0.0)
       railties (>= 6.0.0)
     kgio (2.11.4)
-    libxml-ruby (3.2.1)
+    libxml-ruby (3.2.2)
     loofah (2.13.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
