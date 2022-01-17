@@ -39,14 +39,13 @@ class Detallefinanciero < ActiveRecord::Base
     optional: true,
     class_name: 'Frecuenciaentrega'
 
-  has_many :detallefinanciero_persona, 
-    dependent: :delete_all,
-    class_name: '::DetallefinancieroPersona',
-    foreign_key: 'detallefinanciero_id'
 
-  has_many :persona,
-    class_name: 'Sip::Persona', 
-    through: 'detallefinanciero_persona'
+  has_and_belongs_to_many :persona, 
+    class_name: 'Sip::Persona',
+    foreign_key: 'detallefinanciero_id',
+    association_foreign_key: 'persona_id',
+    join_table: 'detallefinanciero_persona'
+
 
   validates :cantidad, :numericality => { greater_than_or_equal_to: 0 }, 
     :allow_nil => true

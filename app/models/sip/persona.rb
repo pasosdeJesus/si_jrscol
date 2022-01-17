@@ -5,15 +5,14 @@ module Sip
   class Persona < ActiveRecord::Base
     include Sip::Modelo
     include Sivel2Sjr::Concerns::Models::Persona
- 
-    has_many :detallefinanciero_persona,
-      dependent: :delete_all,
-      class_name: '::DetallefinancieroPersona',
-      foreign_key: 'persona_id'
 
-    has_many :detallefinanciero,
-      class_name: '::Detallefinanciero', 
-      through: 'detallefinanciero_persona'
+
+    has_and_belongs_to_many :detallefinanciero, 
+      class_name: '::Detallefinanciero',
+      foreign_key: 'persona_id',
+      association_foreign_key: 'detallefinanciero_id',
+      join_table: 'detallefinanciero_persona'
+
 
     has_one :datosbio, class_name: 'Sip::Datosbio', 
       foreign_key: 'persona_id', dependent: :delete

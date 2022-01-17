@@ -135,7 +135,10 @@ class Ability < Sivel2Sjr::Ability
   def tablasbasicas_prio
     Sip::Ability::BASICAS_PRIO +
       Sivel2Gen::Ability::BASICAS_PRIO +
-      Sivel2Sjr::Ability::BASICAS_PRIO
+      Sivel2Sjr::Ability::BASICAS_PRIO + 
+      [
+        ['', 'sectorgifmm'],
+      ]
   end
 
   if !ActiveRecord::Base.connection.data_source_exists?(

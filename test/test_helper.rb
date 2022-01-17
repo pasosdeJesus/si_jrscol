@@ -10,8 +10,6 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
 
-  fixtures :all
- 
   if Sip::Tclase.all.count == 0
     load "#{Rails.root}/db/seeds.rb"
     Sivel2Sjrcol::Application.load_tasks
@@ -182,19 +180,6 @@ PRUEBA_PERSONA = {
   numerodocumento: '1061769227' 
 }
 
-PRUEBA_GRUPOPER = {
-  id: 1,
-  nombre: 'grupoper1'
-}
-
-PRUEBA_ORGSOCIAL = {
-  id: 1,
-  grupoper_id: 1,
-  tipoorgsocial_id: 9,
-  created_at: '2021-08-27',
-  updated_at: '2021-08-27'
-}
-
 PRUEBA_UBICACIONPRE = {
   nombre: "BARRANCOMINAS / BARRANCOMINAS / GUAINÍA / COLOMBIA",
   pais_id: 170,
@@ -260,3 +245,62 @@ PRUEBA_CASO = {
   fecha: "2021-09-11",
   memo: "Una descripción del caso de prueba"
 }
+
+PRUEBA_PROYECTOFINANCIERO = {
+  id: 1,
+  nombre: "Proyectofinanciero",
+  fechacreacion: "2015-04-20",
+  created_at: "2015-04-20"
+}
+
+PRUEBA_OBJETIVOPF = {
+  id: 1,
+  proyectofinanciero_id: 1,
+  numero: 'O1',
+  objetivo: 'Objetivo 1'
+}
+
+PRUEBA_RESULTADOPF = {
+  id: 1,
+  proyectofinanciero_id: 1,
+  objetivopf_id: 1,
+  numero: 'R1',
+  resultado: 'Resultado 1'
+}
+
+PRUEBA_ACTIVIDADPF = {
+  id: 1,
+  proyectofinanciero_id: 1,
+  nombrecorto:'actividadpf',
+  titulo: 'titulo actividadpf',
+  resultadopf_id: 1,
+}
+
+PRUEBA_ACTIVIDAD = {
+  id: 1,
+  nombre:'n',
+  fecha:'2017-03-02',
+  oficina_id:1,
+  usuario_id:1
+}
+
+PRUEBA_DETALLEFINANCIERO = {
+  id: 798,
+  proyectofinanciero_id: 1,
+  actividadpf_id: 1,
+  actividad_id: 1,
+  unidadayuda_id: 9,
+  cantidad: 2,
+  valorunitario: 20000,
+  valortotal: 40000,
+  mecanismodeentrega_id: 3,
+  modalidadentrega_id: 2,
+  tipotransferencia_id: 2,
+  frecuenciaentrega_id: 4,
+  numeromeses: 3,
+  numeroasistencia: 1,
+  created_at: "2020-07-12",
+  updated_at: "2020-07-12"
+}
+
+
