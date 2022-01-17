@@ -6568,7 +6568,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = ANY (ARRAY[6717, 7808, 8140, 8636, 8694, 8714, 9197, 9421, 9534, 9760, 9849, 10120, 10120, 10251, 12563, 13234, 13234, 13521, 13521, 13527, 13527, 14108, 14160, 14281, 15292, 15292, 15381, 15685, 16103, 16486, 16501, 16503, 16532, 16532, 16551, 16594, 16608, 16610, 16613, 17043, 17106, 17134, 17138, 17142, 17157, 17161, 17165, 17169, 17178, 17184, 17200, 17233, 17244, 17246, 17326, 17338, 17498, 17515, 17515, 17526, 17563, 17565, 17573, 17595, 17618, 17649, 17652, 17653, 17654, 17656, 17657, 17661, 17733, 17740, 17742, 17745, 17752, 17760, 17761, 17935, 17950, 19048, 19143, 19145, 19325, 20928]))
+          WHERE (sivel2_gen_conscaso.q @@ plainto_tsquery('spanish'::regconfig, public.unaccent('sjrcol'::text)))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
