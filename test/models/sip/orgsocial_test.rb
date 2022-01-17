@@ -8,6 +8,9 @@ module Sip
     end
 
     test "valido" do
+      tipoorgsocial = Sip::Tipoorgsocial.create(
+        PRUEBA_TIPOORGSOCIAL)
+      assert(tipoorgsocial.valid?)
       orgsocial = Sip::Orgsocial.create(
         PRUEBA_ORGSOCIAL)
       assert(orgsocial.valid?)

@@ -6,13 +6,7 @@ require 'test_helper'
 module Sip
   class TipoorgsocialTest < ActiveSupport::TestCase
   
-      PRUEBA_TIPOORGSOCIAL = {
-        id: 99,
-        nombre: "Tipoorgsocial",
-        fechacreacion: "2018-10-25",
-        created_at: "2018-10-25",
-      }
-  
+ 
       test "valido" do
         tipoorgsocial = Sip::Tipoorgsocial.create(
           PRUEBA_TIPOORGSOCIAL)

@@ -130,10 +130,16 @@ PRUEBA_GRUPOPER = {
   nombre: 'grupoper1'
 }
 
+PRUEBA_TIPOORGSOCIAL = {
+  id: 99,
+  nombre: "Tipoorgsocial",
+  fechacreacion: "2018-10-25",
+  created_at: "2018-10-25",
+}
 
 PRUEBA_ORGSOCIAL = {
   grupoper_id: 1,
-  tipoorgsocial_id: 1,
+  tipoorgsocial_id: 99,
   created_at: '2021-08-27',
   updated_at: '2021-08-27'
 }

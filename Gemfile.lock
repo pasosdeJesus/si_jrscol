@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 152570e1573efadc31f7d3719ad4b0843ceb3303
+  revision: 8f71bfcf456acdeab81e1087d365d5c8905da09e
   branch: rails7jses
   specs:
     sivel2_sjr (2.0b11)
@@ -409,9 +409,8 @@ GEM
     tilt (2.0.10)
     timeout (0.2.0)
     ttfunk (1.7.0)
-    turbo-rails (1.0.1)
-      actionpack (>= 6.0.0)
-      railties (>= 6.0.0)
+    turbo-rails (7.1.1)
+      rails (>= 6.0.0)
     twitter_cldr (6.11.0)
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)

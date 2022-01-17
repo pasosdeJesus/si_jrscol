@@ -70,8 +70,12 @@ module Sivel2Sjr
       u2 = Sip::Ubicacionpre.create(PRUEBA_UBICACIONPRE2)
       assert u2.valid?
 
-      desplazamiento = Desplazamiento.create(PRUEBA_DESPLAZAMIENTO.merge(
-        { expulsionubicacionpre_id: u1.id, llegadaubicacionpre_id: u2.id, }))
+      desplazamiento = Desplazamiento.create(PRUEBA_DESPLAZAMIENTO.merge({ 
+        id_caso: caso.id, 
+        expulsionubicacionpre_id: u1.id, 
+        llegadaubicacionpre_id: u2.id, 
+      }))
+
       assert desplazamiento.valid?
       desplazamiento.destroy
       u2.destroy
