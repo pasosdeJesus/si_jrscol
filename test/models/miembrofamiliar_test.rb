@@ -24,9 +24,8 @@ class MiembrofamiliarTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    miembrofamiliar = ::Miembrofamiliar.where(id: 0).take
-    assert_equal(miembrofamiliar.nombre, "SIN INFORMACIÓN")
+    miembrofamiliar = ::Miembrofamiliar.where(id: 1).take
+    assert_equal(miembrofamiliar.nombre, "Pareja sentimental")
   end
 
 end

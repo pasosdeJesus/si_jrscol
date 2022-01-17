@@ -24,9 +24,8 @@ class MecanismodeentregaTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    mecanismodeentrega = ::Mecanismodeentrega.where(id: 0).take
-    assert_equal(mecanismodeentrega.nombre, "SIN INFORMACIÓN")
+    mecanismodeentrega = ::Mecanismodeentrega.where(id: 2).take
+    assert_equal(mecanismodeentrega.nombre, "Tarjeta pre-pago")
   end
 
 end

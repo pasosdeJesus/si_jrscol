@@ -10,24 +10,23 @@ class EspaciopartTest < ActiveSupport::TestCase
   }
 
   test "valido" do
-    Espaciopart = ::Espaciopart.create(
+    espaciopart = ::Espaciopart.create(
       PRUEBA_ESPACIOPART)
-    assert(Espaciopart.valid?)
-    Espaciopart.destroy
+    assert(espaciopart.valid?)
+    espaciopart.destroy
   end
 
   test "no valido" do
-    Espaciopart = ::Espaciopart.new(
+    espaciopart = ::Espaciopart.new(
       PRUEBA_ESPACIOPART)
-    Espaciopart.nombre = ''
-    assert_not(Espaciopart.valid?)
-    Espaciopart.destroy
+    espaciopart.nombre = ''
+    assert_not(espaciopart.valid?)
+    espaciopart.destroy
   end
 
   test "existente" do
-    skip
-    Espaciopart = ::Espaciopart.where(id: 0).take
-    assert_equal(Espaciopart.nombre, "SIN INFORMACIÓN")
+    espaciopart = ::Espaciopart.where(id: 1).take
+    assert_equal(espaciopart.nombre, "JUNTA DE ACCIÓN COMUNAL")
   end
 
 end

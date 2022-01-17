@@ -26,9 +26,8 @@ class TrivalentepositivaTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    trivalentepositiva = ::Trivalentepositiva.where(id: 0).take
-    assert_equal(trivalentepositiva.nombre, "SIN INFORMACIÓN")
+    trivalentepositiva = ::Trivalentepositiva.where(id: 1).take
+    assert_equal(trivalentepositiva.nombre, "SIN RESPUESTA")
   end
 
 end

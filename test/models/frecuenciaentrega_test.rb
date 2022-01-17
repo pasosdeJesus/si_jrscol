@@ -24,9 +24,8 @@ class FrecuenciaentregaTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    frecuenciaentrega = ::Frecuenciaentrega.where(id: 0).take
-    assert_equal(frecuenciaentrega.nombre, "SIN INFORMACIÓN")
+    frecuenciaentrega = ::Frecuenciaentrega.where(id: 1).take
+    assert_equal(frecuenciaentrega.nombre, "Una sola entrega")
   end
 
 end

@@ -24,9 +24,8 @@ class CausaagresionTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    causaagresion = ::Causaagresion.where(id: 0).take
-    assert_equal(causaagresion.nombre, "SIN INFORMACIÓN")
+    causaagresion = ::Causaagresion.where(id: 1).take
+    assert_equal(causaagresion.nombre, "Nacionalidad / por ser migrante")
   end
 
 end

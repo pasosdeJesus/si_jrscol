@@ -24,9 +24,8 @@ class UnidadayudaTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    unidadayuda = ::Unidadayuda.where(id: 0).take
-    assert_equal(unidadayuda.nombre, "SIN INFORMACIÓN")
+    unidadayuda = ::Unidadayuda.where(id: 10).take
+    assert_equal(unidadayuda.nombre, "Medicamentos")
   end
 
 end

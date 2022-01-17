@@ -24,9 +24,8 @@ class ModalidadentregaTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    modalidadentrega = ::Modalidadentrega.where(id: 0).take
-    assert_equal(modalidadentrega.nombre, "SIN INFORMACIÓN")
+    modalidadentrega = ::Modalidadentrega.where(id: 1).take
+    assert_equal(modalidadentrega.nombre, "En especie")
   end
 
 end

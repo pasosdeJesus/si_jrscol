@@ -24,9 +24,8 @@ class CausamigracionTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    causamigracion = ::Causamigracion.where(id: 0).take
-    assert_equal(causamigracion.nombre, "SIN INFORMACIÓN")
+    causamigracion = ::Causamigracion.where(id: 1).take
+    assert_equal(causamigracion.nombre, "Reunificación familiar")
   end
 
 end

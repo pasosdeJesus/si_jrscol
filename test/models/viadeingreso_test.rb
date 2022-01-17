@@ -24,9 +24,8 @@ class ViadeingresoTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    viadeingreso = ::Viadeingreso.where(id: 0).take
-    assert_equal(viadeingreso.nombre, "SIN INFORMACIÓN")
+    viadeingreso = ::Viadeingreso.where(id: 1).take
+    assert_equal(viadeingreso.nombre, "Puente oficial")
   end
 
 end

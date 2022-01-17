@@ -24,9 +24,8 @@ class TipotransferenciaTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    tipotransferencia = ::Tipotransferencia.where(id: 0).take
-    assert_equal(tipotransferencia.nombre, "SIN INFORMACIÓN")
+    tipotransferencia = ::Tipotransferencia.where(id: 1).take
+    assert_equal(tipotransferencia.nombre, "Condicionada")
   end
 
 end

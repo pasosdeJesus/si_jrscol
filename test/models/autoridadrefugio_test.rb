@@ -24,9 +24,8 @@ class AutoridadrefugioTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    autoridadrefugio = ::Autoridadrefugio.where(id: 0).take
-    assert_equal(autoridadrefugio.nombre, "SIN INFORMACIÓN")
+    autoridadrefugio = ::Autoridadrefugio.where(id: 1).take
+    assert_equal(autoridadrefugio.nombre, "Organismo internacional")
   end
 
 end

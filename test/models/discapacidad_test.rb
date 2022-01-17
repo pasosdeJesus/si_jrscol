@@ -9,24 +9,23 @@ class DiscapacidadTest < ActiveSupport::TestCase
   }
 
   test "valido" do
-    Discapacidad = ::Discapacidad.create(
+    discapacidad = ::Discapacidad.create(
       PRUEBA_DISCAPACIDAD)
-    assert(Discapacidad.valid?)
-    Discapacidad.destroy
+    assert(discapacidad.valid?)
+    discapacidad.destroy
   end
 
   test "no valido" do
-    Discapacidad = ::Discapacidad.new(
+    discapacidad = ::Discapacidad.new(
       PRUEBA_DISCAPACIDAD)
-    Discapacidad.nombre = ''
-    assert_not(Discapacidad.valid?)
-    Discapacidad.destroy
+    discapacidad.nombre = ''
+    assert_not(discapacidad.valid?)
+    discapacidad.destroy
   end
 
   test "existente" do
-    skip
-    Discapacidad = ::Discapacidad.where(id: 0).take
-    assert_equal(Discapacidad.nombre, "SIN INFORMACIÓN")
+    discapacidad = ::Discapacidad.where(id: 1).take
+    assert_equal(discapacidad.nombre, "FÍSICA")
   end
 
 end

@@ -24,9 +24,8 @@ class DificultadmigracionTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    dificultadmigracion = ::Dificultadmigracion.where(id: 0).take
-    assert_equal(dificultadmigracion.nombre, "SIN INFORMACIÓN")
+    dificultadmigracion = ::Dificultadmigracion.where(id: 1).take
+    assert_equal(dificultadmigracion.nombre, "Caída")
   end
 
 end

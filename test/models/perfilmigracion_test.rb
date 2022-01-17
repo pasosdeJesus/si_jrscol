@@ -24,9 +24,8 @@ class PerfilmigracionTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
     perfilmigracion = ::Perfilmigracion.where(id: 2).take
-    assert_equal(perfilmigracion.nombre, "EN TRANSITO")
+    assert_equal(perfilmigracion.nombre, "EN TRÁNSITO")
   end
 
 end

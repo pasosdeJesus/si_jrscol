@@ -24,9 +24,8 @@ class TipoproteccionTest < ActiveSupport::TestCase
   end
 
   test "existente" do
-    skip
-    tipoproteccion = ::Tipoproteccion.where(id: 0).take
-    assert_equal(tipoproteccion.nombre, "SIN INFORMACIÓN")
+    tipoproteccion = ::Tipoproteccion.where(id: 1).take
+    assert_equal(tipoproteccion.nombre, "Individual")
   end
 
 end
