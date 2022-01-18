@@ -34,6 +34,7 @@ module Sip
     end
 
     test "should show orgsocial" do
+      @tipoorgsocial = Sip::Tipoorgsocial.create!(PRUEBA_TIPOORGSOCIAL)
       @orgsocial = Sip::Orgsocial.create!(PRUEBA_ORGSOCIAL)
       get orgsocial_path(@orgsocial.id)
       assert_response :success

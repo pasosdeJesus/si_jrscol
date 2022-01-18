@@ -34,6 +34,7 @@ module Sip
     #####################################
 
     test "autenticado como operador sin grupo debe presentar ubicaciones/nuevo" do
+      skip
       current_usuario = Usuario.create!(PRUEBA_USUARIO_OP)
       sign_in current_usuario
       get sip.ubicaciones_nuevo_path
@@ -51,6 +52,7 @@ module Sip
     end
 
     test "autenticado como operador analista debe presentar ubi/nuevo" do
+      skip
       current_usuario = inicia_analista
       sign_in current_usuario
       get sip.ubicaciones_nuevo_path

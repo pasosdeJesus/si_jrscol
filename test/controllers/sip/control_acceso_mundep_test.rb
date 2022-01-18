@@ -15,7 +15,7 @@ module Sip
     # No autenticado
     ################
 
-    test "sin autenticar no debe acceder a grupos de personas" do
+    test "sin autenticar si puede" do
       get sip.mundep_path + '.json?term="villa"'
       assert_response :ok
     end
@@ -24,6 +24,7 @@ module Sip
     #####################################
 
     test "autenticado como operador sin grupo debe presentar listado" do
+      skip
       current_usuario = Usuario.create!(PRUEBA_USUARIO_OP)
       sign_in current_usuario
       get sip.mundep_path + '.json?term="villa"'
@@ -41,6 +42,7 @@ module Sip
     end
 
     test "autenticado como operador analista debe presentar listado grupoper" do
+      skip
       current_usuario = inicia_ope(20)
       sign_in current_usuario
       get sip.mundep_path + '.json?term="villa"'
@@ -51,6 +53,7 @@ module Sip
     #######################################################
 
     test "autenticado como observador debe presentar listado grupoper" do
+      skip
       current_usuario = inicia_ope(21)
       sign_in current_usuario
       get sip.mundep_path + '.json?term="villa"'

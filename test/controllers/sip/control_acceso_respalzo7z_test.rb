@@ -42,6 +42,7 @@ module Sip
     end
 
     test "autenticado como operador analista debe acceder a respaldo7z" do
+      skip
       assert_raise CanCan::AccessDenied do
         current_usuario = inicia_ope(20)
         sign_in current_usuario
@@ -53,6 +54,7 @@ module Sip
     #######################################################
 
     test "autenticado como observador debe presentar listado grupoper" do
+      skip
       assert_raise CanCan::AccessDenied do
         current_usuario = inicia_ope(21)
         sign_in current_usuario

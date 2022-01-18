@@ -15,7 +15,7 @@ module Sip
         @current_usuario = ::Usuario.create(PRUEBA_USUARIO)
         sign_in @current_usuario
         @tipoorgsocial = Sip::Tipoorgsocial.create(
-          Sip::TipoorgsocialTest::PRUEBA_TIPOORGSOCIAL)
+          PRUEBA_TIPOORGSOCIAL)
       end
 
       test "should get index" do

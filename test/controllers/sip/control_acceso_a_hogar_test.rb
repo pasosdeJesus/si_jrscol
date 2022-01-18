@@ -11,6 +11,7 @@ module Sip
         raise 'CONFIG_HOSTS debe ser www.example.com'
       end
       @gupoper = Sip::Grupoper.create!(PRUEBA_GRUPOPER)
+      @tipoorgsocial = Sip::Tipoorgsocial.create!(PRUEBA_TIPOORGSOCIAL)
       @orgsocial = Sip::Orgsocial.create!(PRUEBA_ORGSOCIAL)
     end
 
