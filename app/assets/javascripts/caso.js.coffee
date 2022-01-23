@@ -196,9 +196,9 @@ $(document).on('click', 'a.agregaractos[href^="#"]', (e) ->
   if (d == -1 || d>5) 
     f=$('form')
     a = root.puntomontaje + 'actos/agregar?desplazamiento=' + desplazamiento
-    d = f.serializeArray()
-    d.push({name: 'csrf-token', value: $('meta[name="csrf-token"]').attr('content')})
-    $.post(a, $.param(d))
+    lpar = f.serializeArray()
+    lpar.push({name: 'csrf-token', value: $('meta[name="csrf-token"]').attr('content')})
+    $.post(a, $.param(lpar))
     root.tagregaactos= Date.now()
   return
 )

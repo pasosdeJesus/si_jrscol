@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resources :usuarios, path_names: { new: 'nuevo', edit: 'edita' } 
 
 
-    patch "/actos/agregar" => 'sivel2_sjr/actos#agregar',
+    post "/actos/agregar" => 'sivel2_sjr/actos#agregar',
       as: :actos_agregar
     get "/actos/eliminar" => 'sivel2_sjr/actos#eliminar',
       as: :actos_eliminar
