@@ -16,9 +16,9 @@
     <% actos_des = @caso.actosjr.where(desplazamiento_id: des_id)%>
     <% actos_des.try(:each) do |actosjr| %>
       <tr>
-        <td style='min-width: 15em'><%= actosjr.acto.presponsable.nombre %></td>
-        <td style='min-width: 15em'><%= actosjr.acto.categoria.presenta_con_codigo %></td>
-        <td style='min-width: 15em'><%= actosjr.acto.persona.nombres + ' ' + 
+        <td style='max-width: 15em'><%= actosjr.acto.presponsable.nombre %></td>
+        <td style='max-width: 15em'><%= actosjr.acto.categoria.presenta_con_codigo %></td>
+        <td style='max-width: 15em'><%= actosjr.acto.persona.nombres + ' ' + 
           actosjr.acto.persona.apellidos 
           %></td>
         <td><%= actosjr.fecha %></td>
@@ -36,7 +36,7 @@
     <tr>
       <% des_id = desplazamiento ? desplazamiento.id : "" %>
       <td>
-        <div style="padding-bottom: 18px;" class="input select caso_acto_presponsable">
+        <div style="padding-bottom: 18px;max-width:15em;" class="input select caso_acto_presponsable">
           <% p = options_from_collection_for_select(
             Sivel2Gen::Presponsable.habilitados, "id", "nombre")
           %>
@@ -95,7 +95,7 @@
       </div>
       </td>
       <td>
-        <div style="padding-bottom: 18px;" class="input select caso_acto_categoria">
+        <div style="padding-bottom: 18px;max-width: 15em;" class="input select caso_acto_categoria">
           <% c = options_from_collection_for_select(
               Sivel2Gen::Categoria.from(
                 'sivel2_gen_categoria, sivel2_gen_supracategoria').where(
@@ -116,7 +116,7 @@
         </div>
       </td>
       <td>
-        <div style="padding-bottom: 18px;" class="input select caso_acto_persona">
+        <div style="padding-bottom: 18px;max-width: 15em;" class="input select caso_acto_persona">
           <% p = options_from_collection_for_select(
             Sip::Persona.from('sivel2_gen_victima, sip_persona').where(
               'sivel2_gen_victima.id_persona=sip_persona.id AND sivel2_gen_victima.id_caso=?', @caso.id),
@@ -131,7 +131,7 @@
         </div>
       </td>
       <td>
-        <div style="padding-bottom: 18px;" class="input select caso_acto_fecha">
+        <div style="padding-bottom: 18px;max-width: 15em;" class="input select caso_acto_fecha">
             <%= text_field_tag "caso_acto_fecha_#{des_id}", 
               @caso.fecha, 
               class: 'form-control',
@@ -143,7 +143,7 @@
         </div>
       </td>
       <td>
-        <div style="padding-bottom: 18px;">
+        <div style="padding-bottom: 18px;max-width: 15em;">
           <%= link_to 'Añadir', '#', data: { desplazamiento: "#{des_id}" },
           class: 'agregaractos btn btn-primary' 
         %>
