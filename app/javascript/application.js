@@ -12,8 +12,8 @@ import '../../vendedor/recursos/javascripts/jquery-ui'
 
 import 'gridstack'
 
-import Asistentes from './asistentes'
-Asistentes.iniciar()
+import {AutocompletaAjaxExpreg} from '@pasosdejesus/autocompleta_ajax'
+window.AutocompletaAjaxExpreg = AutocompletaAjaxExpreg  // Requerido por cor1440_gen para autocompletación en listado de asistencia
 
 import 'popper.js'              // Dialogos emergentes usados por bootstrap
 import * as bootstrap from 'bootstrap'              // Maquetacion y elementos de diseño
