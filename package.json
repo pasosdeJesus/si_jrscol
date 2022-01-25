@@ -8,7 +8,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@hotwired/turbo-rails": "^7.1.0",
-    "@pasosdejesus/autocompleta_ajax": "https://gitlab.com/pasosdeJesus/autocompleta_ajax.git",
+    "@pasosdejesus/autocompleta_ajax": "file:../../js/autocompleta_ajax",
     "@popperjs/core": "^2.9.3",
     "@rails/ujs": "^7.0.1",
     "babel-plugin-macros": "^3.1.0",
@@ -21,7 +21,7 @@
     "highcharts": "^9.0.1",
     "is-svg": "^4.2.2",
     "jquery": "^3.6.0",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.1",
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
     "popper.js": "^2.0.0-next.4",

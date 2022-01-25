@@ -23,9 +23,9 @@
 //= require_tree .
 
 document.addEventListener('turbo:load', function() {
+  // Lo que se ponga aquí podría ejecutarse varias veces con la misma página
   var root
   root = window
-  sip_prepara_eventos_comunes(root)
 
   // Antes de iniciar motor sivel2_gen ponemos este, para que se ejecute antes del incluido en ese motor
   $(document).on('change', 
@@ -52,6 +52,8 @@ document.addEventListener('turbo:load', function() {
     })
 
 
+  /* Cargando desde app/javascript/application.js 
+  sip_prepara_eventos_comunes(root)
   heb412_gen_prepara_eventos_comunes(root)
   mr519_gen_prepara_eventos_comunes(root)
   sivel2_gen_prepara_eventos_comunes(root,'antecedentes/causas')
@@ -61,7 +63,7 @@ document.addEventListener('turbo:load', function() {
   sal7711_gen_prepara_eventos_comunes(root)
   sivel2_sjr_prepara_eventos_unicos(root)
   sip_registra_cambios_para_bitacora(root)
-
+*/
 
 })
 

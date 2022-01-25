@@ -204,21 +204,23 @@ $(document).on('click', 'a.agregaractos[href^="#"]', (e) ->
 )
 
 # En victimas permite autocompletar nombres de victima
-$(document).on('focusin', 
-'input[id^=caso_victima_attributes][id$=persona_attributes_apellidos]', 
-(e) ->
-  root = window
-  sip_arregla_puntomontaje(root)
-  busca_persona_nombre($(this), root)
-)
+# $(document).on('focusin', 
+# 'input[id^=caso_victima_attributes][id$=persona_attributes_apellidos]', (e) ->
+#   root = window
+#   sip_arregla_puntomontaje(root)
+#   busca_persona_nombre($(this), root)
+# )
+# 
+# $(document).on('focusin', 
+# 'input[id^=caso_victima_attributes][id$=persona_attributes_numerodocumento]', (e) ->
+#   root = window
+#   sip_arregla_puntomontaje(root)
+#   busca_persona_nombre($(this), root)
+# )
 
-$(document).on('focusin', 
-'input[id^=caso_victima_attributes][id$=persona_attributes_numerodocumento]', 
-(e) ->
-  root = window
-  sip_arregla_puntomontaje(root)
-  busca_persona_nombre($(this), root)
-)
+$(document).off('focusin',
+  'input[id^=caso_victima_attributes][id$=persona_attributes_nombres]')
+
 $(document).on('change',
 'select[id=persona_tdocumento_id]', (e) ->
   root = window
