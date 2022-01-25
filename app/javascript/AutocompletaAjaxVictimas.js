@@ -44,18 +44,11 @@ export default class AutocompletaAjaxVictimas {
   }
 
   static iniciar() {
-    if (typeof window.SiSjrAutcompletaAjaxVictimaCargado === 'undefined') {
-      console.log('window.SiS no definido')
-      window.SiSjrAutcompletaAjaxVictimaCargado === true
-    } else {
-      console.log('Se carga varias veces????')
-      return
-    }
-
     console.log("AutocompletaAjaxVictimas si_jrscol")
     let url = window.puntomontaje + 'personas.json'
     var asistentes = new window.AutocompletaAjaxExpreg(
-      [ /^caso_victima_attributes_[0-9]*_persona_attributes_apellidos$/,
+      [ /^caso_victima_attributes_[0-9]*_persona_attributes_nombres$/,
+        /^caso_victima_attributes_[0-9]*_persona_attributes_apellidos$/,
         /^caso_victima_attributes_[0-9]*_persona_attributes_numerodocumento$/ ],
       url,
       AutocompletaAjaxVictimas.idDatalist,
