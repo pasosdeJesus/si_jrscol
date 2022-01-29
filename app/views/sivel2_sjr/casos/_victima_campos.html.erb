@@ -1,73 +1,72 @@
 <div class='control-group nested-fields vic'>
   <div class="controls">
-    <a class="itemvictima">
-      <h3 class= "tituloenlace">Integrante</h3>
-    </a>
+    <a class="itemvictima"><h3 class= "tituloenlace">Integrante</h3></a>
     <div class="collapse multi-collapse divcolapse">
-      <a data-bs-toggle="collapse" href='#basicosfamiliar'>
-        <h5>DATOS BÁSICOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
-      </a>
-      <div class="collapse multi-collapse campos_persona" id="basicosfamiliar">
-          <% if f.object.persona.nil?
-              f.object.persona = Sip::Persona.new(nombres: '')
-              f.object.victimasjr = Sivel2Sjr::Victimasjr.new
-              f.object.victimasjr.id_victima = f.object
-             end %>
-             
-          <%= f.simple_fields_for :victimasjr do |fvictimasjr| %>
-            <%= f.simple_fields_for :persona do |fp| %>
-      
-            <%= fp.input :id, as: :hidden %>
-            <% 
-              ph = 'N'
-              ac = {'data-autocompleta' => 'no' }
-               if (!fp.object.nombres || fp.object.nombres == 'N' || fp.object.nombres == '')
-                 ph = 'Buscar'
-                 ac = { }
-               end
-             %>
-          <%= render partial: 'sip/personas/persona_campos', locals: {f: fp, fvictima: f} %>
-      </div>
-      <br>
-      <a data-bs-toggle="collapse" href='#anexosfamiliar'>
-        <h5>ANEXOS</h5>
-      </a>
-      <div class="collapse multi-collapse" id="anexosfamiliar">
-            <%= render partial: 'anexovictima', locals: {f: f, consentimiento: false} %>
-      </div>
-      <br>
-      <a data-bs-toggle="collapse" href='#ampliosfamiliar'>
-        <h5>DATOS AMPLIOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
-      </a>
-      <div class="collapse multi-collapse" id="ampliosfamiliar">
-              <% [2,4,5,1].each do |i| %>
-                <%= render partial: 'victima_campos' + i.to_s, 
-                  locals: { fvictima: f, 
-                            fvictimasjr: fvictimasjr,
-                            fpersona: fp }
-                %>
-              <% end %>
-      </div>
-      <br>
-      <a data-bs-toggle="collapse" href='#gestiondelmiembro'>
-        <h5>GESTIÓN DEL MIEMBRO</h5>
-      </a>
-      <div class="collapse multi-collapse" id="gestiondelmiembro">
-              <%= fvictimasjr.input :fechadesagregacion, 
-                input_html: { 
-                  "data-behaviour" => "datepicker",
-                  "data-toggle" => 'tooltip',
-                  title: 'Sólo se llena si la persona sale del grupo familiar y se registra la fecha en la que salió del grupo familiar (sin eliminar a la persona del grupo familiar que queda como información histórica)'
-                },
-                as: :string, 
-                label: "Fecha de Desagregación" 
-              %>
-            <% end %> <!-- simple_fields_for :persona-->
-          <% end %> <!-- simple_fields_for :fvictimasjr -->
-      
-      </div>
+      <%= f.simple_fields_for :victimasjr do |fvictimasjr| %>
+        <%= f.simple_fields_for :persona do |fp| %>
+
+          <a data-bs-toggle="collapse" href='#basicosfamiliar'>
+            <h5>DATOS BÁSICOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
+          </a>
+          <div class="collapse multi-collapse campos_persona" id="basicosfamiliar">
+            <% if f.object.persona.nil?
+                 f.object.persona = Sip::Persona.new(nombres: '')
+                 f.object.victimasjr = Sivel2Sjr::Victimasjr.new
+                 f.object.victimasjr.victima = f.object
+            end %>
+
+            <div class='campos-persona-con-victima-id'>
+              <%= f.input :id, as: :hidden %> 
+              <%= render partial: 'sip/personas/persona_campos', 
+                locals: {f: fp, fvictima: f, fvictimasjr: fvictimasjr} %>
+            </div>
+          </div>
+
+          <br>
+          <a data-bs-toggle="collapse" href='#anexosfamiliar'>
+            <h5>ANEXOS</h5>
+          </a>
+          <div class="collapse multi-collapse" id="anexosfamiliar">
+            <%= render partial: 'anexovictima', 
+              locals: {f: f, consentimiento: false} %>
+          </div>
+
+          <br>
+          <a data-bs-toggle="collapse" href='#ampliosfamiliar'>
+            <h5>DATOS AMPLIOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
+          </a>
+          <div class="collapse multi-collapse" id="ampliosfamiliar">
+            <% [2,4,5,1].each do |i| %>
+              <%= render partial: 'victima_campos' + i.to_s, 
+                locals: {
+                  fvictima: f, 
+                  fvictimasjr: fvictimasjr,
+                  fpersona: fp 
+                } %>
+            <% end %>
+          </div>
+
+          <br>
+          <a data-bs-toggle="collapse" href='#gestiondelmiembro'>
+            <h5>GESTIÓN DEL MIEMBRO</h5>
+          </a>
+          <div class="collapse multi-collapse" id="gestiondelmiembro">
+            <%= fvictimasjr.input :fechadesagregacion, 
+              input_html: { 
+                "data-behaviour" => "datepicker",
+                "data-toggle" => 'tooltip',
+                title: 'Sólo se llena si la persona sale del grupo familiar y se registra la fecha en la que salió del grupo familiar (sin eliminar a la persona del grupo familiar que queda como información histórica)'
+              },
+              as: :string, 
+              label: "Fecha de Desagregación" 
+            %>
+          </div>
+
+        <% end %> <!-- simple_fields_for :persona-->
+      <% end %> <!-- simple_fields_for :fvictimasjr -->
+
     </div>
-    <%= link_to_remove_association "Eliminar Víctima", f, 
-      {class: 'btn-danger', :'data-existing' => 'true'} %> 
   </div>
+  <%= link_to_remove_association "Eliminar Víctima", f, 
+    {class: 'btn-danger', :'data-existing' => 'true'} %> 
 </div>

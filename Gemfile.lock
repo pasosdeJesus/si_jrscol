@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 469229263347ca4771fb8180314c3be42051290c
+  revision: 8611091e3dc5ad99b110d6fdfa5895b923f7c1d2
   branch: main
   specs:
     cor1440_gen (2.0a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: d3b46b61ffbdf844103271c2bf544c09c8d8efb1
+  revision: 4e5b4729d6948e60ca4fc88dbe7aada5e8a55803
   branch: main
   specs:
     heb412_gen (2.1a1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: b2b7baac88c0a178a1eac3da6c8598487e5b21b2
+  revision: 5ce2757b0849344e6b26fe782bfe7505e9fd0384
   branch: main
   specs:
     mr519_gen (2.1a1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: eec9f22897e89588047ee1242fd7c5e148b94ca0
+  revision: c9a806ce479aad618ba94c4d47cdf99e084c962f
   branch: main
   specs:
     sal7711_gen (2.1a1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 76e0a1e0f023333c58035b8ff501d6d87128c6cd
+  revision: 66b8e0e1d644db0ab5d3df5babd62e979bb7820f
   branch: main
   specs:
     sal7711_web (2.1a1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 42e4e7d7c65fc36f5b8ca8b5e7e6cb4f08b9011b
+  revision: fe6a248bde0daa98923c16c84f0e6fc10309fc1b
   branch: main
   specs:
     sip (2.1a1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 4524ab89567aa4b4bfaee6c8032096255c9b4bac
+  revision: 8f74e92126708eefc89b8fcfb736db5f1077567d
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 5d3fdf0958b8cce67ffebd77777321591363c5de
+  revision: c7ce451f6f3e3acaf7bb20783a7799c0a2b36f12
   branch: main
   specs:
     sivel2_sjr (2.0b11)
@@ -248,7 +248,7 @@ GEM
     globalid (1.0.0)
       activesupport (>= 5.0)
     htmlentities (4.3.4)
-    i18n (1.8.11)
+    i18n (1.9.1)
       concurrent-ruby (~> 1.0)
     io-console (0.5.11)
     io-wait (0.2.1)
@@ -312,7 +312,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (4.0.6)
-    puma (5.5.2)
+    puma (5.6.1)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
@@ -433,7 +433,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.3)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   x86_64-openbsd
