@@ -24,6 +24,14 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
       end
     end
 
+    validate :fecharec_pasada
+    def fecharec_pasada
+      if fecharec>Date.today
+        errors.add(:fecharec, 
+                   " la fecha de recepción debe ser en el pasado")
+      end
+    end
+
     validate :llegadam_posterior_a_salida
     def llegadam_posterior_a_salida
       if fechallegadam.present? && fechasalidam.present? && 
