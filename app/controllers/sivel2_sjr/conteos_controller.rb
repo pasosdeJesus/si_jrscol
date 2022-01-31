@@ -13,11 +13,11 @@ class Sivel2Sjr::ConteosController < ApplicationController
       'progestado' => 'Subsidio/Programa del Estado'
     }
 
-    pFaini = param_escapa([:filtro, 'fechaini'])
-    pFafin = param_escapa([:filtro, 'fechafin'])
-    pOficina = param_escapa([:filtro, 'oficina_id'])
-    pContar = param_escapa([:filtro, 'contar'])
-    pDerecho = param_escapa([:filtro, 'derecho'])
+    pFaini = escapar_param(params, [:filtro, 'fechaini'])
+    pFafin = escapar_param(params, [:filtro, 'fechafin'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
+    pContar = escapar_param(params, [:filtro, 'contar'])
+    pDerecho = escapar_param(params, [:filtro, 'derecho'])
 
     if (pContar == '') 
       pContar = 'ayudaestado'
@@ -215,9 +215,9 @@ class Sivel2Sjr::ConteosController < ApplicationController
   def municipios
     authorize! :contar, Sivel2Gen::Caso
 
-    pFaini = param_escapa([:filtro, 'fechaini'])
-    pFafin = param_escapa([:filtro, 'fechafin'])
-    pOficina = param_escapa([:filtro, 'oficina_id'])
+    pFaini = escapar_param(params, [:filtro, 'fechaini'])
+    pFafin = escapar_param(params, [:filtro, 'fechafin'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
 
     where = ''
     where = consulta_and_sinap(
@@ -326,9 +326,9 @@ class Sivel2Sjr::ConteosController < ApplicationController
   def rutas
     authorize! :contar, Sivel2Gen::Caso
 
-    pFaini = param_escapa([:filtro, 'fechaini'])
-    pFafin = param_escapa([:filtro, 'fechafin'])
-    pOficina = param_escapa([:filtro, 'oficina_id'])
+    pFaini = escapar_param(params, [:filtro, 'fechaini'])
+    pFafin = escapar_param(params, [:filtro, 'fechafin'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
 
     where = ''
     where = consulta_and_sinap(where, 'casosjr.id_caso', 'd1.id_caso')
@@ -407,12 +407,12 @@ class Sivel2Sjr::ConteosController < ApplicationController
     authorize! :contar, Sivel2Gen::Caso
 
     @opOrdenar = ['N. DESPLAZAMIENTOS', 'EDAD', 'SEXO']
-    pFaini = param_escapa([:filtro, 'fechaini'])
-    pFafin = param_escapa([:filtro, 'fechafin'])
-    pOficina = param_escapa([:filtro, 'oficina_id'])
-    pOrdenar = param_escapa([:filtro, 'ordenar'])
-    pSexo = param_escapa([:filtro, 'bussexo'])
-    pRangoedadId = param_escapa([:filtro, 'busrangoedad_id'])
+    pFaini = escapar_param(params, [:filtro, 'fechaini'])
+    pFafin = escapar_param(params, [:filtro, 'fechafin'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
+    pOrdenar = escapar_param(params, [:filtro, 'ordenar'])
+    pSexo = escapar_param(params, [:filtro, 'bussexo'])
+    pRangoedadId = escapar_param(params, [:filtro, 'busrangoedad_id'])
 
     if pOrdenar == 'SEXO'
         cord = "3, 5 DESC, 1"
@@ -484,9 +484,9 @@ class Sivel2Sjr::ConteosController < ApplicationController
   def accionesjuridicas
     authorize! :contar, Sivel2Gen::Caso
 
-    pFaini = param_escapa([:filtro, 'fechaini'])
-    pFafin = param_escapa([:filtro, 'fechafin'])
-    pOficina = param_escapa([:filtro, 'oficina_id'])
+    pFaini = escapar_param(params, [:filtro, 'fechaini'])
+    pFafin = escapar_param(params, [:filtro, 'fechafin'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
 
     where = 'TRUE '
     if (pFaini != '') 
