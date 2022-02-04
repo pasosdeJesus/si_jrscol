@@ -1,7 +1,6 @@
 # SI-JRSCOL, Sistema de información del JRS Colombia
 
-
-[![Revisado por Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) [![Estado Construcción 1](https://gitlab.com/pasosdeJesus/si_jrscol/badges/main/pipeline.svg)](https://gitlab.com/pasosdeJesus/si_jrscol/-/pipelines)[![Estado Construcción 2](https://travis-ci.com/pasosdeJesus/si_jrscol.svg?branch=main)](https://travis-ci.com/gitlab/pasosdeJesus/si_jrscol) [![Clima del Código](https://codeclimate.com/github/pasosdeJesus/sivel2_sjrcol/badges/gpa.svg)](https://codeclimate.com/github/pasosdeJesus/sivel2_sjrcol) [![Cobertura de Pruebas](https://gitlab.com/pasosdeJesus/si_jrscol/-/pipelines)  [![security](https://hakiri.io/github/pasosdeJesus/sivel2_sjrcol/master.svg)](https://hakiri.io/github/pasosdeJesus/sivel2_sjrcol/master)
+[![Revisado por Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) Pruebas y seguridad:[![Estado Construcción](https://gitlab.com/pasosdeJesus/si_jrscol/badges/main/pipeline.svg)](https://gitlab.com/pasosdeJesus/si_jrscol/-/pipelines?page=1&scope=all&ref=main) [![Estado Construcción 2](https://travis-ci.com/pasosdeJesus/si_jrscol.svg?branch=main)](https://travis-ci.com/gitlab/pasosdeJesus/si_jrscol) [![Clima del Código](https://codeclimate.com/github/pasosdeJesus/sivel2_sjrcol/badges/gpa.svg)](https://codeclimate.com/github/pasosdeJesus/sivel2_sjrcol) [![Cobertura de Pruebas](https://gitlab.com/pasosdeJesus/si_jrscol/-/pipelines)
 
 ### Documentación para usuarios finales
 
