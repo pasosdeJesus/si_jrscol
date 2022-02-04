@@ -70,7 +70,7 @@ $(document).on('cocoon:after-insert', '#desplazamiento',
     $('#actos_tabla_' + cocoonid).find("tr:not(:last, :first)").remove();
   }
 )
-// al aliminar desplazamiento con coocon se eliminan sus actos
+// al eliminar desplazamiento con coocon se eliminan sus actos
 $(document).on('cocoon:before-remove', '#desplazamiento',
   function (e, desplazamiento) {
     botones_eliminar = desplazamiento.find('.eliminaracto')

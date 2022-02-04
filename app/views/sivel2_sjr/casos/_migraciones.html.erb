@@ -1,3 +1,5 @@
+<datalist id='fuente-lugar'></datalist>
+<datalist-info for='fuente-lugar'></datalist>
 <%= f.simple_fields_for :migracion, f.object.migracion.order(:id) do |migracion| %>
   <%= render 'migracion_campos', f: migracion %>
 <% end %>

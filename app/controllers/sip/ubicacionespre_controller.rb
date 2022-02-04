@@ -38,7 +38,8 @@ module Sip
           "municipio_id, clase_id, tsitio_id, lugar, sitio, "\
           "latitud, longitud "\
           "FROM public.sip_ubicacionpre AS ubicacionpre "\
-          "WHERE #{where} #{pais} #{dep} #{mun} #{clas}"
+          "WHERE #{where} #{pais} #{dep} #{mun} #{clas} " \
+          "ORDER BY 1 LIMIT 10"
         r = ActiveRecord::Base.connection.select_all cons
         respond_to do |format|
           format.json { render :json, inline: r.to_json }

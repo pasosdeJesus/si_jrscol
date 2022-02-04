@@ -12,8 +12,9 @@ import '../../vendedor/recursos/javascripts/jquery-ui'
 
 import 'gridstack'
 
-import {AutocompletaAjaxExpreg} from '@pasosdejesus/autocompleta_ajax'
+import {AutocompletaAjaxExpreg, AutocompletaAjaxCampotexto} from '@pasosdejesus/autocompleta_ajax'
 window.AutocompletaAjaxExpreg = AutocompletaAjaxExpreg  // Requerido por cor1440_gen para autocompletación en listado de asistencia
+window.AutocompletaAjaxCampotexto = AutocompletaAjaxCampotexto // Requerido por cor1440_gen para autocompletación en listado de asistencia
 
 import 'popper.js'              // Dialogos emergentes usados por bootstrap
 import * as bootstrap from 'bootstrap'              // Maquetacion y elementos de diseño
