@@ -11,10 +11,10 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 0301810bf3d57df9f6f816f566df3050a7406220
+  revision: 52a99c1702c16ed2f022fe101ce7676c9cccbe60
   branch: main
   specs:
-    cor1440_gen (2.0a1)
+    cor1440_gen (2.1a1)
       devise
       heb412_gen
       kt-paperclip
@@ -90,10 +90,10 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 3226ff2c0f8b19e758747d2e9e2e6d42d16707b9
+  revision: c17e254db3f8c231be6aaaa09781ab985fc7f968
   branch: main
   specs:
-    sivel2_sjr (2.0b11)
+    sivel2_sjr (2.1a1)
       rails
       sivel2_gen
 
