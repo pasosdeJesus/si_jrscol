@@ -7,7 +7,7 @@ export default class Cor1440GenAutocompletaAjaxAsistentes {
 
 
   // Elije una persona en autocompletación
-  static operarElegida (orig, cadpersona, id, otrosop) {
+  static operarElegida (eorig, cadpersona, id, otrosop) {
     let root = window
     sip_arregla_puntomontaje(root)
     const cs = id.split(';')
