@@ -2,6 +2,12 @@
   <div class="controls">
     <a class="itemvictima"><h3 class= "tituloenlace">Integrante</h3></a>
     <div class="collapse multi-collapse divcolapse">
+      <% if f.object.persona.nil?
+           f.object.persona = Sip::Persona.new(nombres: '')
+           f.object.victimasjr = Sivel2Sjr::Victimasjr.new
+           f.object.victimasjr.victima = f.object
+      end %>
+
       <%= f.simple_fields_for :victimasjr do |fvictimasjr| %>
         <%= f.simple_fields_for :persona do |fp| %>
 
@@ -9,14 +15,10 @@
             <h5>DATOS BÁSICOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
           </a>
           <div class="collapse multi-collapse campos_persona" id="basicosfamiliar">
-            <% if f.object.persona.nil?
-                 f.object.persona = Sip::Persona.new(nombres: '')
-                 f.object.victimasjr = Sivel2Sjr::Victimasjr.new
-                 f.object.victimasjr.victima = f.object
-            end %>
-
             <div class='campos-persona-con-victima-id'>
               <%= f.input :id, as: :hidden %> 
+              <%= fvictimasjr.input :id_victima, as: :hidden %> 
+              <%= fvictimasjr.input :id, as: :hidden %> 
               <%= render partial: 'sip/personas/persona_campos', 
                 locals: {f: fp, fvictima: f, fvictimasjr: fvictimasjr} %>
             </div>

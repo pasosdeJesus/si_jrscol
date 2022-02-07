@@ -292,6 +292,7 @@ module Sivel2Sjr
      
       # Convertir valores de radios tri-estado, el valor 3 en el 
       # botón de radio es nil en la base de datos
+      # Si falta poner id_victima
       if params && params[:caso] && params[:caso][:victima_attributes]
         params[:caso][:victima_attributes].each do |l, v|
           [:actualtrabajando, :asisteescuela, 
@@ -299,6 +300,9 @@ module Sivel2Sjr
             if v[:victimasjr_attributes] && v[:victimasjr_attributes][sym] && v[:victimasjr_attributes][sym] == '3'
               v[:victimasjr_attributes][sym] = nil
             end
+          end
+          if v[:victimasjr_attributes][:id_victima] == ''
+            v[:victimasjr_attributes][:id_victima] = v[:id]
           end
         end
       end
