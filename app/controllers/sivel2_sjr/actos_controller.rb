@@ -5,6 +5,7 @@ module Sivel2Sjr
 
     # Crea nuevos actos procesando parámetros
     def agregar
+      debugger
       des_id = params[:desplazamiento]
       presponsable = "caso_acto_id_presponsable_#{des_id}"
       categoria = "caso_acto_id_categoria_#{des_id}"
