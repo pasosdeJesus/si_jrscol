@@ -1,4 +1,4 @@
-include Sip::MigracionHelper
+include Sip::SqlHelper
 class CreateDeclaracionruv < ActiveRecord::Migration[6.1]
   def up
     create_table :declaracionruv do |t|

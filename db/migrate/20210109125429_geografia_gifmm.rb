@@ -1,5 +1,5 @@
 class GeografiaGifmm < ActiveRecord::Migration[6.0]
-  include Sip::MigracionHelper
+  include Sip::SqlHelper
 
   def up
     create_table :depgifmm do |t|
