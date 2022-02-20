@@ -1,0 +1,8 @@
+<%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+  casos_path, 
+  class: 'btn', 
+  'data-cancelar-vacio-es-eliminar-target' => 'boton',
+  'data-cancelar-vacio-es-eliminar-id-param' => @registro.id.to_s,
+  'data-cancelar-vacio-es-eliminar-urlparcial-param' => '/casos/',
+  'data-action' => 'click->cancelar-vacio-es-eliminar#talvezEliminar'
+%>

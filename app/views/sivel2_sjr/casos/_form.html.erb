@@ -7,7 +7,11 @@
       window.sivel2_enviarFichaCasoCada60()  ;
     });
   </script>
-  <%= simple_form_for @caso, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= simple_form_for @caso, 
+    :html => { 
+      class: 'form-horizontal',
+      "data-controller": 'cancelar-vacio-es-eliminar'
+    } do |f| %>
     <div data-role="content" class="form-inputs">
 
       <%= render partial: 'sip/hogar/errores', locals: { f: f } %>
@@ -79,9 +83,7 @@
         onclick: 'window.sivel2_detenerEnviarCada60()',
         'data-turbo' => false
       } %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-        casos_path, :class => 'btn'
-      %>
+    <%= render partial: 'form_btncancelar' %>
     </div> <!-- form-action -->
   <% end %> <!-- simple_form_for @caso -->
   </article>
