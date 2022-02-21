@@ -57,3 +57,4 @@ tmpsql/
 *.log
 ref/
 app/assets/builds
+app/javascript/controllers/sip

@@ -24,6 +24,7 @@ const watchOptions = {
 require("esbuild").build({
   entryPoints: ["application.js"],
   bundle: true,
+  preserveSymlinks: true,
   outdir: path.join(process.cwd(), "app/assets/builds"),
   absWorkingDir: path.join(process.cwd(), "app/javascript"),
   watch: watch && watchOptions,

@@ -77,6 +77,9 @@ FileUtils.chdir RAIZ_AP do
     system! "rm -rf public/#{ENV['RUTA_RELATIVA']}/assets/*"
     system! "rm -rf app/assets/builds/*"
 
+    puts "\n== Enlaza controladores stimulus de motores =="
+    system! 'bin/rails sip:stimulus_motores'
+
     puts "\n== Crea recursos CSS y Javascript =="
     system! "RAILS_ENV=#{ENV['RAILS_ENV']} bin/rails assets:precompile --trace"
   end

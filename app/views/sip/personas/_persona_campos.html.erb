@@ -15,7 +15,7 @@
       list: 'fuente-victimas' 
     }
   end %>
-  <% acn['data-cancelar-vacio-es-eliminar-target']='determinador' %>
+  <% acn['data-sip--cancelar-vacio-es-eliminar-target']='determinador' %>
   <div class="row">
     <div class="col-md-6">
       <%= f.input :nombres, placeholder: phn,
@@ -30,6 +30,7 @@
         list: 'fuente-victimas' 
       }
     end %>
+    <% aca['data-sip--cancelar-vacio-es-eliminar-target']='determinador' %>
     <div class="col-md-6">
       <%= f.input :apellidos, placeholder: pha,
         value_method: lambda {|t| '' if t.apellidos == 'N'}, 
@@ -63,6 +64,7 @@
                title: td }
       end
     end %>
+    <% acd['data-sip--cancelar-vacio-es-eliminar-target']='determinador' %>
     <div class="col-md-6">
       <%= f.input :numerodocumento, placeholder: phd,
         :input_html => acd %>
