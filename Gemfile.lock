@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: df8eb8c4da8dc61216f2758805a34e6a6739bb5d
+  revision: 5f976b133b2f6b5c2b71ab454b4412c9fa21cce5
   branch: main
   specs:
     sip (2.1a1)
@@ -292,7 +292,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.2)
+    nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     odf-report (0.7.2)
@@ -400,7 +400,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stimulus-rails (1.0.3)
+    stimulus-rails (1.0.4)
       railties (>= 6.0.0)
     strscan (3.0.1)
     terrapin (0.6.0)
