@@ -18,8 +18,8 @@
 //= require sivel2_sjr/motor
 //= require cor1440_gen/motor
 //= require sal7711_web/motor
-//= require chartkick
-//= require highcharts
+//  = require chartkick
+//  = require highcharts
 //= require_tree .
 
 

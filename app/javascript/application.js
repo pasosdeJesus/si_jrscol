@@ -24,6 +24,14 @@ import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js'
 var L = require('leaflet');
 var mc= require('leaflet.markercluster');
 
+import ApexCharts from 'apexcharts'
+window.ApexCharts = ApexCharts
+import apexes from 'apexcharts/dist/locales/es.json'
+Apex.chart = {
+  locales: [apexes],
+  defaultLocale: 'es',
+}
+
 import "./caso_m"
 
 // https://turbo.hotwired.dev/handbook/building
