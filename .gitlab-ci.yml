@@ -28,7 +28,7 @@ variables:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: "true"
   SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
   DAST_WEBSITE: http://colombia.sjrlac.info:5100
-  CC_TEST_REPORTER_ID: ""
+  CC_TEST_REPORTER_ID: "xyz"
 
 
 stages:
