@@ -55,6 +55,10 @@ test:
     - yarn install
     - gem install bundler --no-document
     - bundle install --jobs $(nproc) "${FLAGS[@]}"
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - ./cc-test-reporter before-build
+    - cd test/dummy
     - cp .env.gitlab .env
     - cp config/database.ci.yml config/database.yml
     - cp db/structure.sql db/structure.sql.copia 
@@ -67,6 +71,8 @@ test:
     - bin/rails assets:precompile
   script:
     - (. .env && CONFIG_HOSTS=www.example.com bin/rails test)
+    - (. .env && CONFIG_HOSTS=127.0.0.1 bin/rails test:system)
+    - ./cc-test-reporter after-build -t simplecov --exit-code $?
 
 
 
