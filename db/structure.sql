@@ -1305,7 +1305,7 @@ CREATE TABLE public.mungifmm (
 
 CREATE MATERIALIZED VIEW public.consgifmm AS
  SELECT detallefinanciero.id,
-    detallefinanciero.actividad_id,
+    cor1440_gen_actividad.id AS actividad_id,
     detallefinanciero.proyectofinanciero_id,
     detallefinanciero.actividadpf_id,
     detallefinanciero.unidadayuda_id,
@@ -1331,13 +1331,14 @@ CREATE MATERIALIZED VIEW public.consgifmm AS
           WHERE (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AS actividadmarcologico_nombre,
     depgifmm.nombre AS departamento_gifmm,
     mungifmm.nombre AS municipio_gifmm
-   FROM ((((((public.detallefinanciero
-     JOIN public.cor1440_gen_actividad ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
+   FROM ((((((public.cor1440_gen_actividad
+     LEFT JOIN public.detallefinanciero ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
      LEFT JOIN public.sip_ubicacionpre ON ((cor1440_gen_actividad.ubicacionpre_id = sip_ubicacionpre.id)))
      LEFT JOIN public.sip_departamento ON ((sip_ubicacionpre.departamento_id = sip_departamento.id)))
      LEFT JOIN public.depgifmm ON ((sip_departamento.id_deplocal = depgifmm.id)))
      LEFT JOIN public.sip_municipio ON ((sip_ubicacionpre.municipio_id = sip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((sip_departamento.id_deplocal * 1000) + sip_municipio.id_munlocal) = mungifmm.id)))
+  ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
 
 
@@ -16201,6 +16202,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220122105047'),
 ('20220213031520'),
 ('20220214121713'),
-('20220316025851');
+('20220316025851'),
+('20220319144633');
 
 
