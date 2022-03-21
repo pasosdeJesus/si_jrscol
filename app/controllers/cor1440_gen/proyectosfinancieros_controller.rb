@@ -2,7 +2,7 @@ require_dependency 'sivel2_sjr/concerns/controllers/proyectosfinancieros_control
 
 module Cor1440Gen
   class ProyectosfinancierosController < Heb412Gen::ModelosController
-    
+
     include Cor1440Gen::Concerns::Controllers::ProyectosfinancierosController
 
     before_action :set_proyectofinanciero,
