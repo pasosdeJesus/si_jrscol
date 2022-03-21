@@ -499,11 +499,21 @@ class Consgifmm < ActiveRecord::Base
     where('fecha <= ?', f)
   }
 
-#  scope :filtro_proyectofinanciero, lambda { |pf|
-#    where('actividad_id IN (SELECT actividad_id ' +
-#          'FROM  cor1440_gen_actividad_proyectofinanciero WHERE ' +
-#          'proyectofinanciero_id=?)', pf)
-#  }
+  scope :filtro_conveniofinanciado_nombre, lambda { |c|
+    where(proyectofinanciero_id: c)
+      #"proyectofinanciado_idunaccent(conveniofinanciado_nombre) ILIKE '%' || unaccent(?) || '%'", c)
+  }
+
+  scope :filtro_actividadmarcologico_nombre, lambda { |a|
+    where(actividadpf_id: a)
+      #"unaccent(actividadmarcologico_nombre) ILIKE '%' || unaccent(?) || '%'", a)
+  }
+
+  scope :filtro_departamento_gifmm, lambda { |d|
+    where(departamento_gifmm: d)
+  }
+
+
 
   CONSULTA='consgifmm'
 
