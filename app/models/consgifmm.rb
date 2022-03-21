@@ -158,7 +158,7 @@ class Consgifmm < ActiveRecord::Base
           actividadpf_id: self.actividadpf_id).where(
             'cor1440_gen_actividad.fecha < ? ' +
             'OR (cor1440_gen_actividad.fecha = ? '+
-            'AND detallefinanciero.id < ?)', self.fecha, self.fecha, self.id).
+            'AND detallefinanciero.id < ?)', self.fecha, self.fecha, self.detallefinanciero_id).
             where('sip_persona.id = ?', pid.to_i)
       c.count == 0
     }
@@ -537,8 +537,19 @@ class Consgifmm < ActiveRecord::Base
       detallefinanciero.frecuenciaentrega_id,
       detallefinanciero.numeromeses,
       detallefinanciero.numeroasistencia,
-      ARRAY(SELECT persona_id FROM detallefinanciero_persona WHERE
-        detallefinanciero_persona.detallefinanciero_id=detallefinanciero.id) AS persona_ids,
+      CASE WHEN detallefinanciero.id IS NULL THEN
+        ARRAY(SELECT DISTINCT persona_id FROM
+        (SELECT persona_id FROM cor1440_gen_asistencia 
+          WHERE cor1440_gen_asistencia.actividad_id=cor1440_gen_actividad.id
+        UNION
+        SELECT sivel2_gen_victima.id_persona FROM sivel2_sjr_actividad_casosjr
+          JOIN sivel2_gen_victima 
+          ON sivel2_gen_victima.id_caso=sivel2_sjr_actividad_casosjr.casosjr_id
+          WHERE sivel2_sjr_actividad_casosjr.actividad_id=cor1440_gen_actividad.id) AS subpersona_ids)
+      ELSE
+        ARRAY(SELECT persona_id FROM detallefinanciero_persona WHERE
+        detallefinanciero_persona.detallefinanciero_id=detallefinanciero.id)
+      END AS persona_ids,
       cor1440_gen_actividad.objetivo AS actividad_objetivo,
       cor1440_gen_actividad.fecha AS fecha,
       cor1440_gen_proyectofinanciero.nombre AS conveniofinanciado_nombre,
