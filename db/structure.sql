@@ -1182,6 +1182,16 @@ CREATE TABLE public.cor1440_gen_actividad (
 
 
 --
+-- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_actividadpf (
+    actividad_id bigint NOT NULL,
+    actividadpf_id bigint NOT NULL
+);
+
+
+--
 -- Name: cor1440_gen_actividadpf; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1196,6 +1206,21 @@ CREATE TABLE public.cor1440_gen_actividadpf (
     indicadorgifmm_id integer,
     formulario_id integer,
     heredade_id integer
+);
+
+
+--
+-- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_asistencia (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    rangoedadac_id integer,
+    externo boolean,
+    orgsocial_id integer,
+    perfilorgsocial_id integer
 );
 
 
@@ -1300,14 +1325,26 @@ CREATE TABLE public.mungifmm (
 
 
 --
+-- Name: sivel2_sjr_actividad_casosjr; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_actividad_casosjr (
+    id bigint NOT NULL,
+    actividad_id integer,
+    casosjr_id integer
+);
+
+
+--
 -- Name: consgifmm; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
 CREATE MATERIALIZED VIEW public.consgifmm AS
- SELECT detallefinanciero.id,
+ SELECT (((((cor1440_gen_actividad.id)::text || '-'::text) || (cor1440_gen_actividadpf.id)::text) || '-'::text) || COALESCE((detallefinanciero.id)::text, ''::text)) AS id,
+    detallefinanciero.id AS detallefinanciero_id,
     cor1440_gen_actividad.id AS actividad_id,
-    detallefinanciero.proyectofinanciero_id,
-    detallefinanciero.actividadpf_id,
+    cor1440_gen_actividadpf.proyectofinanciero_id,
+    cor1440_gen_actividadpf.id AS actividadpf_id,
     detallefinanciero.unidadayuda_id,
     detallefinanciero.cantidad,
     detallefinanciero.valorunitario,
@@ -1318,38 +1355,39 @@ CREATE MATERIALIZED VIEW public.consgifmm AS
     detallefinanciero.frecuenciaentrega_id,
     detallefinanciero.numeromeses,
     detallefinanciero.numeroasistencia,
-    ARRAY( SELECT detallefinanciero_persona.persona_id
-           FROM public.detallefinanciero_persona
-          WHERE (detallefinanciero_persona.detallefinanciero_id = detallefinanciero.id)) AS persona_ids,
+        CASE
+            WHEN (detallefinanciero.id IS NULL) THEN ARRAY( SELECT DISTINCT subpersona_ids.persona_id
+               FROM ( SELECT cor1440_gen_asistencia.persona_id
+                       FROM public.cor1440_gen_asistencia
+                      WHERE (cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id)
+                    UNION
+                     SELECT sivel2_gen_victima.id_persona
+                       FROM (public.sivel2_sjr_actividad_casosjr
+                         JOIN public.sivel2_gen_victima ON ((sivel2_gen_victima.id_caso = sivel2_sjr_actividad_casosjr.casosjr_id)))
+                      WHERE (sivel2_sjr_actividad_casosjr.actividad_id = cor1440_gen_actividad.id)) subpersona_ids)
+            ELSE ARRAY( SELECT detallefinanciero_persona.persona_id
+               FROM public.detallefinanciero_persona
+              WHERE (detallefinanciero_persona.detallefinanciero_id = detallefinanciero.id))
+        END AS persona_ids,
     cor1440_gen_actividad.objetivo AS actividad_objetivo,
     cor1440_gen_actividad.fecha,
-    ( SELECT cor1440_gen_proyectofinanciero.nombre
-           FROM public.cor1440_gen_proyectofinanciero
-          WHERE (detallefinanciero.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)) AS conveniofinanciado_nombre,
-    ( SELECT cor1440_gen_actividadpf.titulo
-           FROM public.cor1440_gen_actividadpf
-          WHERE (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AS actividadmarcologico_nombre,
+    cor1440_gen_proyectofinanciero.nombre AS conveniofinanciado_nombre,
+    cor1440_gen_actividadpf.titulo AS actividadmarcologico_nombre,
     depgifmm.nombre AS departamento_gifmm,
     mungifmm.nombre AS municipio_gifmm
-   FROM ((((((public.cor1440_gen_actividad
+   FROM (((((((((public.cor1440_gen_actividad
+     JOIN public.cor1440_gen_actividad_actividadpf ON ((cor1440_gen_actividad.id = cor1440_gen_actividad_actividadpf.actividad_id)))
+     JOIN public.cor1440_gen_actividadpf ON ((cor1440_gen_actividadpf.id = cor1440_gen_actividad_actividadpf.actividadpf_id)))
+     JOIN public.cor1440_gen_proyectofinanciero ON ((cor1440_gen_actividadpf.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)))
      LEFT JOIN public.detallefinanciero ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
      LEFT JOIN public.sip_ubicacionpre ON ((cor1440_gen_actividad.ubicacionpre_id = sip_ubicacionpre.id)))
      LEFT JOIN public.sip_departamento ON ((sip_ubicacionpre.departamento_id = sip_departamento.id)))
      LEFT JOIN public.depgifmm ON ((sip_departamento.id_deplocal = depgifmm.id)))
      LEFT JOIN public.sip_municipio ON ((sip_ubicacionpre.municipio_id = sip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((sip_departamento.id_deplocal * 1000) + sip_municipio.id_munlocal) = mungifmm.id)))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)))
   ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
-
-
---
--- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_actividadpf (
-    actividad_id bigint NOT NULL,
-    actividadpf_id bigint NOT NULL
-);
 
 
 --
@@ -1752,21 +1790,6 @@ CREATE SEQUENCE public.cor1440_gen_anexo_proyectofinanciero_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_anexo_proyectofinanciero_id_seq OWNED BY public.cor1440_gen_anexo_proyectofinanciero.id;
-
-
---
--- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_asistencia (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    persona_id integer NOT NULL,
-    rangoedadac_id integer,
-    externo boolean,
-    orgsocial_id integer,
-    perfilorgsocial_id integer
-);
 
 
 --
@@ -5993,17 +6016,6 @@ CREATE SEQUENCE public.sivel2_gen_combatiente_id_seq
 --
 
 ALTER SEQUENCE public.sivel2_gen_combatiente_id_seq OWNED BY public.sivel2_gen_combatiente.id;
-
-
---
--- Name: sivel2_sjr_actividad_casosjr; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_actividad_casosjr (
-    id bigint NOT NULL,
-    actividad_id integer,
-    casosjr_id integer
-);
 
 
 --

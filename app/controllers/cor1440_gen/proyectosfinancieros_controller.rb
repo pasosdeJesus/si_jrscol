@@ -13,6 +13,7 @@ module Cor1440Gen
       only: [:new, :create, :destroy, :edit, :update, :index, :show,
              :objetivospf]
 
+
     def atributos_index
       atributos_index_cor1440 - [:titulo]
     end
