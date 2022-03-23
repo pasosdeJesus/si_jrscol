@@ -1192,205 +1192,6 @@ CREATE TABLE public.cor1440_gen_actividad_actividadpf (
 
 
 --
--- Name: cor1440_gen_actividadpf; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividadpf (
-    id integer NOT NULL,
-    proyectofinanciero_id integer,
-    nombrecorto character varying(15),
-    titulo character varying(255),
-    descripcion character varying(5000),
-    resultadopf_id integer,
-    actividadtipo_id integer,
-    indicadorgifmm_id integer,
-    formulario_id integer,
-    heredade_id integer
-);
-
-
---
--- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_asistencia (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    persona_id integer NOT NULL,
-    rangoedadac_id integer,
-    externo boolean,
-    orgsocial_id integer,
-    perfilorgsocial_id integer
-);
-
-
---
--- Name: cor1440_gen_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_proyectofinanciero (
-    id integer NOT NULL,
-    nombre character varying(1000),
-    observaciones character varying(5000),
-    fechainicio date,
-    fechacierre date,
-    responsable_id integer,
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    compromisos character varying(5000),
-    monto numeric,
-    sectorapc_id integer,
-    titulo character varying(1000),
-    poromision boolean,
-    fechaformulacion date,
-    fechaaprobacion date,
-    fechaliquidacion date,
-    estado character varying(1) DEFAULT 'E'::character varying,
-    dificultad character varying(1) DEFAULT 'N'::character varying,
-    tipomoneda_id integer,
-    saldoaejecutarp numeric(20,2),
-    centrocosto character varying(500),
-    tasaej double precision,
-    montoej double precision,
-    aportepropioej double precision,
-    aporteotrosej double precision,
-    presupuestototalej double precision
-);
-
-
---
--- Name: depgifmm; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.depgifmm (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: detallefinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.detallefinanciero (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    proyectofinanciero_id integer,
-    actividadpf_id integer,
-    unidadayuda_id integer,
-    cantidad integer,
-    valorunitario integer,
-    valortotal integer,
-    mecanismodeentrega_id integer,
-    modalidadentrega_id integer,
-    tipotransferencia_id integer,
-    frecuenciaentrega_id integer,
-    numeromeses integer,
-    numeroasistencia integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: detallefinanciero_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.detallefinanciero_persona (
-    detallefinanciero_id integer NOT NULL,
-    persona_id integer
-);
-
-
---
--- Name: mungifmm; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.mungifmm (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: sivel2_sjr_actividad_casosjr; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_actividad_casosjr (
-    id bigint NOT NULL,
-    actividad_id integer,
-    casosjr_id integer
-);
-
-
---
--- Name: consgifmm; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.consgifmm AS
- SELECT (((((cor1440_gen_actividad.id)::text || '-'::text) || (cor1440_gen_actividadpf.id)::text) || '-'::text) || COALESCE((detallefinanciero.id)::text, ''::text)) AS id,
-    detallefinanciero.id AS detallefinanciero_id,
-    cor1440_gen_actividad.id AS actividad_id,
-    cor1440_gen_actividadpf.proyectofinanciero_id,
-    cor1440_gen_actividadpf.id AS actividadpf_id,
-    detallefinanciero.unidadayuda_id,
-    detallefinanciero.cantidad,
-    detallefinanciero.valorunitario,
-    detallefinanciero.valortotal,
-    detallefinanciero.mecanismodeentrega_id,
-    detallefinanciero.modalidadentrega_id,
-    detallefinanciero.tipotransferencia_id,
-    detallefinanciero.frecuenciaentrega_id,
-    detallefinanciero.numeromeses,
-    detallefinanciero.numeroasistencia,
-        CASE
-            WHEN (detallefinanciero.id IS NULL) THEN ARRAY( SELECT DISTINCT subpersona_ids.persona_id
-               FROM ( SELECT cor1440_gen_asistencia.persona_id
-                       FROM public.cor1440_gen_asistencia
-                      WHERE (cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id)
-                    UNION
-                     SELECT sivel2_gen_victima.id_persona
-                       FROM (public.sivel2_sjr_actividad_casosjr
-                         JOIN public.sivel2_gen_victima ON ((sivel2_gen_victima.id_caso = sivel2_sjr_actividad_casosjr.casosjr_id)))
-                      WHERE (sivel2_sjr_actividad_casosjr.actividad_id = cor1440_gen_actividad.id)) subpersona_ids)
-            ELSE ARRAY( SELECT detallefinanciero_persona.persona_id
-               FROM public.detallefinanciero_persona
-              WHERE (detallefinanciero_persona.detallefinanciero_id = detallefinanciero.id))
-        END AS persona_ids,
-    cor1440_gen_actividad.objetivo AS actividad_objetivo,
-    cor1440_gen_actividad.fecha,
-    cor1440_gen_proyectofinanciero.nombre AS conveniofinanciado_nombre,
-    cor1440_gen_actividadpf.titulo AS actividadmarcologico_nombre,
-    depgifmm.nombre AS departamento_gifmm,
-    mungifmm.nombre AS municipio_gifmm
-   FROM (((((((((public.cor1440_gen_actividad
-     JOIN public.cor1440_gen_actividad_actividadpf ON ((cor1440_gen_actividad.id = cor1440_gen_actividad_actividadpf.actividad_id)))
-     JOIN public.cor1440_gen_actividadpf ON ((cor1440_gen_actividadpf.id = cor1440_gen_actividad_actividadpf.actividadpf_id)))
-     JOIN public.cor1440_gen_proyectofinanciero ON ((cor1440_gen_actividadpf.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)))
-     LEFT JOIN public.detallefinanciero ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
-     LEFT JOIN public.sip_ubicacionpre ON ((cor1440_gen_actividad.ubicacionpre_id = sip_ubicacionpre.id)))
-     LEFT JOIN public.sip_departamento ON ((sip_ubicacionpre.departamento_id = sip_departamento.id)))
-     LEFT JOIN public.depgifmm ON ((sip_departamento.id_deplocal = depgifmm.id)))
-     LEFT JOIN public.sip_municipio ON ((sip_ubicacionpre.municipio_id = sip_municipio.id)))
-     LEFT JOIN public.mungifmm ON ((((sip_departamento.id_deplocal * 1000) + sip_municipio.id_munlocal) = mungifmm.id)))
-  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)))
-  ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
-  WITH NO DATA;
-
-
---
 -- Name: cor1440_gen_actividad_actividadtipo; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1659,6 +1460,24 @@ ALTER SEQUENCE public.cor1440_gen_actividadareas_actividad_id_seq OWNED BY publi
 
 
 --
+-- Name: cor1440_gen_actividadpf; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividadpf (
+    id integer NOT NULL,
+    proyectofinanciero_id integer,
+    nombrecorto character varying(15),
+    titulo character varying(255),
+    descripcion character varying(5000),
+    resultadopf_id integer,
+    actividadtipo_id integer,
+    indicadorgifmm_id integer,
+    formulario_id integer,
+    heredade_id integer
+);
+
+
+--
 -- Name: cor1440_gen_actividadpf_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1790,6 +1609,21 @@ CREATE SEQUENCE public.cor1440_gen_anexo_proyectofinanciero_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_anexo_proyectofinanciero_id_seq OWNED BY public.cor1440_gen_anexo_proyectofinanciero.id;
+
+
+--
+-- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_asistencia (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    rangoedadac_id integer,
+    externo boolean,
+    orgsocial_id integer,
+    perfilorgsocial_id integer
+);
 
 
 --
@@ -2512,6 +2346,42 @@ CREATE TABLE public.cor1440_gen_proyecto_proyectofinanciero (
 
 
 --
+-- Name: cor1440_gen_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_proyectofinanciero (
+    id integer NOT NULL,
+    nombre character varying(1000),
+    observaciones character varying(5000),
+    fechainicio date,
+    fechacierre date,
+    responsable_id integer,
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    compromisos character varying(5000),
+    monto numeric,
+    sectorapc_id integer,
+    titulo character varying(1000),
+    poromision boolean,
+    fechaformulacion date,
+    fechaaprobacion date,
+    fechaliquidacion date,
+    estado character varying(1) DEFAULT 'E'::character varying,
+    dificultad character varying(1) DEFAULT 'N'::character varying,
+    tipomoneda_id integer,
+    saldoaejecutarp numeric(20,2),
+    centrocosto character varying(500),
+    tasaej double precision,
+    montoej double precision,
+    aportepropioej double precision,
+    aporteotrosej double precision,
+    presupuestototalej double precision
+);
+
+
+--
 -- Name: cor1440_gen_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2992,6 +2862,21 @@ ALTER SEQUENCE public.declaracionruv_id_seq OWNED BY public.declaracionruv.id;
 
 
 --
+-- Name: depgifmm; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.depgifmm (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: depgifmm_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3048,6 +2933,30 @@ CREATE TABLE public.despacho (
 
 
 --
+-- Name: detallefinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.detallefinanciero (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    proyectofinanciero_id integer,
+    actividadpf_id integer,
+    unidadayuda_id integer,
+    cantidad integer,
+    valorunitario integer,
+    valortotal integer,
+    mecanismodeentrega_id integer,
+    modalidadentrega_id integer,
+    tipotransferencia_id integer,
+    frecuenciaentrega_id integer,
+    numeromeses integer,
+    numeroasistencia integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: detallefinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3064,6 +2973,16 @@ CREATE SEQUENCE public.detallefinanciero_id_seq
 --
 
 ALTER SEQUENCE public.detallefinanciero_id_seq OWNED BY public.detallefinanciero.id;
+
+
+--
+-- Name: detallefinanciero_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.detallefinanciero_persona (
+    detallefinanciero_id integer NOT NULL,
+    persona_id integer
+);
 
 
 --
@@ -4337,6 +4256,21 @@ CREATE SEQUENCE public.mr519_gen_valorcampo_id_seq
 --
 
 ALTER SEQUENCE public.mr519_gen_valorcampo_id_seq OWNED BY public.mr519_gen_valorcampo.id;
+
+
+--
+-- Name: mungifmm; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mungifmm (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -6019,6 +5953,17 @@ ALTER SEQUENCE public.sivel2_gen_combatiente_id_seq OWNED BY public.sivel2_gen_c
 
 
 --
+-- Name: sivel2_sjr_actividad_casosjr; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_actividad_casosjr (
+    id bigint NOT NULL,
+    actividad_id integer,
+    casosjr_id integer
+);
+
+
+--
 -- Name: sivel2_sjr_ultimaatencion_aux; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -6282,14 +6227,14 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     conscaso.expulsion,
     conscaso.llegada,
     conscaso.memo AS descripcion,
-    (EXTRACT(month FROM ultimaatencion.fecha))::integer AS ultimaatencion_mes,
+    (date_part('month'::text, ultimaatencion.fecha))::integer AS ultimaatencion_mes,
     conscaso.ultimaatencion_fecha,
     conscaso.contacto,
     contacto.nombres AS contacto_nombres,
     contacto.apellidos AS contacto_apellidos,
     (((COALESCE(tdocumento.sigla, ''::character varying))::text || ' '::text) || (contacto.numerodocumento)::text) AS contacto_identificacion,
     contacto.sexo AS contacto_sexo,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6305,7 +6250,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 1
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar1_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar1_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6321,7 +6266,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 1
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar1_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar1_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6337,7 +6282,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 2
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar2_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar2_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6353,7 +6298,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 2
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar2_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar2_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6369,7 +6314,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 3
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar3_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar3_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6385,7 +6330,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 3
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar3_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar3_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6401,7 +6346,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 4
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar4_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar4_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6417,7 +6362,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 4
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar4_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar4_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6433,7 +6378,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 5
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar5_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar5_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6449,15 +6394,15 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 5
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar5_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar5_edad_ultimaatencion,
     ( SELECT sivel2_gen_rangoedad.nombre
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_recepcion,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
     ( SELECT sivel2_gen_rangoedad.nombre
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_salida,
     COALESCE(etnia.nombre, ''::character varying) AS contacto_etnia,
     ultimaatencion.contacto_edad AS contacto_edad_ultimaatencion,
@@ -6581,7 +6526,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 102)
+          WHERE (sivel2_gen_conscaso.fecharec >= '2022-02-01'::date)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -16218,6 +16163,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220319144633'),
 ('20220323001338'),
 ('20220323001645'),
-('20220323004929');
+('20220323004929'),
+('20220323201321');
 
 
