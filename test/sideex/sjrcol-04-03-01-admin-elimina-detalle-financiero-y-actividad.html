@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>sjrcol-04-03-01-admin-elimina-detalle-financiero-y-actividad</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">actividad-busca-actividad-localStorage</td></tr>
+</thead>
+<tbody>
+<tr><td>clickAt</td><td>id=navbarDropdownActividades<datalist><option>id=navbarDropdownActividades</option><option>link=Actividades</option><option>css=#navbarDropdownActividades</option><option>//a[contains(text(),'Actividades')]</option><option>//a[@id='navbarDropdownActividades']</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/a</option><option>xpath=(//a[contains(@href, '#')])[3]</option><option>//li[3]/a</option></datalist></td><td>62,21</td>
+</tr>
+<tr><td>clickAt</td><td>css=ul.dropdown-menu.dropdown-menu-light.show &gt; li &gt; a.dropdown-item<datalist><option>css=ul.dropdown-menu.dropdown-menu-light.show &gt; li &gt; a.dropdown-item</option><option>xpath=(//a[contains(text(),'Listado')])[2]</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/ul/li/a</option><option>//a[contains(@href, '/actividades')]</option><option>//li[3]/ul/li/a</option></datalist></td><td>90,17</td>
+</tr>
+<tr><td>runScript</td><td>document.querySelector('#filtro_busid').value = localStorage.getItem('actividad_id')<datalist><option>document.querySelector('#filtro_busid').value = localStorage.getItem('pchr_id')</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(HUILA)').attr('selected', 'selected');</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(TOLIMA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salidam option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(COLOMBIA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_expulsion option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>localStorage.setItem('pchr_id', +document.querySelector('dd').innerText)</option><option>document.querySelector('#filtro_busid').value = localStorage.getItem('actividad_id')</option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td>20,23</td>
+</tr>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td[16]/input</option><option>//td[16]/input</option></datalist></td><td>37,23</td>
+</tr>
+<tr><td>clickAt</td><td>//td/a<datalist><option>link=1254</option><option>css=td &gt; a</option><option>//a[contains(text(),'1254')]</option><option>//div[@id='div_contenido']/form/table/tbody/tr/td/a</option><option>//a[contains(@href, '/actividades/1254')]</option><option>//td/a</option></datalist></td><td>12,11</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">actividad-elimina-detallefinanciero</td></tr>
+</thead>
+<tbody>
+<tr><td>clickAt</td><td>link=Editar<datalist><option>link=Editar</option><option>//a[contains(text(),'Editar')]</option><option>//a[contains(@href, '/actividades/206/edita')]</option><option>//div/div/a[2]</option></datalist></td><td>26,15</td>
+</tr>
+<tr><td>clickAt</td><td>css=div.div_actividad_proyectofinanciero<datalist><option>css=div.div_actividad_proyectofinanciero</option><option>//form[@id='edit_actividad_955']/div/div[4]/div/div</option><option>//div[4]/div/div</option></datalist></td><td>25,130</td>
+</tr>
+<tr><td>clickAt</td><td>//a[@data-eliminar-detallefinanciero]<datalist><option>xpath=(//a[contains(text(),'Eliminar')])[10]</option><option>//tbody[@id='filas_detallefinanciero']/tr/td[12]/a</option><option>xpath=(//a[contains(@href, '#')])[20]</option><option>//td[12]/a</option><option>//a[@data-eliminar-detallefinanciero]</option></datalist></td><td>-463,8</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='edit_actividad_955']/div/div[18]/input</option><option>//div[18]/input</option></datalist></td><td>83,21</td>
+</tr>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Actividad</td>
+</tr>
+<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Cor1440Gen::Actividad actualizada.</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">actividad-elimina-actividad2</td></tr>
+</thead>
+<tbody>
+<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/actividades/1048')])[2]</option><option>//div[4]/a</option></datalist></td><td>37,20</td>
+</tr>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Actividades</td>
+</tr>
+<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Cor1440Gen::Actividad eliminada.</td>
+</tr>
+</tbody></table>
+</body>
+</html>
