@@ -8,28 +8,24 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">caso-buscar-caso</td></tr>
+<tr><td rowspan="1" colspan="3">caso-busca-caso-localStorage</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownCasos<datalist><option>id=navbarDropdownCasos</option><option>link=Casos</option><option>css=#navbarDropdownCasos</option><option>//a[contains(text(),'Casos')]</option><option>//a[@id='navbarDropdownCasos']</option><option>//div[@id='navbarSupportedContent']/ul/li/a</option><option>//a[contains(@href, '#')]</option><option>//li/a</option></datalist></td><td>23,28</td>
+<tr><td>clickAt</td><td>id=navbarDropdownCasos<datalist><option>id=navbarDropdownCasos</option><option>link=Casos</option><option>css=#navbarDropdownCasos</option><option>//a[contains(text(),'Casos')]</option><option>//a[@id='navbarDropdownCasos']</option><option>//div[@id='navbarSupportedContent']/ul/li/a</option><option>//a[contains(@href, '#')]</option><option>//li/a</option></datalist></td><td>26,24</td>
 </tr>
-<tr><td>clickAt</td><td>link=Listado<datalist><option>link=Listado</option><option>css=a.dropdown-item</option><option>//a[contains(text(),'Listado')]</option><option>//div[@id='navbarSupportedContent']/ul/li/ul/li/a</option><option>//a[contains(@href, '/casos')]</option><option>//li/ul/li/a</option></datalist></td><td>24,10</td>
+<tr><td>clickAt</td><td>link=Listado<datalist><option>link=Listado</option><option>css=a.dropdown-item</option><option>//a[contains(text(),'Listado')]</option><option>//div[@id='navbarSupportedContent']/ul/li/ul/li/a</option><option>//a[contains(@href, '/casos')]</option><option>//li/ul/li/a</option></datalist></td><td>138,11</td>
 </tr>
-<tr><td>clickAt</td><td>id=boton_filtro_avanzado<datalist><option>id=boton_filtro_avanzado</option><option>link=Búsqueda Avanzada</option><option>css=#boton_filtro_avanzado</option><option>//a[contains(text(),'Búsqueda Avanzada')]</option><option>//a[@id='boton_filtro_avanzado']</option><option>//a[contains(@href, '#filtro_avanzado')]</option><option>//div[5]/a</option></datalist></td><td>28,20</td>
+<tr><td>clickAt</td><td>id=boton_filtro_avanzado<datalist><option>id=boton_filtro_avanzado</option><option>link=Búsqueda Avanzada</option><option>css=#boton_filtro_avanzado</option><option>//a[contains(text(),'Búsqueda Avanzada')]</option><option>//a[@id='boton_filtro_avanzado']</option><option>//div[@id='div_contenido']/form/div/div/div[5]/a</option><option>//a[contains(@href, '#filtro_avanzado')]</option><option>//div[5]/a</option></datalist></td><td>58,35</td>
 </tr>
-<tr><td>clickAt</td><td>id=filtro_nombressp<datalist><option>id=filtro_nombressp</option><option>name=filtro[nombressp]</option><option>css=#filtro_nombressp</option><option>//input[@id='filtro_nombressp']</option><option>//div[@id='filtro_avanzado']/div/div[2]/div[2]/div/input</option><option>//div[2]/div/input</option></datalist></td><td>28,22</td>
+<tr><td>runScript</td><td>document.querySelector('#filtro_codigo').value = localStorage.getItem('caso_id')<datalist><option>id=filtro_codigo</option><option>name=filtro[codigo]</option><option>css=#filtro_codigo</option><option>//input[@id='filtro_codigo']</option><option>//div[@id='filtro_avanzado']/div/div[15]/div[2]/div/input</option><option>//div[15]/div[2]/div/input</option><option>document.querySelector('#filtro_codigo').value = localStorage.getItem('caso_id')</option></datalist></td><td>69,23</td>
 </tr>
-<tr><td>type</td><td>id=filtro_nombressp<datalist><option>id=filtro_nombressp</option><option>name=filtro[nombressp]</option><option>css=#filtro_nombressp</option><option>//input[@id='filtro_nombressp']</option><option>//div[@id='filtro_avanzado']/div/div[2]/div[2]/div/input</option><option>//div[2]/div/input</option></datalist></td><td>mmm</td>
+<tr><td>clickAt</td><td>id=filtro_codigo<datalist><option>id=filtro_codigo</option><option>name=filtro[codigo]</option><option>css=#filtro_codigo</option><option>//input[@id='filtro_codigo']</option><option>//div[@id='filtro_avanzado']/div/div[15]/div[2]/div/input</option><option>//div[15]/div[2]/div/input</option></datalist></td><td>69,23</td>
 </tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[4]/input</option></datalist></td><td>10,23</td>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[@id='div_contenido']/form/div/div/div[4]/input</option><option>//div[4]/input</option></datalist></td><td>12,21</td>
 </tr>
-<tr><td>clickAt</td><td>//input[@name='commit']<datalist><option>link=23342</option><option>css=td &gt; a</option><option>//a[contains(text(),'23342')]</option><option>//div[@id='casos']/table/tbody/tr/td/a</option><option>//a[contains(@href, '/casos/23342')]</option><option>//td/a</option><option>//input[@name='commit']</option></datalist></td><td>21,6</td>
+<tr><td>assertText</td><td>css=div.offset-md-3.col-md-1<datalist><option>css=div.offset-md-3.col-md-1</option><option>//div[@id='div_contenido']/form/div/div/div[2]</option><option>//div/div/div[2]</option></datalist></td><td>Casos: 1</td>
 </tr>
-<tr><td>clickAt</td><td>css=td<datalist><option>css=td</option><option>//div[@id='casos']/table/tbody/tr/td</option><option>//td</option></datalist></td><td>36,30</td>
-</tr>
-<tr><td>clickAt</td><td>//div[@id='casos']/table/tbody/tr/td/a<datalist><option>link=23342</option><option>css=td &gt; a</option><option>//a[contains(text(),'23342')]</option><option>//div[@id='casos']/table/tbody/tr/td/a</option><option>//a[contains(@href, '/casos/23342')]</option><option>//td/a</option></datalist></td><td>20,11</td>
-</tr>
-<tr><td>runScript</td><td>localStorage.setItem('regjrscol_actividad_id', +$('dd')[0].innerText);<datalist><option>localStorage.setItem('regjrscol_usuario_id', +$('dd')[0].innerText);</option><option>localStorage.setItem('regjrscol_actividad_id', +$('dd')[0].innerText);</option></datalist></td><td></td>
+<tr><td>clickAt</td><td>css=td &gt; a<datalist><option>link=1747</option><option>css=td &gt; a</option><option>//a[contains(text(),'1747')]</option><option>//div[@id='casos']/table/tbody/tr/td/a</option><option>//a[contains(@href, '/casos/1747')]</option><option>//td/a</option></datalist></td><td>10,5</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -73,9 +69,7 @@
 </tr>
 <tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Cor1440Gen::Actividad eliminada.</td>
 </tr>
-<tr><td>runScript</td><td>localStorage.setItem('regjrscol030201_numact', +(document.querySelector("td a").innerText));<datalist><option>localStorage.setItem('regjrscol030201_numact', +(document.querySelector("td a").innerText));</option></datalist></td><td>Guarda número de actividad en regjrscol030201_numact</td>
-</tr>
-<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[16]/input</option></datalist></td><td>41,30</td>
+<tr><td>runScript</td><td>localStorage.setItem('regjrscol030201_numact', +(document.querySelector("td a").innerText));<datalist><option>localStorage.setItem('regjrscol030201_numact', +(document.querySelector("td a").innerText));</option></datalist></td><td></td>
 </tr>
 </tbody></table>
 </body>
