@@ -21,11 +21,14 @@ def elimina_generados
 end
 
 def cuenta_poblacion_0
+  puts "Encontrando actividades con cuenta de poblacion en 0"
   ap0 = Cor1440Gen::Actividad.all.select {|a| 
     a.presenta('poblacion') == 0 && 
      (a.asistencia.count > 0 || a.actividad_casosjr.count > 0)
   }
+  puts "Encontradas #{ap0.count} actividades"
   ap0.each do |a|
+    puts "Actividad sin asistencia: #{a.id}"
     personas = {}
     a.asistencia.each do |asist|
       personas[asist.persona.id] = 1
