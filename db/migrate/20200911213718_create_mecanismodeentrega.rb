@@ -1,5 +1,5 @@
 class CreateMecanismodeentrega < ActiveRecord::Migration[6.0]
-include Sip::MigracionHelper
+include Sip::SqlHelper
   def up
     create_table :mecanismodeentrega do |t|
       t.string :nombre, limit: 500, null: false

@@ -27,7 +27,7 @@
 </tr>
 <tr><td>clickAt</td><td>id=persona_numerodocumento<datalist><option>id=persona_numerodocumento</option><option>name=persona[numerodocumento]</option><option>css=#persona_numerodocumento</option><option>//input[@id='persona_numerodocumento']</option><option>//form[@id='new_persona']/div[14]/input</option><option>//div[14]/input</option></datalist></td><td>89,23</td>
 </tr>
-<tr><td>type</td><td>id=persona_numerodocumento<datalist><option>id=persona_numerodocumento</option><option>name=persona[numerodocumento]</option><option>css=#persona_numerodocumento</option><option>//input[@id='persona_numerodocumento']</option><option>//form[@id='new_persona']/div[14]/input</option><option>//div[14]/input</option></datalist></td><td>55662277</td>
+<tr><td>type</td><td>id=persona_numerodocumento<datalist><option>id=persona_numerodocumento</option><option>name=persona[numerodocumento]</option><option>css=#persona_numerodocumento</option><option>//input[@id='persona_numerodocumento']</option><option>//form[@id='new_persona']/div[14]/input</option><option>//div[14]/input</option></datalist></td><td>864235</td>
 </tr>
 <tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='new_persona']/div[41]/input</option><option>//div[41]/input</option></datalist></td><td>32,23</td>
 </tr>
@@ -123,9 +123,9 @@
 </tr>
 <tr><td>runScript</td><td>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')<datalist><option>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')</option></datalist></td><td></td>
 </tr>
-<tr><td>type</td><td>css=input.chosen-search-input<datalist><option>css=input.chosen-search-input</option><option>xpath=(//input[@type='text'])[3]</option><option>//div[@id='persona_id_pais_chosen']/div/div/input</option><option>//div/div/input</option></datalist></td><td>COLOMBIA</td>
+<tr><td>select</td><td>id=persona_id_pais<datalist><option>id=persona_id_pais</option><option>name=persona[id_pais]</option><option>css=#persona_id_pais</option><option>//select[@id='persona_id_pais']</option><option>//form[@id='edit_persona_3313']/div[8]/select</option><option>//div[8]/select</option></datalist></td><td>label=COLOMBIA</td>
 </tr>
-<tr><td>clickAt</td><td>css=em<datalist><option>css=em</option><option>//div[@id='persona_id_pais_chosen']/div/ul/li/em</option><option>//em</option></datalist></td><td>60,6</td>
+<tr><td>clickAt</td><td>id=persona_id_pais<datalist><option>id=persona_id_pais</option><option>name=persona[id_pais]</option><option>css=#persona_id_pais</option><option>//select[@id='persona_id_pais']</option><option>//form[@id='edit_persona_3313']/div[8]/select</option><option>//div[8]/select</option></datalist></td><td></td>
 </tr>
 <tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='new_persona']/div[41]/input</option><option>//div[41]/input</option></datalist></td><td>42,18</td>
 </tr>
@@ -211,7 +211,7 @@
 </tr>
 <tr><td>clickAt</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Persona</td>
 </tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success.alert-dismissible.fade.show<datalist><option>css=div.alert.alert-success.alert-dismissible.fade.show</option><option>//body/div/div</option></datalist></td><td>Sip :: Persona actualizada.</td>
+<tr><td>assertText</td><td>css=div.alert.alert-success.alert-dismissible.fade.show &gt; span<datalist><option>css=div.alert.alert-success.alert-dismissible.fade.show &gt; span</option><option>//div[@id='div_contenido']/div[2]/span</option><option>//div[2]/span</option></datalist></td><td>Sip::Persona actualizada.</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -236,6 +236,10 @@
 <tr><td>clickAt</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>1090,26</td>
 </tr>
 <tr><td>assertText</td><td>css=div.alert.alert-success.alert-dismissible.fade.show &gt; span<datalist><option>css=div.alert.alert-success.alert-dismissible.fade.show &gt; span</option><option>//div/span</option></datalist></td><td>Sip::Persona actualizada.</td>
+</tr>
+<tr><td>runScript</td><td>localStorage.setItem('beneficiario_id', +document.querySelector('dd').innerText)<datalist><option>localStorage.setItem('pchr_id', +document.querySelector('dd').innerText)</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(HUILA)').attr('selected', 'selected');</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(TOLIMA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salidam option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(COLOMBIA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_expulsion option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>localStorage.setItem('beneficiario_id', +document.querySelector('dd').innerText)</option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>css=dd<datalist><option>css=dd</option><option>//div[@id='div_contenido']/dl/dd</option><option>//dd</option></datalist></td><td>11,13</td>
 </tr>
 </tbody></table>
 </body>

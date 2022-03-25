@@ -1,6 +1,6 @@
 # SI-JRSCOL, Sistema de información del JRS Colombia
 
-[![Revisado por Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) Pruebas y seguridad:[![Estado Construcción](https://gitlab.com/pasosdeJesus/si_jrscol/badges/main/pipeline.svg)](https://gitlab.com/pasosdeJesus/si_jrscol/-/pipelines?page=1&scope=all&ref=main) [![Estado Construcción 2](https://travis-ci.com/pasosdeJesus/si_jrscol.svg?branch=main)](https://travis-ci.com/gitlab/pasosdeJesus/si_jrscol) [![Clima del Código](https://codeclimate.com/github/pasosdeJesus/sivel2_sjrcol/badges/gpa.svg)](https://codeclimate.com/github/pasosdeJesus/sivel2_sjrcol) [![Cobertura de Pruebas](https://gitlab.com/pasosdeJesus/si_jrscol/-/pipelines)
+[![Revisado por Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) Pruebas y seguridad:[![Estado Construcción](https://gitlab.com/pasosdeJesus/si_jrscol/badges/main/pipeline.svg)](https://gitlab.com/pasosdeJesus/si_jrscol/-/pipelines?page=1&scope=all&ref=main) [![Clima del Código](https://api.codeclimate.com/v1/badges/7dec7636a89457304fa3/maintainability)](https://codeclimate.com/github/pasosdeJesus/si_jrscol/maintainability) [![Cobertura de Pruebas](https://api.codeclimate.com/v1/badges/7dec7636a89457304fa3/test_coverage)](https://codeclimate.com/github/pasosdeJesus/si_jrscol/test_coverage)
 
 ### Documentación para usuarios finales
 

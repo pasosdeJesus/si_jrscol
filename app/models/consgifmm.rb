@@ -42,7 +42,7 @@ class Consgifmm < ActiveRecord::Base
 
   def detalleah_unidad
     if detallefinanciero.nil?
-      byebug
+      ''
     else
       detallefinanciero.unidadayuda ?
         detallefinanciero.unidadayuda.nombre :
@@ -51,57 +51,57 @@ class Consgifmm < ActiveRecord::Base
   end
 
   def detalleah_cantidad
-    r = detallefinanciero.unidadayuda &&
-      detallefinanciero.cantidad && detallefinanciero.persona_ids ?
+    r = (detallefinanciero && detallefinanciero.unidadayuda &&
+      detallefinanciero.cantidad && detallefinanciero.persona_ids) ?
       detallefinanciero.cantidad*detallefinanciero.persona_ids.count :
       ''
     r.to_s
   end
 
   def detalleah_modalidad
-    detallefinanciero.modalidadentrega ?
+    (detallefinanciero && detallefinanciero.modalidadentrega) ?
       detallefinanciero.modalidadentrega.nombre :
       ''
   end
 
   def detalleah_tipo_transferencia
-    detallefinanciero.modalidadentrega &&
+    (detallefinanciero && detallefinanciero.modalidadentrega &&
       detallefinanciero.modalidadentrega.nombre == 'Transferencia' &&
-      detallefinanciero.tipotransferencia ?
+      detallefinanciero.tipotransferencia) ?
       detallefinanciero.tipotransferencia.nombre :
       ''
   end
 
   def detalleah_mecanismo_entrega
-    detallefinanciero.modalidadentrega &&
+    (detallefinanciero && detallefinanciero.modalidadentrega &&
       detallefinanciero.modalidadentrega.nombre == 'Transferencia' &&
-      detallefinanciero.mecanismodeentrega ?
+      detallefinanciero.mecanismodeentrega) ?
       detallefinanciero.mecanismodeentrega.nombre :
       ''
   end
 
   def detalleah_frecuencia_entrega
-    detallefinanciero.modalidadentrega &&
+    (detallefinanciero && detallefinanciero.modalidadentrega &&
       detallefinanciero.modalidadentrega.nombre == 'Transferencia' &&
-      detallefinanciero.frecuenciaentrega ?
+      detallefinanciero.frecuenciaentrega) ?
       detallefinanciero.frecuenciaentrega.nombre :
       ''
   end
 
   def detalleah_monto_por_persona
-    detallefinanciero.modalidadentrega &&
+    (detallefinanciero && detallefinanciero.modalidadentrega &&
       detallefinanciero.modalidadentrega.nombre == 'Transferencia' &&
       r = detallefinanciero.valorunitario &&
-      detallefinanciero.cantidad && detallefinanciero.valorunitario ?
+      detallefinanciero.cantidad && detallefinanciero.valorunitario) ?
       detallefinanciero.cantidad*detallefinanciero.valorunitario :
       ''
     r.to_s
   end
 
   def detalleah_numero_meses_cobertura
-    detallefinanciero.modalidadentrega &&
+    (detallefinanciero && detallefinanciero.modalidadentrega &&
       detallefinanciero.modalidadentrega.nombre == 'Transferencia' &&
-      detallefinanciero.numeromeses ?
+      detallefinanciero.numeromeses) ?
       detallefinanciero.numeromeses :
       ''
   end
@@ -158,7 +158,7 @@ class Consgifmm < ActiveRecord::Base
           actividadpf_id: self.actividadpf_id).where(
             'cor1440_gen_actividad.fecha < ? ' +
             'OR (cor1440_gen_actividad.fecha = ? '+
-            'AND detallefinanciero.id < ?)', self.fecha, self.fecha, self.id).
+            'AND detallefinanciero.id < ?)', self.fecha, self.fecha, self.detallefinanciero_id).
             where('sip_persona.id = ?', pid.to_i)
       c.count == 0
     }
@@ -462,12 +462,7 @@ class Consgifmm < ActiveRecord::Base
       actividad.objetivo ? actividad.objetivo : ''
 
     when :sector_gifmm
-      idig = self.busca_indicador_gifmm
-      if idig != nil
-        ::Indicadorgifmm.find(idig).sectorgifmm.nombre
-      else
-        ''
-      end
+      sector_gifmm
 
     when :socio_implementador
       if socio_principal == 'SJR Col'
@@ -504,11 +499,21 @@ class Consgifmm < ActiveRecord::Base
     where('fecha <= ?', f)
   }
 
-#  scope :filtro_proyectofinanciero, lambda { |pf|
-#    where('actividad_id IN (SELECT actividad_id ' +
-#          'FROM  cor1440_gen_actividad_proyectofinanciero WHERE ' +
-#          'proyectofinanciero_id=?)', pf)
-#  }
+  scope :filtro_conveniofinanciado_nombre, lambda { |c|
+    where(proyectofinanciero_id: c)
+      #"proyectofinanciado_idunaccent(conveniofinanciado_nombre) ILIKE '%' || unaccent(?) || '%'", c)
+  }
+
+  scope :filtro_actividadmarcologico_nombre, lambda { |a|
+    where(actividadpf_id: a)
+      #"unaccent(actividadmarcologico_nombre) ILIKE '%' || unaccent(?) || '%'", a)
+  }
+
+  scope :filtro_departamento_gifmm, lambda { |d|
+    where(departamento_gifmm: d)
+  }
+
+
 
   CONSULTA='consgifmm'
 
@@ -516,66 +521,76 @@ class Consgifmm < ActiveRecord::Base
     critord = ""
     case campo.to_s
     when /^fechadesc/
-      critord = "conscaso.fecha desc"
+      critord = "fecha desc"
     when /^fecha/
-      critord = "conscaso.fecha asc"
-    when /^ubicaciondesc/
-      critord = "conscaso.ubicaciones desc"
-    when /^ubicacion/
-      critord = "conscaso.ubicaciones asc"
-    when /^codigodesc/
-      critord = "conscaso.caso_id desc"
-    when /^codigo/
-      critord = "conscaso.caso_id asc"
+      critord = "fecha asc"
     else
       raise(ArgumentError, "Ordenamiento invalido: #{ campo.inspect }")
     end
-    critord += ", conscaso.caso_id"
+    critord += ", actividad_id"
     return critord
   end
 
   def self.consulta
-    "SELECT detallefinanciero.id,
-            detallefinanciero.actividad_id,
-            detallefinanciero.proyectofinanciero_id,
-            detallefinanciero.actividadpf_id,
-            detallefinanciero.unidadayuda_id,
-            detallefinanciero.cantidad,
-            detallefinanciero.valorunitario,
-            detallefinanciero.valortotal,
-            detallefinanciero.mecanismodeentrega_id,
-            detallefinanciero.modalidadentrega_id,
-            detallefinanciero.tipotransferencia_id,
-            detallefinanciero.frecuenciaentrega_id,
-            detallefinanciero.numeromeses,
-            detallefinanciero.numeroasistencia,
-            ARRAY(SELECT persona_id FROM detallefinanciero_persona WHERE
-              detallefinanciero_persona.detallefinanciero_id=detallefinanciero.id) AS persona_ids,
-            cor1440_gen_actividad.objetivo AS actividad_objetivo,
-            cor1440_gen_actividad.fecha AS fecha,
-            (SELECT cor1440_gen_proyectofinanciero.nombre 
-              FROM cor1440_gen_proyectofinanciero WHERE
-              detallefinanciero.proyectofinanciero_id=cor1440_gen_proyectofinanciero.id) 
-              AS conveniofinanciado_nombre,
-            (SELECT cor1440_gen_actividadpf.titulo
-              FROM cor1440_gen_actividadpf WHERE
-              detallefinanciero.actividadpf_id=cor1440_gen_actividadpf.id) 
-              AS actividadmarcologico_nombre,
-            depgifmm.nombre AS departamento_gifmm,
-            mungifmm.nombre AS municipio_gifmm
-            FROM detallefinanciero JOIN cor1440_gen_actividad ON
-              detallefinanciero.actividad_id=cor1440_gen_actividad.id
-            LEFT JOIN sip_ubicacionpre ON
-              cor1440_gen_actividad.ubicacionpre_id=sip_ubicacionpre.id
-            LEFT JOIN sip_departamento ON
-              sip_ubicacionpre.departamento_id=sip_departamento.id
-            LEFT JOIN depgifmm ON
-              sip_departamento.id_deplocal=depgifmm.id
-            LEFT JOIN sip_municipio ON
-              sip_ubicacionpre.municipio_id=sip_municipio.id
-            LEFT JOIN mungifmm ON
-              (sip_departamento.id_deplocal*1000+sip_municipio.id_munlocal)=
-                mungifmm.id
+    "SELECT (cor1440_gen_actividad.id::text || '-' || cor1440_gen_actividadpf.id::text || '-' || COALESCE(detallefinanciero.id::text, '')) AS id,
+	    detallefinanciero.id as detallefinanciero_id,
+      cor1440_gen_actividad.id AS actividad_id,
+      cor1440_gen_actividadpf.proyectofinanciero_id,
+      cor1440_gen_actividadpf.id AS actividadpf_id,
+      detallefinanciero.unidadayuda_id,
+      detallefinanciero.cantidad,
+      detallefinanciero.valorunitario,
+      detallefinanciero.valortotal,
+      detallefinanciero.mecanismodeentrega_id,
+      detallefinanciero.modalidadentrega_id,
+      detallefinanciero.tipotransferencia_id,
+      detallefinanciero.frecuenciaentrega_id,
+      detallefinanciero.numeromeses,
+      detallefinanciero.numeroasistencia,
+      CASE WHEN detallefinanciero.id IS NULL THEN
+        ARRAY(SELECT DISTINCT persona_id FROM
+        (SELECT persona_id FROM cor1440_gen_asistencia 
+          WHERE cor1440_gen_asistencia.actividad_id=cor1440_gen_actividad.id
+        UNION
+        SELECT sivel2_gen_victima.id_persona FROM sivel2_sjr_actividad_casosjr
+          JOIN sivel2_gen_victima 
+          ON sivel2_gen_victima.id_caso=sivel2_sjr_actividad_casosjr.casosjr_id
+          WHERE sivel2_sjr_actividad_casosjr.actividad_id=cor1440_gen_actividad.id) AS subpersona_ids)
+      ELSE
+        ARRAY(SELECT persona_id FROM detallefinanciero_persona WHERE
+        detallefinanciero_persona.detallefinanciero_id=detallefinanciero.id)
+      END AS persona_ids,
+      cor1440_gen_actividad.objetivo AS actividad_objetivo,
+      cor1440_gen_actividad.fecha AS fecha,
+      cor1440_gen_proyectofinanciero.nombre AS conveniofinanciado_nombre,
+      cor1440_gen_actividadpf.titulo AS actividadmarcologico_nombre,
+      depgifmm.nombre AS departamento_gifmm,
+      mungifmm.nombre AS municipio_gifmm
+      FROM cor1440_gen_actividad
+      JOIN cor1440_gen_actividad_actividadpf ON
+        cor1440_gen_actividad.id=cor1440_gen_actividad_actividadpf.actividad_id
+      JOIN cor1440_gen_actividadpf ON
+        cor1440_gen_actividadpf.id=cor1440_gen_actividad_actividadpf.actividadpf_id
+      JOIN cor1440_gen_proyectofinanciero ON
+        cor1440_gen_actividadpf.proyectofinanciero_id=cor1440_gen_proyectofinanciero.id
+      LEFT JOIN detallefinanciero ON
+        detallefinanciero.actividad_id=cor1440_gen_actividad.id
+      LEFT JOIN sip_ubicacionpre ON
+        cor1440_gen_actividad.ubicacionpre_id=sip_ubicacionpre.id
+      LEFT JOIN sip_departamento ON
+        sip_ubicacionpre.departamento_id=sip_departamento.id
+      LEFT JOIN depgifmm ON
+        sip_departamento.id_deplocal=depgifmm.id
+      LEFT JOIN sip_municipio ON
+        sip_ubicacionpre.municipio_id=sip_municipio.id
+      LEFT JOIN mungifmm ON
+        (sip_departamento.id_deplocal*1000+sip_municipio.id_munlocal)=
+          mungifmm.id
+      WHERE cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL
+      AND (detallefinanciero.proyectofinanciero_id IS NULL OR
+        detallefinanciero.proyectofinanciero_id=cor1440_gen_actividadpf.proyectofinanciero_id)
+      AND (detallefinanciero.actividadpf_id IS NULL OR
+        detallefinanciero.actividadpf_id=cor1440_gen_actividadpf.id)
     "
   end
 
@@ -587,8 +602,11 @@ class Consgifmm < ActiveRecord::Base
       ActiveRecord::Base.connection.execute(
         "DROP MATERIALIZED VIEW IF EXISTS #{CONSULTA}")
     end
+    w = ''
     if ordenar_por
       w += ' ORDER BY ' + self.interpreta_ordenar_por(ordenar_por)
+    else
+      w += ' ORDER BY ' + self.interpreta_ordenar_por('fechadesc')
     end
     ActiveRecord::Base.connection.execute("CREATE 
               MATERIALIZED VIEW #{CONSULTA} AS

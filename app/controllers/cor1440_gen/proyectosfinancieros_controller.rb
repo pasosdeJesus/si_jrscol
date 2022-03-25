@@ -2,7 +2,7 @@ require_dependency 'sivel2_sjr/concerns/controllers/proyectosfinancieros_control
 
 module Cor1440Gen
   class ProyectosfinancierosController < Heb412Gen::ModelosController
-    
+
     include Cor1440Gen::Concerns::Controllers::ProyectosfinancierosController
 
     before_action :set_proyectofinanciero,
@@ -12,6 +12,7 @@ module Cor1440Gen
     load_and_authorize_resource  class: Cor1440Gen::Proyectofinanciero,
       only: [:new, :create, :destroy, :edit, :update, :index, :show,
              :objetivospf]
+
 
     def atributos_index
       atributos_index_cor1440 - [:titulo]

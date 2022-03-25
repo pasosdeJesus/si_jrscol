@@ -1,7 +1,14 @@
 <div class='control-group nested-fields vic'>
   <div class="controls">
-    <a class="itemvictima"><h3 class= "tituloenlace">Integrante</h3></a>
-    <div class="collapse multi-collapse divcolapse">
+    <% if defined?(numint) %>
+      <% numint = numint + 1 %>
+    <% else %>
+      <% numint = 1 %>
+    <% end %>
+    <a class='itemvictima' data-bs-toggle="collapse" href='#victima-<%=f.object.id%>'>
+      <h3 class= "tituloenlace">Integrante <%= numint %></h3>
+    </a>
+    <div class="collapse multi-collapse divcolapse" id='victima-<%=f.object.id%>'>
       <% if f.object.persona.nil?
            f.object.persona = Sip::Persona.new(nombres: '')
            f.object.victimasjr = Sivel2Sjr::Victimasjr.new
@@ -11,10 +18,10 @@
       <%= f.simple_fields_for :victimasjr do |fvictimasjr| %>
         <%= f.simple_fields_for :persona do |fp| %>
 
-          <a data-bs-toggle="collapse" href='#basicosfamiliar'>
+          <a data-bs-toggle="collapse" href='#basicosfamiliar-<%=fp.object.id%>'>
             <h5>DATOS BÁSICOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
           </a>
-          <div class="collapse multi-collapse campos_persona" id="basicosfamiliar">
+          <div class="collapse multi-collapse campos_persona" id="basicosfamiliar-<%=fp.object.id%>">
             <div class='campos-persona-con-victima-id'>
               <%= f.input :id, as: :hidden %> 
               <%= fvictimasjr.input :id_victima, as: :hidden %> 
@@ -25,19 +32,19 @@
           </div>
 
           <br>
-          <a data-bs-toggle="collapse" href='#anexosfamiliar'>
+          <a data-bs-toggle="collapse" href='#anexosfamiliar-<%=fp.object.id%>'>
             <h5>ANEXOS</h5>
           </a>
-          <div class="collapse multi-collapse" id="anexosfamiliar">
+          <div class="collapse multi-collapse" id="anexosfamiliar-<%=fp.object.id%>">
             <%= render partial: 'anexovictima', 
               locals: {f: f, consentimiento: false} %>
           </div>
 
           <br>
-          <a data-bs-toggle="collapse" href='#ampliosfamiliar'>
+          <a data-bs-toggle="collapse" href='#ampliosfamiliar-<%=fp.object.id%>'>
             <h5>DATOS AMPLIOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
           </a>
-          <div class="collapse multi-collapse" id="ampliosfamiliar">
+          <div class="collapse multi-collapse" id="ampliosfamiliar-<%=fp.object.id%>">
             <% [2,4,5,1].each do |i| %>
               <%= render partial: 'victima_campos' + i.to_s, 
                 locals: {
@@ -49,10 +56,10 @@
           </div>
 
           <br>
-          <a data-bs-toggle="collapse" href='#gestiondelmiembro'>
+          <a data-bs-toggle="collapse" href='#gestiondelmiembro-<%=fp.object.id%>'>
             <h5>GESTIÓN DEL MIEMBRO</h5>
           </a>
-          <div class="collapse multi-collapse" id="gestiondelmiembro">
+          <div class="collapse multi-collapse" id="gestiondelmiembro-<%=fp.object.id%>">
             <%= fvictimasjr.input :fechadesagregacion, 
               input_html: { 
                 "data-behaviour" => "datepicker",

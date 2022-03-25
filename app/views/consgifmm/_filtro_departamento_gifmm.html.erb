@@ -1,0 +1,16 @@
+<% col = ::Depgifmm.all.order(:nombre)%>
+<%= f.input :busdepartamento_gifmm,
+  collection: col,
+  include_blank: true,
+  label_method: :presenta_nombre,
+  value_method: :nombre,
+  label: false,
+  selected: Sip::ModeloHelper.poromision(params, :busdepartamento_gifmm),
+  input_html: {
+    class: 'chosen-select',
+    'data-enviarautomatico' => ''
+  },
+  wrapper_html: {
+    style: 'width: 20em'
+  }
+%>

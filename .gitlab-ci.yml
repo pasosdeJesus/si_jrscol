@@ -28,8 +28,7 @@ variables:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: "true"
   SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
   DAST_WEBSITE: http://colombia.sjrlac.info:5100
-  CC_TEST_REPORTER_ID: ""
-
+  CC_TEST_REPORTER_ID: "829b7f6c38bb12d45bf7b1384fba4a7b8444867b69027726fab095c48ad76b74"
 
 
 stages:
@@ -55,6 +54,9 @@ test:
     - yarn install
     - gem install bundler --no-document
     - bundle install --jobs $(nproc) "${FLAGS[@]}"
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - ./cc-test-reporter before-build
     - cp .env.gitlab .env
     - cp config/database.ci.yml config/database.yml
     - cp db/structure.sql db/structure.sql.copia 
@@ -63,12 +65,11 @@ test:
     #- psql -h postgres -U runner --set ON_ERROR_STOP=1 --no-psqlrc --file /builds/pasosdeJesus/si_jrscol/db/structure.sql sijrscol_pru
     - bin/rails db:drop db:create db:setup
     - bin/rails sip:indices
+    - bin/rails sip:stimulus_motores
+    - bin/rails assets:precompile
   script:
-    - CONFIG_HOSTS=www.example.com bin/rails test
+    - (. .env && CONFIG_HOSTS=www.example.com bin/rails test)
+    - ./cc-test-reporter after-build -t simplecov --exit-code $?
 
 
 
-sast:
-    stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml

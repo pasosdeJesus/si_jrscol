@@ -84,6 +84,11 @@ class ConsgifmmController < Heb412Gen::ModelosController
   #                 EDADES HOMBRES            EDADES MUJERES                    
   #                                 0-5 6-12  13-17 18-26 27-59 +60 0-5 6-12  13-17 18-26 27-59 +60         
   def index
+    if params.nil? || params[:filtro].nil?
+      fant = Date.today - 30
+      params[:filtro] = {}
+      params[:filtro][:busfechaini] = fant.to_s
+    end
     ::Consgifmm.refresca_consulta
     index_sip(::Consgifmm.all)
   end

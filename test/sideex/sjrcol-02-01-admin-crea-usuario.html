@@ -57,7 +57,7 @@
 </tr>
 <tr><td>clickAt</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>::Usuario creado.</td>
 </tr>
-<tr><td>runScript</td><td>localStorage.setItem('regjrscol_usuario_id', +$('dd')[0].innerText);<datalist><option>localStorage.setItem('regjrscol_usuario_id', +$('dd')[0].innerText);</option></datalist></td><td></td>
+<tr><td>runScript</td><td>localStorage.setItem('usuario_id', +document.querySelector('dd').innerText)<datalist><option>localStorage.setItem('regjrscol_usuario_id', +$('dd')[0].innerText);</option><option>localStorage.setItem('usuario_id', +document.querySelector('strong').innerText)</option><option>localStorage.setItem('usuario_id', +document.querySelector('dd').innerText)</option></datalist></td><td></td>
 </tr>
 </tbody></table>
 </body>

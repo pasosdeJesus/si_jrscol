@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'apexcharts'
+
 gem 'babel-transpiler'
 
 gem 'bcrypt'
@@ -10,7 +12,7 @@ gem 'cancancan'
 
 gem 'caxlsx'
 
-gem 'chartkick'
+#gem 'chartkick'
 
 gem 'cocoon',
   git: 'https://github.com/vtamara/cocoon.git', branch: 'new_id_with_ajax' # Formularios anidados (algunos con ajax)
