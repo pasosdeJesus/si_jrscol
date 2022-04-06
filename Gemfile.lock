@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: f6d346c813e0a02e3ddea787986bbca155813a00
+  revision: 0aba7462bf98df540290856ae3aa3cf35abf5af5
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -79,16 +79,6 @@ GIT
       twitter_cldr
 
 GIT
-  remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: e11f6669ed54ee760ea9a5bc9fb12b4de2ff7090
-  branch: main
-  specs:
-    sivel2_gen (2.1a1)
-      color
-      devise
-      rails
-
-GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
   revision: adad572306ce2363884a1c72608054c13d944f11
   branch: main
@@ -103,6 +93,14 @@ GIT
   branch: new_id_with_ajax
   specs:
     cocoon (1.2.11)
+
+PATH
+  remote: ../sivel2_gen
+  specs:
+    sivel2_gen (2.1a1)
+      color
+      devise
+      rails
 
 GEM
   remote: https://rubygems.org/
