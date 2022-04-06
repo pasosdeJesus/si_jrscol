@@ -347,6 +347,16 @@ module Cor1440Gen
       end
     end # def nueva_asistencia
 
+
+    def otros_impedimentos_para_borrar_persona_ex_asistente(a)
+      # Si la persona está en un caso no se puede eliminar
+      if Sivel2Gen::Victima.where(id_persona: a.persona_id).count > 0
+        return true
+      end
+      return false
+    end
+
+
     def lista_params
       lista_params_sivel2_sjr + [:ubicacionpre_id, :covid] + [ 
         :detallefinanciero_attributes => [
