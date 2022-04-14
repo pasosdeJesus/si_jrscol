@@ -20,11 +20,16 @@ module PlantillaHelper
     end 
   end
 
-  # Elimina las n columnas entre col y col+n-1
+  # Elimina n columnas entre col y col+n-1
   # Mueve las que están en col+n y col_final a col y col_final-n
   def self.elimina_n_columnas(n, col, col_final, id_plantilla)
+    #puts "OJO elimina_n_columnas(n=#{n}, col=#{col}, col_final=#{col_final}, id_plantilla=#{id_plantilla}"
     i = col
     imasn = sigcolp(col, n)
+    if colmayor(imasn, col_final)
+      # No hay que mover finales 
+      return
+    end
     loop do
       ActiveRecord::Base.connection.execute(
         "UPDATE public.heb412_gen_campoplantillahcm "\
@@ -109,4 +114,10 @@ module PlantillaHelper
     end
     return cr
   end
+
+  # Decide si col1 es mayor que col2
+  def self.colmayor(col1, col2)
+    col1.length > col2.length || (col1.length == col2.length && col1 > col2)
+  end
+
 end
