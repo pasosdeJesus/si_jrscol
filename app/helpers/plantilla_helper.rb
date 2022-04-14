@@ -1,6 +1,44 @@
 module PlantillaHelper
 
-  # Mover columnas libros de calculo plantillashcm
+  # Inserta n columnas antes de la columna col
+  # moviendo las que estaban entre la columna col y col_final
+  # a col+n hasta col_final+n
+  def self.inserta_n_columnas(n, col, col_final, id_plantilla)
+    i = col_final
+    imasn = sigcolp(col_final, n)
+    loop do
+      ActiveRecord::Base.connection.execute(
+        "UPDATE public.heb412_gen_campoplantillahcm "\
+        "SET columna='#{imasn}' "\
+        "WHERE columna='#{i}' AND plantillahcm_id= #{id_plantilla}"
+      )
+      if i == col 
+        break
+      end
+      i = prevcol(i)
+      imasn = prevcol(imasn)
+    end 
+  end
+
+  # Elimina las n columnas entre col y col+n-1
+  # Mueve las que están en col+n y col_final a col y col_final-n
+  def self.elimina_n_columnas(n, col, col_final, id_plantilla)
+    i = col
+    imasn = sigcolp(col, n)
+    loop do
+      ActiveRecord::Base.connection.execute(
+        "UPDATE public.heb412_gen_campoplantillahcm "\
+        "SET columna='#{i}' "\
+        "WHERE columna='#{imasn}' AND plantillahcm_id= #{id_plantilla}"
+      )
+      if imasn == col_final
+        break
+      end
+      i = sigcol(i)
+      imasn = sigcol(imasn)
+    end 
+  end
+
 
   ## Para correr un bloque de columnas a la derecha se requeire
   ## la columna mayor y la columna menor límites del bloque
@@ -45,7 +83,7 @@ module PlantillaHelper
     return cr
   end
 
-  # Columna previa (válida sólo hasta 2 bits de tamaño)
+  # Columna previa (válida sólo hasta 2 bytes de tamaño)
   def self.prevcol(col)
       if col[1] && col[1] == 'A'
         c0 = col[0] == 'A' ? '' : (col[0].ord - 1)
