@@ -6231,14 +6231,14 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     conscaso.expulsion,
     conscaso.llegada,
     conscaso.memo AS descripcion,
-    (date_part('month'::text, ultimaatencion.fecha))::integer AS ultimaatencion_mes,
+    (EXTRACT(month FROM ultimaatencion.fecha))::integer AS ultimaatencion_mes,
     conscaso.ultimaatencion_fecha,
     conscaso.contacto,
     contacto.nombres AS contacto_nombres,
     contacto.apellidos AS contacto_apellidos,
     (((COALESCE(tdocumento.sigla, ''::character varying))::text || ' '::text) || (contacto.numerodocumento)::text) AS contacto_identificacion,
     contacto.sexo AS contacto_sexo,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6254,7 +6254,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 1
-         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar1_edad_fecha_recepcion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar1_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6270,7 +6270,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 1
-         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar1_edad_ultimaatencion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar1_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6286,7 +6286,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 2
-         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar2_edad_fecha_recepcion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar2_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6302,7 +6302,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 2
-         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar2_edad_ultimaatencion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar2_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6318,7 +6318,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 3
-         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar3_edad_fecha_recepcion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar3_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6334,7 +6334,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 3
-         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar3_edad_ultimaatencion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar3_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6350,7 +6350,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 4
-         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar4_edad_fecha_recepcion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar4_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6366,7 +6366,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 4
-         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar4_edad_ultimaatencion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar4_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6382,7 +6382,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 5
-         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar5_edad_fecha_recepcion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar5_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6398,15 +6398,15 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 5
-         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar5_edad_ultimaatencion,
+         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar5_edad_ultimaatencion,
     ( SELECT sivel2_gen_rangoedad.nombre
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_recepcion,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
     ( SELECT sivel2_gen_rangoedad.nombre
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_salida,
     COALESCE(etnia.nombre, ''::character varying) AS contacto_etnia,
     ultimaatencion.contacto_edad AS contacto_edad_ultimaatencion,
@@ -6530,7 +6530,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2022-02-01'::date)
+          WHERE (sivel2_gen_conscaso.caso_id = 137)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
