@@ -33,7 +33,7 @@ module Sip
     basicas_sip = Sip::Ability::BASICAS_PROPIAS
 
     ## PROBANDO BASICAS GEOGRÁFICAS
-    PAIS_PARAMS = {id: 1, nombre: "ejemplo", nombreosm: "eje", fechacreacion: "2021-12-09"}
+    PAIS_PARAMS = {id: 1, nombre: "ejemplo", nombreiso_espanol: "eje", fechacreacion: "2021-12-09"}
     MODELO_PARAMS = {nombre: "ejemplop",observaciones: "obs", fechacreacion: "2021-12-09"}
     MODELO_PARAMS_IDSTR = { id: "a", nombre: "ejemplop", observaciones: "obs", fechacreacion: "2021-12-09"}
 
@@ -47,7 +47,7 @@ module Sip
       else
         case basica
         when "pais"
-          registro = modelo.create!(MODELO_PARAMS.merge({id: 1000, nombreosm: "iso"}))
+          registro = modelo.create!(MODELO_PARAMS.merge({id: 1000, nombreiso_espanol: "iso"}))
         when "departamento"
           registro = modelo.create!(MODELO_PARAMS.merge({id_pais: 170}))
         when "municipio"
