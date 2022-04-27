@@ -23,6 +23,10 @@ Rails.application.routes.draw do
     end
     resources :usuarios, path_names: { new: 'nuevo', edit: 'edita' } 
 
+    get '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',
+      as: :beneficiarios_repetidos
+    post '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',
+      as: :envia_beneficiarios_repetidas
 
     post "/actos/agregar" => 'sivel2_sjr/actos#agregar',
       as: :actos_agregar

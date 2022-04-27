@@ -26,6 +26,76 @@ module Sip
       return a
     end
 
+
+    def filtro_benef_fechas(benef, cfecha = 'sip_persona.created_at')
+      pfid = ''
+      if (params[:reporterepetido] && params[:reporterepetido][:fechaini] && 
+          params[:reporterepetido][:fechaini] != '')
+        pfi = params[:reporterepetido][:fechaini]
+        pfid = Sip::FormatoFechaHelper.fecha_local_estandar pfi
+      else
+        # Comenzar en semestre anterior
+        pfid = Sip::FormatoFechaHelper.inicio_semestre(Date.today).to_s
+      end
+      benef = benef.where("#{cfecha} >= ?", pfid)
+      if(params[:reporterepetido] && params[:reporterepetido][:fechafin] && 
+          params[:reporterepetido][:fechafin] != '')
+        pff = params[:reporterepetido][:fechafin]
+        pffd = Sip::FormatoFechaHelper.fecha_local_estandar pff
+        if pffd
+          benef = benef.where("#{cfecha} <= ?", pffd)
+        end
+      end
+      return benef
+    end
+
+    def reporterepetidos
+      @validaciones = []
+      benef = Sip::Persona.all
+      puts "OJO 1 benef.count=#{benef.count}"
+      benef = filtro_benef_fechas(benef)
+      res= "SELECT sub2.sigla, sub2.numerodocumento, sub2.rep, "\
+        "     sub2.identificaciones[1:5] as identificaciones5, "\
+        "     ARRAY(SELECT DISTINCT ac.id"\
+        "     FROM cor1440_gen_asistencia AS asi"\
+        "     JOIN cor1440_gen_actividad AS ac ON ac.id=asi.actividad_id "\
+        "     WHERE asi.persona_id = ANY(sub2.identificaciones[2:]) "\
+        "     ) AS actividades_ben,\n"\
+        "     ARRAY(SELECT DISTINCT usuario.nusuario "\
+        "     FROM cor1440_gen_asistencia AS asi"\
+        "     JOIN sip_persona AS p2 ON p2.id=asi.persona_id "\
+        "       AND p2.id = ANY(sub2.identificaciones[2:]) "\
+        "     JOIN cor1440_gen_actividad AS ac ON ac.id=asi.actividad_id "\
+        "     JOIN sip_bitacora AS bit ON bit.modelo='Cor1440Gen::Actividad' "\
+        "       AND bit.modelo_id=ac.id "\
+        "       AND DATE_PART('minute', bit.fecha-p2.created_at)<5 "\
+        "     JOIN usuario ON usuario.id=bit.usuario_id "\
+        "     ) AS posibles_rep\n"\
+        "FROM ("\
+        "     SELECT sub.sigla, sub.tdocumento_id, sub.numerodocumento, sub.rep, \n"\
+        "    ARRAY(SELECT id FROM (" + benef.to_sql + ") AS p2\n"\
+        "        WHERE (p2.tdocumento_id=sub.tdocumento_id OR (sub.tdocumento_id IS NULL AND p2.tdocumento_id IS NULL))\n"\
+        "        AND (p2.numerodocumento=sub.numerodocumento OR (sub.numerodocumento IS NULL AND p2.numerodocumento IS NULL))\n"\
+        "        ORDER BY id) AS identificaciones\n"\
+        "  FROM (SELECT t.sigla, p.tdocumento_id, numerodocumento,\n"\
+        "      COUNT(p.id) AS rep "\
+        "      FROM (" + benef.to_sql + ") AS p\n"\
+        "      LEFT JOIN sip_tdocumento as t ON t.id=tdocumento_id\n"\
+        "      GROUP BY 1,2,3) AS sub\n"\
+        "  WHERE rep>1\n"\
+        "  ORDER BY rep DESC) AS sub2";
+      arr = ActiveRecord::Base.connection.select_all(res)
+      @validaciones << { 
+        titulo: 'Identificaciones repetidas de beneficiarios actualizados en el rango de fechas',
+        encabezado: ['Tipo de documento', 'Núm. documento', 'Num. repetidos', 
+                     'Primeras 5 ids de personas', 'Asistentes en actividades', 
+                     'Editores de actividades cercanos a creación'],
+        cuerpo: arr 
+      }
+    end
+
+
+
     def lista_params
       atributos_form + [
         :id_pais,
