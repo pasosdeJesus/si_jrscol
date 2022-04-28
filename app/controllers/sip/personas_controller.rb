@@ -87,11 +87,12 @@ module Sip
       arr = ActiveRecord::Base.connection.select_all(res)
       @validaciones << { 
         titulo: 'Identificaciones repetidas de beneficiarios actualizados en el rango de fechas',
-        encabezado: ['Tipo de documento', 'Núm. documento', 'Num. repetidos', 
-                     'Primeras 5 ids de personas', 'Asistentes en actividades', 
-                     'Editores de actividades cercanos a creación'],
+        encabezado: ['Tipo Doc.', 'Núm. Doc.', 'Num. personas', 
+                     'Ids 5 primeras personas', 'Ids Actividades', 
+                     'Editores Act. cerca a ingreso personas'],
         cuerpo: arr 
       }
+      render :reporterepetidos, layout: 'application'
     end
 
 
