@@ -68,7 +68,7 @@ module Sip
         "     JOIN cor1440_gen_actividad AS ac ON ac.id=asi.actividad_id "\
         "     JOIN sip_bitacora AS bit ON bit.modelo='Cor1440Gen::Actividad' "\
         "       AND bit.modelo_id=ac.id "\
-        "       AND DATE_PART('minute', bit.fecha-p2.created_at)<5 "\
+        "       AND DATE_PART('minute', bit.fecha-p2.created_at)<10 "\
         "     JOIN usuario ON usuario.id=bit.usuario_id "\
         "     ) AS posibles_rep\n"\
         "FROM ("\
