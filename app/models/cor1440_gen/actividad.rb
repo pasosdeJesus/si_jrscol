@@ -175,7 +175,7 @@ module Cor1440Gen
     end
 
     def poblacion_colombianos_retornados_ids
-      idcol = Sip::Pais.where(nombre: 'COLOMBIA').take.id
+      idcol = 170 # Colombia
       idp = casosjr.select {|c|
         c.caso.migracion.count > 0
       }.map {|c|

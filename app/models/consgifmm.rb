@@ -182,7 +182,7 @@ class Consgifmm < ActiveRecord::Base
 
   def beneficiarios_nuevos_colombianos_retornados_ids
     finmes = actividad.fecha.end_of_month
-    idcol = Sip::Pais.where(nombre: 'COLOMBIA').take.id
+    idcol = 170 # Colombia
     return beneficiarios_nuevos_condicion_ids {|p|
       (p.nacionalde == idcol || p.id_pais == idcol) &&
         p.victima.any? { |v|

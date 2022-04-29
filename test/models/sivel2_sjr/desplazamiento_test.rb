@@ -31,14 +31,14 @@ module Sivel2Sjr
     
     PRUEBA_UBICACIONPRE1= {
       pais_id: 170,
-      nombre: 'COLOMBIA',
+      nombre: 'Colombia',
       created_at: "2021-04-14",
       updated_at: "2021-04-14"
     }
     
     PRUEBA_UBICACIONPRE2= {
       pais_id: 862,
-      nombre: 'VENEZUELA',
+      nombre: 'Venezuela',
       created_at: "2021-04-14",
       updated_at: "2021-04-14"
     }

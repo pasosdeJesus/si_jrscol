@@ -32,7 +32,7 @@ module Sivel2Sjr
     
     PRUEBA_UBICACIONPRE1= {
       pais_id: 170,
-      nombre: 'COLOMBIA',
+      nombre: 'Colombia',
       latitud: 1.1,
       longitud: 1.2,
       lugar: 'lugar1',
@@ -47,7 +47,7 @@ module Sivel2Sjr
       departamento_id: 1,
       municipio_id: 25,
       clase_id: 217,
-      nombre: 'VENEZUELA / DISTRITO CAPITAL / BOLIVARIANO LIBERTADOR / CARACAS',
+      nombre: 'Venezuela / Distrito Capital / Bolivariano Libertador / Caracas',
       latitud: 2.1,
       longitud: 2.2,
       lugar: 'lugar2',
