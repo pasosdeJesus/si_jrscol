@@ -18,6 +18,28 @@
                   <%= link_to(
                     campo[1].to_i, 
                     sivel2_gen.edit_caso_path(campo[1].to_i)) if campo[1] %>
+                <% elsif i == 3 && tabla[:encabezado][i] == 'Ids 5 primeras personas' %>
+                  <% pids = campo[1][1..-2].split(',') %>
+                  <% sep = ''.html_safe %>
+                  <% pids.each do |pid| %>
+                    <%= sep + link_to(
+                      pid,
+                      sip.persona_path(pid.to_i),
+                      target: '_blank')
+                    %>
+                    <% sep = ', '.html_safe %>
+                  <% end %>
+                <% elsif i == 4 && tabla[:encabezado][i] == 'Ids Actividades' %>
+                  <% aids = campo[1][1..-2].split(',') %>
+                  <% sep = ''.html_safe %>
+                  <% aids.each do |aid| %>
+                    <%= sep + link_to(
+                      aid,
+                      cor1440_gen.actividad_path(aid.to_i),
+                      target: '_blank')
+                    %>
+                    <% sep = ', '.html_safe %>
+                  <% end %>
                 <% else %>
                   <%= CGI.escapeHTML(campo[1].to_s) if campo[1] %>
                 <% end %>
