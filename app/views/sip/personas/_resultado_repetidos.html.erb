@@ -40,6 +40,9 @@
                     %>
                     <% sep = ', '.html_safe %>
                   <% end %>
+                <% elsif i == 5 && tabla[:encabezado][i] == 'Editores Act. cerca a ingreso personas' %>
+                  <% nuids = campo[1][1..-2].split(',').join(', ') %>
+                  <%= CGI.escapeHTML(nuids) %>
                 <% else %>
                   <%= CGI.escapeHTML(campo[1].to_s) if campo[1] %>
                 <% end %>
