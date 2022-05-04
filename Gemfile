@@ -117,8 +117,8 @@ gem 'sivel2_sjr',
   git: 'https://github.com/pasosdeJesus/sivel2_sjr.git', branch: :main
   #path: '../sivel2_sjr'
 
-group :development, :test do
   gem 'debug' # Depurar
+group :development, :test do
 
   gem 'dotenv-rails'
 end

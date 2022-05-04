@@ -74,6 +74,23 @@ def cuenta_poblacion_0
   end
 end
 
+def elimina_personas_en_blanco
+  pore = Sip::Persona.where(
+    "(tdocumento_id is null) AND
+      (numerodocumento is null) AND 
+      id NOT IN (SELECT persona_id FROM cor1440_gen_asistencia) AND 
+      id NOT IN (SELECT persona_id FROM cor1440_gen_caracterizacionpersona) AND 
+      id NOT IN (SELECT persona_id FROM sip_orgsocial_persona) AND 
+      id NOT IN (SELECT id_persona FROM sivel2_gen_victima) AND 
+      (trim(nombres) IN ('','N','NN')) AND 
+      (trim(apellidos) in ('','N','NN')) AND 
+      id NOT IN (SELECT  persona1 FROM sip_persona_trelacion) AND 
+      id NOT IN (SELECT persona2 FROM sip_persona_trelacion) AND 
+      id NOT IN (SELECT persona_id FROM detallefinanciero_persona) AND 
+      id NOT IN (SELECT persona_id FROM cor1440_gen_beneficiariopf)"
+  )
+  pore.destroy_all
+end
 
 def run
   if !ENV['SMTP_MAQ']
@@ -83,6 +100,7 @@ def run
   alertas
   elimina_generados
   cuenta_poblacion_0
+  elimina_personas_en_blanco
 end
 
 run
