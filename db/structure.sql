@@ -5042,7 +5042,8 @@ CREATE TABLE public.sip_orgsocial (
     municipio_id integer,
     email character varying(128),
     nit character varying(128),
-    fechadeshabilitacion date
+    fechadeshabilitacion date,
+    tipoorg_id integer DEFAULT 2 NOT NULL
 );
 
 
@@ -5399,6 +5400,40 @@ CREATE SEQUENCE public.sip_tipoanexo_id_seq
 --
 
 ALTER SEQUENCE public.sip_tipoanexo_id_seq OWNED BY public.sip_tipoanexo.id;
+
+
+--
+-- Name: sip_tipoorg; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_tipoorg (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_tipoorg_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_tipoorg_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_tipoorg_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_tipoorg_id_seq OWNED BY public.sip_tipoorg.id;
 
 
 --
@@ -6569,7 +6604,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 114)
+          WHERE (sivel2_gen_conscaso.caso_id = 123)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -9165,6 +9200,13 @@ ALTER TABLE ONLY public.sip_tipoanexo ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: sip_tipoorg id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_tipoorg ALTER COLUMN id SET DEFAULT nextval('public.sip_tipoorg_id_seq'::regclass);
+
+
+--
 -- Name: sip_tipoorgsocial id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -10767,6 +10809,14 @@ ALTER TABLE ONLY public.sip_tema
 
 ALTER TABLE ONLY public.sip_tipoanexo
     ADD CONSTRAINT sip_tipoanexo_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_tipoorg sip_tipoorg_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_tipoorg
+    ADD CONSTRAINT sip_tipoorg_pkey PRIMARY KEY (id);
 
 
 --
@@ -16200,6 +16250,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210921194018'),
 ('20210924022913'),
 ('20211008022130'),
+('20211010164634'),
 ('20211011214752'),
 ('20211011233005'),
 ('20211019121200'),
@@ -16234,6 +16285,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220417221010'),
 ('20220420143020'),
 ('20220420154535'),
-('20220422190546');
+('20220422190546'),
+('20220428145059');
 
 
