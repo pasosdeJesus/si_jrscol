@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: eebf1e64f7c582e8f663b259c6a741329e5b48ad
+  revision: 07b7b4d80b675adc86e8aa32e36a12359a3fab71
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -187,7 +187,7 @@ GEM
     builder (3.2.4)
     camertron-eprun (1.1.1)
     cancancan (3.3.0)
-    capybara (3.36.0)
+    capybara (3.37.0)
       addressable
       matrix
       mini_mime (>= 0.1.3)
@@ -290,7 +290,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.4)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     odf-report (0.7.3)
@@ -400,7 +400,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.0.4)
       railties (>= 6.0.0)
-    strscan (3.0.1)
+    strscan (3.0.2)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     thor (1.2.1)
