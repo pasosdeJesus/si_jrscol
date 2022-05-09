@@ -277,9 +277,12 @@ es:
       "sivel2_sjr/desplazamiento":
         categoria: Antecedentes no individuales
       "sivel2_sjr/migracion":
+        fechaPep: Fecha del PPT
         migracontactopre: Contacto previo con Colombia
-        statusmigratorio: Estatus migratorio
+        numppt: Número del PPT
         perfilmigracion: Perfil de migración
+        statusmigratorio: Estatus migratorio
+        tipopep: Tipo de PPT
       "sivel2_sjr/motivosjr": 
         Motivosjr: Servicio y Asesoria del JRS
         Motivossjr: Servicios y Asesorias del JRS

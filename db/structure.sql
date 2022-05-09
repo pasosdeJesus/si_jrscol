@@ -3118,7 +3118,8 @@ CREATE TABLE public.sivel2_sjr_migracion (
     tratoresi character varying(5000),
     salidaubicacionpre_id integer,
     llegadaubicacionpre_id integer,
-    destinoubicacionpre_id integer
+    destinoubicacionpre_id integer,
+    numppt character varying(32)
 );
 
 
@@ -16286,6 +16287,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220420143020'),
 ('20220420154535'),
 ('20220422190546'),
-('20220428145059');
+('20220428145059'),
+('20220509122054');
 
 

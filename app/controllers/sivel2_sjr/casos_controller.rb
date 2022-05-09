@@ -388,6 +388,7 @@ module Sivel2Sjr
           :llegada_ubicacionpre_id,
           :miembrofamiliar_id,
           :migracontactopre_id,
+          :numppt,
           :observacionesref,
           :otraagresion,
           :otraautoridad,

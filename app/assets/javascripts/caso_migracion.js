@@ -92,7 +92,7 @@ $(document).on('change',
     if (seleccionado != 1 && seleccionado != 5 && seleccionado != 6) {
       ped.attr("style", "display:none")
     } else {
-      ped.attr("style", "display:block")
+      ped.attr("style", "display:flex")
     }
   }
 )
@@ -105,13 +105,17 @@ $(document).on('change',
       '_fechaPep').parents()[1]
     var tip = $('#caso_migracion_attributes_'+pid[3]+
       '_tipopep').parents()[1]
+    var num = $('#caso_migracion_attributes_'+pid[3]+
+      '_numppt').parents()[1]
     var seleccionado = evento.target.value.substring(event.target.selectionStart, event.target.selectionEnd)
     if (seleccionado != 1) {
       ped.style.display = 'none'
       tip.style.display = 'none'
+      num.style.display = 'none'
     } else {
       ped.style.display = ''
       tip.style.display = ''
+      num.style.display = ''
     }
   }
 )

@@ -87,6 +87,8 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
 
   validates :fechasalida, presence: true
 
+  validates :numppt, length: { maximum: 32 }
+
   def tiempoenpais
     if self.id && self.fechallegada
       fechallegada = self.fechallegada.to_datetime
