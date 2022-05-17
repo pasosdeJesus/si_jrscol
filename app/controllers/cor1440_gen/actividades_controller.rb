@@ -15,7 +15,7 @@ module Cor1440Gen
 
     def self.posibles_nuevaresp
       return {
-        ahumanitaria: ['Asistenia humanitaria', 116],
+        ahumanitaria: ['Asistencia humanitaria', 116],
         ojuridica: ['Orientación jurídica', 118],
         ajuridica: ['Accion Jurídica', 125],
         oservicios: ['Otros servicios y asesorias', 126],
