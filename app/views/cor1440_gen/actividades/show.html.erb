@@ -10,11 +10,15 @@
   <div class="col-md-6">
     <b>Nombre:</b> <%= @actividad.nombre %><br>
     <b>Responsable:</b> <%= @actividad.responsable.nombre if @actividad.responsable%><br>
-    <b>Caso asociado:</b> 
-    <% if @actividad.casosjr.empty? %>
+    <b>Caso(s) asociado(s):</b> 
+    <% lc = @actividad.casosjr.pluck(:id_caso) %>
+    <% lp = @actividad.asistencia.pluck(:persona_id) %>
+    <% lv = Sivel2Gen::Victima.where(id_persona: lp) %>
+    <% lc |= lv.pluck(:id_caso) %>
+    <% if lc.empty? %>
       Sin casos asociados
     <% else %>
-      <%= @actividad.casosjr.pluck(:id_caso).join(", ") %>
+      <%= lc.sort.join(", ") %>
     <% end %><br>
     <b>Municipio:</b><%= @actividad.presenta('municipio') %><br>
   </div>
