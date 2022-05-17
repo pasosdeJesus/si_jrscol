@@ -158,7 +158,8 @@ class Consgifmm < ActiveRecord::Base
           actividadpf_id: self.actividadpf_id).where(
             'cor1440_gen_actividad.fecha < ? ' +
             'OR (cor1440_gen_actividad.fecha = ? '+
-            'AND detallefinanciero.id < ?)', self.fecha, self.fecha, self.detallefinanciero_id).
+            'AND detallefinanciero.id < ?)', self.fecha, self.fecha, 
+            self.detallefinanciero_id).
             where('sip_persona.id = ?', pid.to_i)
       c.count == 0
     }

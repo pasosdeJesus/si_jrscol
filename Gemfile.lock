@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 7a9961c9cf056b8096c12d5209ba0d4018e77e7a
+  revision: 9d48dab1c3e0c3cbcf6b343859f215c71a2eff3b
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -180,7 +180,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bcrypt (3.1.17)
+    bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.11.1)
       msgpack (~> 1.2)

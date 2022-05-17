@@ -2,6 +2,11 @@ require 'sivel2_sjr/concerns/models/caso'
 class Sivel2Gen::Caso < ActiveRecord::Base
   include Sivel2Sjr::Concerns::Models::Caso
 
+  has_many :migracion, class_name: 'Sivel2Sjr::Migracion',
+    foreign_key: "caso_id", validate: true, dependent: :destroy
+  accepts_nested_attributes_for :migracion, allow_destroy: true, 
+    reject_if: :all_blank
+
   # Permitimos casos sin descripción
   def caso_no_vacio
   end
@@ -32,10 +37,31 @@ class Sivel2Gen::Caso < ActiveRecord::Base
     end
   end
 
-  has_many :migracion, class_name: 'Sivel2Sjr::Migracion',
-    foreign_key: "caso_id", validate: true, dependent: :destroy
-  accepts_nested_attributes_for :migracion, allow_destroy: true, 
-    reject_if: :all_blank
+  validate :ppt_y_numero
+  def ppt_y_numero
+    migracion.each do |m|
+      if m.fechasalida.nil?
+        errors.add(:migracion, 
+                   "En migración debe especificar fecha de salida")
+      end
+      if m.numppt && m.numppt.length>32 
+        errors.add(:migracion, 
+                   "Longitud del número ppt no puede exceder 32 caracteres")
+      end
+      if m.statusmigratorio_id.nil?
+        errors.add(:migracion, 
+                   "En migración debe especificar estatus migratorio")
+      end
+      if m.perfilmigracion_id.nil?
+        errors.add(:migracion, 
+                   "En migración debe especificar perfil de migración")
+      end
+      if m.pep && (m.numppt.nil? || m.numppt=='')
+        errors.add(:migracion, 
+                   "Si el migrante tiene PPT debe especificar el número")
+      end
+    end
+  end
 
 end
 
