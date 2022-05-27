@@ -99,6 +99,18 @@ module Cor1440Gen
 
     # PRESENTACIÓN DE INFORMACIÓN
 
+    def casos_asociados
+      lc = self.casosjr.pluck(:id_caso)
+      lp = self.asistencia.pluck(:persona_id) 
+      lv = Sivel2Gen::Victima.where(id_persona: lp) 
+      lc |= lv.pluck(:id_caso)
+      if lc.empty?
+        return ""
+      else
+        return lc.sort.join(", ")
+      end
+    end
+
     def cuenta_victimas_condicion
       cuenta = 0
       casosjr.each do |c|
