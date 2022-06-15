@@ -1,3 +1,4 @@
+
 # En listado de asistencia permite autocompletar nombres
 $(document).on('focusin',
   'input[id^=actividad_ubicacionpre_mundep_texto]', (e) -> 

@@ -466,6 +466,7 @@ class Ability < Sivel2Sjr::Ability
           'anexo_5_desc',
           'anexos_ids',
           'campos_dinamicos',
+          'casos_asociados',
           'corresponsables',
           'covid19',
           'creacion',
