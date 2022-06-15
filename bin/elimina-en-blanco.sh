@@ -6,7 +6,7 @@
 # 0 20 * *  * (cd /var/www/htdosc/sivel2_sjrcol/; bin/elimina-en-blanco.sh >> /tmp/elimina-en-blanco.bitacora 2>&1)
 
 if (test ! -f .env) then {
-	echo 'Falata archivo .env'
+	echo 'Falta archivo .env'
 	exit 1;
 } fi;
 . .env
