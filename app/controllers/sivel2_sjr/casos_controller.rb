@@ -29,7 +29,8 @@ module Sivel2Sjr
         :telefono,
         :atenciones,
         :listado_familiares,
-        :listado_anexos
+        :listado_anexos,
+        :solicitudes
       ]
     end
 
