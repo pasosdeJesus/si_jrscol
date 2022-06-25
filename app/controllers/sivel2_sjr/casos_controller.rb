@@ -24,6 +24,7 @@ module Sivel2Sjr
         :memo,
         :created_at,
         :asesor,
+        :asesorhistorico,
         :contacto,
         :direccion,
         :telefono,

@@ -8,6 +8,11 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
   belongs_to :salidam, class_name: 'Sip::Ubicacion', validate: true,
     foreign_key: 'id_salidam', optional: true
 
+  has_many :asesorhistorico,
+    class_name: '::Asesorhistorico',
+    validate: true, 
+    foreign_key: :casosjr_id
+
   validates :motivom, length: { maximum: 5000 }
   validates :memo1612, length: { maximum: 5000 }
   validates :contacto, uniqueness: { 

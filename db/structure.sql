@@ -391,6 +391,40 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: asesorhistorico; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.asesorhistorico (
+    id bigint NOT NULL,
+    casosjr_id integer NOT NULL,
+    fechainicio date NOT NULL,
+    fechafin date NOT NULL,
+    usuario_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: asesorhistorico_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.asesorhistorico_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: asesorhistorico_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.asesorhistorico_id_seq OWNED BY public.asesorhistorico.id;
+
+
+--
 -- Name: autoridadrefugio; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -8387,6 +8421,13 @@ ALTER TABLE ONLY public.agresionmigracion ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: asesorhistorico id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico ALTER COLUMN id SET DEFAULT nextval('public.asesorhistorico_id_seq'::regclass);
+
+
+--
 -- Name: autoridadrefugio id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -9291,6 +9332,14 @@ ALTER TABLE ONLY public.sivel2_gen_antecedente
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: asesorhistorico asesorhistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT asesorhistorico_pkey PRIMARY KEY (id);
 
 
 --
@@ -11289,6 +11338,13 @@ CREATE INDEX cor1440_gen_asistencia_persona_id_ind ON public.cor1440_gen_asisten
 --
 
 CREATE UNIQUE INDEX cor1440_gen_datointermedioti_pmindicadorpf_llaves_idx ON public.cor1440_gen_datointermedioti_pmindicadorpf USING btree (datointermedioti_id, pmindicadorpf_id);
+
+
+--
+-- Name: index_asesorhistorico_on_usuario_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_asesorhistorico_on_usuario_id ON public.asesorhistorico USING btree (usuario_id);
 
 
 --
@@ -14043,6 +14099,14 @@ ALTER TABLE ONLY public.detallefinanciero
 
 
 --
+-- Name: asesorhistorico fk_rails_a0ce6f0b19; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT fk_rails_a0ce6f0b19 FOREIGN KEY (usuario_id) REFERENCES public.usuario(id);
+
+
+--
 -- Name: mr519_gen_campo fk_rails_a186e1a8a0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14552,6 +14616,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividadpf
 
 ALTER TABLE ONLY public.cor1440_gen_actividad_valorcampotind
     ADD CONSTRAINT fk_rails_e8cd697f5d FOREIGN KEY (actividad_id) REFERENCES public.cor1440_gen_actividad(id);
+
+
+--
+-- Name: asesorhistorico fk_rails_e9632297a2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT fk_rails_e9632297a2 FOREIGN KEY (casosjr_id) REFERENCES public.sivel2_sjr_casosjr(id_caso);
 
 
 --
@@ -16059,6 +16131,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220525122150'),
 ('20220527221026'),
 ('20220601111520'),
-('20220613224844');
+('20220613224844'),
+('20220625105636');
 
 
