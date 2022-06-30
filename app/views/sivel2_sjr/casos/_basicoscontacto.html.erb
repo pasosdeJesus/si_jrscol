@@ -19,11 +19,17 @@
       Usuario.where(oficina_id: current_usuario.oficina_id).
       order('LOWER(nusuario)') :
       Usuario.order('LOWER(nusuario)') %>
-    <%= s.association :usuario,
-      collection: colus,
-      include_blank: false,
-      label_method: :nusuario, 
-      value_method: :id %>
+
+    <% if current_usuario.rol == Ability::ROLADMIN || current_usuario.rol == Ability::ROLDIR then %>
+      <%= s.association :usuario,
+        collection: colus,
+        include_blank: false,
+        label_method: :nusuario, 
+        value_method: :id %>
+    <% else %>
+      <label class="select required" for="temporal_asesor">Asesor JRS</label>
+      <input class="form-control select required sip-sf-bs-input" name="temporal_asesor" id="temporal_asesor" style="background-color: rgb(242, 242, 255); color: rgb(0, 0, 0);" value="<%= @caso.presenta('asesor') %>" disabled>
+    <% end %>
   </div>
   <div class="col-md-6">
     <% colof= current_usuario.oficina_id ? 

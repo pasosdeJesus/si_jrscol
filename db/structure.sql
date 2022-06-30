@@ -685,7 +685,8 @@ CREATE TABLE public.sivel2_sjr_casosjr (
     id_salidam integer,
     fechallegadam date,
     id_llegadam integer,
-    motivom character varying(5000)
+    motivom character varying(5000),
+    asesorfechaini date
 );
 
 
@@ -6491,11 +6492,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.id_persona = contacto.id) AND (vcontacto.id_caso = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 105)
-          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
-  ORDER BY conscaso.fecha, conscaso.caso_id
+  WHERE (true = false)
   WITH NO DATA;
 
 
@@ -16132,6 +16129,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220527221026'),
 ('20220601111520'),
 ('20220613224844'),
-('20220625105636');
+('20220625105636'),
+('20220630145649');
 
 

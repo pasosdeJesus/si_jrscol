@@ -291,7 +291,27 @@ module Sivel2Sjr
         )
         de.save!
       end
-     
+
+      if @caso.casosjr.asesor != params[:caso][:casosjr_attributes][:asesor].to_i
+        if current_usuario.rol == Ability::ROLADMIN || 
+          current_usuario.rol == Ability::ROLDIR
+          if @caso.casosjr.asesorfechaini.nil? then
+            @caso.casosjr.asesorfechaini = '2022-06-29'
+          end
+          ah = ::Asesorhistorico.create!(
+            casosjr_id: @caso.casosjr.id, usuario_id: @caso.casosjr.asesor,
+            fechainicio: @caso.casosjr.asesorfechaini,
+            fechafin: Date.today.to_s
+          )
+          @caso.casosjr.asesorfechaini = Date.today.to_s
+          @caso.casosjr.asesor = params[:caso][:casosjr_attributes][:asesor].to_i
+        else
+          raise CanCan::AccessDenied.new("No autorizado!", :update, 
+                                         Sivel2Gen::Caso)
+        end
+
+      end
+
       # Convertir valores de radios tri-estado, el valor 3 en el 
       # botón de radio es nil en la base de datos
       # Si falta poner id_victima

@@ -16,7 +16,6 @@ class Asesorhistorico < ActiveRecord::Base
   campofecha_localizado :fechafin
 
   validates :fechainicio, comparison: { greater_than: Date.new(2000,1,1) }
-  validates :fechafin, comparison: { greater_than: :fechainicio }
-
+  validates :fechafin, comparison: { greater_than_or_equal_to: :fechainicio }
 
 end

@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @caso.asesorhistorico.order(:fechainicio).each do |ah| %>
+    <% @caso.casosjr.asesorhistorico.order(:fechainicio).each do |ah| %>
       <tr>
         <td> <%= ah.usuario.nusuario %></td>
         <td> <%= ah.fechainicio_localizada %> </td>
