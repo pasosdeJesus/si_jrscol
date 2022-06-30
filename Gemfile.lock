@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: fcde5613d529c8a29eee8f7c5be16f0be527618e
+  revision: 345be6bc1a5264480b5c7e24f1815601e4df76de
   branch: main
   specs:
     sip (2.1a1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 6c1afced722bf859ffe55e62f4f1347ef7a4a302
+  revision: b09888089a011b75155713dfa32c18a4cf116e2c
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -497,4 +497,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.3.15
+   2.3.17

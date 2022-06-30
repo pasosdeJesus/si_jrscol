@@ -11,6 +11,11 @@ class Asesorhistorico < ActiveRecord::Base
     foreign_key: 'usuario_id',
     validate: true,
     class_name: '::Usuario', optional: false
+  belongs_to :oficina,
+    foreign_key: 'oficina_id',
+    validate: true,
+    class_name: 'Sip::Oficina', optional: true
+
 
   campofecha_localizado :fechainicio
   campofecha_localizado :fechafin

@@ -401,7 +401,8 @@ CREATE TABLE public.asesorhistorico (
     fechafin date NOT NULL,
     usuario_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    oficina_id integer
 );
 
 
@@ -14096,6 +14097,14 @@ ALTER TABLE ONLY public.detallefinanciero
 
 
 --
+-- Name: asesorhistorico fk_rails_a020144a5c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT fk_rails_a020144a5c FOREIGN KEY (oficina_id) REFERENCES public.sip_oficina(id);
+
+
+--
 -- Name: asesorhistorico fk_rails_a0ce6f0b19; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -16130,6 +16139,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220601111520'),
 ('20220613224844'),
 ('20220625105636'),
-('20220630145649');
+('20220630145649'),
+('20220630162659');
 
 

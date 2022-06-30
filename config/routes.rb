@@ -63,6 +63,9 @@ Rails.application.routes.draw do
     get "/casos/:id/fichapdf" => "sivel2_sjr/casos#fichapdf",
       as: :caso_fichapdf
 
+    get "/casos/:id/solicitar" => "sivel2_sjr/casos#solicitar",
+      as: :caso_solicitar
+
     get '/personas_casos' => 'sivel2_sjr/casos#personas_casos',
       as: :personas_casos
 

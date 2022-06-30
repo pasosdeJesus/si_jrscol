@@ -2,16 +2,18 @@
   <thead class="thead-light">
     <tr>
       <th>Asesor</th>
+      <th>Oficina</th>
       <th>Fecha Inicial</th>
       <th>Fecha Final</th>
     </tr>
   </thead>
   <tbody>
-    <% @caso.casosjr.asesorhistorico.order(:fechainicio).each do |ah| %>
+    <% @caso.casosjr.asesorhistorico.order(fechainicio: :desc, id: :desc).each do |ah| %>
       <tr>
         <td> <%= ah.usuario.nusuario %></td>
+        <td> <%= ah.oficina.nombre if ah.oficina %></td>
         <td> <%= ah.fechainicio_localizada %> </td>
-        <td> <%= ah.fechafin_localizada%> </td>
+        <td> <%= ah.fechafin_localizada %> </td>
       </tr>
     <% end %>
   </tbody>
