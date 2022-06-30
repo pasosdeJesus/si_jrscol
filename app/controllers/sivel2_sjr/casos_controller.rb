@@ -247,7 +247,6 @@ module Sivel2Sjr
 
 
     def cambiar_asesor
-      debugger
       ah = ::Asesorhistorico.create(
         casosjr_id: @caso.casosjr.id, usuario_id: @caso.casosjr.asesor,
         fechainicio: @caso.casosjr.asesorfechaini,
