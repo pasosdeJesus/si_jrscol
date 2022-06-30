@@ -305,6 +305,7 @@ module Sivel2Sjr
           )
           @caso.casosjr.asesorfechaini = Date.today.to_s
           @caso.casosjr.asesor = params[:caso][:casosjr_attributes][:asesor].to_i
+          @caso.casosjr.oficina_id = @caso.casosjr.usuario.oficina_id
         else
           raise CanCan::AccessDenied.new("No autorizado!", :update, 
                                          Sivel2Gen::Caso)
