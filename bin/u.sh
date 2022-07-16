@@ -45,6 +45,11 @@ $DOAS su - ${USUARIO_AP} -c "cd $DIRAP;
     BD_USUARIO=${BD_USUARIO} \
     BD_PRO=${BD_PRO} \
     RUTA_RELATIVA=${RUTA_RELATIVA} \
+    SMTP_MAQ=\"${SMTP_MAQ}\" \
+    SMTP_PUERTO=\"${SMTP_PUERTO}\" \
+    SMTP_DOMINIO=\"${SMTP_DOMINIO}\" \
+    SMTP_USUARIO=\"${SMTP_USUARIO}\" \
+    SMTP_CLAVE=\"${SMTP_CLAVE}\" \
     HEB412_RUTA=${HEB412_RUTA} \
     bundle exec /usr/local/bin/unicorn_rails \
     -c $DIRAP/config/unicorn.conf.minimal.rb  -E production -D"

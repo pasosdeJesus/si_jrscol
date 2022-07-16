@@ -585,11 +585,34 @@ module Sivel2Sjr
           Sivel2Gen::CasoSolicitud::SER_ASESOR,
           @caso.id,
           Usuario.where(rol: Ability::ROLADMIN,
-                        fechadeshabilitacion: nil))
+                        fechadeshabilitacion: nil)
+        )
         if merror == ''
-          flash[:notice] = "Solicitud para administradores creada."
-        else 
-          flash[:error] = 'No se creó solicitud. ' + merror
+          flash[:notice] = "Solicitud para administradores creada y programando envío de correo."
+          begin
+            SolicitudMailer.with(
+              objeto: 'el caso',
+              id: @caso.id,
+              solicitante: current_usuario.nusuario,
+              cor_solicitante: current_usuario.email,
+              solicitado_a: Usuario.where(
+                rol: Ability::ROLADMIN,
+                fechadeshabilitacion: nil
+              ).map(&:nusuario),
+              cor_solicitado_a: Usuario.where(
+                rol: Ability::ROLADMIN,
+                fechadeshabilitacion: nil
+              ).map(&:email),
+              solicitud: "Ser asesor del caso #{@caso.id}"
+            ).solicitud.deliver_now
+          rescue => e
+            merror << " No se pudo enviar correo (#{e.to_s})."
+            puts "*** No se pudo enviar correo (#{e.to_s})"
+          end
+        end
+
+        if merror != ''
+          flash[:error] = merror
         end
         redirect_to sivel2_gen.caso_path(@caso.id)
       end
