@@ -822,6 +822,7 @@ CREATE TABLE public.sip_departamento (
     observaciones character varying(5000) COLLATE public.es_co_utf_8,
     codiso character varying(6),
     catiso character varying(64),
+    codreg integer,
     CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -854,6 +855,7 @@ CREATE TABLE public.sip_municipio (
     id_departamento integer,
     id integer DEFAULT nextval('public.sip_municipio_id_seq'::regclass) NOT NULL,
     observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    codreg integer,
     CONSTRAINT municipio_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -6495,7 +6497,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 137)
+          WHERE (sivel2_gen_conscaso.caso_id = 102)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -16144,6 +16146,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220613224844'),
 ('20220625105636'),
 ('20220630145649'),
-('20220630162659');
+('20220630162659'),
+('20220713200101'),
+('20220713200444');
 
 
