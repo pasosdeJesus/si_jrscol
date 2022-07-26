@@ -938,24 +938,29 @@ class Ability < Sivel2Sjr::Ability
         can :read, Sivel2Sjr::Consactividadcaso
         can :read, ::Benefactividadpf
         can :read, ::Consgifmm
+
       when Ability::ROLCOOR
-        can :manage, Cor1440Gen::Informe
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
         can :manage, Cor1440Gen::Actividad, oficina_id: [1, usuario.oficina_id]
+        can :manage, Cor1440Gen::Informe
+        can :index, Cor1440Gen::Mindicadorpf
         can :read, Cor1440Gen::Proyectofinanciero
         can [:index, :read], Cor1440Gen::Rangoedadac
 
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
+        can :manage, Sal7711Gen::Articulo
+
         can [:new, :create, :read, :index, :edit, :update], Sip::Orgsocial
         can :manage, Sip::Persona
         can :manage, Sip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
-        can [:read, :new, :solicitar], Sivel2Gen::Caso
-        can [:fichaimp, :fichapdf, :update, :create, :destroy, :poneretcomp], 
+        can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
+        can [:new, :solicitar], Sivel2Gen::Caso
+        can [:update, :create, :destroy, :poneretcomp], 
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
