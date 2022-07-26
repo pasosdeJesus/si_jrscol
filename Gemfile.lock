@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: f6e30eae3415bd1a5f177f86d8f2f42a44be97b8
+  revision: 3aa6a9dbf9d2480af4d6773b93d3cad5f75c13e0
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 74a60050ffc9d385e1053a523374dc71362f3f41
+  revision: dbc43735a11968cdbe57f65b9df3e06025700d05
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -290,7 +290,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.7)
+    nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     odf-report (0.7.3)
@@ -401,7 +401,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.1.0)
       railties (>= 6.0.0)
-    strscan (3.0.3)
+    strscan (3.0.4)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     thor (1.2.1)
@@ -497,4 +497,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.3.17
+   2.3.5
