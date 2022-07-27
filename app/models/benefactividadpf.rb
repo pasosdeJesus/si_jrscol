@@ -75,28 +75,42 @@ class Benefactividadpf < ActiveRecord::Base
   end # def crea_consulta
 
   def self.subasis(personas, actividades, actividadespf)
-    c="SELECT sub.*, 
-      (SELECT nombre FROM cor1440_gen_rangoedadac AS red
+
+
+    c="SELECT 
+    (SELECT nombre FROM cor1440_gen_rangoedadac AS red
        WHERE id=CASE 
          WHEN (red.limiteinferior IS NULL OR 
-           red.limiteinferior<=sub.edad_en_actividad) AND 
+           red.limiteinferior<=sub2.edad_en_ultact) AND 
            (red.limitesuperior IS NULL OR
-           red.limitesuperior>=sub.edad_en_actividad) THEN
+           red.limitesuperior>=sub2.edad_en_ultact) THEN
            red.id
          ELSE
            7 -- SIN INFORMACION
-       END LIMIT 1) AS rangoedadac_nombre
+       END LIMIT 1) AS rangoedadac_ultact,
+       sub2.*
+    FROM (SELECT 
+         TRIM(TRIM(sub.persona_nombres) || ' '  ||
+         TRIM(sub.persona_apellidos)) AS persona_nombre,
+         TRIM(COALESCE(sub.persona_tipodocumento || ':', '') ||
+           COALESCE(sub.persona_numerodocumento, '')) AS persona_identificacion,
+         public.sip_edad_de_fechanac_fecharef(
+           sub.persona_anionac, sub.persona_mesnac, sub.persona_dianac,
+         EXTRACT(YEAR FROM sub.fecha_ultact)::integer,
+         EXTRACT(MONTH from sub.fecha_ultact)::integer,
+         EXTRACT(DAY FROM sub.fecha_ultact)::integer) AS edad_en_ultact,
+         sub.*
       FROM (SELECT p.id AS persona_id,
-       TRIM(TRIM(p.nombres) || ' '  ||
-         TRIM(p.apellidos)) AS persona_nombre,
-       public.sip_edad_de_fechanac_fecharef(
-         p.anionac, p.mesnac, p.dianac,
-       EXTRACT(YEAR FROM a.fecha)::integer,
-       EXTRACT(MONTH from a.fecha)::integer,
-       EXTRACT(DAY FROM a.fecha)::integer) AS edad_en_actividad,
-       TRIM(COALESCE(td.sigla || ':', '') ||
-         COALESCE(p.numerodocumento, '')) AS persona_identificacion,
-       p.sexo AS persona_sexo
+      TRIM(p.nombres) AS persona_nombres,
+      TRIM(p.apellidos) AS persona_apellidos,
+      TRIM(COALESCE(td.sigla, '')) AS persona_tipodocumento,
+      TRIM(COALESCE(p.numerodocumento, '')) AS persona_numerodocumento,
+      p.sexo AS persona_sexo,
+      p.anionac AS persona_anionac,
+      p.mesnac AS persona_mesnac,
+      p.dianac AS persona_dianac,
+      (SELECT max(fecha) FROM cor1440_gen_actividad AS ac
+        WHERE ac.id IN (#{actividades.to_sql})) AS fecha_ultact 
     " 
     if actividadespf.count > 0
       c+= ", "
@@ -117,17 +131,51 @@ class Benefactividadpf < ActiveRecord::Base
              AND persona_id = p.id
              AND asistencia.actividad_id IN (' + actividades.to_sql + ') 
         ) AS "'+ cod +'"' 
+        c += ',
+            ARRAY(SELECT asistencia.actividad_id 
+             FROM cor1440_gen_asistencia AS asistencia
+             JOIN cor1440_gen_actividad_actividadpf AS aapf 
+               ON aapf.actividad_id=asistencia.actividad_id
+             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '  
+             AND persona_id = p.id
+             AND asistencia.actividad_id IN (' + actividades.to_sql + ') '\
+        ') AS "'+ cod +'_ids"' 
+
         if apf != actividadespf.last
           c += ', '
         end
       end
     end
-    c+="FROM sip_persona AS p
-        JOIN cor1440_gen_asistencia AS asis ON asis.persona_id=p.id 
+    c+=" FROM sip_persona AS p
         LEFT JOIN sip_tdocumento AS td ON td.id=p.tdocumento_id
-        JOIN cor1440_gen_actividad AS a ON asis.actividad_id=a.id
         WHERE p.id IN (#{personas.to_sql}) 
-        GROUP BY persona_identificacion, p.id, edad_en_actividad) AS sub
-    "
+        AND p.id IN (SELECT persona_id FROM cor1440_gen_asistencia AS asis
+          WHERE asis.actividad_id IN (#{actividades.to_sql}) )
+        ) AS sub
+        ) AS sub2
+        "
+#        GROUP BY 1,2,3,4,5,6,7) AS sub
+#    "
   end
+
+
+  def presenta(atr)
+    m =/^(.*)_enlace$/.match(atr.to_s)
+    if m && !self[m[1]].nil? && !self[m[1]+"_ids"].nil?
+        if self[m[1]].to_i == 0
+          r = "0"
+        else
+          bids = self[m[1]+"_ids"].join(',')
+          r="<a href='#{Rails.application.routes.url_helpers.sip_path + 
+                        'actividades?filtro[busid]=' + bids}'"\
+                        " target='_blank'>"\
+                        "#{self[m[1]]}"\
+                        "</a>".html_safe
+        end
+        return r.html_safe
+    end
+    return presenta_gen(atr)
+  end
+
+
 end

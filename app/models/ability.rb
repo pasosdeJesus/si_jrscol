@@ -600,11 +600,13 @@ class Ability < Sivel2Sjr::Ability
 
     'Benefactividadpf' => {
       campos: [
-       :persona_nombre,
-       :edad_en_actividad,
-       :persona_identificacion,
+       :persona_nombres,
+       :persona_apellidos,
+       :edad_en_ultact,
+       :persona_tipodocumento,
+       :persona_numerodocumento,
        :persona_sexo,
-       :rangoedadac_nombre
+       :rangoedadac_ultact
       ],
       controlador: '::BenefesactividadpfController',
       ruta: '/conteos/benefactividadpf',

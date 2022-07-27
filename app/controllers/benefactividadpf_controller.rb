@@ -9,9 +9,17 @@ class BenefactividadpfController < Heb412Gen::ModelosController
   def atributos_index
     if Benefactividadpf
       arr = Benefactividadpf.column_names
-      primeros =["persona_id", "persona_nombre", "persona_identificacion", 
-                 "persona_sexo", "edad_en_actividad", "rangoedadac_nombre"]
-      acord = (arr-primeros).sort
+      primeros =["persona_id", "persona_nombre", "persona_identificacion",
+                 "persona_sexo", "edad_en_ultact", "rangoedadac_ultact"]
+      sobran = [
+        "persona_nombres", "persona_apellidos",
+        "persona_tipodocumento", "persona_numerodocumento",
+        "fecha_ultact", 
+        "persona_anionac","persona_mesnac", "persona_dianac"
+      ]
+      acord1 = (arr-primeros-sobran)
+      acord2 = acord1.select {|c| c[-4..-1] == '_ids'}.sort
+      acord = acord2.map {|c| c.sub('_ids', '_enlace')}
       primeros + acord - ["id"] 
     end
   end
@@ -107,36 +115,43 @@ class BenefactividadpfController < Heb412Gen::ModelosController
             params['filtro']['proyectofinanciero_id'].to_i).nombre,
         ], style: estilo_base
         hoja.add_row []
-        l = ['Persona', 'Nombre', 'Identificación', 'Sexo', 
-             'Edad en actividad', 'Rango de edad']
-        caml = Benefactividadpf.columns.map(&:name)[5..-2].sort
+        l = ['Persona', 'Nombres', 'Apellidos', 
+             'Tipo de documento', 'Número de documento',
+             'Sexo', 
+             'Edad en actividad más reciente',
+             'Rango de edad en actividad más reciente']
+        caml1 = Benefactividadpf.columns.map(&:name)[5..-2]
+        caml2 = caml1.select {|c| c[-4..-1] == '_ids'}.sort
+        caml = caml2.map {|c| c.sub('_ids', '')}
         l += caml
 
-        hoja.merge_cells('A1:F1')
+        hoja.merge_cells('A1:H1')
 
-        hoja.add_row l, style: [estilo_encabezado] * (7+caml.length)
-        registros.order('UPPER(persona_nombre)').each do |baml|
+        hoja.add_row l, style: [estilo_encabezado] * (8+caml.length)
+        registros.order('UPPER(persona_nombres)').each do |baml|
           l = [baml['persona_id'],
-               baml['persona_nombre'],
-               baml['persona_identificacion'],
+               baml['persona_nombres'],
+               baml['persona_apellidos'],
+               baml['persona_tipodocumento'],
+               baml['persona_numerodocumento'],
                baml['persona_sexo'],
-               baml['edad_en_actividad'],
-               baml['rangoedadac_nombre']
+               baml['edad_en_ultact'],
+               baml['rangoedadac_ultact']
           ]
           caml.each do |c|
             l << baml[c]
           end
           hoja.add_row l, style: estilo_base
         end
-        hoja.column_widths 20,20,20,20,20,20,20
+        hoja.column_widths 20,20,20,20,20,20,20,20
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
         if ultf>0
-          l = [nil]*6
+          l = [nil]*8
           fs = hoja.add_row l
-          lc = 'G'
+          lc = 'I'
           caml.each do |c|
             fs.add_cell("=SUM(#{lc}7:#{lc}#{ultf})")
             lc = PlantillaHelper.sigcol(lc)

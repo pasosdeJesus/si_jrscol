@@ -56,7 +56,8 @@ es:
         persona_nombre: Nombre
         persona_identificacion: Identificación
         persona_sexo: Sexo
-        rangoedadac_nombre: Rango de edad
+        rangoedadac_ultact: Rango de edad en actividad más reciente
+        edad_en_ultact: Edad en actividad más reciente
       "causaagresion":
         Causaagresion: Causa de la agresión
         Causasagresion: Causas de la agresion
