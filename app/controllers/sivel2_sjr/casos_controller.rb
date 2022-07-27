@@ -264,7 +264,7 @@ module Sivel2Sjr
           mp[:destino_lugar], mp[:destino_sitio], mp[:destino_tsitio_id],
           mp[:destino_latitud], mp[:destino_longitud]
         )
-        mi.save!
+        mi.save!(validate: false)
       end
 
       (caso_params[:desplazamiento_attributes] || []).each do |clave, dp|
@@ -287,7 +287,7 @@ module Sivel2Sjr
           dp[:destino_lugar], dp[:destino_sitio], dp[:destino_tsitio_id],
           dp[:destino_latitud], dp[:destino_longitud]
         )
-        de.save!
+        de.save!(validate: false)
       end
      
       # Convertir valores de radios tri-estado, el valor 3 en el 
@@ -301,7 +301,9 @@ module Sivel2Sjr
               v[:victimasjr_attributes][sym] = nil
             end
           end
-          if v[:victimasjr_attributes][:id_victima] == ''
+          if v[:victimasjr_attributes] &&
+              v[:victimasjr_attributes][:id_victima] &&
+              v[:victimasjr_attributes][:id_victima] == ''
             v[:victimasjr_attributes][:id_victima] = v[:id]
           end
         end
