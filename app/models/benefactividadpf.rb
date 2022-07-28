@@ -25,7 +25,7 @@ class Benefactividadpf < ActiveRecord::Base
   # @params fechaini Fecha inicial en formato estándar o nil
   # @params fechafin Fecha final en formato estándar o nil
   #
-  def self.crea_consulta(ordenar_por = nil, pf_id, oficina_id, 
+  def self.crea_consulta(ordenar_por = nil, pf_id, oficina_id,
                     fechaini, fechafin)
     if ARGV.include?("db:migrate")
       return
@@ -36,10 +36,10 @@ class Benefactividadpf < ActiveRecord::Base
     end
     if pf_id
       contarb_actividad = contarb_actividad.where(
-        'cor1440_gen_actividad.id IN 
+        'cor1440_gen_actividad.id IN
         (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero
           WHERE proyectofinanciero_id=?)', pf_id).where(
-            'cor1440_gen_actividad.id IN 
+            'cor1440_gen_actividad.id IN
         (SELECT actividad_id FROM cor1440_gen_actividad_actividadpf)')
     end
     if fechaini
@@ -52,7 +52,7 @@ class Benefactividadpf < ActiveRecord::Base
     end
 
     contarb_listaac = Cor1440Gen::Actividadpf.where(
-      proyectofinanciero_id: pf_id).order(:nombrecorto) 
+      proyectofinanciero_id: pf_id).order(:nombrecorto)
 
     contarpro = Cor1440Gen::Actividadpf.where(
       proyectofinanciero_id: pf_id)
@@ -76,31 +76,52 @@ class Benefactividadpf < ActiveRecord::Base
 
   def self.subasis(personas, actividades, actividadespf)
 
+    c=" SELECT
+        (SELECT nombre FROM sip_perfilorgsocial AS per
+          WHERE per.id=(
+            SELECT perfilorgsocial_id FROM cor1440_gen_asistencia AS as3
+           WHERE as3.id=sub3.id_ultasist LIMIT 1)) AS persona_perfil_ultact,
+        sub3.*
+      FROM (SELECT  --sub3
+         (SELECT id FROM cor1440_gen_asistencia AS as2
+          WHERE as2.actividad_id=sub2.id_ultact
+          AND as2.persona_id=sub2.persona_id
+          ORDER BY 1 LIMIT 1) AS id_ultasist,
 
-    c="SELECT 
-    (SELECT nombre FROM cor1440_gen_rangoedadac AS red
-       WHERE id=CASE 
-         WHEN (red.limiteinferior IS NULL OR 
-           red.limiteinferior<=sub2.edad_en_ultact) AND 
-           (red.limitesuperior IS NULL OR
-           red.limitesuperior>=sub2.edad_en_ultact) THEN
-           red.id
-         ELSE
-           7 -- SIN INFORMACION
-       END LIMIT 1) AS rangoedadac_ultact,
-       sub2.*
-    FROM (SELECT 
+         (SELECT nombre FROM cor1440_gen_rangoedadac AS red
+          WHERE id=CASE
+            WHEN (red.limiteinferior IS NULL OR
+              red.limiteinferior<=sub2.edad_en_ultact) AND
+              (red.limitesuperior IS NULL OR
+              red.limitesuperior>=sub2.edad_en_ultact) THEN
+              red.id
+            ELSE
+              7 -- SIN INFORMACION
+           END LIMIT 1) AS rangoedadac_ultact,
+
+          sub2.*
+       FROM (SELECT  --sub2
          TRIM(TRIM(sub.persona_nombres) || ' '  ||
          TRIM(sub.persona_apellidos)) AS persona_nombre,
          TRIM(COALESCE(sub.persona_tipodocumento || ':', '') ||
            COALESCE(sub.persona_numerodocumento, '')) AS persona_identificacion,
+        (SELECT id FROM cor1440_gen_actividad AS ac2
+          WHERE ac2.fecha=sub.fecha_ultact
+          AND ac2.id IN (SELECT actividad_id
+            FROM cor1440_gen_asistencia AS asis
+            WHERE  asis.persona_id=sub.persona_id
+            AND asis.actividad_id IN (#{actividades.to_sql})
+          )
+          ORDER BY 1 LIMIT 1) AS id_ultact,
          public.sip_edad_de_fechanac_fecharef(
            sub.persona_anionac, sub.persona_mesnac, sub.persona_dianac,
          EXTRACT(YEAR FROM sub.fecha_ultact)::integer,
          EXTRACT(MONTH from sub.fecha_ultact)::integer,
          EXTRACT(DAY FROM sub.fecha_ultact)::integer) AS edad_en_ultact,
+         (SELECT nombre FROM sip_pais 
+           WHERE id=sub.persona_paisnac_id LIMIT 1) AS persona_paisnac,
          sub.*
-      FROM (SELECT p.id AS persona_id,
+      FROM (SELECT p.id AS persona_id, -- sub
       TRIM(p.nombres) AS persona_nombres,
       TRIM(p.apellidos) AS persona_apellidos,
       TRIM(COALESCE(td.sigla, '')) AS persona_tipodocumento,
@@ -109,37 +130,45 @@ class Benefactividadpf < ActiveRecord::Base
       p.anionac AS persona_anionac,
       p.mesnac AS persona_mesnac,
       p.dianac AS persona_dianac,
+      p.id_pais AS persona_paisnac_id,
+      ARRAY_TO_STRING(ARRAY(SELECT DISTINCT id_caso
+        FROM sivel2_gen_victima
+        WHERE id_persona=p.id), ',') AS persona_caso,
       (SELECT max(fecha) FROM cor1440_gen_actividad AS ac
-        WHERE ac.id IN (#{actividades.to_sql})) AS fecha_ultact 
-    " 
+        WHERE ac.id IN (SELECT actividad_id FROM cor1440_gen_asistencia AS asis
+          WHERE  asis.persona_id=p.id
+          AND asis.actividad_id IN (#{actividades.to_sql})
+          )
+      ) AS fecha_ultact
+    "
     if actividadespf.count > 0
       c+= ", "
       codigos = []
       actividadespf.each.with_index(1) do |apf, ind|
-        cod = (apf.objetivopf ? apf.objetivopf.numero : '') + 
-          (apf.resultadopf ? apf.resultadopf.numero : '') + 
+        cod = (apf.objetivopf ? apf.objetivopf.numero : '') +
+          (apf.resultadopf ? apf.resultadopf.numero : '') +
           (apf.nombrecorto )
-        if codigos.include? cod 
-          cod = cod + "_" + ind.to_s 
+        if codigos.include? cod
+          cod = cod + "_" + ind.to_s
         end
         codigos.push(cod)
         c += '(
            SELECT COUNT(*) FROM cor1440_gen_asistencia AS asistencia
-             JOIN cor1440_gen_actividad_actividadpf AS aapf 
+             JOIN cor1440_gen_actividad_actividadpf AS aapf
                ON aapf.actividad_id=asistencia.actividad_id
-             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '  
+             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '
              AND persona_id = p.id
-             AND asistencia.actividad_id IN (' + actividades.to_sql + ') 
-        ) AS "'+ cod +'"' 
+             AND asistencia.actividad_id IN (' + actividades.to_sql + ')
+        ) AS "'+ cod +'"'
         c += ',
-            ARRAY(SELECT asistencia.actividad_id 
+            ARRAY(SELECT asistencia.actividad_id
              FROM cor1440_gen_asistencia AS asistencia
-             JOIN cor1440_gen_actividad_actividadpf AS aapf 
+             JOIN cor1440_gen_actividad_actividadpf AS aapf
                ON aapf.actividad_id=asistencia.actividad_id
-             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '  
+             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '
              AND persona_id = p.id
              AND asistencia.actividad_id IN (' + actividades.to_sql + ') '\
-        ') AS "'+ cod +'_ids"' 
+        ') AS "'+ cod +'_ids"'
 
         if apf != actividadespf.last
           c += ', '
@@ -148,11 +177,12 @@ class Benefactividadpf < ActiveRecord::Base
     end
     c+=" FROM sip_persona AS p
         LEFT JOIN sip_tdocumento AS td ON td.id=p.tdocumento_id
-        WHERE p.id IN (#{personas.to_sql}) 
+        WHERE p.id IN (#{personas.to_sql})
         AND p.id IN (SELECT persona_id FROM cor1440_gen_asistencia AS asis
           WHERE asis.actividad_id IN (#{actividades.to_sql}) )
         ) AS sub
         ) AS sub2
+        ) AS sub3
         "
 #        GROUP BY 1,2,3,4,5,6,7) AS sub
 #    "
@@ -166,7 +196,7 @@ class Benefactividadpf < ActiveRecord::Base
           r = "0"
         else
           bids = self[m[1]+"_ids"].join(',')
-          r="<a href='#{Rails.application.routes.url_helpers.sip_path + 
+          r="<a href='#{Rails.application.routes.url_helpers.sip_path +
                         'actividades?filtro[busid]=' + bids}'"\
                         " target='_blank'>"\
                         "#{self[m[1]]}"\

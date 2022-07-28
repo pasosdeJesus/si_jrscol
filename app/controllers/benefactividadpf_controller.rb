@@ -119,16 +119,23 @@ class BenefactividadpfController < Heb412Gen::ModelosController
              'Tipo de documento', 'Número de documento',
              'Sexo', 
              'Edad en actividad más reciente',
-             'Rango de edad en actividad más reciente']
+             'Rango de edad en actividad más reciente',
+             'Número de caso asociado',
+             'Dia Nac.',
+             'Mes Nac.',
+             'Año Nac.',
+             'Pais Nac.',
+             'Perfil en actividad más reciente'
+        ]
         caml1 = Benefactividadpf.columns.map(&:name)[5..-2]
         caml2 = caml1.select {|c| c[-4..-1] == '_ids'}.sort
         caml = caml2.map {|c| c.sub('_ids', '')}
         l += caml
 
-        hoja.merge_cells('A1:H1')
+        hoja.merge_cells('A1:N1')
 
         hoja.add_row l, style: [estilo_encabezado] * (8+caml.length)
-        registros.order('UPPER(persona_nombres)').each do |baml|
+        registros.order('UPPER(persona_nombres), UPPER(persona_apellidos), persona_id').each do |baml|
           l = [baml['persona_id'],
                baml['persona_nombres'],
                baml['persona_apellidos'],
@@ -136,22 +143,28 @@ class BenefactividadpfController < Heb412Gen::ModelosController
                baml['persona_numerodocumento'],
                baml['persona_sexo'],
                baml['edad_en_ultact'],
-               baml['rangoedadac_ultact']
+               baml['rangoedadac_ultact'],
+               baml['persona_caso'],
+               baml['persona_dianac'],
+               baml['persona_mesnac'],
+               baml['persona_anionac'],
+               baml['persona_paisnac'],
+               baml['persona_perfil_ultact']
           ]
           caml.each do |c|
             l << baml[c]
           end
           hoja.add_row l, style: estilo_base
         end
-        hoja.column_widths 20,20,20,20,20,20,20,20
+        hoja.column_widths 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
         if ultf>0
-          l = [nil]*8
+          l = [nil]*14
           fs = hoja.add_row l
-          lc = 'I'
+          lc = 'O'
           caml.each do |c|
             fs.add_cell("=SUM(#{lc}7:#{lc}#{ultf})")
             lc = PlantillaHelper.sigcol(lc)
