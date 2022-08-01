@@ -6,7 +6,8 @@ module Sivel2Sjr
 
     include Sivel2Sjr::Concerns::Controllers::CasosController
 
-    before_action :set_caso, only: [:show, :edit, :update, :destroy],
+    before_action :set_caso, 
+      only: [:show, :edit, :update, :destroy, :solicitar],
       exclude: [:poblacion_sexo_rangoedadac, :personas_casos]
     load_and_authorize_resource class: Sivel2Gen::Caso
 
@@ -24,12 +25,14 @@ module Sivel2Sjr
         :memo,
         :created_at,
         :asesor,
+        :asesorhistorico,
         :contacto,
         :direccion,
         :telefono,
         :atenciones,
         :listado_familiares,
-        :listado_anexos
+        :listado_anexos,
+        :solicitudes
       ]
     end
 
@@ -242,6 +245,34 @@ module Sivel2Sjr
       return cuentaini == @caso.errors.count
     end
 
+
+    def cambiar_asesor
+      ah = ::Asesorhistorico.create(
+        casosjr_id: @caso.casosjr.id, usuario_id: @caso.casosjr.asesor,
+        fechainicio: @caso.casosjr.asesorfechaini,
+        fechafin: Date.today.to_s,
+        oficina_id: @caso.casosjr.oficina_id
+      )
+      @caso.casosjr.asesorfechaini = Date.today.to_s
+      @caso.casosjr.asesor = params[:caso][:casosjr_attributes][:asesor].to_i
+      @caso.save(validate: false)
+      @caso.casosjr.oficina_id = @caso.casosjr.usuario.oficina_id
+      @caso.save(validate: false)
+      params[:caso][:casosjr_attributes][:oficina_id] = @caso.casosjr.oficina_id 
+      cs = @caso.solicitud.where(
+        solicitud: "Ser asesor del caso #{@caso.id}",
+        usuario_id: @caso.casosjr.asesor,
+        estadosol_id: Sip::Solicitud::PENDIENTE)
+      if cs.count > 0
+        cs.each do |csi| 
+          csi.estadosol_id = Sip::Solicitud::RESUELTA
+          csi.save
+        end
+      end
+    end
+
+
+
     def update
       # Procesar ubicacionespre de migración
       (caso_params[:migracion_attributes] || []).each do |clave, mp|
@@ -289,7 +320,21 @@ module Sivel2Sjr
         )
         de.save!(validate: false)
       end
-     
+
+      if @caso.casosjr.asesor != params[:caso][:casosjr_attributes][:asesor].to_i
+        if current_usuario.rol == Ability::ROLADMIN || 
+          current_usuario.rol == Ability::ROLDIR
+          if @caso.casosjr.asesorfechaini.nil? then
+            @caso.casosjr.asesorfechaini = '2022-06-29'
+          end
+          cambiar_asesor
+        else
+          raise CanCan::AccessDenied.new("No autorizado!", :update, 
+                                         Sivel2Gen::Caso)
+        end
+
+      end
+
       # Convertir valores de radios tri-estado, el valor 3 en el 
       # botón de radio es nil en la base de datos
       # Si falta poner id_victima
@@ -531,6 +576,50 @@ module Sivel2Sjr
       @registro = @basica = Sivel2Gen::Consexpcaso.
         where(caso_id: params[:id]).take
     end
+
+
+    def solicitar
+      if @caso.nil?
+       flash[:error] = 'No se creó solicitud. Falta caso'
+      else
+        merror = Sivel2Gen::CasoSolicitud::solicitar(
+          current_usuario, 
+          Sivel2Gen::CasoSolicitud::SER_ASESOR,
+          @caso.id,
+          Usuario.where(rol: Ability::ROLADMIN,
+                        fechadeshabilitacion: nil)
+        )
+        if merror == ''
+          flash[:notice] = "Solicitud para administradores creada y programando envío de correo."
+          begin
+            SolicitudMailer.with(
+              objeto: 'el caso',
+              id: @caso.id,
+              solicitante: current_usuario.nusuario,
+              cor_solicitante: current_usuario.email,
+              solicitado_a: Usuario.where(
+                rol: Ability::ROLADMIN,
+                fechadeshabilitacion: nil
+              ).map(&:nusuario),
+              cor_solicitado_a: Usuario.where(
+                rol: Ability::ROLADMIN,
+                fechadeshabilitacion: nil
+              ).map(&:email),
+              solicitud: "Ser asesor del caso #{@caso.id}"
+            ).solicitud.deliver_now
+          rescue => e
+            merror << " No se pudo enviar correo (#{e.to_s})."
+            puts "*** No se pudo enviar correo (#{e.to_s})"
+          end
+        end
+
+        if merror != ''
+          flash[:error] = merror
+        end
+        redirect_to sivel2_gen.caso_path(@caso.id)
+      end
+    end
+
 
   end
 end

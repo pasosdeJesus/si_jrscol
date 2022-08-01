@@ -600,11 +600,13 @@ class Ability < Sivel2Sjr::Ability
 
     'Benefactividadpf' => {
       campos: [
-       :persona_nombre,
-       :edad_en_actividad,
-       :persona_identificacion,
+       :persona_nombres,
+       :persona_apellidos,
+       :edad_en_ultact,
+       :persona_tipodocumento,
+       :persona_numerodocumento,
        :persona_sexo,
-       :rangoedadac_nombre
+       :rangoedadac_ultact
       ],
       controlador: '::BenefesactividadpfController',
       ruta: '/conteos/benefactividadpf',
@@ -904,7 +906,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
         can [:update, :create, :destroy], Sivel2Gen::Caso,
           casosjr: { asesor: usuario.id, oficina_id:usuario.oficina_id }
-        can :new, Sivel2Gen::Caso
+        can [:new, :solicitar], Sivel2Gen::Caso
 
         can :read, Sivel2Sjr::Consactividadcaso
         can :read, ::Benefactividadpf
@@ -931,32 +933,36 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sivel2Gen::Acto
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
-        can :new, Sivel2Gen::Caso
+        can [:new, :solicitar], Sivel2Gen::Caso
         can [:update, :create, :destroy, :edit], 
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
         can :read, ::Benefactividadpf
         can :read, ::Consgifmm
+
       when Ability::ROLCOOR
-        can :manage, Cor1440Gen::Informe
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
         can :manage, Cor1440Gen::Actividad, oficina_id: [1, usuario.oficina_id]
+        can :manage, Cor1440Gen::Informe
+        can :index, Cor1440Gen::Mindicadorpf
         can :read, Cor1440Gen::Proyectofinanciero
         can [:index, :read], Cor1440Gen::Rangoedadac
 
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
+        can :manage, Sal7711Gen::Articulo
+
         can [:new, :create, :read, :index, :edit, :update], Sip::Orgsocial
         can :manage, Sip::Persona
         can :manage, Sip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
-        can :read, Sivel2Gen::Caso
-        can :new, Sivel2Gen::Caso
-        can [:fichaimp, :fichapdf, :update, :create, :destroy, :poneretcomp], 
+        can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
+        can [:new, :solicitar], Sivel2Gen::Caso
+        can [:update, :create, :destroy, :poneretcomp], 
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso

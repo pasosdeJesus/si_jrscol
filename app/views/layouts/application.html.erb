@@ -21,7 +21,9 @@
           <% end %>
           <% if can? :edit, Sivel2Gen::Caso then %>
             <%= opcion_menu "Nuevo", sivel2_gen.new_caso_path, desplegable: true %>
-            <%= opcion_menu "Validaciones", sivel2_gen.validarcasos_path, desplegable: true %>
+            <% if can? :validar, Sivel2Gen::Caso then %>
+              <%= opcion_menu "Validaciones", sivel2_gen.validarcasos_path, desplegable: true %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>

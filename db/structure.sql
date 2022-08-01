@@ -391,6 +391,41 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: asesorhistorico; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.asesorhistorico (
+    id bigint NOT NULL,
+    casosjr_id integer NOT NULL,
+    fechainicio date NOT NULL,
+    fechafin date NOT NULL,
+    usuario_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    oficina_id integer
+);
+
+
+--
+-- Name: asesorhistorico_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.asesorhistorico_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: asesorhistorico_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.asesorhistorico_id_seq OWNED BY public.asesorhistorico.id;
+
+
+--
 -- Name: autoridadrefugio; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -651,7 +686,8 @@ CREATE TABLE public.sivel2_sjr_casosjr (
     id_salidam integer,
     fechallegadam date,
     id_llegadam integer,
-    motivom character varying(5000)
+    motivom character varying(5000),
+    asesorfechaini date
 );
 
 
@@ -752,6 +788,8 @@ CREATE TABLE public.sip_clase (
     id_municipio integer,
     id integer DEFAULT nextval('public.sip_clase_id_seq'::regclass) NOT NULL,
     observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    ultvigenciaini date,
+    ultvigenciafin date,
     CONSTRAINT clase_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -786,6 +824,9 @@ CREATE TABLE public.sip_departamento (
     observaciones character varying(5000) COLLATE public.es_co_utf_8,
     codiso character varying(6),
     catiso character varying(64),
+    codreg integer,
+    ultvigenciaini date,
+    ultvigenciafin date,
     CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -818,6 +859,10 @@ CREATE TABLE public.sip_municipio (
     id_departamento integer,
     id integer DEFAULT nextval('public.sip_municipio_id_seq'::regclass) NOT NULL,
     observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    codreg integer,
+    ultvigenciaini date,
+    ultvigenciafin date,
+    tipomun character varying(32),
     CONSTRAINT municipio_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -3600,6 +3645,97 @@ CREATE SEQUENCE public.instanciader_seq
 
 
 --
+-- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_persona (
+    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
+    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    anionac integer,
+    mesnac integer,
+    dianac integer,
+    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
+    numerodocumento character varying(100),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_pais integer,
+    nacionalde integer,
+    tdocumento_id integer,
+    id_departamento integer,
+    id_municipio integer,
+    id_clase integer,
+    buscable tsvector,
+    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
+    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
+    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
+);
+
+
+--
+-- Name: mcben1; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.mcben1 AS
+ SELECT caso.id AS id_caso,
+    victima.id_persona,
+        CASE
+            WHEN (casosjr.contacto_id = victima.id_persona) THEN 1
+            ELSE 0
+        END AS contacto,
+        CASE
+            WHEN (casosjr.contacto_id <> victima.id_persona) THEN 1
+            ELSE 0
+        END AS beneficiario,
+    1 AS npersona,
+    'total'::text AS total
+   FROM public.sivel2_gen_caso caso,
+    public.sivel2_sjr_casosjr casosjr,
+    public.sivel2_gen_victima victima,
+    public.sip_persona persona,
+    public.sivel2_sjr_victimasjr victimasjr
+  WHERE ((caso.id = victima.id_caso) AND (caso.id = casosjr.id_caso) AND (caso.id = victima.id_caso) AND (persona.id = victima.id_persona) AND (victima.id = victimasjr.id_victima) AND (victimasjr.fechadesagregacion IS NULL) AND (casosjr.oficina_id = 4) AND (victimasjr.id_actividadoficio = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 102])) AND ((persona.anionac IS NULL) OR (persona.anionac = ANY (ARRAY[1900, 1912, 1914, 1930, 1940, 1942, 1945, 1947, 1949, 1950, 1951, 1952, 1953, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1968, 1970, 1972, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1990, 1992, 1993, 1994, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2013, 2015, 2019]))) AND (victimasjr.cabezafamilia = ANY (ARRAY[false, true])) AND (victimasjr.id_estadocivil = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6])) AND (victima.id_etnia = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109])) AND ((((EXTRACT(year FROM casosjr.fecharec))::text || '-'::text) || lpad((EXTRACT(month FROM casosjr.fecharec))::text, 2, '0'::text)) = ANY (ARRAY['2006-12'::text, '2018-07'::text, '2018-11'::text, '2018-12'::text, '2019-01'::text, '2019-02'::text, '2019-03'::text, '2019-04'::text, '2019-05'::text, '2019-06'::text, '2019-07'::text, '2019-08'::text, '2019-09'::text, '2019-10'::text, '2019-11'::text, '2019-12'::text, '2020-01'::text, '2020-02'::text, '2020-03'::text, '2020-04'::text, '2020-05'::text, '2020-06'::text, '2020-08'::text, '2020-09'::text, '2020-10'::text, '2020-11'::text, '2020-12'::text, '2021-01'::text, '2021-03'::text, '2021-04'::text, '2021-05'::text, '2021-07'::text, '2021-08'::text])) AND (victimasjr.id_escolaridad = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) AND (victima.id_rangoedad = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) AND (victimasjr.id_regimensalud = ANY (ARRAY[0, 1, 2, 3])) AND (persona.sexo = ANY (ARRAY['F'::bpchar, 'M'::bpchar, 'S'::bpchar])) AND (persona.id = victima.id_persona));
+
+
+--
+-- Name: mcben2; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.mcben2 AS
+ SELECT mcben1.id_caso,
+    mcben1.id_persona,
+    mcben1.contacto,
+    mcben1.beneficiario,
+    mcben1.npersona,
+    mcben1.total,
+    ubicacion.departamento_id,
+    departamento.nombre AS departamento_nombre,
+    ubicacion.municipio_id,
+    municipio.nombre AS municipio_nombre,
+    ubicacion.clase_id,
+    clase.nombre AS clase_nombre,
+    ultimodesplazamiento.fechaexpulsion
+   FROM (((((public.mcben1
+     LEFT JOIN public.ultimodesplazamiento ON ((mcben1.id_caso = ultimodesplazamiento.id_caso)))
+     LEFT JOIN public.sip_ubicacionpre ubicacion ON ((ultimodesplazamiento.expulsionubicacionpre_id = ubicacion.id)))
+     LEFT JOIN public.sip_departamento departamento ON ((ubicacion.departamento_id = departamento.id)))
+     LEFT JOIN public.sip_municipio municipio ON ((ubicacion.municipio_id = municipio.id)))
+     LEFT JOIN public.sip_clase clase ON ((ubicacion.clase_id = clase.id)));
+
+
+--
 -- Name: mecanismodeentrega; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4413,6 +4549,41 @@ ALTER SEQUENCE public.sip_bitacora_id_seq OWNED BY public.sip_bitacora.id;
 
 
 --
+-- Name: sip_clase_histvigencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_clase_histvigencia (
+    id bigint NOT NULL,
+    clase_id integer,
+    vigenciaini date,
+    vigenciafin date NOT NULL,
+    nombre character varying(256),
+    id_clalocal integer,
+    id_tclase character varying,
+    observaciones character varying(5000)
+);
+
+
+--
+-- Name: sip_clase_histvigencia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_clase_histvigencia_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_clase_histvigencia_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_clase_histvigencia_id_seq OWNED BY public.sip_clase_histvigencia.id;
+
+
+--
 -- Name: sip_claverespaldo; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4495,6 +4666,77 @@ CREATE SEQUENCE public.sip_datosbio_id_seq
 --
 
 ALTER SEQUENCE public.sip_datosbio_id_seq OWNED BY public.sip_datosbio.id;
+
+
+--
+-- Name: sip_departamento_histvigencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_departamento_histvigencia (
+    id bigint NOT NULL,
+    departamento_id integer,
+    vigenciaini date,
+    vigenciafin date NOT NULL,
+    nombre character varying(256),
+    id_deplocal integer,
+    codiso integer,
+    catiso integer,
+    codreg integer,
+    observaciones character varying(5000)
+);
+
+
+--
+-- Name: sip_departamento_histvigencia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_departamento_histvigencia_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_departamento_histvigencia_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_departamento_histvigencia_id_seq OWNED BY public.sip_departamento_histvigencia.id;
+
+
+--
+-- Name: sip_estadosol; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_estadosol (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_estadosol_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_estadosol_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_estadosol_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_estadosol_id_seq OWNED BY public.sip_estadosol.id;
 
 
 --
@@ -4695,6 +4937,41 @@ CREATE MATERIALIZED VIEW public.sip_mundep AS
    FROM public.sip_mundep_sinorden
   ORDER BY (sip_mundep_sinorden.nombre COLLATE public.es_co_utf_8)
   WITH NO DATA;
+
+
+--
+-- Name: sip_municipio_histvigencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_municipio_histvigencia (
+    id bigint NOT NULL,
+    municipio_id integer,
+    vigenciaini date,
+    vigenciafin date NOT NULL,
+    nombre character varying(256),
+    id_munlocal integer,
+    observaciones character varying(5000),
+    codreg integer
+);
+
+
+--
+-- Name: sip_municipio_histvigencia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_municipio_histvigencia_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_municipio_histvigencia_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_municipio_histvigencia_id_seq OWNED BY public.sip_municipio_histvigencia.id;
 
 
 --
@@ -4907,46 +5184,6 @@ ALTER SEQUENCE public.sip_perfilorgsocial_id_seq OWNED BY public.sip_perfilorgso
 
 
 --
--- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_persona_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_persona (
-    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
-    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    anionac integer,
-    mesnac integer,
-    dianac integer,
-    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
-    numerodocumento character varying(100),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_pais integer,
-    nacionalde integer,
-    tdocumento_id integer,
-    id_departamento integer,
-    id_municipio integer,
-    id_clase integer,
-    buscable tsvector,
-    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
-    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
-    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
-);
-
-
---
 -- Name: sip_persona_trelacion_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -5005,6 +5242,50 @@ CREATE SEQUENCE public.sip_sectororgsocial_id_seq
 --
 
 ALTER SEQUENCE public.sip_sectororgsocial_id_seq OWNED BY public.sip_sectororgsocial.id;
+
+
+--
+-- Name: sip_solicitud; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_solicitud (
+    id bigint NOT NULL,
+    usuario_id integer NOT NULL,
+    fecha date NOT NULL,
+    solicitud character varying(5000),
+    estadosol_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_solicitud_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_solicitud_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_solicitud_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_solicitud_id_seq OWNED BY public.sip_solicitud.id;
+
+
+--
+-- Name: sip_solicitud_usuarionotificar; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_solicitud_usuarionotificar (
+    usuarionotificar_id integer,
+    solicitud_id integer
+);
 
 
 --
@@ -5346,6 +5627,44 @@ CREATE SEQUENCE public.sip_ubicacionpre_id_seq
 --
 
 ALTER SEQUENCE public.sip_ubicacionpre_id_seq OWNED BY public.sip_ubicacionpre.id;
+
+
+--
+-- Name: sip_vereda; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_vereda (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    municipio_id integer,
+    verlocal_id integer,
+    observaciones character varying(5000),
+    latitud double precision,
+    longitud double precision,
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_vereda_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_vereda_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_vereda_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_vereda_id_seq OWNED BY public.sip_vereda.id;
 
 
 --
@@ -5698,6 +6017,36 @@ CREATE TABLE public.sivel2_gen_caso_respuestafor (
     caso_id integer NOT NULL,
     respuestafor_id integer NOT NULL
 );
+
+
+--
+-- Name: sivel2_gen_caso_solicitud; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_caso_solicitud (
+    id bigint NOT NULL,
+    caso_id integer NOT NULL,
+    solicitud_id integer NOT NULL
+);
+
+
+--
+-- Name: sivel2_gen_caso_solicitud_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_caso_solicitud_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_caso_solicitud_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sivel2_gen_caso_solicitud_id_seq OWNED BY public.sivel2_gen_caso_solicitud.id;
 
 
 --
@@ -6349,11 +6698,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.id_persona = contacto.id) AND (vcontacto.id_caso = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 105)
-          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
-  ORDER BY conscaso.fecha, conscaso.caso_id
+  WHERE (true = false)
   WITH NO DATA;
 
 
@@ -8279,6 +8624,13 @@ ALTER TABLE ONLY public.agresionmigracion ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: asesorhistorico id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico ALTER COLUMN id SET DEFAULT nextval('public.asesorhistorico_id_seq'::regclass);
+
+
+--
 -- Name: autoridadrefugio id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8818,6 +9170,13 @@ ALTER TABLE ONLY public.sip_bitacora ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: sip_clase_histvigencia id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_clase_histvigencia ALTER COLUMN id SET DEFAULT nextval('public.sip_clase_histvigencia_id_seq'::regclass);
+
+
+--
 -- Name: sip_claverespaldo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8832,6 +9191,20 @@ ALTER TABLE ONLY public.sip_datosbio ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: sip_departamento_histvigencia id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_departamento_histvigencia ALTER COLUMN id SET DEFAULT nextval('public.sip_departamento_histvigencia_id_seq'::regclass);
+
+
+--
+-- Name: sip_estadosol id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_estadosol ALTER COLUMN id SET DEFAULT nextval('public.sip_estadosol_id_seq'::regclass);
+
+
+--
 -- Name: sip_grupo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8843,6 +9216,13 @@ ALTER TABLE ONLY public.sip_grupo ALTER COLUMN id SET DEFAULT nextval('public.si
 --
 
 ALTER TABLE ONLY public.sip_lineaorgsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_lineaorgsocial_id_seq'::regclass);
+
+
+--
+-- Name: sip_municipio_histvigencia id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_municipio_histvigencia ALTER COLUMN id SET DEFAULT nextval('public.sip_municipio_histvigencia_id_seq'::regclass);
 
 
 --
@@ -8885,6 +9265,13 @@ ALTER TABLE ONLY public.sip_perfilorgsocial ALTER COLUMN id SET DEFAULT nextval(
 --
 
 ALTER TABLE ONLY public.sip_sectororgsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_sectororgsocial_id_seq'::regclass);
+
+
+--
+-- Name: sip_solicitud id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_solicitud ALTER COLUMN id SET DEFAULT nextval('public.sip_solicitud_id_seq'::regclass);
 
 
 --
@@ -8937,10 +9324,24 @@ ALTER TABLE ONLY public.sip_ubicacionpre ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: sip_vereda id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_vereda ALTER COLUMN id SET DEFAULT nextval('public.sip_vereda_id_seq'::regclass);
+
+
+--
 -- Name: sivel2_gen_anexo_victima id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sivel2_gen_anexo_victima ALTER COLUMN id SET DEFAULT nextval('public.sivel2_gen_anexo_victima_id_seq'::regclass);
+
+
+--
+-- Name: sivel2_gen_caso_solicitud id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_gen_caso_solicitud ALTER COLUMN id SET DEFAULT nextval('public.sivel2_gen_caso_solicitud_id_seq'::regclass);
 
 
 --
@@ -9162,6 +9563,14 @@ ALTER TABLE ONLY public.sivel2_gen_antecedente
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: asesorhistorico asesorhistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT asesorhistorico_pkey PRIMARY KEY (id);
 
 
 --
@@ -10269,6 +10678,14 @@ ALTER TABLE ONLY public.sip_bitacora
 
 
 --
+-- Name: sip_clase_histvigencia sip_clase_histvigencia_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_clase_histvigencia
+    ADD CONSTRAINT sip_clase_histvigencia_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: sip_clase sip_clase_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10309,6 +10726,14 @@ ALTER TABLE ONLY public.sip_datosbio
 
 
 --
+-- Name: sip_departamento_histvigencia sip_departamento_histvigencia_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_departamento_histvigencia
+    ADD CONSTRAINT sip_departamento_histvigencia_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: sip_departamento sip_departamento_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10330,6 +10755,14 @@ ALTER TABLE ONLY public.sip_departamento
 
 ALTER TABLE ONLY public.sip_departamento
     ADD CONSTRAINT sip_departamento_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_estadosol sip_estadosol_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_estadosol
+    ADD CONSTRAINT sip_estadosol_pkey PRIMARY KEY (id);
 
 
 --
@@ -10362,6 +10795,14 @@ ALTER TABLE ONLY public.sip_grupoper
 
 ALTER TABLE ONLY public.sip_lineaorgsocial
     ADD CONSTRAINT sip_lineaorgsocial_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_municipio_histvigencia sip_municipio_histvigencia_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_municipio_histvigencia
+    ADD CONSTRAINT sip_municipio_histvigencia_pkey PRIMARY KEY (id);
 
 
 --
@@ -10461,6 +10902,14 @@ ALTER TABLE ONLY public.sip_sectororgsocial
 
 
 --
+-- Name: sip_solicitud sip_solicitud_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_solicitud
+    ADD CONSTRAINT sip_solicitud_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: sip_tema sip_tema_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10506,6 +10955,14 @@ ALTER TABLE ONLY public.sip_trivalente
 
 ALTER TABLE ONLY public.sip_ubicacionpre
     ADD CONSTRAINT sip_ubicacionpre_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_vereda sip_vereda_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_vereda
+    ADD CONSTRAINT sip_vereda_pkey PRIMARY KEY (id);
 
 
 --
@@ -10690,6 +11147,14 @@ ALTER TABLE ONLY public.sivel2_gen_caso_region
 
 ALTER TABLE ONLY public.sivel2_gen_caso_respuestafor
     ADD CONSTRAINT sivel2_gen_caso_respuestafor_pkey1 PRIMARY KEY (caso_id, respuestafor_id);
+
+
+--
+-- Name: sivel2_gen_caso_solicitud sivel2_gen_caso_solicitud_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_gen_caso_solicitud
+    ADD CONSTRAINT sivel2_gen_caso_solicitud_pkey PRIMARY KEY (id);
 
 
 --
@@ -11139,6 +11604,13 @@ CREATE UNIQUE INDEX cor1440_gen_datointermedioti_pmindicadorpf_llaves_idx ON pub
 
 
 --
+-- Name: index_asesorhistorico_on_usuario_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_asesorhistorico_on_usuario_id ON public.asesorhistorico USING btree (usuario_id);
+
+
+--
 -- Name: index_cor1440_gen_actividad_on_usuario_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11202,6 +11674,20 @@ CREATE INDEX index_sip_orgsocial_on_pais_id ON public.sip_orgsocial USING btree 
 
 
 --
+-- Name: index_sip_solicitud_usuarionotificar_on_solicitud_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sip_solicitud_usuarionotificar_on_solicitud_id ON public.sip_solicitud_usuarionotificar USING btree (solicitud_id);
+
+
+--
+-- Name: index_sip_solicitud_usuarionotificar_on_usuarionotificar_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sip_solicitud_usuarionotificar_on_usuarionotificar_id ON public.sip_solicitud_usuarionotificar USING btree (usuarionotificar_id);
+
+
+--
 -- Name: index_sip_ubicacion_on_id_clase; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11248,6 +11734,20 @@ CREATE INDEX index_sivel2_gen_actividad_rangoedadac_on_actividad_id ON public.co
 --
 
 CREATE INDEX index_sivel2_gen_actividad_rangoedadac_on_rangoedadac_id ON public.cor1440_gen_actividad_rangoedadac USING btree (rangoedadac_id);
+
+
+--
+-- Name: index_sivel2_gen_caso_solicitud_on_caso_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sivel2_gen_caso_solicitud_on_caso_id ON public.sivel2_gen_caso_solicitud USING btree (caso_id);
+
+
+--
+-- Name: index_sivel2_gen_caso_solicitud_on_solicitud_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sivel2_gen_caso_solicitud_on_solicitud_id ON public.sivel2_gen_caso_solicitud USING btree (solicitud_id);
 
 
 --
@@ -12638,6 +13138,14 @@ ALTER TABLE ONLY public.cor1440_gen_resultadopf
 
 
 --
+-- Name: sivel2_gen_caso_solicitud fk_rails_06deb84185; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_gen_caso_solicitud
+    ADD CONSTRAINT fk_rails_06deb84185 FOREIGN KEY (caso_id) REFERENCES public.sivel2_gen_caso(id);
+
+
+--
 -- Name: sip_municipio fk_rails_089870a38d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13134,6 +13642,14 @@ ALTER TABLE ONLY public.cor1440_gen_informe
 
 
 --
+-- Name: sivel2_gen_caso_solicitud fk_rails_435e539f61; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sivel2_gen_caso_solicitud
+    ADD CONSTRAINT fk_rails_435e539f61 FOREIGN KEY (solicitud_id) REFERENCES public.sip_solicitud(id);
+
+
+--
 -- Name: cor1440_gen_actividad fk_rails_4426fc905e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13363,6 +13879,14 @@ ALTER TABLE ONLY public.detallefinanciero
 
 ALTER TABLE ONLY public.sivel2_sjr_agreenpais_migracion
     ADD CONSTRAINT fk_rails_6218990f83 FOREIGN KEY (agreenpais_id) REFERENCES public.agresionmigracion(id);
+
+
+--
+-- Name: sip_solicitud_usuarionotificar fk_rails_6296c40917; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_solicitud_usuarionotificar
+    ADD CONSTRAINT fk_rails_6296c40917 FOREIGN KEY (solicitud_id) REFERENCES public.sip_solicitud(id);
 
 
 --
@@ -13838,6 +14362,22 @@ ALTER TABLE ONLY public.detallefinanciero
 
 
 --
+-- Name: asesorhistorico fk_rails_a020144a5c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT fk_rails_a020144a5c FOREIGN KEY (oficina_id) REFERENCES public.sip_oficina(id);
+
+
+--
+-- Name: asesorhistorico fk_rails_a0ce6f0b19; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT fk_rails_a0ce6f0b19 FOREIGN KEY (usuario_id) REFERENCES public.usuario(id);
+
+
+--
 -- Name: mr519_gen_campo fk_rails_a186e1a8a0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13851,6 +14391,14 @@ ALTER TABLE ONLY public.mr519_gen_campo
 
 ALTER TABLE ONLY public.sip_ubicacion
     ADD CONSTRAINT fk_rails_a1d509c79a FOREIGN KEY (id_clase) REFERENCES public.sip_clase(id);
+
+
+--
+-- Name: sip_solicitud fk_rails_a670d661ef; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_solicitud
+    ADD CONSTRAINT fk_rails_a670d661ef FOREIGN KEY (usuario_id) REFERENCES public.usuario(id);
 
 
 --
@@ -14198,6 +14746,14 @@ ALTER TABLE ONLY public.cor1440_gen_informe
 
 
 --
+-- Name: sip_solicitud_usuarionotificar fk_rails_db0f7c1dd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_solicitud_usuarionotificar
+    ADD CONSTRAINT fk_rails_db0f7c1dd6 FOREIGN KEY (usuarionotificar_id) REFERENCES public.usuario(id);
+
+
+--
 -- Name: cor1440_gen_proyectofinanciero_usuario fk_rails_dc664c3eaf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14331,6 +14887,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividadpf
 
 ALTER TABLE ONLY public.cor1440_gen_actividad_valorcampotind
     ADD CONSTRAINT fk_rails_e8cd697f5d FOREIGN KEY (actividad_id) REFERENCES public.cor1440_gen_actividad(id);
+
+
+--
+-- Name: asesorhistorico fk_rails_e9632297a2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.asesorhistorico
+    ADD CONSTRAINT fk_rails_e9632297a2 FOREIGN KEY (casosjr_id) REFERENCES public.sivel2_sjr_casosjr(id_caso);
 
 
 --
@@ -14523,6 +15087,14 @@ ALTER TABLE ONLY public.cor1440_gen_anexo_proyectofinanciero
 
 ALTER TABLE ONLY public.sivel2_sjr_desplazamiento
     ADD CONSTRAINT fk_rails_fe4eac003a FOREIGN KEY (expulsionubicacionpre_id) REFERENCES public.sip_ubicacionpre(id);
+
+
+--
+-- Name: sip_solicitud fk_rails_ffa31a0de6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_solicitud
+    ADD CONSTRAINT fk_rails_ffa31a0de6 FOREIGN KEY (estadosol_id) REFERENCES public.sip_estadosol(id);
 
 
 --
@@ -15681,6 +16253,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201031182132'),
 ('20201119125643'),
 ('20201121162913'),
+('20201124035715'),
+('20201124050637'),
+('20201124142002'),
+('20201124145625'),
 ('20201130020715'),
 ('20201201015501'),
 ('20201205041350'),
@@ -15805,6 +16381,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220122105047'),
 ('20220213031520'),
 ('20220214121713'),
+('20220214232150'),
+('20220215095957'),
 ('20220316025851'),
 ('20220323001338'),
 ('20220323001645'),
@@ -15823,8 +16401,23 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220422190546'),
 ('20220428145059'),
 ('20220509122054'),
+('20220525122150'),
 ('20220527221026'),
 ('20220601111520'),
-('20220613224844');
+('20220613224844'),
+('20220625105636'),
+('20220630145649'),
+('20220630162659'),
+('20220713200101'),
+('20220713200444'),
+('20220714191500'),
+('20220714191505'),
+('20220714191510'),
+('20220714191555'),
+('20220719111148'),
+('20220721170452'),
+('20220721200858'),
+('20220722000850'),
+('20220722192214');
 
 

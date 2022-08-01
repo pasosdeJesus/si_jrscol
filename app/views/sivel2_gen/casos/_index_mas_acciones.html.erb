@@ -1,0 +1,7 @@
+<% if current_usuario && 
+     [Ability::ROLADMIN, Ability::ROLDIR,
+      Ability::ROLCOOR, Ability::ROLANALI, 
+      Ability::ROLSIST].include?(current_usuario.rol) && 
+     !can?(:edit, Sivel2Gen::Caso.find(caso.caso_id)) %>
+   <%= link_to('Solicitar', main_app.caso_solicitar_path(caso.caso_id), class: 'btn btn-sm') %>
+ <% end %>
