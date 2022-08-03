@@ -52,7 +52,7 @@ module Sip
           registro = modelo.create!(MODELO_PARAMS.merge({id_pais: 170}))
         when "municipio"
           registro = modelo.create!(MODELO_PARAMS.merge({id_departamento: 17}))
-        when "clase"
+        when "clase", "vereda"
           registro = modelo.create!(MODELO_PARAMS.merge({id_municipio: 1360}))
         else
           registro = modelo.create!(MODELO_PARAMS)
