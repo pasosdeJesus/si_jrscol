@@ -321,16 +321,16 @@ module Sivel2Sjr
         de.save!(validate: false)
       end
 
-      if @caso.casosjr.asesor != params[:caso][:casosjr_attributes][:asesor].to_i
+      if !@caso.casosjr.asesor.nil? && @caso.casosjr.asesor != params[:caso][:casosjr_attributes][:asesor].to_i
         if current_usuario.rol == Ability::ROLADMIN || 
           current_usuario.rol == Ability::ROLDIR
           if @caso.casosjr.asesorfechaini.nil? then
             @caso.casosjr.asesorfechaini = '2022-06-29'
           end
           cambiar_asesor
-        else
-          raise CanCan::AccessDenied.new("No autorizado!", :update, 
-                                         Sivel2Gen::Caso)
+        #else
+          #raise CanCan::AccessDenied.new("No autorizado!", :update, 
+        #                                 Sivel2Gen::Caso)
         end
 
       end
