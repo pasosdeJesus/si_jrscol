@@ -22,8 +22,11 @@
                   <% pids = campo[1][1..-2].split(',') %>
                   <% sep = ''.html_safe %>
                   <% pids.each do |pid| %>
+                    <% na = Sip::Persona.connection.execute("SELECT soundexespm(nombres || ' ' || apellidos) FROM sip_persona WHERE id=#{pid}")[0]['soundexespm'] %>
+                    <% puts na %>
+
                     <%= sep + link_to(
-                      pid,
+                      pid + " (#{na})",
                       sip.persona_path(pid.to_i),
                       target: '_blank')
                     %>
