@@ -10,22 +10,29 @@ module Sip
 
     def atributos_show
       atributos_show_sivel2_sjr + [
-        :detallefinanciero_ids
+        :detallefinanciero_ids,
+        :etiqueta_ids
       ]
     end
 
     def atributos_index
       atributos_index_sivel2_sjr  + [
-        :detallefinanciero_ids
+        :detallefinanciero_ids,
+        :etiqueta_ids
       ]
     end 
 
     def atributos_form
       a = atributos_form_sivel2_sjr - [
-        :detallefinanciero_ids]
+        :detallefinanciero_ids, :etiqueta_ids] +
+        [:etiqueta_ids => []]
       return a
     end
 
+
+    def filtro_etiqueta(ide)
+      joins(:sip_etiqueta_persona).where(etiqueta_id: ide)
+    end
 
     def filtro_benef_fechas(benef, cfecha = 'sip_persona.created_at')
       pfid = ''
@@ -148,6 +155,15 @@ module Sip
         ] ]
       ] + [
         'proyectofinanciero_ids' => []
+      ] + [ 
+        etiqueta_persona_attributes:  [
+          :etiqueta_id, 
+          :fecha_localizada,
+          :id,
+          :observaciones,
+          :usuario_id,
+          :_destroy
+        ]
       ]
     end
 

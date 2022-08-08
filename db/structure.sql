@@ -5684,6 +5684,41 @@ CREATE TABLE public.sip_etiqueta_municipio (
 
 
 --
+-- Name: sip_etiqueta_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_etiqueta_persona (
+    id bigint NOT NULL,
+    etiqueta_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    usuario_id integer NOT NULL,
+    fecha date NOT NULL,
+    observaciones character varying(5000),
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_etiqueta_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_etiqueta_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_etiqueta_persona_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_etiqueta_persona_id_seq OWNED BY public.sip_etiqueta_persona.id;
+
+
+--
 -- Name: sip_fuenteprensa_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -10103,6 +10138,13 @@ ALTER TABLE ONLY public.sip_estadosol ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: sip_etiqueta_persona id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_etiqueta_persona ALTER COLUMN id SET DEFAULT nextval('public.sip_etiqueta_persona_id_seq'::regclass);
+
+
+--
 -- Name: sip_grupo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -11669,6 +11711,14 @@ ALTER TABLE ONLY public.sip_departamento
 
 ALTER TABLE ONLY public.sip_estadosol
     ADD CONSTRAINT sip_estadosol_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_etiqueta_persona sip_etiqueta_persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_etiqueta_persona
+    ADD CONSTRAINT sip_etiqueta_persona_pkey PRIMARY KEY (id);
 
 
 --
@@ -14237,6 +14287,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividadpf
 
 
 --
+-- Name: sip_etiqueta_persona fk_rails_0b3fc3ed9d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_etiqueta_persona
+    ADD CONSTRAINT fk_rails_0b3fc3ed9d FOREIGN KEY (etiqueta_id) REFERENCES public.sip_etiqueta(id);
+
+
+--
 -- Name: cor1440_gen_actividad_respuestafor fk_rails_0b4fb6fceb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14298,6 +14356,14 @@ ALTER TABLE ONLY public.sivel2_sjr_progestado_derecho
 
 ALTER TABLE ONLY public.sip_etiqueta_municipio
     ADD CONSTRAINT fk_rails_10d88626c3 FOREIGN KEY (etiqueta_id) REFERENCES public.sip_etiqueta(id);
+
+
+--
+-- Name: sip_etiqueta_persona fk_rails_117b029532; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_etiqueta_persona
+    ADD CONSTRAINT fk_rails_117b029532 FOREIGN KEY (usuario_id) REFERENCES public.usuario(id);
 
 
 --
@@ -14890,6 +14956,14 @@ ALTER TABLE ONLY public.sip_orgsocial
 
 ALTER TABLE ONLY public.sivel2_sjr_agreenpais_migracion
     ADD CONSTRAINT fk_rails_5ca3db2b82 FOREIGN KEY (migracion_id) REFERENCES public.sivel2_sjr_migracion(id);
+
+
+--
+-- Name: sip_etiqueta_persona fk_rails_5e6e6f10da; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_etiqueta_persona
+    ADD CONSTRAINT fk_rails_5e6e6f10da FOREIGN KEY (persona_id) REFERENCES public.sip_persona(id);
 
 
 --
@@ -17454,6 +17528,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220722000850'),
 ('20220722192214'),
 ('20220803163303'),
-('20220805181901');
+('20220805181901'),
+('20220808141102'),
+('20220808142135');
 
 

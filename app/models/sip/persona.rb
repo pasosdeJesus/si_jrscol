@@ -13,6 +13,17 @@ module Sip
       association_foreign_key: 'detallefinanciero_id',
       join_table: 'detallefinanciero_persona'
 
+    has_many :etiqueta_persona,  
+      foreign_key: 'persona_id',
+      validate: true,
+      dependent: :destroy,
+      class_name: 'Sip::EtiquetaPersona'
+    has_many :etiqueta, 
+      through: :etiqueta_persona, 
+      class_name: 'Sip::Etiqueta'
+    accepts_nested_attributes_for :etiqueta_persona, 
+      allow_destroy: true, 
+      reject_if: :all_blank
 
     has_one :datosbio, class_name: 'Sip::Datosbio', 
       foreign_key: 'persona_id', dependent: :delete
