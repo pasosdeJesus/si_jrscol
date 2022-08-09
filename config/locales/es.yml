@@ -219,6 +219,7 @@ es:
         Lineasorgsocial: Líneas de trabajo de organización social
       "sip/persona":
         detallefinanciero_ids: Detalles financieros en los que aparece
+        etiqueta_ids: Etiqueta(s)
       "sip/sectororgsocial":
         Sectororgsocial: Población relacionada con organización social
         Sectoresorgsocial: Poblaciones relacionadas con organización social

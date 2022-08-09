@@ -58,6 +58,10 @@ module Sip
       self[:apellidos] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  /, '').sub(/  $/, '')
     end
 
+    scope :filtro_etiqueta_ids, lambda {|e|
+      joins(:etiqueta_persona).where("sip_etiqueta_persona.etiqueta_id" => e)
+    }
+
     # Debe corresponder con la funcion @jrs_persona_presenta_nombre de 
     # app/assets/javascripts/actividad.js.coffee
     def presenta_nombre
