@@ -21,12 +21,25 @@ def elimina_generados
 end
 
 def cuenta_poblacion_0
-  puts "Encontrando actividades con cuenta de poblacion en 0"
-  ap0 = Cor1440Gen::Actividad.all.select {|a| 
-    a.presenta('poblacion') == 0 && 
-     (a.asistencia.count > 0 || a.actividad_casosjr.count > 0)
-  }
-  puts "Encontradas #{ap0.count} actividades"
+  ap0 = Cor1440Gen::Actividad.all
+  puts "Encontrando actividades con cuenta de poblacion en 0 entre las #{ap0.count}"
+  ap0 = ap0.where(
+    'id IN (SELECT actividad_id FROM cor1440_gen_asistencia '\
+    '  UNION SELECT actividad_id FROM sivel2_sjr_actividad_casosjr)')
+  puts "Limitando a #{ap0.count} que tienen listaso de asistencia o listado de casos"
+  univ = ap0.count
+  c = 0
+  ultp = -1
+  ap0 = ap0.select do |a| 
+    c += 1
+    por = c*100/univ 
+    if por / 10 != ultp / 10
+      ultp = por
+      puts "#{por}%"
+    end
+    a.presenta('poblacion') == 0
+  end
+  puts "Encontradas #{ap0.count} actividades con población pero cuenta de población en 0"
   ap0.each do |a|
     puts "Actividad sin asistencia: #{a.id}"
     personas = {}
@@ -74,24 +87,6 @@ def cuenta_poblacion_0
   end
 end
 
-def elimina_personas_en_blanco
-  pore = Sip::Persona.where(
-    "(tdocumento_id is null) AND
-      (numerodocumento is null) AND 
-      id NOT IN (SELECT persona_id FROM cor1440_gen_asistencia) AND 
-      id NOT IN (SELECT persona_id FROM cor1440_gen_caracterizacionpersona) AND 
-      id NOT IN (SELECT persona_id FROM sip_orgsocial_persona) AND 
-      id NOT IN (SELECT id_persona FROM sivel2_gen_victima) AND 
-      (trim(nombres) IN ('','N','NN')) AND 
-      (trim(apellidos) in ('','N','NN')) AND 
-      id NOT IN (SELECT  persona1 FROM sip_persona_trelacion) AND 
-      id NOT IN (SELECT persona2 FROM sip_persona_trelacion) AND 
-      id NOT IN (SELECT persona_id FROM detallefinanciero_persona) AND 
-      id NOT IN (SELECT persona_id FROM cor1440_gen_beneficiariopf)"
-  )
-  pore.destroy_all
-end
-
 def run
   if !ENV['SMTP_MAQ']
     puts "No esta definida variable de ambiente SMTP_MAQ"
@@ -99,8 +94,13 @@ def run
   end
   alertas
   elimina_generados
+  m = UnificarHelper.eliminar_casos_en_blanco
+  puts m;
+  m = UnificarHelper.eliminar_personas_en_blanco
+  puts m;
+  m = UnificarHelper.arreglar_casos_medio_borrados
+  puts m;
   cuenta_poblacion_0
-  elimina_personas_en_blanco
 end
 
 run
