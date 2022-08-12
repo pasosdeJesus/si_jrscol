@@ -75,6 +75,9 @@
           <% if can? :read, Sip::Persona then %>
             <%= opcion_menu "Beneficiarios", sip.personas_path, desplegable: true %>
             <%= opcion_menu "Reporte de beneficiarios repetidos", main_app.beneficiarios_repetidos_path, desplegable: true %>
+            <% if can? :deduplicar, Sip::Persona then %>
+              <%= opcion_menu "Deduplicar beneficiarios", main_app.beneficiarios_deduplicar_path, desplegable: true %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
