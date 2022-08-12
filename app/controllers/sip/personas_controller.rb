@@ -57,6 +57,9 @@ module Sip
     end
 
     def reporterepetidos
+
+      @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
+
       @validaciones = []
       benef = Sip::Persona.all
       puts "OJO 1 benef.count=#{benef.count}"
@@ -100,6 +103,23 @@ module Sip
         cuerpo: arr 
       }
       render :reporterepetidos, layout: 'application'
+    end
+
+    def deduplicar
+      @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
+      render :deduplicar, layout: 'application'
+    end
+
+    def unificar
+      m, p1 = UnificarHelper.unificar_dos_beneficiarios(
+        params[:id1], params[:id2], current_usuario)
+      if (m != "")
+        flash[:error] = m
+        redirect_to Rails.configuration.relative_url_root
+        return
+      end
+      redirect_to sip.persona_path(p1)
+
     end
 
 

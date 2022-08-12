@@ -1,6 +1,14 @@
 require 'sivel2_sjr/concerns/models/victima'
 
 class Sivel2Gen::Victima < ActiveRecord::Base
+
+  # Lo ponemos antes del include de Victima para que se ejecute antes
+  before_destroy do
+    Sivel2Sjr::Actosjr.where("id_acto IN (SELECT id FROM sivel2_gen_acto
+                             WHERE id_caso=? AND id_persona=?)", 
+                             id_caso, id_persona).delete_all
+  end
+
   include Sivel2Sjr::Concerns::Models::Victima
 
   attr_accessor :rangoedadactual_id

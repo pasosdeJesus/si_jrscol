@@ -23,6 +23,10 @@ Rails.application.routes.draw do
     end
     resources :usuarios, path_names: { new: 'nuevo', edit: 'edita' } 
 
+    post '/beneficiarios/unificar' => 'sip/personas#unificar',
+      as: :beneficiarios_unificar
+    get '/beneficiarios/deduplicar' => 'sip/personas#deduplicar',
+      as: :beneficiarios_deduplicar
     get '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',
       as: :beneficiarios_repetidos
     post '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',

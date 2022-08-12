@@ -31,7 +31,7 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
 
   validate :fecharec_pasada
   def fecharec_pasada
-    if fecharec>Date.today
+    if fecharec && fecharec>Date.today
       errors.add(:fecharec, 
                  " la fecha de recepción debe ser en el pasado")
     end
