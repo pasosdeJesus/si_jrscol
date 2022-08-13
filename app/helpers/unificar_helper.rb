@@ -19,7 +19,7 @@ module UnificarHelper
     if lpore.count == 0
       return "No hay casos en blanco por eliminar.\n"
     else
-      return "Se eliminaron #{lpore.count} casos en blanco (#{lpore.joint(', ')}).\n"
+      return "Se eliminaron #{lpore.count} casos en blanco (#{lpore.join(', ')}).\n"
     end
   end
   module_function :eliminar_casos_en_blanco
@@ -118,7 +118,7 @@ module UnificarHelper
     numpora = pora.count
     pora.each do |c|
       puts "Arreglando caso medio borrado #{c.id}"
-      arreglar_un_caso_medio_borrado(c, us, lcom, lelim)
+      arreglar_un_caso_medio_borrado(c, us, lcom, lelim, mens)
     end
     if numpora == 0
       mens = "No hay casos parcialmente eliminados.\n"
@@ -153,7 +153,7 @@ module UnificarHelper
     if lpore.count == 0 
       mens = "No hay personas en blanco.\n"
     else
-      mens = "Se eliminaron #{lpore.count} personas en blanco (#{lpore.join(', ')}).\n"
+      mens = "Se eliminaron #{lpore.count} personas en blanco no asociadas a casos ni a actividades (#{lpore.join(', ')}).\n"
     end
     return mens
   end
