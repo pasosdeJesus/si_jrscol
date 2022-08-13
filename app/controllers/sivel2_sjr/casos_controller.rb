@@ -358,7 +358,7 @@ module Sivel2Sjr
     end
 
     def destroy
-      if @caso.casosjr.respuesta
+      if @caso.casosjr && @caso.casosjr.respuesta
         # No se logró hacer ni con dependente:destroy en
         # las relaciones ni borrando con delete 
         @caso.casosjr.respuesta.each do |r|

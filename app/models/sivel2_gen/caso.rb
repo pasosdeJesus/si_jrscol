@@ -14,11 +14,11 @@ class Sivel2Gen::Caso < ActiveRecord::Base
   def presenta(atr)
     case atr.to_s
     when 'fecharec'
-      casosjr.fecharec if casosjr.fecharec
+      casosjr.fecharec if casosjr && casosjr.fecharec
     when 'oficina'
-      casosjr.oficina.nombre if casosjr.oficina
+      casosjr.oficina.nombre if casosjr && casosjr.oficina
     when 'asesor'
-      casosjr.usuario.nusuario if casosjr.usuario
+      casosjr.usuario.nusuario if casosjr && casosjr.usuario
     when 'contacto'
       if casosjr && casosjr.contacto
         casosjr.contacto.nombres + ' ' + casosjr.contacto.apellidos +
@@ -29,9 +29,9 @@ class Sivel2Gen::Caso < ActiveRecord::Base
               casosjr.contacto.numerodocumento)
       end
     when 'direccion'
-      casosjr.direccion if casosjr.direccion
+      casosjr.direccion if casosjr && casosjr.direccion
     when 'telefono'
-      casosjr.telefono if casosjr.telefono
+      casosjr.telefono if casosjr && casosjr.telefono
     else
       presenta_gen(atr) 
     end

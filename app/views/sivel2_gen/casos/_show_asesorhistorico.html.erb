@@ -8,13 +8,15 @@
     </tr>
   </thead>
   <tbody>
-    <% @caso.casosjr.asesorhistorico.order(fechainicio: :desc, id: :desc).each do |ah| %>
-      <tr>
-        <td> <%= ah.usuario.nusuario %></td>
-        <td> <%= ah.oficina.nombre if ah.oficina %></td>
-        <td> <%= ah.fechainicio_localizada %> </td>
-        <td> <%= ah.fechafin_localizada %> </td>
-      </tr>
+    <% if @caso.casosjr %>
+      <% @caso.casosjr.asesorhistorico.order(fechainicio: :desc, id: :desc).each do |ah| %>
+        <tr>
+          <td> <%= ah.usuario.nusuario %></td>
+          <td> <%= ah.oficina.nombre if ah.oficina %></td>
+          <td> <%= ah.fechainicio_localizada %> </td>
+          <td> <%= ah.fechafin_localizada %> </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

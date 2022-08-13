@@ -58,8 +58,6 @@ module Sip
 
     def reporterepetidos
 
-      @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
-
       @validaciones = []
       benef = Sip::Persona.all
       puts "OJO 1 benef.count=#{benef.count}"
