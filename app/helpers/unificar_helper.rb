@@ -61,6 +61,51 @@ module UnificarHelper
   end
   module_function :eliminar_caso
 
+  # Crear un casosjr para el caso c  o lo elimina si no tiene víctimas
+  # disponibles para esto.
+  # @param caso Sivel2Gen::CAso
+  # @parama asesor Usuario que quedará como asesor
+  # @param lcom Lista de caso completados
+  # @param lelim Lista de casos eliminados
+  # @param mens Colchon para mensajes de error
+  def arreglar_un_caso_medio_borrado(caso, asesor, lcom, lelim, mens)
+    if caso.casosjr
+      puts "Este caso no necesita ser arreglado"
+      return
+    end
+    if caso.victima_ids == []
+      puts "Caso sin víctimas, es mejor eliminarlo"
+      if UnificarHelper.eliminar_caso(caso, mens)
+        lelim << caso.id
+      end
+    else
+      vpos = caso.victima_ids.select{
+        |vid| 
+        idp = Sivel2Gen::Victima.find(vid).id_persona
+        Sivel2Gen::Victima.where('id_caso<>?', caso.id).
+          where('id_persona<>?', idp).count == 0
+      }
+      if vpos.count == 0
+        puts "Todas las víctimas están en otros casos es mejor eliminarlo"
+        if UnificarHelper.eliminar_caso(caso, mens)
+          lelim << [caso.id]
+        end
+      else
+        puts "Completando"
+        cs = Sivel2Sjr::Casosjr.create(
+          id_caso: caso.id,
+          contacto_id: vpos[0],
+          asesor: us.id,
+          oficina: 1 # SIN INFORMACION
+        )
+        cs.save
+        lcom += [caso.id]
+      end
+    end
+  end
+  module_function :arreglar_un_caso_medio_borrado
+
+
   def arreglar_casos_medio_borrados
     us = Usuario.habilitados.where(rol: Ability::ROLADMIN).take
     if !us
@@ -73,42 +118,12 @@ module UnificarHelper
     numpora = pora.count
     pora.each do |c|
       puts "Arreglando caso medio borrado #{c.id}"
-      if c.victima_ids = []
-        puts "Caso sin víctimas es mejor eliminarlo"
-        if UnificarHelper.eliminar_caso(c, mens)
-          lelim += [c.id]
-        end
-      else
-        vpos = c.victima_ids.select{
-          |vid| 
-          idp = Sivel2Gen::Victima.find(vid).id_persona
-          Sivel2Gen::Victima.where('id_caso<>?', c.id).
-            where('id_persona<>?', idp).count == 0
-        }
-        if vpos.count == 0
-          puts "Todas las víctimas están en otros casos es mejor eliminarlo"
-          if eliminar_caso(c, mens)
-            lelim += [c.id]
-          end
-
-        else
-          puts "Completando"
-          cs = Sivel2Sjr::Casosjr.create(
-            id_caso: c.id,
-            contacto_id: vpos[0],
-            asesor: us.id,
-            oficina: 1 # SIN INFORMACION
-          )
-          cs.save
-          lcom += [c.id]
-        end
-      end
-
+      arreglar_un_caso_medio_borrado(c, us, lcom, lelim)
     end
     if numpora == 0
       mens = "No hay casos parcialmente eliminados.\n"
     else
-      mens = "Se completaron #{lcom.count} casos parcialmente eliminados (#{lcom.join(', ')}) y #{lelim.count} fueron eliminaron (#{lelim.join(', ')}).\n";
+      mens = "De los #{numpora} casos parcialmente eliminados, se completaron #{lcom.count} (i.e #{lcom.join(', ')}) y se eliminaron #{lelim.count} que no tenían beneficiarios o cuyos beneficiarios estaban en otros casos (i.e #{lelim.join(', ')}).\n";
     end
     return mens
   end
