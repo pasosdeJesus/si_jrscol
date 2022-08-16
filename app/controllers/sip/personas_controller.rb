@@ -170,6 +170,9 @@ module Sip
     def deduplicar
       @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
       @res_deduplicar = UnificarHelper::deduplicar_automaticamente(current_usuario)
+      Sip::Persona.connection.execute <<-SQL
+        REFRESH MATERIALIZED VIEW sivel2_gen_conscaso;
+      SQL
       render :deduplicar, layout: 'application'
     end
 

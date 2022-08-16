@@ -178,6 +178,8 @@ module UnificarHelper
   end
   module_function :eliminar_personas_en_blanco
 
+  # después de ejecutar este refrescar vista materializada
+  # sivel2_gen_conscaso
   def preparar_automaticamente
     mens = arreglar_casos_medio_borrados
     puts mens
@@ -456,6 +458,8 @@ SELECT sub2.sigla,
   end
   module_function :consulta_duplicados_autom
 
+  # después de ejecutar este refrescar vista materializada
+  # sivel2_gen_conscaso
   def deduplicar_automaticamente(current_usuario)
     pares = consulta_duplicados_autom
     res = {
