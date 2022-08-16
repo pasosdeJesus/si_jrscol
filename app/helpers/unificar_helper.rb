@@ -284,7 +284,7 @@ module UnificarHelper
     ].each do |c|
       if !p1[c] && p2[c]
         p1[c] = p2[c]
-        ep.observaciones += "#{c}->#{p2[c]}; "
+        ep.observaciones << "#{c}->#{p2[c]}; "
       end
     end
     p1.save
@@ -298,7 +298,7 @@ module UnificarHelper
           nv = vic.dup
           nv.id_persona = p1.id
           nv.save!
-          ep.observaciones += "Creada víctma en caso #{cid}; "
+          ep.observaciones << "Creada víctma en caso #{cid}; "
         end
         ep.save
         csjr = vic.caso.casosjr
@@ -313,16 +313,16 @@ module UnificarHelper
 #            puts csjr.errors
 #            debugger
 #          end
-          ep.observaciones += "Cambiado contacto en caso #{cid}; "
+          ep.observaciones << "Cambiado contacto en caso #{cid}; "
         end
         ep.save
         Sivel2Gen::Acto.where(id_caso: cid, id_persona: p1.id).each do |ac|
           ac.id_persona = p1.id
           ac.save!
-          ep.observaciones += "Cambiado acto en caso #{cid}; "
+          ep.observaciones << "Cambiado acto en caso #{cid}; "
         end
         ep.save
-        ep.observaciones += "Elimina víctima #{vic.id_persona} del caso #{cid}; "
+        ep.observaciones << "Elimina víctima #{vic.id_persona} del caso #{cid}; "
         vic.destroy
         ep.save
       end
@@ -331,31 +331,31 @@ module UnificarHelper
     Cor1440Gen::Caracterizacionpersona.where(persona_id: p2.id).each do |cp|
       cp.persona_id = p1.id
       cp.save
-      ep.observaciones += "Cambiada caracterizacíon #{cp.id}; "
+      ep.observaciones << "Cambiada caracterizacíon #{cp.id}; "
     end
     Sip::PersonaTrelacion.where(persona1: p2.id).each do |pt|
       pt.persona1 = p1.id
       pt.save
-      ep.observaciones += "Cambiada relacion con persona #{pt.persona2}; "
+      ep.observaciones << "Cambiada relacion con persona #{pt.persona2}; "
     end
     Sip::PersonaTrelacion.where(persona2: p2.id).each do |pt|
       pt.persona2 = p1.id
       pt.save
-      ep.observaciones += "Cambiada relacion con persona #{pt.persona1}; "
+      ep.observaciones << "Cambiada relacion con persona #{pt.persona1}; "
     end
 
     #sip_datosbio no debe estar lleno
     Sip::OrgsocialPersona.where(persona_id: p2.id).each do |op|
       op.persona_id = p1.id
       op.save
-      ep.observaciones += "Cambiada organización social #{op.orgsocial_id}; "
+      ep.observaciones << "Cambiada organización social #{op.orgsocial_id}; "
     end
 
     #mr519_gen_encuestapersona no debería estar llena
     Sip::EtiquetaPersona.where(persona_id: p2.id).each do |ep2|
       ep2.persona_id = p1.id
       ep2.save
-      ep.observaciones += "Cambiada etiqueta #{ep.etiqueta.nombre}; "
+      ep.observaciones << "Cambiada etiqueta #{ep.etiqueta.nombre}; "
     end
 
     # cor1440_gen_beneficiariopf no tiene id
@@ -369,7 +369,7 @@ module UnificarHelper
             (persona_id, proyectofinanciero_id) 
             VALUES (#{p1.id}, #{pfid});
         SQL
-        ep.observaciones += "Cambiado beneficiario en convenio financiado #{pfid}; "
+        ep.observaciones << "Cambiado beneficiario en convenio financiado #{pfid}; "
       end
       Cor1440Gen::Beneficiariopf.connection.execute <<-SQL
         DELETE FROM cor1440_gen_beneficiariopf WHERE 
@@ -382,13 +382,14 @@ module UnificarHelper
     ).each do |bp|
       bp.persona_id = p1.id
       bp.save
-      ep.observaciones += "Cambiado detalle financiero #{bp.detallefinanciero_id}; "
+      ep.observaciones << "Cambiado detalle financiero #{bp.detallefinanciero_id}; "
     end
     #detallefinanciero_persona
 
+    ep.observaciones = ep.observaciones[0..4999]
     ep.save
     p2.destroy
-    ep.observaciones += "Se unificó y eliminó el registro de beneficiario #{p2.id}; "\
+    ep.observaciones << "Se unificó y eliminó el registro de beneficiario #{p2.id}; "\
         "Nombres: #{p2.nombres.to_s}; "\
         "Apellidos: #{p2.apellidos.to_s}; "\
         "Tipo doc.: #{p2.tdocumento_id ? p2.tdocumento.sigla : ''}; "\
@@ -403,7 +404,9 @@ module UnificarHelper
         "Centro poblado nac.: #{p2.id_clase ? p2.clase.nombre : ''}; "\
         "Nacional de: #{p2.nacionalde ? p2.nacional.nombre : ''}; "\
         "Fecha creación: #{p2.created_at.to_s}; "\
-        "Fecha actualización: #{p2.updated_at.to_s}. "[0..4999]
+        "Fecha actualización: #{p2.updated_at.to_s}. "
+    
+    ep.observaciones = ep.observaciones[0..4999]
     ep.save
 
     return ["", p1.id]
