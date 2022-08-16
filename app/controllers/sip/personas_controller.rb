@@ -56,6 +56,8 @@ module Sip
       return benef
     end
 
+
+
     def reporterepetidos
 
       @validaciones = []
@@ -100,13 +102,77 @@ module Sip
                      'Editores Act. cerca a ingreso personas'],
         cuerpo: arr 
       }
+
+      arr = ActiveRecord::Base.connection.select_all(
+        UnificarHelper.consulta_casos_por_arreglar.select(['id']).to_sql
+      )
+      @validaciones << {
+        titulo: 'Casos parcialmente eliminados por arreglar (completar o eliminar)',
+        encabezado: ['Id.'],
+        cuerpo: arr 
+      }
+
+
+      arr = ActiveRecord::Base.connection.select_all(
+        UnificarHelper.consulta_casos_en_blanco.select(['id_caso']).to_sql
+      )
+      @validaciones << {
+        titulo: 'Casos en blanco por eliminar automaticamente',
+        encabezado: ['Id.'],
+        cuerpo: arr 
+      }
+
+      arr = ActiveRecord::Base.connection.select_all(
+        UnificarHelper.consulta_personas_en_blanco_por_eliminar.select(['id']).to_sql
+      )
+      @validaciones << {
+        titulo: 'Personas en blanco por eliminar automaticamente',
+        encabezado: ['Id.'],
+        cuerpo: arr 
+      }
+
+      pares = UnificarHelper.consulta_duplicados_autom
+      vc = {
+        titulo: 'Beneficarios por unificar automaticamente',
+        encabezado: ['T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
+                     'Id2', 'Nombres', 'Apellidos'],
+                     cuerpo: []
+      }
+      pares.each do |f|
+        vc[:cuerpo] << [['sigla',f['sigla']], ['numerodocumento', f['numerodocumento']],
+                      ['id1', f['id1']], ['nombres1', f['nombres1']], 
+                      ['apellidos1', f['apellidos1']],
+                      ['id2', f['id2']], ['nombres2', f['nombres2']], 
+                      ['apellidos2', f['apellidos2']] ]
+      end
+      @validaciones << vc
+      pares = UnificarHelper.consulta_duplicados_autom
+      vc = {
+        titulo: 'Beneficarios por unificar automaticamente',
+        encabezado: ['T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
+                     'Id2', 'Nombres', 'Apellidos'],
+                     cuerpo: []
+      }
+      pares.each do |f|
+        vc[:cuerpo] << [['sigla',f['sigla']], ['numerodocumento', f['numerodocumento']],
+                      ['id1', f['id1']], ['nombres1', f['nombres1']], 
+                      ['apellidos1', f['apellidos1']],
+                      ['id2', f['id2']], ['nombres2', f['nombres2']], 
+                      ['apellidos2', f['apellidos2']] ]
+      end
+      @validaciones << vc
+
+
+
       render :reporterepetidos, layout: 'application'
     end
 
     def deduplicar
       @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
+      @res_deduplicar = UnificarHelper::deduplicar_automaticamente(current_usuario)
       render :deduplicar, layout: 'application'
     end
+
 
     def unificar
       m, p1 = UnificarHelper.unificar_dos_beneficiarios(
@@ -117,7 +183,6 @@ module Sip
         return
       end
       redirect_to sip.persona_path(p1)
-
     end
 
 
