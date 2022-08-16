@@ -1,12 +1,20 @@
 module UnificarHelper
 
-  def eliminar_casos_en_blanco
-    pore = Sivel2Gen::Caso.joins(:casosjr).where(
+  include Rails.application.routes.url_helpers
+
+  def consulta_casos_en_blanco
+    return Sivel2Gen::Caso.joins(:casosjr).where(
       "contacto_id IN (SELECT id FROM sip_persona "\
       "  WHERE COALESCE(nombres, '')='' "\
       "  AND COALESCE(apellidos, '')='') "\
       "AND COALESCE(memo, '')='' "
     )
+  end
+  module_function :consulta_casos_en_blanco
+
+
+  def eliminar_casos_en_blanco
+    pore = UnificarHelper.consulta_casos_en_blanco
     lpore =[]
     pore.each do |ce|
       lpore += [ce.id]
@@ -32,19 +40,19 @@ module UnificarHelper
     begin
       Sivel2Gen::Caso.connection.execute('BEGIN')
       Sivel2Gen::Caso.connection.execute(
-        "DELETE FROM sivel2_sjr_categoria_desplazamiento 
-           WHERE desplazamiento_id IN (SELECT id FROM sivel2_sjr_desplazamiento 
+        "DELETE FROM sivel2_sjr_categoria_desplazamiento
+           WHERE desplazamiento_id IN (SELECT id FROM sivel2_sjr_desplazamiento
               WHERE id_caso=#{c.id});"
       )
-      Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_desplazamiento 
+      Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_desplazamiento
         WHERE id_caso=#{c.id};")
-      Sivel2Gen::Caso.connection.execute("UPDATE sivel2_gen_caso 
+      Sivel2Gen::Caso.connection.execute("UPDATE sivel2_gen_caso
         SET ubicacion_id=NULL
           WHERE id=#{c.id};")
-      Sivel2Gen::Caso.connection.execute("DELETE FROM sip_ubicacion 
+      Sivel2Gen::Caso.connection.execute("DELETE FROM sip_ubicacion
         WHERE id_caso=#{c.id};")
       Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_actosjr
-        WHERE id_acto IN (SELECT id FROM sivel2_gen_acto 
+        WHERE id_acto IN (SELECT id FROM sivel2_gen_acto
           WHERE id_caso=#{c.id});")
       Sivel2Gen::Caso.connection.execute('COMMIT;')
       c.destroy
@@ -55,7 +63,7 @@ module UnificarHelper
 
 #    Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_gen_acto
 #      WHERE id_caso=#{c.id};")
-#    Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_gen_caso 
+#    Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_gen_caso
 #      WHERE id=#{c.id};")
 #    Sivel2Gen::Caso.connection.execute('COMMIT;')
   end
@@ -105,6 +113,11 @@ module UnificarHelper
   end
   module_function :arreglar_un_caso_medio_borrado
 
+  def consulta_casos_por_arreglar
+    Sivel2Gen::Caso.where('id NOT IN (SELECT id_caso FROM sivel2_sjr_casosjr)')
+  end
+  module_function :consulta_casos_por_arreglar
+
 
   def arreglar_casos_medio_borrados
     us = Usuario.habilitados.where(rol: Ability::ROLADMIN).take
@@ -114,7 +127,7 @@ module UnificarHelper
     mens = "";
     lcom = [];
     lelim = [];
-    pora = Sivel2Gen::Caso.where('id NOT IN (SELECT id_caso FROM sivel2_sjr_casosjr)')
+    pora = consulta_casos_por_arreglar
     numpora = pora.count
     pora.each do |c|
       puts "Arreglando caso medio borrado #{c.id}"
@@ -129,28 +142,34 @@ module UnificarHelper
   end
   module_function :arreglar_casos_medio_borrados
 
-  def eliminar_personas_en_blanco
-    pore = Sip::Persona.where(
+  def consulta_personas_en_blanco_por_eliminar
+    Sip::Persona.where(
       "(tdocumento_id is null) AND
-      (numerodocumento is null) AND 
-      id NOT IN (SELECT persona_id FROM cor1440_gen_asistencia) AND 
-      id NOT IN (SELECT persona_id FROM cor1440_gen_caracterizacionpersona) AND 
-      id NOT IN (SELECT persona_id FROM sip_orgsocial_persona) AND 
-      id NOT IN (SELECT id_persona FROM sivel2_gen_victima) AND 
-      (trim(nombres) IN ('','N','NN')) AND 
-      (trim(apellidos) in ('','N','NN')) AND 
-      id NOT IN (SELECT  persona1 FROM sip_persona_trelacion) AND 
-      id NOT IN (SELECT persona2 FROM sip_persona_trelacion) AND 
-      id NOT IN (SELECT persona_id FROM detallefinanciero_persona) AND 
+      (numerodocumento is null OR numerodocumento='') AND
+      id NOT IN (SELECT persona_id FROM cor1440_gen_asistencia) AND
+      id NOT IN (SELECT persona_id FROM cor1440_gen_caracterizacionpersona) AND
+      id NOT IN (SELECT persona_id FROM sip_orgsocial_persona) AND
+      id NOT IN (SELECT id_persona FROM sivel2_gen_victima) AND
+      (trim(nombres) IN ('','N','NN')) AND
+      (trim(apellidos) in ('','N','NN')) AND
+      id NOT IN (SELECT  persona1 FROM sip_persona_trelacion) AND
+      id NOT IN (SELECT persona2 FROM sip_persona_trelacion) AND
+      id NOT IN (SELECT persona_id FROM detallefinanciero_persona) AND
       id NOT IN (SELECT persona_id FROM cor1440_gen_beneficiariopf)"
     )
+  end
+  module_function :consulta_personas_en_blanco_por_eliminar
+
+
+  def eliminar_personas_en_blanco
+    pore = consulta_personas_en_blanco_por_eliminar
     lpore = []
     pore.each do |p|
       lpore += ["#{p.id} #{p.nombres} #{p.apellidos}"]
       puts "Eliminando persona en blanco #{p.id}"
       p.destroy
     end
-    if lpore.count == 0 
+    if lpore.count == 0
       mens = "No hay personas en blanco.\n"
     else
       mens = "Se eliminaron #{lpore.count} personas en blanco no asociadas a casos ni a actividades (#{lpore.join(', ')}).\n"
@@ -177,7 +196,7 @@ module UnificarHelper
   # @return [menserr, null] si hay error o ["", persona_id] si no
   def unificar_dos_beneficiarios(p1_id, p2_id, current_usuario)
     menserr = ''
-    if !p1_id || p1_id.to_i <= 0 || 
+    if !p1_id || p1_id.to_i <= 0 ||
         Sip::Persona.where(id: p1_id.to_i).count == 0
       menserr += "Primera identificación de persona no válida #{p1_id.to_s}.\n"
     end
@@ -262,8 +281,16 @@ module UnificarHelper
         ep.save
         csjr = vic.caso.casosjr
         if csjr.contacto_id == p2.id
-          csjr.contacto_id = p1.id
-          csjr.save!
+          Sivel2Sjr::Casosjr.connection.execute <<-SQL
+            UPDATE sivel2_sjr_casosjr SET
+              contacto_id=#{p1.id}
+              WHERE contacto_id=#{p2.id}
+          SQL
+  #          csjr.contacto_id = p1.id
+#          if !csjr.save
+#            puts csjr.errors
+#            debugger
+#          end
           ep.observaciones += "Cambiado contacto en caso #{cid}; "
         end
         ep.save
@@ -282,7 +309,7 @@ module UnificarHelper
     Cor1440Gen::Caracterizacionpersona.where(persona_id: p2.id).each do |cp|
       cp.persona_id = p1.id
       cp.save
-      ep.observaciones += "Cambiada caracterizacíon #{respuestafor_id}; "
+      ep.observaciones += "Cambiada caracterizacíon #{cp.id}; "
     end
     Sip::PersonaTrelacion.where(persona1: p2.id).each do |pt|
       pt.persona1 = p1.id
@@ -301,20 +328,33 @@ module UnificarHelper
       op.save
       ep.observaciones += "Cambiada organización social #{op.orgsocial_id}; "
     end
- 
+
     #mr519_gen_encuestapersona no debería estar llena
-    Sip::EtiquetaPersona.where(persona_id: p2.id).each do |ep|
-      ep.persona_id = p1.id
-      ep.save
+    Sip::EtiquetaPersona.where(persona_id: p2.id).each do |ep2|
+      ep2.persona_id = p1.id
+      ep2.save
       ep.observaciones += "Cambiada etiqueta #{ep.etiqueta.nombre}; "
     end
 
-    Cor1440Gen::Beneficiariopf.where(persona_id: p2.id).each do |bp|
-      bp.persona_id = p1.id
-      bp.save
-      ep.observaciones += "Cambiado beneficiario en convenio financiado #{bp.proyectofinanciero_id}; "
+    # cor1440_gen_beneficiariopf no tiene id
+    lpf = Cor1440Gen::Beneficiariopf.where(persona_id: p2.id).
+      pluck(:proyectofinanciero_id)
+    lpf.each do |pfid|
+      if Cor1440Gen::Beneficiariopf.where(persona_id: p1.id, 
+          proyectofinanciero_id: pfid).count == 0
+        Cor1440Gen::Beneficiariopf.connection.execute <<-SQL
+          INSERT INTO cor1440_gen_beneficiariopf 
+            (persona_id, proyectofinanciero_id) 
+            VALUES (#{p1.id}, #{pfid});
+        SQL
+        ep.observaciones += "Cambiado beneficiario en convenio financiado #{pfid}; "
+      end
+      Cor1440Gen::Beneficiariopf.connection.execute <<-SQL
+        DELETE FROM cor1440_gen_beneficiariopf WHERE 
+          persona_id=#{p2.id} AND
+          proyectofinanciero_id=#{pfid};
+      SQL
     end
-
     ::Detallefinanciero.joins(:persona).where(
       'sip_persona.id' => p2.id
     ).each do |bp|
@@ -343,9 +383,105 @@ module UnificarHelper
         "Fecha creación: #{p2.created_at.to_s}; "\
         "Fecha actualización: #{p2.updated_at.to_s}. "[0..4999]
     ep.save
- 
+
     return ["", p1.id]
   end
   module_function :unificar_dos_beneficiarios
 
+  def consulta_duplicados_autom
+    Sip::Persona.connection.execute <<-SQL
+      DROP VIEW IF EXISTS duplicados_rep;
+      CREATE VIEW duplicados_rep AS (
+SELECT sub2.sigla,
+    sub2.numerodocumento,
+    sub2.rep,
+    sub2.id1,
+    sub2.id2
+   FROM ( SELECT sub.sigla,
+            sub.numerodocumento,
+            sub.rep,
+            ( SELECT min(p2.id) AS min
+                   FROM sip_persona p2
+                  WHERE p2.tdocumento_id = sub.tdocumento_id AND p2.numerodocumento::text = sub.numerodocumento::text) AS id1,
+            ( SELECT max(p3.id) AS max
+                   FROM sip_persona p3
+                  WHERE p3.tdocumento_id = sub.tdocumento_id AND p3.numerodocumento::text = sub.numerodocumento::text) AS id2
+           FROM ( SELECT t.sigla,
+                    p.tdocumento_id,
+                    p.numerodocumento,
+                    count(p.id) AS rep
+                   FROM sip_persona p
+                     LEFT JOIN sip_tdocumento t ON t.id = p.tdocumento_id
+                  GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) sub
+         WHERE sub.rep = 2
+          ORDER BY sub.rep DESC) sub2
+  WHERE sub2.id1 IS NOT NULL AND sub2.id2 IS NOT NULL
+      );
+    SQL
+    
+    return Sip::Persona.connection.execute <<-SQL
+      SELECT rep2.sigla, rep2.numerodocumento,
+        id1, p1.nombres AS nombres1, soundexespm(p1.nombres) AS sn1,
+        p1.apellidos AS apellidos1, soundexespm(p1.apellidos) AS sa1,
+        id2, p2.nombres AS nombres2, soundexespm(p2.nombres) AS sn2,
+        p2.apellidos AS apellidos2, soundexespm(p2.apellidos) AS sa2
+      FROM rep2
+      JOIN sip_persona AS p1 ON rep2.id1=p1.id
+      JOIN sip_persona AS p2 ON rep2.id2=p2.id
+      WHERE
+        (soundexespm(p1.nombres) = soundexespm(p2.nombres)
+          AND soundexespm(p1.apellidos) = soundexespm(p2.apellidos)
+        )
+        AND p1.id<p2.id
+        OR (((LENGTH(TRIM(p2.nombres))>0 AND
+            TRIM(UPPER(unaccent(p1.nombres))) LIKE
+            TRIM(UPPER(unaccent(p2.nombres))) || '%')
+          OR (LENGTH(TRIM(p1.nombres))>0 AND
+            TRIM(UPPER(unaccent(p2.nombres))) LIKE
+            TRIM(UPPER(unaccent(p1.nombres))) || '%')
+          )
+         AND ((LENGTH(TRIM(p2.apellidos))>0 AND
+            TRIM(UPPER(unaccent(p1.apellidos))) LIKE
+            TRIM(UPPER(unaccent(p2.apellidos))) || '%')
+          OR (LENGTH(TRIM(p1.apellidos))>0 AND
+            TRIM(UPPER(unaccent(p2.apellidos))) LIKE
+            TRIM(UPPER(unaccent(p1.apellidos))) || '%')
+        ))
+        OR (levenshtein(TRIM(UPPER(unaccent(p1.nombres))) || ' ' ||
+            TRIM(UPPER(unaccent(p1.apellidos))),
+            TRIM(UPPER(unaccent(p2.nombres))) || ' ' ||
+            TRIM(UPPER(unaccent(p2.apellidos)))) <= 3)
+      ;
+    SQL
+  end
+  module_function :consulta_duplicados_autom
+
+  def deduplicar_automaticamente(current_usuario)
+    pares = consulta_duplicados_autom
+    res = {
+      titulo: 'Registros deduplicados automaticamente',
+      encabezado: ['T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
+                   'Id2', 'Nombres', 'Apellidos', 'Resultado'],
+      cuerpo: []
+    }
+    pares.each do |f|
+      mens, idunif = unificar_dos_beneficiarios(f['id1'], f['id2'], current_usuario)
+      if (mens == "")
+          mens = "Unificados en <a href='personas/#{idunif}'>#{idunif}</a>".html_safe
+      end
+      res[:cuerpo] << [
+        ['sigla', f['sigla']], 
+        ['numerodocumento', f['numerodocumento']],
+        ['Id. 1', f['id1']], 
+        ['Nombres 1', f['nombres1']], 
+        ['Apellidos 1', f['apellidos1']], 
+        ['Id. 2', f['id2']], 
+        ['Nombres 2', f['nombres2']],
+        ['Apellidos 2', f['apellidos2']], 
+        ['Restultado', mens]
+      ]
+    end
+    return res
+  end
+  module_function :deduplicar_automaticamente
 end

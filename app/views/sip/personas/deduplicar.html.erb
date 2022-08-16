@@ -54,5 +54,8 @@
 <div id="resultado">
 </div> <!-- id: resultado -->
 
-<h2>Beneficiarios posiblemente duplicados u homónimos que debe marcarse como tales</h2>
+<h2>Deduplicación automática de beneficiarios</h2>
+
+<%= render partial: 'resultado_tabla', locals: {tabla: @res_deduplicar} %>
+
 

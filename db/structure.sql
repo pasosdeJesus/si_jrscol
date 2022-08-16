@@ -12445,6 +12445,20 @@ CREATE INDEX sip_persona_sexo_ind ON public.sip_persona USING btree (sexo);
 
 
 --
+-- Name: sip_persona_soundexpm_apellidos; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_persona_soundexpm_apellidos ON public.sip_persona USING btree (public.soundexespm((apellidos)::text));
+
+
+--
+-- Name: sip_persona_soundexpm_nombres; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_persona_soundexpm_nombres ON public.sip_persona USING btree (public.soundexespm((nombres)::text));
+
+
+--
 -- Name: sip_persona_tdocumento_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -16758,6 +16772,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220805181901'),
 ('20220808141102'),
 ('20220808142135'),
-('20220811222831');
+('20220811222831'),
+('20220815125353');
 
 
