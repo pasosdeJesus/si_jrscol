@@ -1,7 +1,7 @@
 class AgregaExtensionFuzzy < ActiveRecord::Migration[7.0]
   def up
     execute <<-SQL
-      CREATE EXTENSION fuzzystrmatch;
+      CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
     SQL
   end
   def down
