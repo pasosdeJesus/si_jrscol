@@ -450,6 +450,24 @@ CREATE FUNCTION public.soundexespm(entrada text) RETURNS text
 
 
 --
+-- Name: unaccent_i(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.unaccent_i(text) RETURNS text
+    LANGUAGE sql IMMUTABLE
+    AS $_$SELECT unaccent($1)$_$;
+
+
+--
+-- Name: unaccent_i_i(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.unaccent_i_i(text) RETURNS text
+    LANGUAGE sql IMMUTABLE
+    AS $_$SELECT unaccent_i($1)$_$;
+
+
+--
 -- Name: accion_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3808,34 +3826,33 @@ ALTER SEQUENCE public.discapacidad_id_seq OWNED BY public.discapacidad.id;
 
 
 --
--- Name: duplicados_rep; Type: VIEW; Schema: public; Owner: -
+-- Name: duplicados_rep; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.duplicados_rep AS
- SELECT sub2.sigla,
-    sub2.numerodocumento,
-    sub2.rep,
-    sub2.id1,
-    sub2.id2
-   FROM ( SELECT sub.sigla,
-            sub.numerodocumento,
-            sub.rep,
-            ( SELECT min(p2.id) AS min
-                   FROM public.sip_persona p2
-                  WHERE ((p2.tdocumento_id = sub.tdocumento_id) AND ((p2.numerodocumento)::text = (sub.numerodocumento)::text))) AS id1,
-            ( SELECT max(p3.id) AS max
-                   FROM public.sip_persona p3
-                  WHERE ((p3.tdocumento_id = sub.tdocumento_id) AND ((p3.numerodocumento)::text = (sub.numerodocumento)::text))) AS id2
-           FROM ( SELECT t.sigla,
-                    p.tdocumento_id,
-                    p.numerodocumento,
-                    count(p.id) AS rep
-                   FROM (public.sip_persona p
-                     LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
-                  GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) sub
-          WHERE (sub.rep = 2)
-          ORDER BY sub.rep DESC) sub2
-  WHERE ((sub2.id1 IS NOT NULL) AND (sub2.id2 IS NOT NULL));
+CREATE MATERIALIZED VIEW public.duplicados_rep AS
+ SELECT sub.sigla,
+    sub.numerodocumento,
+    sub.rep,
+    p1.id AS id1,
+    p2.id AS id2,
+    p1.nombres AS nombres1,
+    p1.apellidos AS apellidos1,
+    p2.nombres AS nombres2,
+    p2.apellidos AS apellidos2,
+    public.soundexespm((p1.nombres)::text) AS sn1,
+    public.soundexespm((p1.apellidos)::text) AS sa1,
+    public.soundexespm((p2.nombres)::text) AS sn2,
+    public.soundexespm((p2.apellidos)::text) AS sa2
+   FROM ((( SELECT t.sigla,
+            p.tdocumento_id,
+            p.numerodocumento,
+            count(p.id) AS rep
+           FROM (public.sip_persona p
+             LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
+          GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) sub
+     JOIN public.sip_persona p1 ON (((p1.tdocumento_id = sub.tdocumento_id) AND ((p1.numerodocumento)::text = (sub.numerodocumento)::text))))
+     JOIN public.sip_persona p2 ON (((p1.id < p2.id) AND (p2.tdocumento_id = sub.tdocumento_id) AND ((p2.numerodocumento)::text = (sub.numerodocumento)::text))))
+  WITH NO DATA;
 
 
 --
@@ -12480,6 +12497,153 @@ CREATE UNIQUE INDEX cor1440_gen_datointermedioti_pmindicadorpf_llaves_idx ON pub
 
 
 --
+-- Name: i_duplicado_rep_a1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_a1 ON public.duplicados_rep USING btree (apellidos1);
+
+
+--
+-- Name: i_duplicado_rep_a2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_a2 ON public.duplicados_rep USING btree (apellidos2);
+
+
+--
+-- Name: i_duplicado_rep_id1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_id1 ON public.duplicados_rep USING btree (id1);
+
+
+--
+-- Name: i_duplicado_rep_id2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_id2 ON public.duplicados_rep USING btree (id2);
+
+
+--
+-- Name: i_duplicado_rep_n1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_n1 ON public.duplicados_rep USING btree (nombres1);
+
+
+--
+-- Name: i_duplicado_rep_n2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_n2 ON public.duplicados_rep USING btree (nombres2);
+
+
+--
+-- Name: i_duplicado_rep_numerodocumento; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_numerodocumento ON public.duplicados_rep USING btree (numerodocumento);
+
+
+--
+-- Name: i_duplicado_rep_sa1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_sa1 ON public.duplicados_rep USING btree (sa1);
+
+
+--
+-- Name: i_duplicado_rep_sa2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_sa2 ON public.duplicados_rep USING btree (sa2);
+
+
+--
+-- Name: i_duplicado_rep_sigla; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_sigla ON public.duplicados_rep USING btree (sigla);
+
+
+--
+-- Name: i_duplicado_rep_sn1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_sn1 ON public.duplicados_rep USING btree (sn1);
+
+
+--
+-- Name: i_duplicado_rep_sn2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_duplicado_rep_sn2 ON public.duplicados_rep USING btree (sn2);
+
+
+--
+-- Name: i_l_n; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_l_n ON public.sip_persona USING btree (length((nombres)::text));
+
+
+--
+-- Name: i_p_ap; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_p_ap ON public.sip_persona USING btree (public.unaccent_i((apellidos)::text));
+
+
+--
+-- Name: i_p_cna; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_p_cna ON public.sip_persona USING btree (((((nombres)::text || ' '::text) || (apellidos)::text)));
+
+
+--
+-- Name: i_p_snac; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_p_snac ON public.sip_persona USING btree (public.soundexespm((nombres)::text), public.soundexespm((apellidos)::text));
+
+
+--
+-- Name: i_p_snc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_p_snc ON public.sip_persona USING btree (public.soundexespm((apellidos)::text));
+
+
+--
+-- Name: i_p_snnc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_p_snnc ON public.sip_persona USING btree (public.soundexespm((nombres)::text));
+
+
+--
+-- Name: i_p_un; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_p_un ON public.sip_persona USING btree (public.unaccent_i((nombres)::text));
+
+
+--
+-- Name: i_sip_persona_soundexesp_nomap; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_sip_persona_soundexesp_nomap ON public.sip_persona USING btree (public.soundexespm((nombres)::text), public.soundexespm((apellidos)::text));
+
+
+--
+-- Name: i_up_n; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX i_up_n ON public.sip_persona USING btree (((public.unaccent_i((nombres)::text) || '%'::text)));
+
+
+--
 -- Name: index_asesorhistorico_on_usuario_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -12946,6 +13110,20 @@ CREATE INDEX indice_sivel2_sjr_desplazamiento_on_id_llegada ON public.sivel2_sjr
 --
 
 CREATE INDEX indice_sivel2_sjr_respuesta_on_fechaatencion ON public.sivel2_sjr_respuesta USING btree (fechaatencion);
+
+
+--
+-- Name: p_tuu_nombres; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX p_tuu_nombres ON public.sip_persona USING btree (TRIM(BOTH FROM upper((nombres)::text)));
+
+
+--
+-- Name: p_tuun_nombres; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX p_tuun_nombres ON public.sip_persona USING btree (TRIM(BOTH FROM upper(public.unaccent_i((nombres)::text))));
 
 
 --
@@ -17355,6 +17533,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220808142135'),
 ('20220811222831'),
 ('20220815125353'),
-('20220816155229');
+('20220816155229'),
+('20220816203504');
 
 

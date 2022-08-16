@@ -133,10 +133,12 @@ module Sip
 
       pares = UnificarHelper.consulta_duplicados_autom
       vc = {
-        titulo: 'Beneficarios por unificar automaticamente',
-        encabezado: ['T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
-                     'Id2', 'Nombres', 'Apellidos'],
-                     cuerpo: []
+        titulo: 'Beneficarios por deduplicar automaticamente',
+        encabezado: [
+          'T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
+          'Id2', 'Nombres', 'Apellidos'
+        ],
+        cuerpo: []
       }
       pares.each do |f|
         vc[:cuerpo] << [['sigla',f['sigla']], ['numerodocumento', f['numerodocumento']],

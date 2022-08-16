@@ -411,69 +411,95 @@ module UnificarHelper
   module_function :unificar_dos_beneficiarios
 
   def consulta_duplicados_autom
-    Sip::Persona.connection.execute <<-SQL
-      DROP VIEW IF EXISTS duplicados_rep;
-      CREATE VIEW duplicados_rep AS (
-SELECT sub2.sigla,
-    sub2.numerodocumento,
-    sub2.rep,
-    sub2.id1,
-    sub2.id2
-   FROM ( SELECT sub.sigla,
-            sub.numerodocumento,
-            sub.rep,
-            ( SELECT min(p2.id) AS min
-                   FROM sip_persona p2
-                  WHERE p2.tdocumento_id = sub.tdocumento_id AND p2.numerodocumento::text = sub.numerodocumento::text) AS id1,
-            ( SELECT max(p3.id) AS max
-                   FROM sip_persona p3
-                  WHERE p3.tdocumento_id = sub.tdocumento_id AND p3.numerodocumento::text = sub.numerodocumento::text) AS id2
-           FROM ( SELECT t.sigla,
-                    p.tdocumento_id,
-                    p.numerodocumento,
-                    count(p.id) AS rep
-                   FROM sip_persona p
-                     LEFT JOIN sip_tdocumento t ON t.id = p.tdocumento_id
-                  GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) sub
-         WHERE sub.rep = 2
-          ORDER BY sub.rep DESC) sub2
-  WHERE sub2.id1 IS NOT NULL AND sub2.id2 IS NOT NULL
-      );
-    SQL
-    
+# La siguiente vista haría breve la siguiente consulta pero
+# su refresco toma como 15 min.
+#    Sip::Persona.connection.execute <<-SQL
+#       DROP MATERIALIZED VIEW IF EXISTS duplicados_rep;
+#       CREATE MATERIALIZED VIEW duplicados_rep AS (
+#         SELECT sub.sigla,
+#         sub.numerodocumento,
+#         sub.rep,
+#         p1.id AS id1,
+#         p2.id AS id2,
+#         p1.nombres AS nombres1,
+#         p1.apellidos AS apellidos1,
+#         p2.nombres AS nombres2,
+#         p2.apellidos AS apellidos2,
+#         soundexespm(p1.nombres) AS sn1,
+#         soundexespm(p1.apellidos) AS sa1,
+#         soundexespm(p2.nombres) AS sn2,
+#         soundexespm(p2.apellidos) AS sa2
+#         FROM (SELECT t.sigla,
+#           p.tdocumento_id,
+#           p.numerodocumento,
+#           count(p.id) AS rep
+#           FROM sip_persona p
+#             LEFT JOIN sip_tdocumento t ON t.id = p.tdocumento_id
+#           GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) AS sub
+#         JOIN sip_persona AS p1 ON
+#           p1.tdocumento_id=sub.tdocumento_id
+#           AND p1.numerodocumento=sub.numerodocumento
+#         JOIN sip_persona AS p2 ON
+#           p1.id<p2.id AND
+#           p2.tdocumento_id=sub.tdocumento_id
+#           AND p2.numerodocumento=sub.numerodocumento
+#       );
+#       CREATE INDEX i_duplicado_rep_id1 ON duplicados_rep (id1);
+#       CREATE INDEX i_duplicado_rep_id2 ON duplicados_rep (id2);
+#       CREATE INDEX i_duplicado_rep_numerodocumento ON duplicados_rep (numerodocumento);
+#       CREATE INDEX i_duplicado_rep_sigla ON duplicados_rep (sigla);
+#       CREATE INDEX i_duplicado_rep_n1 ON duplicados_rep (nombres1);
+#       CREATE INDEX i_duplicado_rep_a1 ON duplicados_rep (apellidos1);
+#       CREATE INDEX i_duplicado_rep_n2 ON duplicados_rep (nombres2);
+#       CREATE INDEX i_duplicado_rep_a2 ON duplicados_rep (apellidos2);
+#       CREATE INDEX i_duplicado_rep_tn1 ON duplicados_rep (TRIM(UPPER(unaccent(nombres1))));
+#       CREATE INDEX i_duplicado_rep_ta1 ON duplicados_rep (TRIM(UPPER(unaccent(apellidos1))));
+#       CREATE INDEX i_duplicado_rep_n2 ON duplicados_rep (TRIM(UPPER(unaccent(nombres2))));
+#       CREATE INDEX i_duplicado_rep_a2 ON duplicados_rep (TRIM(UPPER(unaccent(apellidos2))));
+#       CREATE INDEX i_duplicado_rep_sn1 ON duplicados_rep (sn1);
+#       CREATE INDEX i_duplicado_rep_sa1 ON duplicados_rep (sa1);
+#       CREATE INDEX i_duplicado_rep_sn2 ON duplicados_rep (sn2);
+#       CREATE INDEX i_duplicado_rep_sa2 ON duplicados_rep (sa2);
+#    SQL
+#
     return Sip::Persona.connection.execute <<-SQL
-      SELECT duplicados_rep.sigla, duplicados_rep.numerodocumento,
-        id1, p1.nombres AS nombres1, soundexespm(p1.nombres) AS sn1,
+
+  -- Las 3 opciones sin igualdad entre tdocumento y numerodocumento da
+  -- 23'700.306.841 (mucho más que la suma de las opciones)
+      SELECT p1.tdocumento_id, p1.numerodocumento, 
+        p1.id AS id1, p1.nombres AS nombres1, soundexespm(p1.nombres) AS sn1,
         p1.apellidos AS apellidos1, soundexespm(p1.apellidos) AS sa1,
-        id2, p2.nombres AS nombres2, soundexespm(p2.nombres) AS sn2,
+        p2.id AS id2, p2.nombres AS nombres2, soundexespm(p2.nombres) AS sn2,
         p2.apellidos AS apellidos2, soundexespm(p2.apellidos) AS sa2
-      FROM duplicados_rep
-      JOIN sip_persona AS p1 ON duplicados_rep.id1=p1.id
-      JOIN sip_persona AS p2 ON duplicados_rep.id2=p2.id
+      FROM sip_persona AS p1
+      JOIN sip_persona AS p2 
+      ON p1.id<p2.id
+        AND p1.tdocumento_id=p2.tdocumento_id
+        AND p1.numerodocumento=p2.numerodocumento
       WHERE
+        p2.id<10 AND
         (soundexespm(p1.nombres) = soundexespm(p2.nombres)
           AND soundexespm(p1.apellidos) = soundexespm(p2.apellidos)
-        )
-        AND p1.id<p2.id
-        OR (((LENGTH(TRIM(p2.nombres))>0 AND
-            TRIM(UPPER(unaccent(p1.nombres))) LIKE
-            TRIM(UPPER(unaccent(p2.nombres))) || '%')
-          OR (LENGTH(TRIM(p1.nombres))>0 AND
-            TRIM(UPPER(unaccent(p2.nombres))) LIKE
-            TRIM(UPPER(unaccent(p1.nombres))) || '%')
+        )  --con indices explain da 662.181
+        OR 
+        (((LENGTH(p2.nombres)>0 AND
+            unaccent_i(p1.nombres) LIKE unaccent_i(p2.nombres) || '%')
+          OR (LENGTH(p1.nombres)>0 AND
+            unaccent_i(p2.nombres) LIKE unaccent_i(p1.nombres) || '%')
           )
-         AND ((LENGTH(TRIM(p2.apellidos))>0 AND
-            TRIM(UPPER(unaccent(p1.apellidos))) LIKE
-            TRIM(UPPER(unaccent(p2.apellidos))) || '%')
-          OR (LENGTH(TRIM(p1.apellidos))>0 AND
-            TRIM(UPPER(unaccent(p2.apellidos))) LIKE
-            TRIM(UPPER(unaccent(p1.apellidos))) || '%')
-        ))
-        OR (levenshtein(TRIM(UPPER(unaccent(p1.nombres))) || ' ' ||
-            TRIM(UPPER(unaccent(p1.apellidos))),
-            TRIM(UPPER(unaccent(p2.nombres))) || ' ' ||
-            TRIM(UPPER(unaccent(p2.apellidos)))) <= 3)
-      ;
+         AND ((LENGTH(p2.apellidos)>0 AND
+            unaccent_i(p1.apellidos) LIKE unaccent_i(p2.apellidos) || '%')
+          OR (LENGTH(p1.apellidos)>0 AND
+            unaccent_i(p2.apellidos) LIKE unaccent_i(p1.apellidos) || '%')
+         )
+       ) --no susceptible de indices con explain da 5'574.709.919
+        OR 
+        (levenshtein(p1.nombres || ' ' ||
+            p1.apellidos,
+            p2.nombres || ' ' ||
+            p2.apellidos) <= 3
+        ) --no encontramos como indexar con explain da 4'612.693.352
+    ;
     SQL
   end
   module_function :consulta_duplicados_autom
@@ -481,11 +507,13 @@ SELECT sub2.sigla,
   # después de ejecutar este refrescar vista materializada
   # sivel2_gen_conscaso
   def deduplicar_automaticamente(current_usuario)
-    pares = consulta_duplicados_autom
+    pares = UnificarHelper.consulta_duplicados_autom
     res = {
-      titulo: 'Registros deduplicados automaticamente',
-      encabezado: ['T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
-                   'Id2', 'Nombres', 'Apellidos', 'Resultado'],
+      titulo: 'Beneficiarios en los que se intenta deduplicación automatica',
+      encabezado: [
+        'T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
+        'Id2', 'Nombres', 'Apellidos', 'Resultado'
+      ],
       cuerpo: []
     }
     pares.each do |f|
