@@ -38,7 +38,7 @@ module UnificarHelper
       return false
     end
     begin
-      Sivel2Gen::Caso.connection.execute('BEGIN')
+      #Sivel2Gen::Caso.connection.execute('BEGIN')
       Sivel2Gen::Caso.connection.execute(
         "DELETE FROM sivel2_sjr_categoria_desplazamiento
            WHERE desplazamiento_id IN (SELECT id FROM sivel2_sjr_desplazamiento
@@ -54,7 +54,7 @@ module UnificarHelper
       Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_actosjr
         WHERE id_acto IN (SELECT id FROM sivel2_gen_acto
           WHERE id_caso=#{c.id});")
-      Sivel2Gen::Caso.connection.execute('COMMIT;')
+      #Sivel2Gen::Caso.connection.execute('COMMIT;')
       c.destroy
     rescue Exception => e
       menserror << "Problema eliminando caso #{e}.\n"

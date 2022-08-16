@@ -17,6 +17,20 @@ CREATE COLLATION public.es_co_utf_8 (provider = libc, locale = 'es_CO.UTF-8');
 
 
 --
+-- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
+
+
+--
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -619,6 +633,850 @@ ALTER SEQUENCE public.autoridadrefugio_id_seq OWNED BY public.autoridadrefugio.i
 
 
 --
+-- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad (
+    id integer NOT NULL,
+    minutos integer,
+    nombre character varying(500),
+    objetivo character varying(5000),
+    resultado character varying(5000),
+    fecha date NOT NULL,
+    observaciones character varying(5000),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    oficina_id integer NOT NULL,
+    rangoedadac_id integer,
+    usuario_id integer NOT NULL,
+    lugar character varying(500),
+    ubicacionpre_id integer,
+    covid boolean
+);
+
+
+--
+-- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_actividadpf (
+    actividad_id bigint NOT NULL,
+    actividadpf_id bigint NOT NULL
+);
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
+    actividad_id integer NOT NULL,
+    proyectofinanciero_id integer NOT NULL,
+    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
+);
+
+
+--
+-- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_asistencia (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    rangoedadac_id integer,
+    externo boolean,
+    orgsocial_id integer,
+    perfilorgsocial_id integer
+);
+
+
+--
+-- Name: cor1440_gen_rangoedadac; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_rangoedadac (
+    id integer NOT NULL,
+    nombre character varying,
+    limiteinferior integer,
+    limitesuperior integer,
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000)
+);
+
+
+--
+-- Name: sip_pais; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_pais (
+    id integer NOT NULL,
+    nombre character varying(200) COLLATE public.es_co_utf_8,
+    nombreiso_espanol character varying(200),
+    latitud double precision,
+    longitud double precision,
+    alfa2 character varying(2),
+    alfa3 character varying(3),
+    codiso integer,
+    div1 character varying(100),
+    div2 character varying(100),
+    div3 character varying(100),
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    nombreiso_ingles character varying(512),
+    nombreiso_frances character varying(512),
+    ultvigenciaini date,
+    ultvigenciafin date
+);
+
+
+--
+-- Name: sip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_perfilorgsocial (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_persona (
+    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
+    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    anionac integer,
+    mesnac integer,
+    dianac integer,
+    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
+    numerodocumento character varying(100),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_pais integer,
+    nacionalde integer,
+    tdocumento_id integer,
+    id_departamento integer,
+    id_municipio integer,
+    id_clase integer,
+    buscable tsvector,
+    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
+    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
+    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
+);
+
+
+--
+-- Name: sip_tdocumento; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_tdocumento (
+    id integer NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    sigla character varying(100),
+    formatoregex character varying(500),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    ayuda character varying(1000)
+);
+
+
+--
+-- Name: victima_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.victima_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_victima; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_victima (
+    id_persona integer NOT NULL,
+    id_caso integer NOT NULL,
+    hijos integer,
+    id_profesion integer DEFAULT 22 NOT NULL,
+    id_rangoedad integer DEFAULT 6 NOT NULL,
+    id_filiacion integer DEFAULT 10 NOT NULL,
+    id_sectorsocial integer DEFAULT 15 NOT NULL,
+    id_organizacion integer DEFAULT 16 NOT NULL,
+    id_vinculoestado integer DEFAULT 38 NOT NULL,
+    organizacionarmada integer DEFAULT 35 NOT NULL,
+    anotaciones character varying(1000),
+    id_etnia integer DEFAULT 1 NOT NULL,
+    id_iglesia integer DEFAULT 1,
+    orientacionsexual character(1) DEFAULT 'S'::bpchar NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id integer DEFAULT nextval('public.victima_seq'::regclass) NOT NULL,
+    CONSTRAINT victima_hijos_check CHECK (((hijos IS NULL) OR ((hijos >= 0) AND (hijos <= 100)))),
+    CONSTRAINT victima_orientacionsexual_check CHECK (((orientacionsexual = 'B'::bpchar) OR (orientacionsexual = 'G'::bpchar) OR (orientacionsexual = 'H'::bpchar) OR (orientacionsexual = 'I'::bpchar) OR (orientacionsexual = 'L'::bpchar) OR (orientacionsexual = 'O'::bpchar) OR (orientacionsexual = 'S'::bpchar) OR (orientacionsexual = 'T'::bpchar)))
+);
+
+
+--
+-- Name: benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.benefactividadpf AS
+ SELECT ( SELECT per.nombre
+           FROM public.sip_perfilorgsocial per
+          WHERE (per.id = ( SELECT as3.perfilorgsocial_id
+                   FROM public.cor1440_gen_asistencia as3
+                  WHERE (as3.id = sub3.id_ultasist)
+                 LIMIT 1))) AS persona_perfil_ultact,
+    sub3.id_ultasist,
+    sub3.rangoedadac_ultact,
+    sub3.persona_nombre,
+    sub3.persona_identificacion,
+    sub3.id_ultact,
+    sub3.edad_en_ultact,
+    sub3.persona_paisnac,
+    sub3.persona_id,
+    sub3.persona_nombres,
+    sub3.persona_apellidos,
+    sub3.persona_tipodocumento,
+    sub3.persona_numerodocumento,
+    sub3.persona_sexo,
+    sub3.persona_anionac,
+    sub3.persona_mesnac,
+    sub3.persona_dianac,
+    sub3.persona_paisnac_id,
+    sub3.persona_caso,
+    sub3.fecha_ultact,
+    sub3."O.E.R.E.3.A.3.3.",
+    sub3."O.E.R.E.3.A.3.3._ids",
+    sub3."O.E.R.E.1.A.1.3.",
+    sub3."O.E.R.E.1.A.1.3._ids",
+    sub3."O.E.R.E.1.A.1.2.",
+    sub3."O.E.R.E.1.A.1.2._ids",
+    sub3."O.E.R.E.2.A.2.1.",
+    sub3."O.E.R.E.2.A.2.1._ids",
+    sub3."O.E.R.E.1.A.1.1.",
+    sub3."O.E.R.E.1.A.1.1._ids",
+    sub3."O.E.R.E.3.A.3.1.",
+    sub3."O.E.R.E.3.A.3.1._ids",
+    sub3."O.E.R.E.3.A.3.2.",
+    sub3."O.E.R.E.3.A.3.2._ids",
+    sub3."O.E.R.E.3.A.3.4.",
+    sub3."O.E.R.E.3.A.3.4._ids",
+    sub3."O.E.R.E.3.A.3.5.",
+    sub3."O.E.R.E.3.A.3.5._ids",
+    sub3."O.E.R.E.2.A.2.3",
+    sub3."O.E.R.E.2.A.2.3_ids",
+    sub3."O.E.R.E.2.A.2.4",
+    sub3."O.E.R.E.2.A.2.4_ids",
+    sub3."O.E.R.E.2.A.2.5",
+    sub3."O.E.R.E.2.A.2.5_ids",
+    sub3."O.E.R.E.1.A.1.4",
+    sub3."O.E.R.E.1.A.1.4_ids",
+    sub3."O.E.R.E.1.A1.5",
+    sub3."O.E.R.E.1.A1.5_ids",
+    sub3."O.E.R.E.2.A.2.6",
+    sub3."O.E.R.E.2.A.2.6_ids",
+    sub3."O.E.R.E.2.A.2.7",
+    sub3."O.E.R.E.2.A.2.7_ids",
+    sub3."O.E.R.E.2.A.2.2",
+    sub3."O.E.R.E.2.A.2.2_ids"
+   FROM ( SELECT ( SELECT as2.id
+                   FROM public.cor1440_gen_asistencia as2
+                  WHERE ((as2.actividad_id = sub2.id_ultact) AND (as2.persona_id = sub2.persona_id))
+                  ORDER BY as2.id
+                 LIMIT 1) AS id_ultasist,
+            ( SELECT red.nombre
+                   FROM public.cor1440_gen_rangoedadac red
+                  WHERE (red.id =
+                        CASE
+                            WHEN (((red.limiteinferior IS NULL) OR (red.limiteinferior <= sub2.edad_en_ultact)) AND ((red.limitesuperior IS NULL) OR (red.limitesuperior >= sub2.edad_en_ultact))) THEN red.id
+                            ELSE 7
+                        END)
+                 LIMIT 1) AS rangoedadac_ultact,
+            sub2.persona_nombre,
+            sub2.persona_identificacion,
+            sub2.id_ultact,
+            sub2.edad_en_ultact,
+            sub2.persona_paisnac,
+            sub2.persona_id,
+            sub2.persona_nombres,
+            sub2.persona_apellidos,
+            sub2.persona_tipodocumento,
+            sub2.persona_numerodocumento,
+            sub2.persona_sexo,
+            sub2.persona_anionac,
+            sub2.persona_mesnac,
+            sub2.persona_dianac,
+            sub2.persona_paisnac_id,
+            sub2.persona_caso,
+            sub2.fecha_ultact,
+            sub2."O.E.R.E.3.A.3.3.",
+            sub2."O.E.R.E.3.A.3.3._ids",
+            sub2."O.E.R.E.1.A.1.3.",
+            sub2."O.E.R.E.1.A.1.3._ids",
+            sub2."O.E.R.E.1.A.1.2.",
+            sub2."O.E.R.E.1.A.1.2._ids",
+            sub2."O.E.R.E.2.A.2.1.",
+            sub2."O.E.R.E.2.A.2.1._ids",
+            sub2."O.E.R.E.1.A.1.1.",
+            sub2."O.E.R.E.1.A.1.1._ids",
+            sub2."O.E.R.E.3.A.3.1.",
+            sub2."O.E.R.E.3.A.3.1._ids",
+            sub2."O.E.R.E.3.A.3.2.",
+            sub2."O.E.R.E.3.A.3.2._ids",
+            sub2."O.E.R.E.3.A.3.4.",
+            sub2."O.E.R.E.3.A.3.4._ids",
+            sub2."O.E.R.E.3.A.3.5.",
+            sub2."O.E.R.E.3.A.3.5._ids",
+            sub2."O.E.R.E.2.A.2.3",
+            sub2."O.E.R.E.2.A.2.3_ids",
+            sub2."O.E.R.E.2.A.2.4",
+            sub2."O.E.R.E.2.A.2.4_ids",
+            sub2."O.E.R.E.2.A.2.5",
+            sub2."O.E.R.E.2.A.2.5_ids",
+            sub2."O.E.R.E.1.A.1.4",
+            sub2."O.E.R.E.1.A.1.4_ids",
+            sub2."O.E.R.E.1.A1.5",
+            sub2."O.E.R.E.1.A1.5_ids",
+            sub2."O.E.R.E.2.A.2.6",
+            sub2."O.E.R.E.2.A.2.6_ids",
+            sub2."O.E.R.E.2.A.2.7",
+            sub2."O.E.R.E.2.A.2.7_ids",
+            sub2."O.E.R.E.2.A.2.2",
+            sub2."O.E.R.E.2.A.2.2_ids"
+           FROM ( SELECT btrim(((btrim(sub.persona_nombres) || ' '::text) || btrim(sub.persona_apellidos))) AS persona_nombre,
+                    btrim((COALESCE((sub.persona_tipodocumento || ':'::text), ''::text) || COALESCE(sub.persona_numerodocumento, ''::text))) AS persona_identificacion,
+                    ( SELECT ac2.id
+                           FROM public.cor1440_gen_actividad ac2
+                          WHERE ((ac2.fecha = sub.fecha_ultact) AND (ac2.id IN ( SELECT asis.actividad_id
+                                   FROM public.cor1440_gen_asistencia asis
+                                  WHERE ((asis.persona_id = sub.persona_id) AND (asis.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date))))))))))
+                          ORDER BY ac2.id
+                         LIMIT 1) AS id_ultact,
+                    public.sip_edad_de_fechanac_fecharef(sub.persona_anionac, sub.persona_mesnac, sub.persona_dianac, (date_part('year'::text, sub.fecha_ultact))::integer, (date_part('month'::text, sub.fecha_ultact))::integer, (date_part('day'::text, sub.fecha_ultact))::integer) AS edad_en_ultact,
+                    ( SELECT sip_pais.nombre
+                           FROM public.sip_pais
+                          WHERE (sip_pais.id = sub.persona_paisnac_id)
+                         LIMIT 1) AS persona_paisnac,
+                    sub.persona_id,
+                    sub.persona_nombres,
+                    sub.persona_apellidos,
+                    sub.persona_tipodocumento,
+                    sub.persona_numerodocumento,
+                    sub.persona_sexo,
+                    sub.persona_anionac,
+                    sub.persona_mesnac,
+                    sub.persona_dianac,
+                    sub.persona_paisnac_id,
+                    sub.persona_caso,
+                    sub.fecha_ultact,
+                    sub."O.E.R.E.3.A.3.3.",
+                    sub."O.E.R.E.3.A.3.3._ids",
+                    sub."O.E.R.E.1.A.1.3.",
+                    sub."O.E.R.E.1.A.1.3._ids",
+                    sub."O.E.R.E.1.A.1.2.",
+                    sub."O.E.R.E.1.A.1.2._ids",
+                    sub."O.E.R.E.2.A.2.1.",
+                    sub."O.E.R.E.2.A.2.1._ids",
+                    sub."O.E.R.E.1.A.1.1.",
+                    sub."O.E.R.E.1.A.1.1._ids",
+                    sub."O.E.R.E.3.A.3.1.",
+                    sub."O.E.R.E.3.A.3.1._ids",
+                    sub."O.E.R.E.3.A.3.2.",
+                    sub."O.E.R.E.3.A.3.2._ids",
+                    sub."O.E.R.E.3.A.3.4.",
+                    sub."O.E.R.E.3.A.3.4._ids",
+                    sub."O.E.R.E.3.A.3.5.",
+                    sub."O.E.R.E.3.A.3.5._ids",
+                    sub."O.E.R.E.2.A.2.3",
+                    sub."O.E.R.E.2.A.2.3_ids",
+                    sub."O.E.R.E.2.A.2.4",
+                    sub."O.E.R.E.2.A.2.4_ids",
+                    sub."O.E.R.E.2.A.2.5",
+                    sub."O.E.R.E.2.A.2.5_ids",
+                    sub."O.E.R.E.1.A.1.4",
+                    sub."O.E.R.E.1.A.1.4_ids",
+                    sub."O.E.R.E.1.A1.5",
+                    sub."O.E.R.E.1.A1.5_ids",
+                    sub."O.E.R.E.2.A.2.6",
+                    sub."O.E.R.E.2.A.2.6_ids",
+                    sub."O.E.R.E.2.A.2.7",
+                    sub."O.E.R.E.2.A.2.7_ids",
+                    sub."O.E.R.E.2.A.2.2",
+                    sub."O.E.R.E.2.A.2.2_ids"
+                   FROM ( SELECT p.id AS persona_id,
+                            btrim((p.nombres)::text) AS persona_nombres,
+                            btrim((p.apellidos)::text) AS persona_apellidos,
+                            btrim((COALESCE(td.sigla, ''::character varying))::text) AS persona_tipodocumento,
+                            btrim((COALESCE(p.numerodocumento, ''::character varying))::text) AS persona_numerodocumento,
+                            p.sexo AS persona_sexo,
+                            p.anionac AS persona_anionac,
+                            p.mesnac AS persona_mesnac,
+                            p.dianac AS persona_dianac,
+                            p.id_pais AS persona_paisnac_id,
+                            array_to_string(ARRAY( SELECT DISTINCT sivel2_gen_victima.id_caso
+                                   FROM public.sivel2_gen_victima
+                                  WHERE (sivel2_gen_victima.id_persona = p.id)), ','::text) AS persona_caso,
+                            ( SELECT max(ac.fecha) AS max
+                                   FROM public.cor1440_gen_actividad ac
+                                  WHERE (ac.id IN ( SELECT asis.actividad_id
+   FROM public.cor1440_gen_asistencia asis
+  WHERE ((asis.persona_id = p.id) AND (asis.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+     FROM public.cor1440_gen_asistencia
+    WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+       FROM public.cor1440_gen_actividad
+      WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+         FROM public.cor1440_gen_actividad_proyectofinanciero
+        WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+         FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))))) AS fecha_ultact,
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 663) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.3.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 663) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.3._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 659) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.3.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 659) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.3._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 658) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.2.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 658) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.2._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 661) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.1.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 661) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.1._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 657) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.1.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 657) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.1._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 662) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.1.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 662) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.1._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 665) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.2.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 665) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.2._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 666) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.4.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 666) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.4._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 664) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.5.",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 664) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.3.A.3.5._ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 873) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.3",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 873) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.3_ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 874) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.4",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 874) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.4_ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 875) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.5",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 875) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.5_ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 876) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.4",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 876) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A.1.4_ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 877) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A1.5",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 877) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.1.A1.5_ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 878) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.6",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 878) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.6_ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 879) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.7",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 879) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.7_ids",
+                            ( SELECT count(*) AS count
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 872) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.2",
+                            ARRAY( SELECT asistencia.actividad_id
+                                   FROM (public.cor1440_gen_asistencia asistencia
+                                     JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = asistencia.actividad_id)))
+                                  WHERE ((aapf.actividadpf_id = 872) AND (asistencia.persona_id = p.id) AND (asistencia.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))) AS "O.E.R.E.2.A.2.2_ids"
+                           FROM (public.sip_persona p
+                             LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
+                          WHERE ((p.id IN ( SELECT cor1440_gen_asistencia.persona_id
+                                   FROM public.cor1440_gen_asistencia
+                                  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+   FROM public.cor1440_gen_actividad
+  WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+     FROM public.cor1440_gen_actividad_proyectofinanciero
+    WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+     FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))) AND (p.id IN ( SELECT asis.persona_id
+                                   FROM public.cor1440_gen_asistencia asis
+                                  WHERE (asis.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
+   FROM public.cor1440_gen_asistencia
+  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
+     FROM public.cor1440_gen_actividad
+    WHERE ((cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+       FROM public.cor1440_gen_actividad_proyectofinanciero
+      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 221))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))))) sub) sub2) sub3
+  WITH NO DATA;
+
+
+--
 -- Name: caso_etiqueta_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -767,45 +1625,6 @@ CREATE TABLE public.sivel2_gen_caso (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     ubicacion_id integer
-);
-
-
---
--- Name: victima_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.victima_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_victima; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_victima (
-    id_persona integer NOT NULL,
-    id_caso integer NOT NULL,
-    hijos integer,
-    id_profesion integer DEFAULT 22 NOT NULL,
-    id_rangoedad integer DEFAULT 6 NOT NULL,
-    id_filiacion integer DEFAULT 10 NOT NULL,
-    id_sectorsocial integer DEFAULT 15 NOT NULL,
-    id_organizacion integer DEFAULT 16 NOT NULL,
-    id_vinculoestado integer DEFAULT 38 NOT NULL,
-    organizacionarmada integer DEFAULT 35 NOT NULL,
-    anotaciones character varying(1000),
-    id_etnia integer DEFAULT 1 NOT NULL,
-    id_iglesia integer DEFAULT 1,
-    orientacionsexual character(1) DEFAULT 'S'::bpchar NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id integer DEFAULT nextval('public.victima_seq'::regclass) NOT NULL,
-    CONSTRAINT victima_hijos_check CHECK (((hijos IS NULL) OR ((hijos >= 0) AND (hijos <= 100)))),
-    CONSTRAINT victima_orientacionsexual_check CHECK (((orientacionsexual = 'B'::bpchar) OR (orientacionsexual = 'G'::bpchar) OR (orientacionsexual = 'H'::bpchar) OR (orientacionsexual = 'I'::bpchar) OR (orientacionsexual = 'L'::bpchar) OR (orientacionsexual = 'O'::bpchar) OR (orientacionsexual = 'S'::bpchar) OR (orientacionsexual = 'T'::bpchar)))
 );
 
 
@@ -1135,34 +1954,6 @@ CREATE VIEW public.cben2 AS
 
 
 --
--- Name: sip_pais; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_pais (
-    id integer NOT NULL,
-    nombre character varying(200) COLLATE public.es_co_utf_8,
-    nombreiso_espanol character varying(200),
-    latitud double precision,
-    longitud double precision,
-    alfa2 character varying(2),
-    alfa3 character varying(3),
-    codiso integer,
-    div1 character varying(100),
-    div2 character varying(100),
-    div3 character varying(100),
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    nombreiso_ingles character varying(512),
-    nombreiso_frances character varying(512),
-    ultvigenciaini date,
-    ultvigenciafin date
-);
-
-
---
 -- Name: cmunex; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1223,39 +2014,6 @@ CREATE VIEW public.cmunrec AS
 
 
 --
--- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad (
-    id integer NOT NULL,
-    minutos integer,
-    nombre character varying(500),
-    objetivo character varying(5000),
-    resultado character varying(5000),
-    fecha date NOT NULL,
-    observaciones character varying(5000),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    oficina_id integer NOT NULL,
-    rangoedadac_id integer,
-    usuario_id integer NOT NULL,
-    lugar character varying(500),
-    ubicacionpre_id integer,
-    covid boolean
-);
-
-
---
--- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_actividadpf (
-    actividad_id bigint NOT NULL,
-    actividadpf_id bigint NOT NULL
-);
-
-
---
 -- Name: cor1440_gen_actividadpf; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1270,21 +2028,6 @@ CREATE TABLE public.cor1440_gen_actividadpf (
     indicadorgifmm_id integer,
     formulario_id integer,
     heredade_id integer
-);
-
-
---
--- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_asistencia (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    persona_id integer NOT NULL,
-    rangoedadac_id integer,
-    externo boolean,
-    orgsocial_id integer,
-    perfilorgsocial_id integer
 );
 
 
@@ -1521,29 +2264,6 @@ CREATE SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq OWNED BY public.cor1440_gen_actividad_proyecto.id;
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
-    actividad_id integer NOT NULL,
-    proyectofinanciero_id integer NOT NULL,
-    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
-);
 
 
 --
@@ -2627,23 +3347,6 @@ ALTER SEQUENCE public.cor1440_gen_proyectofinanciero_usuario_id_seq OWNED BY pub
 
 
 --
--- Name: cor1440_gen_rangoedadac; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_rangoedadac (
-    id integer NOT NULL,
-    nombre character varying,
-    limiteinferior integer,
-    limitesuperior integer,
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000)
-);
-
-
---
 -- Name: cor1440_gen_rangoedadac_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2891,16 +3594,16 @@ CREATE MATERIALIZED VIEW public.cres1 AS
  SELECT sub.actividad_id,
     sub.fecha,
     sub.oficina_id,
-    sub.ayudaestado_id
+    sub.derecho_id
    FROM ( SELECT DISTINCT a.id AS actividad_id,
             a.fecha,
             a.oficina_id,
-            json_array_elements_text(v.valorjson) AS ayudaestado_id
+            json_array_elements_text(v.valorjson) AS derecho_id
            FROM ((public.mr519_gen_valorcampo v
              JOIN public.cor1440_gen_actividad_respuestafor ar ON ((ar.respuestafor_id = v.respuestafor_id)))
              JOIN public.cor1440_gen_actividad a ON ((a.id = ar.actividad_id)))
-          WHERE (v.campo_id = 103)) sub
-  WHERE ((sub.ayudaestado_id IS NOT NULL) AND (sub.ayudaestado_id <> ''::text))
+          WHERE (v.campo_id = 100)) sub
+  WHERE ((sub.derecho_id IS NOT NULL) AND (sub.derecho_id <> ''::text))
   WITH NO DATA;
 
 
@@ -2983,7 +3686,7 @@ CREATE VIEW public.cvp1 AS
    FROM public.sivel2_sjr_casosjr casosjr,
     public.sivel2_sjr_respuesta respuesta,
     public.sivel2_sjr_derecho_respuesta derecho_respuesta
-  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id));
+  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id) AND (respuesta.fechaatencion >= '2022-01-01'::date));
 
 
 --
@@ -3892,46 +4595,6 @@ CREATE SEQUENCE public.instanciader_seq
 
 
 --
--- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_persona_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_persona (
-    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
-    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    anionac integer,
-    mesnac integer,
-    dianac integer,
-    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
-    numerodocumento character varying(100),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_pais integer,
-    nacionalde integer,
-    tdocumento_id integer,
-    id_departamento integer,
-    id_municipio integer,
-    id_clase integer,
-    buscable tsvector,
-    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
-    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
-    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
-);
-
-
---
 -- Name: mcben1; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -3953,7 +4616,7 @@ CREATE VIEW public.mcben1 AS
     public.sivel2_gen_victima victima,
     public.sip_persona persona,
     public.sivel2_sjr_victimasjr victimasjr
-  WHERE ((caso.id = victima.id_caso) AND (caso.id = casosjr.id_caso) AND (caso.id = victima.id_caso) AND (persona.id = victima.id_persona) AND (victima.id = victimasjr.id_victima) AND (victimasjr.fechadesagregacion IS NULL) AND (victimasjr.id_actividadoficio = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 101, 102, 104, 105, 106, 107, 108, 109, 110, 111])) AND ((persona.anionac IS NULL) OR (persona.anionac = ANY (ARRAY[1900, 1901, 1905, 1910, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 20011]))) AND (victimasjr.cabezafamilia = ANY (ARRAY[false, true])) AND (victimasjr.id_estadocivil = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6])) AND (victima.id_etnia = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 2001, 2002, 2003])) AND ((((date_part('year'::text, casosjr.fecharec))::text || '-'::text) || lpad((date_part('month'::text, casosjr.fecharec))::text, 2, '0'::text)) = ANY (ARRAY['2003-10'::text, '2011-02'::text, '2012-06'::text, '2012-07'::text, '2012-08'::text, '2012-09'::text, '2012-10'::text, '2012-11'::text, '2013-01'::text, '2013-02'::text, '2013-03'::text, '2013-04'::text, '2013-05'::text, '2013-06'::text, '2013-07'::text, '2013-08'::text, '2013-09'::text, '2013-10'::text, '2013-11'::text, '2013-12'::text, '2014-01'::text, '2014-02'::text, '2014-03'::text, '2014-04'::text, '2014-05'::text, '2014-06'::text, '2014-07'::text, '2014-08'::text, '2014-09'::text, '2014-10'::text, '2014-11'::text, '2015-01'::text, '2015-02'::text, '2015-03'::text, '2015-04'::text, '2015-05'::text, '2015-06'::text, '2015-07'::text, '2015-08'::text, '2015-09'::text, '2015-10'::text, '2015-11'::text, '2015-12'::text, '2016-01'::text, '2016-02'::text, '2016-03'::text, '2016-04'::text, '2016-05'::text, '2016-06'::text, '2016-07'::text, '2016-08'::text, '2016-09'::text, '2016-10'::text, '2016-11'::text, '2016-12'::text, '2017-01'::text, '2017-02'::text, '2017-03'::text, '2017-04'::text, '2017-05'::text, '2017-06'::text, '2017-07'::text, '2017-08'::text, '2017-09'::text, '2017-10'::text, '2017-11'::text, '2017-12'::text, '2018-01'::text, '2018-02'::text, '2018-03'::text, '2018-04'::text, '2018-05'::text, '2018-06'::text, '2018-07'::text, '2018-08'::text, '2018-09'::text, '2018-10'::text, '2018-11'::text, '2018-12'::text, '2019-01'::text, '2019-02'::text, '2019-03'::text, '2019-04'::text, '2019-05'::text, '2019-06'::text, '2019-07'::text, '2019-08'::text, '2019-09'::text, '2019-10'::text, '2019-11'::text, '2019-12'::text, '2020-01'::text, '2020-02'::text, '2020-03'::text, '2020-04'::text, '2020-05'::text, '2020-06'::text, '2020-07'::text, '2020-08'::text, '2020-09'::text, '2020-10'::text, '2020-11'::text, '2020-12'::text, '2021-01'::text, '2021-02'::text, '2021-03'::text, '2021-04'::text, '2021-05'::text, '2021-06'::text, '2021-07'::text, '2021-08'::text, '2021-09'::text, '2021-10'::text, '2021-11'::text, '2021-12'::text, '2022-01'::text, '2022-02'::text, '2022-03'::text, '2022-04'::text, '25-08'::text, '26-08'::text, '32-08'::text])) AND (victimasjr.id_escolaridad = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) AND (victima.id_rangoedad = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) AND (victimasjr.id_regimensalud = ANY (ARRAY[0, 1, 2, 3])) AND (persona.sexo = ANY (ARRAY['F'::bpchar, 'M'::bpchar, 'S'::bpchar])) AND (persona.id = victima.id_persona));
+  WHERE ((caso.id = victima.id_caso) AND (caso.id = casosjr.id_caso) AND (caso.id = victima.id_caso) AND (persona.id = victima.id_persona) AND (victima.id = victimasjr.id_victima) AND (victimasjr.fechadesagregacion IS NULL) AND (persona.id = victima.id_persona));
 
 
 --
@@ -4508,6 +5171,37 @@ CREATE SEQUENCE public.proceso_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+--
+-- Name: rep2; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.rep2 AS
+ SELECT sub2.sigla,
+    sub2.numerodocumento,
+    sub2.rep,
+    sub2.id1,
+    sub2.id2
+   FROM ( SELECT sub.sigla,
+            sub.numerodocumento,
+            sub.rep,
+            ( SELECT min(p2.id) AS min
+                   FROM public.sip_persona p2
+                  WHERE ((p2.tdocumento_id = sub.tdocumento_id) AND ((p2.numerodocumento)::text = (sub.numerodocumento)::text))) AS id1,
+            ( SELECT max(p3.id) AS max
+                   FROM public.sip_persona p3
+                  WHERE ((p3.tdocumento_id = sub.tdocumento_id) AND ((p3.numerodocumento)::text = (sub.numerodocumento)::text))) AS id2
+           FROM ( SELECT t.sigla,
+                    p.tdocumento_id,
+                    p.numerodocumento,
+                    count(p.id) AS rep
+                   FROM (public.sip_persona p
+                     LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
+                  GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) sub
+          WHERE (sub.rep = 2)
+          ORDER BY sub.rep DESC) sub2
+  WHERE ((sub2.id1 IS NOT NULL) AND (sub2.id2 IS NOT NULL));
 
 
 --
@@ -5402,21 +6096,6 @@ ALTER SEQUENCE public.sip_pais_id_seq OWNED BY public.sip_pais.id;
 
 
 --
--- Name: sip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_perfilorgsocial (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: sip_perfilorgsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -5553,24 +6232,6 @@ CREATE TABLE public.sip_tclase (
     updated_at timestamp without time zone,
     observaciones character varying(5000) COLLATE public.es_co_utf_8,
     CONSTRAINT tclase_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sip_tdocumento; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_tdocumento (
-    id integer NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    sigla character varying(100),
-    formatoregex character varying(500),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    ayuda character varying(1000)
 );
 
 
@@ -6941,7 +7602,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2022-04-15'::date)
+          WHERE ((sivel2_gen_conscaso.fecharec >= '2022-06-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2022-06-30'::date))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -8739,6 +9400,15 @@ ALTER SEQUENCE public.tipotransferencia_id_seq OWNED BY public.tipotransferencia
 
 
 --
+-- Name: tmpactvl; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tmpactvl (
+    actividad_id integer
+);
+
+
+--
 -- Name: tproceso_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -9753,50 +10423,6 @@ ALTER TABLE ONLY public.viadeingreso ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: sip_persona persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_persona
-    ADD CONSTRAINT persona_pkey PRIMARY KEY (id);
-
-
---
--- Name: benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.benefactividadpf AS
- SELECT sub.persona_id,
-    sub.persona_nombre,
-    sub.edad_en_actividad,
-    sub.persona_identificacion,
-    sub.persona_sexo,
-    ( SELECT red.nombre
-           FROM public.cor1440_gen_rangoedadac red
-          WHERE (red.id =
-                CASE
-                    WHEN (((red.limiteinferior IS NULL) OR (red.limiteinferior <= sub.edad_en_actividad)) AND ((red.limitesuperior IS NULL) OR (red.limitesuperior >= sub.edad_en_actividad))) THEN red.id
-                    ELSE 7
-                END)
-         LIMIT 1) AS rangoedadac_nombre
-   FROM ( SELECT p.id AS persona_id,
-            btrim(((btrim((p.nombres)::text) || ' '::text) || btrim((p.apellidos)::text))) AS persona_nombre,
-            public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer) AS edad_en_actividad,
-            btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text)) AS persona_identificacion,
-            p.sexo AS persona_sexo
-           FROM (((public.sip_persona p
-             JOIN public.cor1440_gen_asistencia asis ON ((asis.persona_id = p.id)))
-             LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
-             JOIN public.cor1440_gen_actividad a ON ((asis.actividad_id = a.id)))
-          WHERE (p.id IN ( SELECT cor1440_gen_asistencia.persona_id
-                   FROM public.cor1440_gen_asistencia
-                  WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
-                           FROM public.cor1440_gen_actividad
-                          WHERE ((cor1440_gen_actividad.fecha >= '2021-07-01'::date) AND (cor1440_gen_actividad.fecha <= '2021-12-31'::date))))))
-          GROUP BY (btrim((COALESCE(((td.sigla)::text || ':'::text), ''::text) || (COALESCE(p.numerodocumento, ''::character varying))::text))), p.id, (public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (date_part('year'::text, a.fecha))::integer, (date_part('month'::text, a.fecha))::integer, (date_part('day'::text, a.fecha))::integer))) sub
-  WITH NO DATA;
-
-
---
 -- Name: sivel2_sjr_acreditacion acreditacion_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10802,6 +11428,14 @@ ALTER TABLE ONLY public.sivel2_gen_pconsolidado
 
 ALTER TABLE ONLY public.perfilmigracion
     ADD CONSTRAINT perfilmigracion_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_persona persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_persona
+    ADD CONSTRAINT persona_pkey PRIMARY KEY (id);
 
 
 --
