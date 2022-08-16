@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: c23ddd741aa34fa26f70b2f8f1db71bba7ddfa32
+  revision: fcb990b64f3b2c6942ded5295d4261511ade8afc
   branch: main
   specs:
     sivel2_gen (2.1a1)
@@ -89,18 +89,20 @@ GIT
       rails
 
 GIT
+  remote: https://github.com/pasosdeJesus/sivel2_sjr.git
+  revision: 68975ff01c0bda0af823b6464e9c57aaa8a0b6e3
+  branch: main
+  specs:
+    sivel2_sjr (2.1a1)
+      rails
+      sivel2_gen
+
+GIT
   remote: https://github.com/vtamara/cocoon.git
   revision: 9f1892403c3dbdb8f7d457a06f237ff58e7dfb07
   branch: new_id_with_ajax
   specs:
     cocoon (1.2.11)
-
-PATH
-  remote: ../sivel2_sjr
-  specs:
-    sivel2_sjr (2.1a1)
-      rails
-      sivel2_gen
 
 GEM
   remote: https://rubygems.org/
@@ -495,4 +497,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.3.19
+   2.3.20
