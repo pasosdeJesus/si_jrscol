@@ -61,12 +61,38 @@ module Sivel2Gen
       )
     end
 
+    def valida_nombres_beneficiarios_cortos
+      reg = Sip::Persona.
+        where('length(sip_persona.nombres) <= 2 OR '\
+              'length(sip_persona.apellidos) <= 2')
+      reg = filtro_fechas(reg, 'sip_persona.created_at')
+      res = reg.
+        order(:id).
+        select([:id, :nombres, :apellidos, 
+                '(SELECT sigla FROM sip_tdocumento WHERE sip_tdocumento.id=tdocumento_id LIMIT 1)', :numerodocumento,
+                "array_to_string(array(SELECT DISTINCT id_caso FROM sivel2_gen_victima WHERE id_persona=sip_persona.id), ';') AS casos",
+                "array_to_string(array(SELECT DISTINCT actividad_id FROM cor1440_gen_asistencia WHERE persona_id=sip_persona.id), ';') AS actividades"
+        ])
+
+      puts res.to_sql
+      arr = ActiveRecord::Base.connection.select_all(res.to_sql)
+      @validaciones << { 
+        titulo: 'Beneficiarios con nombres o apellidos muy cortos',
+        encabezado: ['Id', 'Nombres', 'Apellidos', 
+                     'Tipo Doc.', 'Núm. Doc', 
+                     'Caso(s)', 
+                     'Actividad(es)'],
+        cuerpo: arr 
+      }
+    end
+
     def validar_interno
       @rango_fechas = 'Fecha de recepción'
+      valida_nombres_beneficiarios_cortos
       validar_sin_casosjr
       validar_sivel2_sjr
       validar_sin_derechovulnerado
-      validar_sivel2_gen
+      #validar_sivel2_gen
     end # def validar_interno
          
   end
