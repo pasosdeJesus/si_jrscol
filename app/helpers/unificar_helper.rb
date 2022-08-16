@@ -2,36 +2,10 @@ module UnificarHelper
 
   include Rails.application.routes.url_helpers
 
-  def consulta_casos_en_blanco
-    return Sivel2Gen::Caso.joins(:casosjr).where(
-      "contacto_id IN (SELECT id FROM sip_persona "\
-      "  WHERE COALESCE(nombres, '')='' "\
-      "  AND COALESCE(apellidos, '')='') "\
-      "AND COALESCE(memo, '')='' "
-    )
-  end
-  module_function :consulta_casos_en_blanco
 
-
-  def eliminar_casos_en_blanco
-    pore = UnificarHelper.consulta_casos_en_blanco
-    lpore =[]
-    pore.each do |ce|
-      lpore += [ce.id]
-      puts "Eliminando caso en blanco #{ce.id}"
-      Sivel2Sjr::ActividadCasosjr.where(casosjr_id: ce.id).destroy_all
-      cs = ce.casosjr
-      cs.destroy!
-      ce.destroy!
-    end
-    if lpore.count == 0
-      return "No hay casos en blanco por eliminar.\n"
-    else
-      return "Se eliminaron #{lpore.count} casos en blanco (#{lpore.join(', ')}).\n"
-    end
-  end
-  module_function :eliminar_casos_en_blanco
-
+  # @param c Sivel2Gen::Caso
+  # @param menserror Colchon para mensajes de error
+  # @return true y menserror es vacio o false y menserror indica problema
   def eliminar_caso(c, menserror)
     if !c || !c.id
       menserror << "Caso no válido.\n"
@@ -54,8 +28,18 @@ module UnificarHelper
       Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_actosjr
         WHERE id_acto IN (SELECT id FROM sivel2_gen_acto
           WHERE id_caso=#{c.id});")
-      #Sivel2Gen::Caso.connection.execute('COMMIT;')
+      Sivel2Gen::Caso.connection.execute(
+        "DELETE FROM sivel2_sjr_actividad_casosjr
+        WHERE casosjr_id=#{c.id}")
+      Sivel2Gen::Caso.connection.execute(
+        "DELETE FROM sivel2_sjr_respuesta 
+        WHERE id_caso=#{c.id}")
+      cs = c.casosjr
+      if cs
+        cs.destroy
+      end
       c.destroy
+      return true
     rescue Exception => e
       menserror << "Problema eliminando caso #{e}.\n"
       return false
@@ -68,6 +52,42 @@ module UnificarHelper
 #    Sivel2Gen::Caso.connection.execute('COMMIT;')
   end
   module_function :eliminar_caso
+
+
+  def consulta_casos_en_blanco
+    return Sivel2Gen::Caso.joins(:casosjr).where(
+      "contacto_id IN (SELECT id FROM sip_persona "\
+      "  WHERE COALESCE(nombres, '')='' "\
+      "  AND COALESCE(apellidos, '')='') "\
+      "AND COALESCE(memo, '')='' "
+    )
+  end
+  module_function :consulta_casos_en_blanco
+
+
+  def eliminar_casos_en_blanco
+    mens = ""
+    pore = UnificarHelper.consulta_casos_en_blanco
+    lpore =[]
+    pore.each do |ce|
+      puts "Eliminando caso en blanco #{ce.id}"
+      if eliminar_caso(ce, mens)
+        lpore += [ce.id]
+      else
+        puts "Problema eliminando"
+      end
+    end
+    if lpore.count == 0
+      return "No se eliminaron casos en blanco" +
+        (mens != '' ? ' (' + mens + ')' : '') + ".\n"
+    else
+      return "Se eliminaron #{lpore.count} casos en blanco "\
+        "(#{lpore.join(', ')})" +
+        (mens != '' ? ' ('+mens+')' : '') + ".\n"
+    end
+  end
+  module_function :eliminar_casos_en_blanco
+
 
   # Crear un casosjr para el caso c  o lo elimina si no tiene víctimas
   # disponibles para esto.
@@ -422,14 +442,14 @@ SELECT sub2.sigla,
     SQL
     
     return Sip::Persona.connection.execute <<-SQL
-      SELECT rep2.sigla, rep2.numerodocumento,
+      SELECT duplicados_rep.sigla, duplicados_rep.numerodocumento,
         id1, p1.nombres AS nombres1, soundexespm(p1.nombres) AS sn1,
         p1.apellidos AS apellidos1, soundexespm(p1.apellidos) AS sa1,
         id2, p2.nombres AS nombres2, soundexespm(p2.nombres) AS sn2,
         p2.apellidos AS apellidos2, soundexespm(p2.apellidos) AS sa2
-      FROM rep2
-      JOIN sip_persona AS p1 ON rep2.id1=p1.id
-      JOIN sip_persona AS p2 ON rep2.id2=p2.id
+      FROM duplicados_rep
+      JOIN sip_persona AS p1 ON duplicados_rep.id1=p1.id
+      JOIN sip_persona AS p2 ON duplicados_rep.id2=p2.id
       WHERE
         (soundexespm(p1.nombres) = soundexespm(p2.nombres)
           AND soundexespm(p1.apellidos) = soundexespm(p2.apellidos)

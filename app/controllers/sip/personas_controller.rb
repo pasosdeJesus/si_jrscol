@@ -146,22 +146,6 @@ module Sip
                       ['apellidos2', f['apellidos2']] ]
       end
       @validaciones << vc
-      pares = UnificarHelper.consulta_duplicados_autom
-      vc = {
-        titulo: 'Beneficarios por unificar automaticamente',
-        encabezado: ['T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
-                     'Id2', 'Nombres', 'Apellidos'],
-                     cuerpo: []
-      }
-      pares.each do |f|
-        vc[:cuerpo] << [['sigla',f['sigla']], ['numerodocumento', f['numerodocumento']],
-                      ['id1', f['id1']], ['nombres1', f['nombres1']], 
-                      ['apellidos1', f['apellidos1']],
-                      ['id2', f['id2']], ['nombres2', f['nombres2']], 
-                      ['apellidos2', f['apellidos2']] ]
-      end
-      @validaciones << vc
-
 
 
       render :reporterepetidos, layout: 'application'
