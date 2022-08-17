@@ -51,11 +51,11 @@ module Sip
     end
 
     def nombres=(valc)
-      self[:nombres] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  /, '').sub(/  $/, '')
+      self[:nombres] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  */, '').sub(/  *$/, '')
     end
 
     def apellidos=(valc)
-      self[:apellidos] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  /, '').sub(/  $/, '')
+      self[:apellidos] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  */, '').sub(/  *$/, '')
     end
 
     scope :filtro_etiqueta_ids, lambda {|e|
