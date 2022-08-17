@@ -299,7 +299,7 @@ module UnificarHelper
           nv.id_persona = p1.id
           nv.save!
           nvs = vic.victimasjr.dup
-          nvs.victima_id = nv.id
+          nvs.id_victima = nv.id
           nvs.save!
           ep.observaciones << "Creada víctma en caso #{cid}; "
         end
@@ -483,7 +483,6 @@ module UnificarHelper
         AND p1.tdocumento_id=p2.tdocumento_id
         AND p1.numerodocumento=p2.numerodocumento
       WHERE
-        p2.id<10 AND
         (soundexespm(p1.nombres) = soundexespm(p2.nombres)
           AND soundexespm(p1.apellidos) = soundexespm(p2.apellidos)
         )  --con indices explain da 662.181
@@ -525,7 +524,7 @@ module UnificarHelper
     pares.each do |f|
       mens, idunif = unificar_dos_beneficiarios(f['id1'], f['id2'], current_usuario)
       if (mens == "")
-          mens = "Unificados en <a href='\/personas/#{idunif}'>#{idunif}</a>".html_safe
+          mens = "Unificados en <a target=_blank href='\/personas/#{idunif}'>#{idunif}</a>".html_safe
       end
       res[:cuerpo] << [
         ['sigla', f['sigla']], 
