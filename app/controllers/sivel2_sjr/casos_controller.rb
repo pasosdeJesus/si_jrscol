@@ -32,7 +32,8 @@ module Sivel2Sjr
         :atenciones,
         :listado_familiares,
         :listado_anexos,
-        :solicitudes
+        :solicitudes,
+        :etiqueta_ids
       ]
     end
 

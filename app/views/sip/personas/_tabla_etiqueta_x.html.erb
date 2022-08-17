@@ -1,0 +1,35 @@
+<div class="accordion" id="acordeon_etpers">
+  <%= item_acordeon_bs(
+    'acordeon_etpers', 'etpers', 
+    'Expandir / Colapsar', false, {
+      'estilo_accordion-header': 'text-align: center',
+      'clase_accordion-body': 'table-responsive',
+      'estilo_accordion-body': 'overflow-x:scroll'
+    }) do %>
+    <table class='table table-bordered table-sm'>
+      <thead class='thead-light'>
+        <tr>
+          <th>Usuario</th>
+          <th>Fecha</th>
+          <th Etiqueta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @registro.send(relacion).each do |ep| %>
+          <tr>
+            <td> <%= ep.usuario.nusuario %> </td>
+            <td> <%= ep.fecha %></td>
+            <td> <%= ep.etiqueta.nombre %></td>
+          </tr>
+          <tr>
+            <% obs = ep.observaciones %>
+            <% if ep.etiqueta.nombre == 'BENEFICIARIOS UNIFICADOS' %>
+              <% obs = ep.observaciones.gsub(';', "<br>").html_safe %>
+            <% end %>
+            <td colspan='3'><%= obs %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div> 
