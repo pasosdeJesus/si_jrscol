@@ -898,6 +898,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
+        can :read, Sip::Oficina
         can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
         can :manage, Sip::Ubicacionpre
@@ -927,6 +928,7 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
+        can :read, Sip::Oficina
         can [:read, :index], Sip::Orgsocial
         can :manage, Sip::Persona
         can :manage, Sip::Ubicacionpre
@@ -955,6 +957,7 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
+        can :read, Sip::Oficina
         can [:new, :create, :read, :index, :edit, :update], Sip::Orgsocial
         can :manage, Sip::Persona
         can :manage, Sip::Ubicacionpre
