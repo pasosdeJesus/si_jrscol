@@ -298,6 +298,9 @@ module UnificarHelper
           nv = vic.dup
           nv.id_persona = p1.id
           nv.save!
+          nvs = vic.victimasjr.dup
+          nvs.victima_id = nv.id
+          nvs.save!
           ep.observaciones << "Creada víctma en caso #{cid}; "
         end
         ep.save
