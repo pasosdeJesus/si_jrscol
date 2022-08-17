@@ -525,7 +525,7 @@ module UnificarHelper
     pares.each do |f|
       mens, idunif = unificar_dos_beneficiarios(f['id1'], f['id2'], current_usuario)
       if (mens == "")
-          mens = "Unificados en <a href='personas/#{idunif}'>#{idunif}</a>".html_safe
+          mens = "Unificados en <a href='\/personas/#{idunif}'>#{idunif}</a>".html_safe
       end
       res[:cuerpo] << [
         ['sigla', f['sigla']], 
