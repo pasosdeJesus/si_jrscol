@@ -297,10 +297,10 @@ module UnificarHelper
         if Sivel2Gen::Victima.where(id_caso: cid, id_persona: p1.id).count == 0
           nv = vic.dup
           nv.id_persona = p1.id
-          nv.save!
+          nv.save
           nvs = vic.victimasjr.dup
           nvs.id_victima = nv.id
-          nvs.save!
+          nvs.save
           ep.observaciones << "Creada víctma en caso #{cid}; "
         end
         ep.save
