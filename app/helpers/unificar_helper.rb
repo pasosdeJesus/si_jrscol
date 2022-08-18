@@ -488,14 +488,14 @@ module UnificarHelper
         )  --con indices explain da 662.181
         OR 
         (((LENGTH(p2.nombres)>0 AND
-            unaccent_i(p1.nombres) LIKE unaccent_i(p2.nombres) || '%')
+            f_unaccent(p1.nombres) LIKE f_unaccent(p2.nombres) || '%')
           OR (LENGTH(p1.nombres)>0 AND
-            unaccent_i(p2.nombres) LIKE unaccent_i(p1.nombres) || '%')
+            f_unaccent(p2.nombres) LIKE f_unaccent(p1.nombres) || '%')
           )
          AND ((LENGTH(p2.apellidos)>0 AND
-            unaccent_i(p1.apellidos) LIKE unaccent_i(p2.apellidos) || '%')
+            f_unaccent(p1.apellidos) LIKE f_unaccent(p2.apellidos) || '%')
           OR (LENGTH(p1.apellidos)>0 AND
-            unaccent_i(p2.apellidos) LIKE unaccent_i(p1.apellidos) || '%')
+            f_unaccent(p2.apellidos) LIKE f_unaccent(p1.apellidos) || '%')
          )
        ) --no susceptible de indices con explain da 5'574.709.919
         OR 
