@@ -1,5 +1,5 @@
 class CambiaUnaccentI < ActiveRecord::Migration[7.0]
-  def change
+  def up
     # No es necesario unaccent_i porque ya existe f_unaccent
     execute <<-SQL    
       DROP function unaccent_i CASCADE;

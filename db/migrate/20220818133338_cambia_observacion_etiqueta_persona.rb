@@ -23,6 +23,7 @@ class CambiaObservacionEtiquetaPersona < ActiveRecord::Migration[7.0]
         SET observaciones = replace(observaciones, 'Pais nac.:', '* Pais nac.:');
       UPDATE sip_etiqueta_persona 
         SET observaciones = replace(observaciones, 'Departamento nac.:', '* Departamento nac.:');
+      UPDATE sip_etiqueta_persona 
         SET observaciones = replace(observaciones, 'Muncipio nac.:', '* Municipio nac.:');
       UPDATE sip_etiqueta_persona 
         SET observaciones = replace(observaciones, 'Centro poblado nac.:', '* Centro poblado nac.:');
@@ -38,7 +39,7 @@ class CambiaObservacionEtiquetaPersona < ActiveRecord::Migration[7.0]
   def down
     execute <<-SQL
       UPDATE sip_etiqueta_persona 
-        SET observaciones = replace(observaciones, E'\n', ';');
+        SET observaciones = replace(observaciones, E'\n', '; ');
     SQL
   end
 end
