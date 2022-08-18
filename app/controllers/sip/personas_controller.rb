@@ -165,7 +165,7 @@ module Sip
 
     def unificar
       m, p1 = UnificarHelper.unificar_dos_beneficiarios(
-        params[:id1], params[:id2], current_usuario)
+        params[:unificar][:id1], params[:unificar][:id2], current_usuario)
       if (m != "")
         flash[:error] = m
         redirect_to Rails.configuration.relative_url_root

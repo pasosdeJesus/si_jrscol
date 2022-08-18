@@ -24,7 +24,8 @@
           <tr>
             <% obs = ep.observaciones %>
             <% if ep.etiqueta.nombre == 'BENEFICIARIOS UNIFICADOS' %>
-              <% obs = ep.observaciones.gsub(';', "<br>").html_safe %>
+              <% obs = ep.observaciones.gsub("\n* ", "<li>").html_safe %>
+              <% obs = obs.sub("\n", "<br>").html_safe %>
             <% end %>
             <td colspan='3'><%= obs %></td>
           </tr>
