@@ -77,3 +77,44 @@
   <%= render 'resultado_repetidos' %>
 </div> <!-- id: resultado -->
 
+<h2>Unificar dos beneficiarios por números de identificación</h2>
+
+<%= simple_form_for Sip::Unificar.new, 
+  :url => main_app.beneficiarios_unificar_path,
+  :html => { :class => 'form-horizontal' } do |f| 
+%>
+  <div data-role="content" class="form-inputs">
+    <div class="container">
+      <div class="row filtro-fila">
+        <div class="offset-sm-1 col-sm-3">
+          <%= f.input :id1,
+            maxlength: 10, 
+            size: 10,
+            label: false,
+            placeholder: 'Id. del primer beneficiario'
+          %>
+        </div>
+        <div class="offset-sm-1 col-sm-3">
+          <%= f.input :id2,
+            maxlength: 10, 
+            size: 10,
+            label: false,
+            placeholder: 'Id. del segundo beneficarioFinal'
+          %>
+        </div>
+        <div class="offset-md-1 col-md-3">
+          <%= f.button :submit, 'Unificar', class: 'btn btn-default',
+            'data-turbo' => false %>
+        </div>
+      </div> <!-- class: row -->
+      <div>Advertencia: al unificar dos beneficiarios se completará
+        la información del que tenga código menor (con los datos
+        del otro beneficiario) y se eliminará el beneficiario con
+        código mayor.
+      </div>
+
+    </div>  <!-- class:container -->
+  </div> <!-- class:form-inputs -->
+<% end %>
+
+

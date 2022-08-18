@@ -284,7 +284,7 @@ module UnificarHelper
     ].each do |c|
       if !p1[c] && p2[c]
         p1[c] = p2[c]
-        ep.observaciones << "#{c}->#{p2[c]}; "
+        ep.observaciones << "#{c}->#{p2[c]}\n"
       end
     end
     p1.save
@@ -301,7 +301,7 @@ module UnificarHelper
           nvs = vic.victimasjr.dup
           nvs.id_victima = nv.id
           nvs.save
-          ep.observaciones << "Creada víctma en caso #{cid}; "
+          ep.observaciones << "Creada víctma en caso #{cid}\n"
         end
         ep.save
         csjr = vic.caso.casosjr
@@ -316,16 +316,16 @@ module UnificarHelper
 #            puts csjr.errors
 #            debugger
 #          end
-          ep.observaciones << "Cambiado contacto en caso #{cid}; "
+          ep.observaciones << "Cambiado contacto en caso #{cid}\n"
         end
         ep.save
         Sivel2Gen::Acto.where(id_caso: cid, id_persona: p1.id).each do |ac|
           ac.id_persona = p1.id
           ac.save!
-          ep.observaciones << "Cambiado acto en caso #{cid}; "
+          ep.observaciones << "Cambiado acto en caso #{cid}\n"
         end
         ep.save
-        ep.observaciones << "Elimina víctima #{vic.id_persona} del caso #{cid}; "
+        ep.observaciones << "Elimina víctima #{vic.id_persona} del caso #{cid}\n"
         vic.destroy
         ep.save
       end
@@ -334,31 +334,31 @@ module UnificarHelper
     Cor1440Gen::Caracterizacionpersona.where(persona_id: p2.id).each do |cp|
       cp.persona_id = p1.id
       cp.save
-      ep.observaciones << "Cambiada caracterizacíon #{cp.id}; "
+      ep.observaciones << "Cambiada caracterizacíon #{cp.id}\n"
     end
     Sip::PersonaTrelacion.where(persona1: p2.id).each do |pt|
       pt.persona1 = p1.id
       pt.save
-      ep.observaciones << "Cambiada relacion con persona #{pt.persona2}; "
+      ep.observaciones << "Cambiada relacion con persona #{pt.persona2}\n"
     end
     Sip::PersonaTrelacion.where(persona2: p2.id).each do |pt|
       pt.persona2 = p1.id
       pt.save
-      ep.observaciones << "Cambiada relacion con persona #{pt.persona1}; "
+      ep.observaciones << "Cambiada relacion con persona #{pt.persona1}\n"
     end
 
     #sip_datosbio no debe estar lleno
     Sip::OrgsocialPersona.where(persona_id: p2.id).each do |op|
       op.persona_id = p1.id
       op.save
-      ep.observaciones << "Cambiada organización social #{op.orgsocial_id}; "
+      ep.observaciones << "Cambiada organización social #{op.orgsocial_id}\n"
     end
 
     #mr519_gen_encuestapersona no debería estar llena
     Sip::EtiquetaPersona.where(persona_id: p2.id).each do |ep2|
       ep2.persona_id = p1.id
       ep2.save
-      ep.observaciones << "Cambiada etiqueta #{ep.etiqueta.nombre}; "
+      ep.observaciones << "Cambiada etiqueta #{ep.etiqueta.nombre}\n"
     end
 
     # cor1440_gen_beneficiariopf no tiene id
@@ -372,7 +372,7 @@ module UnificarHelper
             (persona_id, proyectofinanciero_id) 
             VALUES (#{p1.id}, #{pfid});
         SQL
-        ep.observaciones << "Cambiado beneficiario en convenio financiado #{pfid}; "
+        ep.observaciones << "Cambiado beneficiario en convenio financiado #{pfid}\n"
       end
       Cor1440Gen::Beneficiariopf.connection.execute <<-SQL
         DELETE FROM cor1440_gen_beneficiariopf WHERE 
@@ -385,30 +385,30 @@ module UnificarHelper
     ).each do |bp|
       bp.persona_id = p1.id
       bp.save
-      ep.observaciones << "Cambiado detalle financiero #{bp.detallefinanciero_id}; "
+      ep.observaciones << "Cambiado detalle financiero #{bp.detallefinanciero_id}\n"
     end
     #detallefinanciero_persona
 
     ep.observaciones = ep.observaciones[0..4999]
     ep.save
     p2.destroy
-    ep.observaciones << "Se unificó y eliminó el registro de beneficiario #{p2.id}; "\
-        "Nombres: #{p2.nombres.to_s}; "\
-        "Apellidos: #{p2.apellidos.to_s}; "\
-        "Tipo doc.: #{p2.tdocumento_id ? p2.tdocumento.sigla : ''}; "\
-        "Número de doc.: #{p2.numerodocumento.to_s}; "\
-        "Año nac.: #{p2.anionac.to_s}; "\
-        "Mes nac.: #{p2.mesnac.to_s}; "\
-        "Dia nac.: #{p2.dianac.to_s}; "\
-        "Sexo nac.: #{p2.sexo.to_s}; "\
-        "Pais nac.: #{p2.id_pais ? p2.pais.nombre : ''}; "\
-        "Departamento nac.: #{p2.id_departamento ? p2.departamento.nombre : ''}; "\
-        "Muncipio nac.: #{p2.id_municipio ? p2.municipio.nombre : ''}; "\
-        "Centro poblado nac.: #{p2.id_clase ? p2.clase.nombre : ''}; "\
-        "Nacional de: #{p2.nacionalde ? p2.nacional.nombre : ''}; "\
-        "Fecha creación: #{p2.created_at.to_s}; "\
-        "Fecha actualización: #{p2.updated_at.to_s}. "
-    
+    ep.observaciones << "Se unificó y eliminó el registro de beneficiario #{p2.id}\n"\
+        "* Nombres: #{p2.nombres.to_s}\n"\
+        "* Apellidos: #{p2.apellidos.to_s}\n"\
+        "* Tipo doc.: #{p2.tdocumento_id ? p2.tdocumento.sigla : ''}\n"\
+        "* Número de doc.: #{p2.numerodocumento.to_s}\n"\
+        "* Año nac.: #{p2.anionac.to_s}\n"\
+        "* Mes nac.: #{p2.mesnac.to_s}\n"\
+        "* Dia nac.: #{p2.dianac.to_s}\n"\
+        "* Sexo nac.: #{p2.sexo.to_s}\n"\
+        "* Pais nac.: #{p2.id_pais ? p2.pais.nombre : ''}\n"\
+        "* Departamento nac.: #{p2.id_departamento ? p2.departamento.nombre : ''}\n"\
+        "* Muncipio nac.: #{p2.id_municipio ? p2.municipio.nombre : ''}\n"\
+        "* Centro poblado nac.: #{p2.id_clase ? p2.clase.nombre : ''}\n"\
+        "* Nacional de: #{p2.nacionalde ? p2.nacional.nombre : ''}\n"\
+        "* Fecha creación: #{p2.created_at.to_s}\n"\
+        "* Fecha actualización: #{p2.updated_at.to_s}.\n"
+
     ep.observaciones = ep.observaciones[0..4999]
     ep.save
 
