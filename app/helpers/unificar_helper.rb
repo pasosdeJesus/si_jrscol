@@ -497,8 +497,10 @@ module UnificarHelper
           nv.id_persona = p1.id
           nv.save
           nvs = vic.victimasjr.dup
-          nvs.id_victima = nv.id
-          nvs.save
+          if nvs
+            nvs.id_victima = nv.id
+            nvs.save
+          end
           ep.observaciones << "Creada víctma en caso #{cid}\n"
         end
         ep.save
@@ -525,6 +527,7 @@ module UnificarHelper
         ep.save
         ep.observaciones << "Elimina víctima #{vic.id_persona} del caso #{cid}\n"
         vic.destroy
+        ep.observaciones = ep.observaciones[0..4998]
         ep.save
       end
     end
@@ -587,7 +590,7 @@ module UnificarHelper
     end
     #detallefinanciero_persona
 
-    ep.observaciones = ep.observaciones[0..4999]
+    ep.observaciones = ep.observaciones[0..4998]
     ep.save
     p2.destroy
     ep.observaciones << "Se unificó y eliminó el registro de beneficiario #{p2.id}\n"\
@@ -607,7 +610,7 @@ module UnificarHelper
         "* Fecha creación: #{p2.created_at.to_s}\n"\
         "* Fecha actualización: #{p2.updated_at.to_s}.\n"
 
-    ep.observaciones = ep.observaciones[0..4999]
+    ep.observaciones = ep.observaciones[0..4998]
     ep.save
 
     return ["", p1.id]
