@@ -680,8 +680,6 @@ module UnificarHelper
 
     return Sip::Persona.connection.execute <<-SQL
 
-  -- Las 3 opciones sin igualdad entre tdocumento y numerodocumento da
-  -- 23'700.306.841 (mucho más que la suma de las opciones)
       SELECT p1.tdocumento_id, p1.numerodocumento, 
         p1.id AS id1, p1.nombres AS nombres1, soundexespm(p1.nombres) AS sn1,
         p1.apellidos AS apellidos1, soundexespm(p1.apellidos) AS sa1,
@@ -697,35 +695,39 @@ module UnificarHelper
         (soundexespm(p1.nombres) = soundexespm(p2.nombres)
           AND soundexespm(p1.apellidos) = soundexespm(p2.apellidos)
         )  --con indices explain da 662.181
-        OR 
-        (((LENGTH(p2.nombres)>0 AND
-            f_unaccent(p1.nombres) LIKE f_unaccent(p2.nombres) || '%')
-          OR (LENGTH(p1.nombres)>0 AND
-            f_unaccent(p2.nombres) LIKE f_unaccent(p1.nombres) || '%')
-          )
-         AND ((LENGTH(p2.apellidos)>0 AND
-            f_unaccent(p1.apellidos) LIKE f_unaccent(p2.apellidos) || '%')
-          OR (LENGTH(p1.apellidos)>0 AND
-            f_unaccent(p2.apellidos) LIKE f_unaccent(p1.apellidos) || '%')
-         )
-       ) --no susceptible de indices con explain da 5'574.709.919
-        OR 
-        (levenshtein(p1.nombres || ' ' ||
-            p1.apellidos,
-            p2.nombres || ' ' ||
-            p2.apellidos) <= 3
-        ) --no encontramos como indexar con explain da 4'612.693.352
+      --  OR 
+      --  (((LENGTH(p2.nombres)>0 AND
+      --      f_unaccent(p1.nombres) LIKE f_unaccent(p2.nombres) || '%')
+      --    OR (LENGTH(p1.nombres)>0 AND
+      --      f_unaccent(p2.nombres) LIKE f_unaccent(p1.nombres) || '%')
+      --    )
+      --   AND ((LENGTH(p2.apellidos)>0 AND
+      --      f_unaccent(p1.apellidos) LIKE f_unaccent(p2.apellidos) || '%')
+      --    OR (LENGTH(p1.apellidos)>0 AND
+      --      f_unaccent(p2.apellidos) LIKE f_unaccent(p1.apellidos) || '%')
+      --   )
+      -- ) --no susceptible de indices con explain da 5'574.709.919
+      --  OR 
+      --  (levenshtein(p1.nombres || ' ' ||
+      --      p1.apellidos,
+      --      p2.nombres || ' ' ||
+      --      p2.apellidos) <= 3
+      --  ) --no encontramos como indexar con explain da 4'612.693.352
     ;
     SQL
+  # Las 3 opciones sin igualdad entre tdocumento y numerodocumento da
+  # 23'700.306.841 (mucho más que la suma de las opciones)
   end
   module_function :consulta_duplicados_autom
 
   # después de ejecutar este refrescar vista materializada
   # sivel2_gen_conscaso
   def deduplicar_automaticamente(current_usuario)
-    #puts "OJO deduplicar_automaticamente"
+    puts "OJO deduplicar_automaticamente"
+    puts Benchmark.measure { "a"*1_000_000_000 }
     pares = UnificarHelper.consulta_duplicados_autom
-    #puts "OJO consulta efectuada pares.count=#{pares.count}"
+    puts "OJO consulta efectuada pares.count=#{pares.count}"
+    puts Benchmark.measure { "a"*1_000_000_000 }
     res = {
       titulo: 'Beneficiarios en los que se intenta deduplicación automatica',
       encabezado: [

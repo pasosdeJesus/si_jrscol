@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
     post '/beneficiarios/unificar' => 'sip/personas#unificar',
       as: :beneficiarios_unificar
+    get '/beneficiarios/unificar' => 'sip/personas#unificar',
+      as: :beneficiarios_unificar_get
     get '/beneficiarios/deduplicar' => 'sip/personas#deduplicar',
       as: :beneficiarios_deduplicar
     get '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',

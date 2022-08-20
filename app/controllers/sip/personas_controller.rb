@@ -113,42 +113,55 @@ module Sip
       }
 
 
-      arr = ActiveRecord::Base.connection.select_all(
-        UnificarHelper.consulta_casos_en_blanco.select(['id_caso']).to_sql
-      )
-      @validaciones << {
-        titulo: 'Casos en blanco por eliminar automaticamente',
-        encabezado: ['Id.'],
-        cuerpo: arr 
-      }
+      if params && params[:reporterepetidos] && 
+          params[:reporterepetidos][:deduplicables_autom] == '1'
+        arr = ActiveRecord::Base.connection.select_all(
+          UnificarHelper.consulta_casos_en_blanco.select(['id_caso']).to_sql
+        )
+        @validaciones << {
+          titulo: 'Casos en blanco por eliminar automaticamente',
+          encabezado: ['Id.'],
+          cuerpo: arr 
+        }
 
-      arr = ActiveRecord::Base.connection.select_all(
-        UnificarHelper.consulta_personas_en_blanco_por_eliminar.select(['id']).to_sql
-      )
-      @validaciones << {
-        titulo: 'Personas en blanco por eliminar automaticamente',
-        encabezado: ['Id.'],
-        cuerpo: arr 
-      }
+        arr = ActiveRecord::Base.connection.select_all(
+          UnificarHelper.consulta_personas_en_blanco_por_eliminar.select(['id']).to_sql
+        )
+        @validaciones << {
+          titulo: 'Personas en blanco por eliminar automaticamente',
+          encabezado: ['Id.'],
+          cuerpo: arr 
+        }
 
-      pares = UnificarHelper.consulta_duplicados_autom
-      vc = {
-        titulo: 'Beneficarios por deduplicar automaticamente',
-        encabezado: [
-          'T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
-          'Id2', 'Nombres', 'Apellidos'
-        ],
-        cuerpo: []
-      }
-      pares.each do |f|
-        vc[:cuerpo] << [['sigla',f['sigla']], ['numerodocumento', f['numerodocumento']],
-                      ['id1', f['id1']], ['nombres1', f['nombres1']], 
-                      ['apellidos1', f['apellidos1']],
-                      ['id2', f['id2']], ['nombres2', f['nombres2']], 
-                      ['apellidos2', f['apellidos2']] ]
+        pares = UnificarHelper.consulta_duplicados_autom
+        vc = {
+          titulo: 'Beneficarios por deduplicar automaticamente',
+          encabezado: [
+            'T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
+            'Id2', 'Nombres', 'Apellidos'
+          ],
+          cuerpo: []
+        }
+        pares.each do |f|
+          vc[:cuerpo] << [['sigla',f['sigla']], ['numerodocumento', f['numerodocumento']],
+                          ['id1', f['id1']], ['nombres1', f['nombres1']], 
+                          ['apellidos1', f['apellidos1']],
+                          ['id2', f['id2']], ['nombres2', f['nombres2']], 
+                          ['apellidos2', f['apellidos2']] ]
+        end
+        @validaciones << vc
       end
-      @validaciones << vc
 
+      rep= "SELECT t.sigla, p1.numerodocumento, "\
+        "     p1.id AS id1, p1.nombres AS nombres1, p1.apellidos AS apellidos1,"\
+        "     p2.id AS id2, p2.nombres AS nombres2, p2.apellidos AS apellidos2"\
+        "   FROM sip_persona AS p1"\
+        "   JOIN sip_persona AS p2 ON p1.id < p2.id "\
+        "     AND p1.tdocumento_id=p2.tdocumento_id "\
+        "     AND p1.numerodocumento=p2.numerodocumento "\
+        "     AND p1.numerodocumento<>'' "\
+        "   JOIN sip_tdocumento AS t ON p1.tdocumento_id=t.id"
+      @idrep = ActiveRecord::Base.connection.select_all(rep) 
 
       render :reporterepetidos, layout: 'application'
     end
@@ -167,8 +180,20 @@ module Sip
 
 
     def unificar
+      if params[:unificar]
+        id1 = params[:unificar][:id1].to_i
+        id2 = params[:unificar][:id2].to_i
+      elsif params[:id1] && params[:id2]
+        id1 = params[:id1].to_i
+        id2 = params[:id2].to_i
+      else
+        flash[:error] = 'Faltaron identificaciones de personas a unificar'
+        redirect_to Rails.configuration.relative_url_root
+        return
+      end
+
       m, p1 = UnificarHelper.unificar_dos_beneficiarios(
-        params[:unificar][:id1], params[:unificar][:id2], current_usuario)
+        id1, id2, current_usuario)
       if (m != "")
         flash[:error] = m
         redirect_to Rails.configuration.relative_url_root

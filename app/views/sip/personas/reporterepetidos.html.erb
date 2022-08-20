@@ -26,9 +26,6 @@
     </div> <!-- errores -->
     <div class="container">
       <div class="row filtro-fila">
-        <div class="offset-sm-0 col-sm-2 offset-md-1 col-md-1">
-          <%= @rango_fechas %>
-        </div>
         <div class="offset-sm-0 col-sm-4">
           <% fpred = Sip::FormatoFechaHelper.inicio_semestre(Date.today) %>
           <%= f.input :fechaini,
@@ -45,7 +42,7 @@
             }
           %>
         </div>
-        <div class="offset-sm-1 col-sm-4">
+        <div class="offset-sm-0 col-sm-4">
           <%= f.input :fechafin,
             maxlength: 10, 
             size: 10,
@@ -58,8 +55,17 @@
             }
           %>
         </div>
+        <div class="offset-sm-0 col-sm-4">
+          <%= f.input :deduplicables_autom,
+            as: :boolean,
+            label: 'Presentar deduplicables automaticamente (demorado)',
+            boolean_style: :nested,
+            input_html: {
+              style: 'margin-left: 15px'
+            } %>
+        </div>
       </div> <!-- row -->
-
+ 
       <!--%= render 'restofiltro', {f: f} %-->
 
       <div class="row filtro-fila">
@@ -76,6 +82,57 @@
 <div id="repetidos">
   <%= render 'resultado_repetidos' %>
 </div> <!-- id: resultado -->
+
+<h3>Pares de personas con la misma identificación no vacía: (<%= @idrep.count %></h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Tipo Doc.</th>
+      <th>Núm. Doc</th>
+      <th>Id 1</th>
+      <th>Nombres 1</th>
+      <th>Apellidos 1</th>
+      <th>Id 2</th>
+      <th>Nombres 2</th>
+      <th>Apellidos 2</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @idrep.try(:each) do |fila| %>
+      <tr>
+        <td> <%= fila["sigla"] %> </td>
+        <td> <%= fila["numerodocumento"] %> </td>
+        <td>
+          <%= link_to(
+            fila["id1"].to_i, 
+            sip.persona_path(fila["id2"].to_i)) %>
+        </td>
+        <td><%= fila["nombres1"] %></td>
+        <td><%= fila["apellidos1"] %></td>
+        <td>
+          <%= link_to(
+            fila["id2"].to_i, 
+            sip.persona_path(fila["id2"].to_i)) %>
+        </td>
+
+        <td><%= fila["nombres2"] %></td>
+        <td><%= fila["apellidos2"] %></td>
+        <td>
+          <%= link_to(
+            'Unificar',
+            main_app.beneficiarios_unificar_get_path + '?id1=' + 
+            fila['id1'].to_s + '&id2=' + fila['id2'].to_s,
+            target: '_blank',
+            class: 'btn btn-sm'
+          ) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
 
 <h2>Unificar dos beneficiarios por números de identificación</h2>
 
