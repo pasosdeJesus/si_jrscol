@@ -7,12 +7,12 @@ module Sip
 
     self.table_name = 'sip_etiqueta_persona'
 
-    belongs_to :persona, foreign_key: "persona_id", validate: true,
+    belongs_to :persona, foreign_key: "persona_id", validate: false,
       class_name: 'Sip::Persona', inverse_of: :etiqueta_persona,
       optional: false
-    belongs_to :etiqueta, foreign_key: "etiqueta_id", validate: true,
+    belongs_to :etiqueta, foreign_key: "etiqueta_id", validate: false,
       class_name: 'Sip::Etiqueta', optional: false
-    belongs_to :usuario, foreign_key: "usuario_id", validate: true, 
+    belongs_to :usuario, foreign_key: "usuario_id", validate: false, 
       optional: false
 
     campofecha_localizado :fecha

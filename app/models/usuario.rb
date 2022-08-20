@@ -9,6 +9,12 @@ class Usuario < ActiveRecord::Base
     validate: true, 
     foreign_key: :usuario_id
 
+  has_many :etiqueta_persona,  
+    foreign_key: 'usuario_id',
+    validate: true,
+    dependent: :destroy,
+    class_name: 'Sip::EtiquetaPersona'
+
   def active_for_authentication?
     #logger.debug self.to_yaml
     # Si fecha de contrato es posterior a hoy no puede autenticarse
