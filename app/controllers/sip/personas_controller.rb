@@ -154,7 +154,10 @@ module Sip
     end
 
     def deduplicar
-      @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
+      if ENV.fetch('DEPURA_MIN', -1).to_i == -1 || 
+          ENV.fetch('DEPURA_MAX', -1).to_i == -1
+        @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
+      end
       @res_deduplicar = UnificarHelper::deduplicar_automaticamente(current_usuario)
       Sip::Persona.connection.execute <<-SQL
         REFRESH MATERIALIZED VIEW sivel2_gen_conscaso;

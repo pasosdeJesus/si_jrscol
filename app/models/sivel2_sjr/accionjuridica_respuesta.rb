@@ -1,5 +1,7 @@
 module Sivel2Sjr
   class AccionjuridicaRespuesta < ActiveRecord::Base
+    include Sip::Modelo
+
     belongs_to :accionjuridica, class_name: 'Sivel2Sjr::Accionjuridica', 
       foreign_key: "accionjuridica_id", optional: false
     belongs_to :respuesta, class_name: 'Sivel2Sjr::Respuesta',

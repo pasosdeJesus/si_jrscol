@@ -1,6 +1,7 @@
 module Sivel2Gen
   class AnexoVictima < ActiveRecord::Base
 
+    include Sip::Modelo
     include Sip::Localizacion
     include Sip::FormatoFechaHelper
 

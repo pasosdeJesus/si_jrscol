@@ -22,12 +22,33 @@
             <td> <%= ep.etiqueta.nombre %></td>
           </tr>
           <tr>
+            <td colspan='3'>
             <% obs = ep.observaciones %>
             <% if ep.etiqueta.nombre == 'BENEFICIARIOS UNIFICADOS' %>
-              <% obs = ep.observaciones.gsub("\n* ", "<li>").html_safe %>
-              <% obs = obs.gsub("\n", "<br>").html_safe %>
+              <% # indentación a dos espacios de viñetas %>
+              <% nivel = -1 %>
+              <% obs.split("\n").each do |unaob|  %>
+                <% if unaob =~ /^ *\*/ %>
+                  <% nnivel = $~[0].length-1 %>
+                  <% if nivel < nnivel %>
+                    <ul>
+                  <% elsif nivel > nnivel %>
+                    </ul>
+                  <% end %>
+                  <% nivel = nnivel %>
+                  <li><%= unaob[$~[0].length .. -1] %></li>
+                <% else %>
+                  <%= unaob %><br>
+                <% end %>
+              <% end %>
+              <% while (nivel > 0) %>
+                </ul>
+                <% nivel -= 1 %>
+              <% end %>
+            <% else %>
+              <%= obs %>
             <% end %>
-            <td colspan='3'><%= obs %></td>
+            </td>
           </tr>
         <% end %>
       </tbody>

@@ -4,7 +4,7 @@ def alertas
   puts "Inicio de verificacion alertas"
 end
 
-def elimina_generados
+def eliminar_generados
     puts "Eliminando public/heb412/generados"
     orden = "ls -l public/heb412/generados/"
     res = `#{orden}`
@@ -93,7 +93,7 @@ def run
     exit 1
   end
   alertas
-  elimina_generados
+  eliminar_generados
   m = UnificarHelper.eliminar_casos_en_blanco
   puts m;
   m = UnificarHelper.eliminar_personas_en_blanco

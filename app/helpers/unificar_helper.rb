@@ -5,7 +5,7 @@ module UnificarHelper
 
   # @param c Sivel2Gen::Caso
   # @param menserror Colchon para mensajes de error
-  # @return true y menserror es vacio o false y menserror indica problema
+  # @return true y menserror no es modificado o false y se agrega problema a menserror
   def eliminar_caso(c, menserror)
     if !c || !c.id
       menserror << "Caso no válido.\n"
@@ -18,16 +18,44 @@ module UnificarHelper
            WHERE desplazamiento_id IN (SELECT id FROM sivel2_sjr_desplazamiento
               WHERE id_caso=#{c.id});"
       )
+      ['sivel2_sjr_ayudasjr_respuesta', 
+       'sivel2_sjr_ayudaestado_respuesta',
+       'sivel2_sjr_derecho_respuesta', 
+       'sivel2_sjr_aspsicosocial_respuesta', 
+       'sivel2_sjr_motivosjr_respuesta', 
+       'sivel2_sjr_progestado_respuesta'
+      ].each do |trr|
+        ord = "DELETE FROM #{trr}
+           WHERE id_respuesta IN (SELECT id FROM sivel2_sjr_respuesta 
+             WHERE id_caso=#{c.id});"
+             #puts "OJO ord='#{ord}'"
+        Sivel2Gen::Caso.connection.execute(ord)
+      end
+      Sivel2Gen::Caso.connection.execute(
+        "DELETE FROM sivel2_sjr_accionjuridica_respuesta 
+           WHERE respuesta_id IN (SELECT id FROM sivel2_sjr_respuesta 
+             WHERE id_caso=#{c.id});"
+      )
+
+      Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_actosjr
+        WHERE id_acto IN (SELECT id FROM sivel2_gen_acto
+          WHERE id_caso=#{c.id});")
+
       Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_desplazamiento
         WHERE id_caso=#{c.id};")
       Sivel2Gen::Caso.connection.execute("UPDATE sivel2_gen_caso
         SET ubicacion_id=NULL
           WHERE id=#{c.id};")
+      Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET id_llegada=NULL WHERE id_caso=#{c.id};")
+      Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET id_salida=NULL WHERE id_caso=#{c.id};")
+      Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET id_llegadam=NULL WHERE id_caso=#{c.id};")
+      Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET id_salidam=NULL WHERE id_caso=#{c.id};")
       Sivel2Gen::Caso.connection.execute("DELETE FROM sip_ubicacion
         WHERE id_caso=#{c.id};")
-      Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_actosjr
-        WHERE id_acto IN (SELECT id FROM sivel2_gen_acto
-          WHERE id_caso=#{c.id});")
       Sivel2Gen::Caso.connection.execute(
         "DELETE FROM sivel2_sjr_actividad_casosjr
         WHERE casosjr_id=#{c.id}")
@@ -212,6 +240,167 @@ module UnificarHelper
   end
   module_function :preparar_automaticamente
 
+    
+  def reporte_md_contenido_objeto(en, lista_params, objeto, ind)
+    #puts "OJO " + ' '*ind + en.to_s + ' '
+    res = ""
+    lista_params.each do |atr|
+      #puts "OJO   " + ' '*ind + 'atr: \'' + atr.to_s + '\''
+      if atr.class == Symbol
+        if !objeto[atr].nil?
+          alf = objeto.class.asociacion_llave_foranea(atr)
+          if alf
+            n = alf.name
+            nclase = alf.class_name.constantize
+            orel = nclase.find(objeto[atr])
+            res << (' '*ind) + '* ' + objeto.class.human_attribute_name(atr) + 
+              ': ' + orel.presenta_nombre.to_s + "\n"
+          else
+            res << (' '*ind) + '* ' + objeto.class.human_attribute_name(atr) + 
+              ': ' + objeto[atr].to_s + "\n"
+          end
+        end
+      elsif atr.class == Hash 
+        atr.each do |l, v|
+          #puts "OJO     " + ' '*ind + 'l: ' + l.to_s
+          if v.class != Array
+            puts "Se esperaba Array pero en #{l} se encontró #{v.class}\n"
+            exit 1
+          else
+            if l.to_s.end_with?('_attributes')
+              nom_nobjeto=l.to_s[0..-12]
+              nobjeto = objeto.send(nom_nobjeto)
+              # Es colección?
+              if nobjeto.class.to_s.end_with?(
+                  "ActiveRecord_Associations_CollectionProxy")
+                i = 0
+                nclase2 = nobjeto.class.to_s[0..-44]
+                #puts "OJO     " + ' '*ind + 'nclase2= ' + nclase2
+                clase2 = nclase2.constantize
+                
+                nomh = clase2.human_attribute_name(nom_nobjeto)
+                nobjeto.each do |nobjetoind|
+                  res << ' '*ind + "* #{nomh} #{i+1}\n" 
+                  res << reporte_md_contenido_objeto(l, v, nobjetoind, ind+2)
+                  i += 1
+                end
+              elsif nobjeto.class == NilClass
+                res << ' '*ind + "* #{nom_nobjeto} es nil"
+              else
+                nomh = nobjeto.class.human_attribute_name(nom_nobjeto)
+                res << ' '*ind + "* #{nomh}\n" 
+                res << reporte_md_contenido_objeto(l, v, nobjeto, ind+2)
+              end
+            elsif l.to_s.end_with?('_ids')
+              nom_nobjeto=l.to_s[0..-4]
+              if objeto.respond_to?(l.to_s) 
+                res << ' '*ind + "* #{nom_nobjeto}: " + 
+                  "#{objeto.send(l.to_s)}" + "\n" 
+              end
+            end
+          end
+        end
+      end
+
+    end
+    return res
+  end
+  module_function :reporte_md_contenido_objeto
+
+
+
+  # Unificar dos casos, eliminando el de código mayor y dejando
+  # su información como etiqueta en el primero
+  # @return caso_id donde unifica si lo logra o nil
+  def unificar_dos_casos(c1_id, c2_id, current_usuario, menserror)
+    tmenserr = ''
+    if !c1_id || c1_id.to_i <= 0 ||
+        Sivel2Gen::Caso.where(id: c1_id.to_i).count == 0
+      tmenserr << "Primera identificación de caso no válida '#{c1_id.to_s}'.\n"
+    end
+    if !c2_id || c2_id.to_i <= 0 ||
+        Sivel2Gen::Caso.where(id: c2_id.to_i).count == 0
+      tmenserr << "Segunda identificación de caso no válida '#{c2_id.to_s}'.\n"
+    end
+    if c1_id.to_i == c2_id.to_i
+      tmenserr << "Primera y segunda identificación son iguales, no unificando.\n"
+    end
+
+    c = Sivel2Sjr::ActividadCasosjr.connection.execute "
+     SELECT DISTINCT ac1.actividad_id FROM sivel2_sjr_actividad_casosjr AS ac1 
+       JOIN sivel2_sjr_actividad_casosjr AS ac2 
+       ON ac1.actividad_id=ac2.actividad_id 
+       WHERE ac1.casosjr_id=#{c1_id}
+       AND ac2.casosjr_id=#{c2_id}
+    "
+    if c.count > 0
+      tmenserr << "Ambos casos son casos beneficiarios simultaneamente en "\
+        "#{c.count} actividades (#{c.pluck("actividad_id").join(", ")}). "\
+        "Elimine uno de los dos casos en cada una.\n"
+    end
+
+    if tmenserr != ""
+      menserror << tmenserr
+      return nil
+    end
+
+    c1 = Sivel2Gen::Caso.find([c1_id.to_i, c2_id.to_i].min)
+    c2 = Sivel2Gen::Caso.find([c1_id.to_i, c2_id.to_i].max)
+
+    eunif = Sip::Etiqueta.where(nombre:'BENEFICIARIOS UNIFICADOS').take
+    if !eunif
+      tmenserr << "No se encontró etiqueta BENEFICIARIOS UNIFICADOS.\n"
+    end
+
+    if tmenserr != ""
+      menserror << tmenserr
+      return nil
+    end
+
+    ep = Sivel2Gen::CasoEtiqueta.new(
+      id_caso: c1.id,
+      id_etiqueta: eunif.id,
+      id_usuario: current_usuario.id,
+      fecha: Date.today(),
+      observaciones: ""
+    )
+
+    Sivel2Sjr::ActividadCasosjr.where(casosjr_id: c2.id).each do |ac|
+      ac.casosjr_id = c1.id
+      ac.save
+      ep.observaciones << "Cambiado caso beneficiario en actividad #{ac.id}\n"
+    end
+
+    ep.observaciones = ep.observaciones[0..9999]
+    ep.save
+    cc = Sivel2Sjr::CasosController.new
+    c2rep = UnificarHelper.reporte_md_contenido_objeto("Caso #{c1.id}", cc.lista_params, c1, 0)
+    c2id = c2.id
+    if eliminar_caso(c2, tmenserr)
+      ep.observaciones << "Se unificó y eliminó el registro de caso #{c2id}\n" +
+      ep.observaciones << c2rep
+    else
+      ep.observaciones << "No se logró eliminar el caso #{c2id}, pero si se unficó en el #{c1.id}\n" +
+      tmenserr << "No se logró eliminar el caso #{c2id}\n"
+    end
+    ep.observaciones = ep.observaciones[0..9999]
+    begin
+      ep.save!
+    rescue Exception => e
+      puts e.to_s
+      debugger
+    end
+
+
+    if tmenserr != ""
+      menserror << tmenserr
+      return nil
+    end
+
+    return c1.id
+  end
+  module_function :unificar_dos_casos
+
 
   # Unificar la información de un segundo beneficario en un primero y elimina el
   # segundo
@@ -243,12 +432,6 @@ module UnificarHelper
       menserr += "El caso #{cc.first} tiene ambos beneficiarios como víctimas; por previción antes debe eliminar alguna de esas víctimas de ese caso.\n"
     elsif cc.count > 1
       menserr += "Los casos #{cc.inspect} tienen a ambos beneficiarios como víctimas; por previción antes en cada uno de esos casos debe eliminar alguna de las dos víctimas.\n"
-    end
-
-    cc1 = Sivel2Sjr::Casosjr.where(contacto_id: p1.id).pluck(:id_caso)
-    cc2 = Sivel2Sjr::Casosjr.where(contacto_id: p2.id).pluck(:id_caso)
-    if cc1.count > 0 and cc2.count > 0
-      menserr += "Primer beneficiario (#{p1.id} #{p1.nombres.to_s} #{p1.apellidos.to_s}) es contacto en caso #{cc1} y segundo beneficiario (#{p2.id} #{p2.nombres} #{p2.apellidos}) es contacto en caso #{cc2}, sería una unificación más compleja. Eliminar uno de los dos casos.\n"
     end
 
 
@@ -289,6 +472,21 @@ module UnificarHelper
     end
     p1.save
     ep.save
+
+    loop do
+      cc1 = Sivel2Sjr::Casosjr.where(contacto_id: p1.id).pluck(:id_caso)
+      cc2 = Sivel2Sjr::Casosjr.where(contacto_id: p2.id).pluck(:id_caso)
+      if cc1.count > 0 and cc2.count > 0
+        cr = unificar_dos_casos(cc1[0], cc2[0], current_usuario, menserr)
+        if !cr.nil?
+          ep.observaciones << "Unificados casos #{cc1[0]} y #{cc2[0]} en #{cr}\n"
+        else
+          menserr << "Primer beneficiario (#{p1.id} #{p1.nombres.to_s} #{p1.apellidos.to_s}) es contacto en caso #{cc1[0]} y segundo beneficiario (#{p2.id} #{p2.nombres} #{p2.apellidos}) es contacto en caso #{cc2[0]}. Se intentó sin éxito la unificación de los dos casos.\n"
+          return [menserr, nil]
+         end
+      end
+      break if cc1.count == 0 || cc2.count == 0;
+    end
 
     cp2.each do |cid|
       Sivel2Gen::Victima.where(
@@ -467,7 +665,16 @@ module UnificarHelper
 #       CREATE INDEX i_duplicado_rep_sn2 ON duplicados_rep (sn2);
 #       CREATE INDEX i_duplicado_rep_sa2 ON duplicados_rep (sa2);
 #    SQL
-#
+    depura = ''
+    if ENV.fetch('DEPURA_MIN', -1).to_i > 0
+      depura << " AND p1.id>#{ENV.fetch('DEPURA_MIN', -1).to_i}"
+      depura << " AND p2.id>#{ENV.fetch('DEPURA_MIN', -1).to_i}"
+    end
+    if ENV.fetch('DEPURA_MAX', -1).to_i > 0
+      depura << " AND p1.id<#{ENV.fetch('DEPURA_MAX', -1).to_i}"
+      depura << " AND p2.id<#{ENV.fetch('DEPURA_MAX', -1).to_i}"
+    end
+
     return Sip::Persona.connection.execute <<-SQL
 
   -- Las 3 opciones sin igualdad entre tdocumento y numerodocumento da
@@ -480,6 +687,7 @@ module UnificarHelper
       FROM sip_persona AS p1
       JOIN sip_persona AS p2 
       ON p1.id<p2.id
+        #{depura}
         AND p1.tdocumento_id=p2.tdocumento_id
         AND p1.numerodocumento=p2.numerodocumento
       WHERE
@@ -512,7 +720,9 @@ module UnificarHelper
   # después de ejecutar este refrescar vista materializada
   # sivel2_gen_conscaso
   def deduplicar_automaticamente(current_usuario)
+    #puts "OJO deduplicar_automaticamente"
     pares = UnificarHelper.consulta_duplicados_autom
+    #puts "OJO consulta efectuada pares.count=#{pares.count}"
     res = {
       titulo: 'Beneficiarios en los que se intenta deduplicación automatica',
       encabezado: [
