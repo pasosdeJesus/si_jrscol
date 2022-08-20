@@ -4,10 +4,12 @@
 
 <h2>Preparaciones automáticas</h2>
 <ul>
-  <% @res_preparar_automaticamente.split("\n").each do |m| %>
-    <li>
-      <%= m %>
-    </li>
+  <% if @res_preparar_automaticamente %>
+    <% @res_preparar_automaticamente.split("\n").each do |m| %>
+      <li>
+        <%= m %>
+      </li>
+    <% end %>
   <% end %>
 </ul>
 
