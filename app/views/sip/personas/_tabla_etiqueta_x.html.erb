@@ -31,11 +31,16 @@
                 <% if unaob =~ /^ *\*/ %>
                   <% nnivel = $~[0].length-1 %>
                   <% if nivel < nnivel %>
-                    <ul>
+                    <% while (nivel < nnivel ) do %>
+                      <ul>
+                      <% nivel += 1 %>
+                    <% end %>
                   <% elsif nivel > nnivel %>
-                    </ul>
+                    <% while (nivel > nnivel ) do %>
+                      </ul>
+                      <% nivel -= 1 %>
+                    <% end %>
                   <% end %>
-                  <% nivel = nnivel %>
                   <li><%= unaob[$~[0].length .. -1] %></li>
                 <% else %>
                   <%= unaob %><br>
