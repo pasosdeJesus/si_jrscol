@@ -450,15 +450,6 @@ CREATE FUNCTION public.soundexespm(entrada text) RETURNS text
 
 
 --
--- Name: unaccent_i_i(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.unaccent_i_i(text) RETURNS text
-    LANGUAGE sql IMMUTABLE
-    AS $_$SELECT unaccent_i($1)$_$;
-
-
---
 -- Name: accion_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -661,39 +652,6 @@ CREATE TABLE public.cor1440_gen_actividad (
     lugar character varying(500),
     ubicacionpre_id integer,
     covid boolean
-);
-
-
---
--- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_actividadpf (
-    actividad_id bigint NOT NULL,
-    actividadpf_id bigint NOT NULL
-);
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
-    actividad_id integer NOT NULL,
-    proyectofinanciero_id integer NOT NULL,
-    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
 );
 
 
@@ -929,8 +887,8 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
             sub2.persona_paisnac_id,
             sub2.persona_caso,
             sub2.fecha_ultact
-           FROM ( SELECT TRIM(BOTH FROM ((TRIM(BOTH FROM sub.persona_nombres) || ' '::text) || TRIM(BOTH FROM sub.persona_apellidos))) AS persona_nombre,
-                    TRIM(BOTH FROM (COALESCE((sub.persona_tipodocumento || ':'::text), ''::text) || COALESCE(sub.persona_numerodocumento, ''::text))) AS persona_identificacion,
+           FROM ( SELECT btrim(((btrim(sub.persona_nombres) || ' '::text) || btrim(sub.persona_apellidos))) AS persona_nombre,
+                    btrim((COALESCE((sub.persona_tipodocumento || ':'::text), ''::text) || COALESCE(sub.persona_numerodocumento, ''::text))) AS persona_identificacion,
                     ( SELECT ac2.id
                            FROM public.cor1440_gen_actividad ac2
                           WHERE ((ac2.fecha = sub.fecha_ultact) AND (ac2.id IN ( SELECT asis.actividad_id
@@ -939,13 +897,10 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
    FROM public.cor1440_gen_asistencia
   WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
      FROM public.cor1440_gen_actividad
-    WHERE ((cor1440_gen_actividad.oficina_id = 5) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
-       FROM public.cor1440_gen_actividad_proyectofinanciero
-      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 0))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date))))))))))
+    WHERE ((cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date))))))))))
                           ORDER BY ac2.id
                          LIMIT 1) AS id_ultact,
-                    public.sip_edad_de_fechanac_fecharef(sub.persona_anionac, sub.persona_mesnac, sub.persona_dianac, (EXTRACT(year FROM sub.fecha_ultact))::integer, (EXTRACT(month FROM sub.fecha_ultact))::integer, (EXTRACT(day FROM sub.fecha_ultact))::integer) AS edad_en_ultact,
+                    public.sip_edad_de_fechanac_fecharef(sub.persona_anionac, sub.persona_mesnac, sub.persona_dianac, (date_part('year'::text, sub.fecha_ultact))::integer, (date_part('month'::text, sub.fecha_ultact))::integer, (date_part('day'::text, sub.fecha_ultact))::integer) AS edad_en_ultact,
                     ( SELECT sip_pais.nombre
                            FROM public.sip_pais
                           WHERE (sip_pais.id = sub.persona_paisnac_id)
@@ -963,10 +918,10 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
                     sub.persona_caso,
                     sub.fecha_ultact
                    FROM ( SELECT p.id AS persona_id,
-                            TRIM(BOTH FROM p.nombres) AS persona_nombres,
-                            TRIM(BOTH FROM p.apellidos) AS persona_apellidos,
-                            TRIM(BOTH FROM COALESCE(td.sigla, ''::character varying)) AS persona_tipodocumento,
-                            TRIM(BOTH FROM COALESCE(p.numerodocumento, ''::character varying)) AS persona_numerodocumento,
+                            btrim((p.nombres)::text) AS persona_nombres,
+                            btrim((p.apellidos)::text) AS persona_apellidos,
+                            btrim((COALESCE(td.sigla, ''::character varying))::text) AS persona_tipodocumento,
+                            btrim((COALESCE(p.numerodocumento, ''::character varying))::text) AS persona_numerodocumento,
                             p.sexo AS persona_sexo,
                             p.anionac AS persona_anionac,
                             p.mesnac AS persona_mesnac,
@@ -983,29 +938,20 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
      FROM public.cor1440_gen_asistencia
     WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
        FROM public.cor1440_gen_actividad
-      WHERE ((cor1440_gen_actividad.oficina_id = 5) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
-         FROM public.cor1440_gen_actividad_proyectofinanciero
-        WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 0))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-         FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))))) AS fecha_ultact
+      WHERE ((cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))))) AS fecha_ultact
                            FROM (public.sip_persona p
                              LEFT JOIN public.sip_tdocumento td ON ((td.id = p.tdocumento_id)))
                           WHERE ((p.id IN ( SELECT cor1440_gen_asistencia.persona_id
                                    FROM public.cor1440_gen_asistencia
                                   WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
    FROM public.cor1440_gen_actividad
-  WHERE ((cor1440_gen_actividad.oficina_id = 5) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
-     FROM public.cor1440_gen_actividad_proyectofinanciero
-    WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 0))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-     FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))) AND (p.id IN ( SELECT asis.persona_id
+  WHERE ((cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))) AND (p.id IN ( SELECT asis.persona_id
                                    FROM public.cor1440_gen_asistencia asis
                                   WHERE (asis.actividad_id IN ( SELECT cor1440_gen_asistencia.actividad_id
    FROM public.cor1440_gen_asistencia
   WHERE (cor1440_gen_asistencia.actividad_id IN ( SELECT cor1440_gen_actividad.id
      FROM public.cor1440_gen_actividad
-    WHERE ((cor1440_gen_actividad.oficina_id = 5) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
-       FROM public.cor1440_gen_actividad_proyectofinanciero
-      WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 0))) AND (cor1440_gen_actividad.id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
-       FROM public.cor1440_gen_actividad_actividadpf)) AND (cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))))) sub) sub2) sub3
+    WHERE ((cor1440_gen_actividad.fecha >= '2022-01-01'::date) AND (cor1440_gen_actividad.fecha <= '2022-06-30'::date)))))))))) sub) sub2) sub3
   WITH NO DATA;
 
 
@@ -1547,6 +1493,16 @@ CREATE VIEW public.cmunrec AS
 
 
 --
+-- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_actividadpf (
+    actividad_id bigint NOT NULL,
+    actividadpf_id bigint NOT NULL
+);
+
+
+--
 -- Name: cor1440_gen_actividadpf; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1797,6 +1753,29 @@ CREATE SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq OWNED BY public.cor1440_gen_actividad_proyecto.id;
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
+    actividad_id integer NOT NULL,
+    proyectofinanciero_id integer NOT NULL,
+    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
+);
 
 
 --
@@ -3425,36 +3404,6 @@ ALTER SEQUENCE public.discapacidad_id_seq OWNED BY public.discapacidad.id;
 
 
 --
--- Name: duplicados_rep; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.duplicados_rep AS
- SELECT sub.sigla,
-    sub.numerodocumento,
-    sub.rep,
-    p1.id AS id1,
-    p2.id AS id2,
-    p1.nombres AS nombres1,
-    p1.apellidos AS apellidos1,
-    p2.nombres AS nombres2,
-    p2.apellidos AS apellidos2,
-    public.soundexespm((p1.nombres)::text) AS sn1,
-    public.soundexespm((p1.apellidos)::text) AS sa1,
-    public.soundexespm((p2.nombres)::text) AS sn2,
-    public.soundexespm((p2.apellidos)::text) AS sa2
-   FROM ((( SELECT t.sigla,
-            p.tdocumento_id,
-            p.numerodocumento,
-            count(p.id) AS rep
-           FROM (public.sip_persona p
-             LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
-          GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) sub
-     JOIN public.sip_persona p1 ON (((p1.tdocumento_id = sub.tdocumento_id) AND ((p1.numerodocumento)::text = (sub.numerodocumento)::text))))
-     JOIN public.sip_persona p2 ON (((p1.id < p2.id) AND (p2.tdocumento_id = sub.tdocumento_id) AND ((p2.numerodocumento)::text = (sub.numerodocumento)::text))))
-  WITH NO DATA;
-
-
---
 -- Name: sivel2_sjr_migracion; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4179,7 +4128,7 @@ CREATE VIEW public.mcben1 AS
     public.sivel2_gen_victima victima,
     public.sip_persona persona,
     public.sivel2_sjr_victimasjr victimasjr
-  WHERE ((caso.id = victima.id_caso) AND (caso.id = casosjr.id_caso) AND (caso.id = victima.id_caso) AND (persona.id = victima.id_persona) AND (victima.id = victimasjr.id_victima) AND (victimasjr.fechadesagregacion IS NULL) AND (persona.id = victima.id_persona));
+  WHERE ((caso.id = victima.id_caso) AND (caso.id = casosjr.id_caso) AND (caso.id = victima.id_caso) AND (persona.id = victima.id_persona) AND (victima.id = victimasjr.id_victima) AND (victimasjr.fechadesagregacion IS NULL) AND (casosjr.oficina_id = 7) AND (victimasjr.id_actividadoficio = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 101, 102, 104, 105, 106, 107, 108, 109, 110, 111])) AND ((persona.anionac IS NULL) OR (persona.anionac = ANY (ARRAY[1900, 1901, 1905, 1910, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 20011]))) AND (victimasjr.cabezafamilia = ANY (ARRAY[false, true])) AND (victimasjr.id_estadocivil = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6])) AND (victima.id_etnia = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 2001, 2002, 2003])) AND ((((date_part('year'::text, casosjr.fecharec))::text || '-'::text) || lpad((date_part('month'::text, casosjr.fecharec))::text, 2, '0'::text)) = ANY (ARRAY['2003-10'::text, '2011-02'::text, '2012-06'::text, '2012-07'::text, '2012-08'::text, '2012-09'::text, '2012-10'::text, '2012-11'::text, '2013-01'::text, '2013-02'::text, '2013-03'::text, '2013-04'::text, '2013-05'::text, '2013-06'::text, '2013-07'::text, '2013-08'::text, '2013-09'::text, '2013-10'::text, '2013-11'::text, '2013-12'::text, '2014-01'::text, '2014-02'::text, '2014-03'::text, '2014-04'::text, '2014-05'::text, '2014-06'::text, '2014-07'::text, '2014-08'::text, '2014-09'::text, '2014-10'::text, '2014-11'::text, '2015-01'::text, '2015-02'::text, '2015-03'::text, '2015-04'::text, '2015-05'::text, '2015-06'::text, '2015-07'::text, '2015-08'::text, '2015-09'::text, '2015-10'::text, '2015-11'::text, '2015-12'::text, '2016-01'::text, '2016-02'::text, '2016-03'::text, '2016-04'::text, '2016-05'::text, '2016-06'::text, '2016-07'::text, '2016-08'::text, '2016-09'::text, '2016-10'::text, '2016-11'::text, '2016-12'::text, '2017-01'::text, '2017-02'::text, '2017-03'::text, '2017-04'::text, '2017-05'::text, '2017-06'::text, '2017-07'::text, '2017-08'::text, '2017-09'::text, '2017-10'::text, '2017-11'::text, '2017-12'::text, '2018-01'::text, '2018-02'::text, '2018-03'::text, '2018-04'::text, '2018-05'::text, '2018-06'::text, '2018-07'::text, '2018-08'::text, '2018-09'::text, '2018-10'::text, '2018-11'::text, '2018-12'::text, '2019-01'::text, '2019-02'::text, '2019-03'::text, '2019-04'::text, '2019-05'::text, '2019-06'::text, '2019-07'::text, '2019-08'::text, '2019-09'::text, '2019-10'::text, '2019-11'::text, '2019-12'::text, '2020-01'::text, '2020-02'::text, '2020-03'::text, '2020-04'::text, '2020-05'::text, '2020-06'::text, '2020-07'::text, '2020-08'::text, '2020-09'::text, '2020-10'::text, '2020-11'::text, '2020-12'::text, '2021-01'::text, '2021-02'::text, '2021-03'::text, '2021-04'::text, '2021-05'::text, '2021-06'::text, '2021-07'::text, '2021-08'::text, '2021-09'::text, '2021-10'::text, '2021-11'::text, '2021-12'::text, '2022-01'::text, '2022-02'::text, '2022-03'::text, '2022-04'::text, '2022-05'::text, '2022-06'::text, '2022-07'::text, '2022-08'::text, '25-08'::text, '26-08'::text, '32-08'::text])) AND (victimasjr.id_escolaridad = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) AND (victima.id_rangoedad = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) AND (victimasjr.id_regimensalud = ANY (ARRAY[0, 1, 2, 3])) AND (persona.sexo = ANY (ARRAY['F'::bpchar, 'M'::bpchar, 'S'::bpchar])) AND (persona.id = victima.id_persona));
 
 
 --
@@ -6866,14 +6815,14 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     conscaso.expulsion,
     conscaso.llegada,
     conscaso.memo AS descripcion,
-    (EXTRACT(month FROM ultimaatencion.fecha))::integer AS ultimaatencion_mes,
+    (date_part('month'::text, ultimaatencion.fecha))::integer AS ultimaatencion_mes,
     conscaso.ultimaatencion_fecha,
     conscaso.contacto,
     contacto.nombres AS contacto_nombres,
     contacto.apellidos AS contacto_apellidos,
     (((COALESCE(tdocumento.sigla, ''::character varying))::text || ' '::text) || (contacto.numerodocumento)::text) AS contacto_identificacion,
     contacto.sexo AS contacto_sexo,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS contacto_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6889,7 +6838,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 1
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar1_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar1_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6905,7 +6854,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 1
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar1_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar1_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6921,7 +6870,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 2
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar2_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar2_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6937,7 +6886,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 2
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar2_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar2_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6953,7 +6902,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 3
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar3_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar3_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6969,7 +6918,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 3
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar3_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar3_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -6985,7 +6934,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 4
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar4_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar4_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -7001,7 +6950,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 4
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar4_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar4_edad_ultimaatencion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -7017,7 +6966,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 5
-         LIMIT 1), (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer) AS familiar5_edad_fecha_recepcion,
+         LIMIT 1), (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer) AS familiar5_edad_fecha_recepcion,
     public.sip_edad_de_fechanac_fecharef(( SELECT persona.anionac
            FROM public.sip_persona persona,
             public.sivel2_gen_victima victima
@@ -7033,15 +6982,15 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
             public.sivel2_gen_victima victima
           WHERE ((persona.id = victima.id_persona) AND (victima.id_caso = caso.id))
          OFFSET 5
-         LIMIT 1), (EXTRACT(year FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(month FROM conscaso.ultimaatencion_fecha))::integer, (EXTRACT(day FROM conscaso.ultimaatencion_fecha))::integer) AS familiar5_edad_ultimaatencion,
+         LIMIT 1), (date_part('year'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('month'::text, conscaso.ultimaatencion_fecha))::integer, (date_part('day'::text, conscaso.ultimaatencion_fecha))::integer) AS familiar5_edad_ultimaatencion,
     ( SELECT sivel2_gen_rangoedad.nombre
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecharec))::integer, (EXTRACT(month FROM conscaso.fecharec))::integer, (EXTRACT(day FROM conscaso.fecharec))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecharec))::integer, (date_part('month'::text, conscaso.fecharec))::integer, (date_part('day'::text, conscaso.fecharec))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_recepcion,
-    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
+    public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer) AS contacto_edad_fecha_salida,
     ( SELECT sivel2_gen_rangoedad.nombre
            FROM public.sivel2_gen_rangoedad
-          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (EXTRACT(year FROM conscaso.fecha))::integer, (EXTRACT(month FROM conscaso.fecha))::integer, (EXTRACT(day FROM conscaso.fecha))::integer)))
+          WHERE ((sivel2_gen_rangoedad.fechadeshabilitacion IS NULL) AND (sivel2_gen_rangoedad.limiteinferior <= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)) AND (sivel2_gen_rangoedad.limitesuperior >= public.sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, contacto.dianac, (date_part('year'::text, conscaso.fecha))::integer, (date_part('month'::text, conscaso.fecha))::integer, (date_part('day'::text, conscaso.fecha))::integer)))
          LIMIT 1) AS contacto_rangoedad_fecha_salida,
     COALESCE(etnia.nombre, ''::character varying) AS contacto_etnia,
     ultimaatencion.contacto_edad AS contacto_edad_ultimaatencion,
@@ -7165,7 +7114,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 103)
+          WHERE ((sivel2_gen_conscaso.fecharec >= '2022-07-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2022-07-31'::date))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -12096,132 +12045,6 @@ CREATE UNIQUE INDEX cor1440_gen_datointermedioti_pmindicadorpf_llaves_idx ON pub
 
 
 --
--- Name: i_duplicado_rep_a1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_a1 ON public.duplicados_rep USING btree (apellidos1);
-
-
---
--- Name: i_duplicado_rep_a2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_a2 ON public.duplicados_rep USING btree (apellidos2);
-
-
---
--- Name: i_duplicado_rep_id1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_id1 ON public.duplicados_rep USING btree (id1);
-
-
---
--- Name: i_duplicado_rep_id2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_id2 ON public.duplicados_rep USING btree (id2);
-
-
---
--- Name: i_duplicado_rep_n1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_n1 ON public.duplicados_rep USING btree (nombres1);
-
-
---
--- Name: i_duplicado_rep_n2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_n2 ON public.duplicados_rep USING btree (nombres2);
-
-
---
--- Name: i_duplicado_rep_numerodocumento; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_numerodocumento ON public.duplicados_rep USING btree (numerodocumento);
-
-
---
--- Name: i_duplicado_rep_sa1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_sa1 ON public.duplicados_rep USING btree (sa1);
-
-
---
--- Name: i_duplicado_rep_sa2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_sa2 ON public.duplicados_rep USING btree (sa2);
-
-
---
--- Name: i_duplicado_rep_sigla; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_sigla ON public.duplicados_rep USING btree (sigla);
-
-
---
--- Name: i_duplicado_rep_sn1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_sn1 ON public.duplicados_rep USING btree (sn1);
-
-
---
--- Name: i_duplicado_rep_sn2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_duplicado_rep_sn2 ON public.duplicados_rep USING btree (sn2);
-
-
---
--- Name: i_l_n; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_l_n ON public.sip_persona USING btree (length((nombres)::text));
-
-
---
--- Name: i_p_cna; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_p_cna ON public.sip_persona USING btree (((((nombres)::text || ' '::text) || (apellidos)::text)));
-
-
---
--- Name: i_p_snac; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_p_snac ON public.sip_persona USING btree (public.soundexespm((nombres)::text), public.soundexespm((apellidos)::text));
-
-
---
--- Name: i_p_snc; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_p_snc ON public.sip_persona USING btree (public.soundexespm((apellidos)::text));
-
-
---
--- Name: i_p_snnc; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_p_snnc ON public.sip_persona USING btree (public.soundexespm((nombres)::text));
-
-
---
--- Name: i_sip_persona_soundexesp_nomap; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX i_sip_persona_soundexesp_nomap ON public.sip_persona USING btree (public.soundexespm((nombres)::text), public.soundexespm((apellidos)::text));
-
-
---
 -- Name: index_asesorhistorico_on_usuario_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -12691,13 +12514,6 @@ CREATE INDEX indice_sivel2_sjr_respuesta_on_fechaatencion ON public.sivel2_sjr_r
 
 
 --
--- Name: p_tuu_nombres; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX p_tuu_nombres ON public.sip_persona USING btree (TRIM(BOTH FROM upper((nombres)::text)));
-
-
---
 -- Name: sip_busca_mundep; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -12772,20 +12588,6 @@ CREATE INDEX sip_persona_sexo ON public.sip_persona USING btree (sexo);
 --
 
 CREATE INDEX sip_persona_sexo_ind ON public.sip_persona USING btree (sexo);
-
-
---
--- Name: sip_persona_soundexpm_apellidos; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sip_persona_soundexpm_apellidos ON public.sip_persona USING btree (public.soundexespm((apellidos)::text));
-
-
---
--- Name: sip_persona_soundexpm_nombres; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX sip_persona_soundexpm_nombres ON public.sip_persona USING btree (public.soundexespm((nombres)::text));
 
 
 --
@@ -13914,14 +13716,6 @@ ALTER TABLE ONLY public.cor1440_gen_actividad
 
 
 --
--- Name: sivel2_sjr_migracion fk_rails_0a1617c74d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_0a1617c74d FOREIGN KEY (salida_clase_id_porborrar) REFERENCES public.sip_clase(id);
-
-
---
 -- Name: cor1440_gen_actividadpf fk_rails_0b10834ba7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14199,14 +13993,6 @@ ALTER TABLE ONLY public.sivel2_sjr_casosjr
 
 ALTER TABLE ONLY public.mr519_gen_encuestausuario
     ADD CONSTRAINT fk_rails_2cb09d778a FOREIGN KEY (respuestafor_id) REFERENCES public.mr519_gen_respuestafor(id);
-
-
---
--- Name: sivel2_sjr_migracion fk_rails_2d43339001; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_2d43339001 FOREIGN KEY (llegada_pais_id_porborrar) REFERENCES public.sip_pais(id);
 
 
 --
@@ -14530,14 +14316,6 @@ ALTER TABLE ONLY public.mr519_gen_encuestapersona
 
 
 --
--- Name: sivel2_sjr_migracion fk_rails_54bc8f0634; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_54bc8f0634 FOREIGN KEY (llegada_clase_id_porborrar) REFERENCES public.sip_clase(id);
-
-
---
 -- Name: sip_etiqueta_municipio fk_rails_5672729520; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14575,14 +14353,6 @@ ALTER TABLE ONLY public.sivel2_sjr_migracion
 
 ALTER TABLE ONLY public.sivel2_gen_caso_presponsable
     ADD CONSTRAINT fk_rails_5a8abbdd31 FOREIGN KEY (id_caso) REFERENCES public.sivel2_gen_caso(id);
-
-
---
--- Name: sivel2_sjr_migracion fk_rails_5ac7a48159; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_5ac7a48159 FOREIGN KEY (llegada_municipio_id_porborrar) REFERENCES public.sip_municipio(id);
 
 
 --
@@ -14711,14 +14481,6 @@ ALTER TABLE ONLY public.sivel2_sjr_oficina_proyectofinanciero
 
 ALTER TABLE ONLY public.cor1440_gen_datointermedioti
     ADD CONSTRAINT fk_rails_669ada0c54 FOREIGN KEY (mindicadorpf_id) REFERENCES public.cor1440_gen_mindicadorpf(id);
-
-
---
--- Name: sivel2_sjr_migracion fk_rails_6831606a53; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_6831606a53 FOREIGN KEY (salida_municipio_id_porborrar) REFERENCES public.sip_municipio(id);
 
 
 --
@@ -14903,14 +14665,6 @@ ALTER TABLE ONLY public.cor1440_gen_tipomoneda
 
 ALTER TABLE ONLY public.mr519_gen_encuestapersona
     ADD CONSTRAINT fk_rails_83755e20b9 FOREIGN KEY (respuestafor_id) REFERENCES public.mr519_gen_respuestafor(id);
-
-
---
--- Name: sivel2_sjr_migracion fk_rails_84ce80f0f3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_84ce80f0f3 FOREIGN KEY (salida_departamento_id_porborrar) REFERENCES public.sip_departamento(id);
 
 
 --
@@ -15274,14 +15028,6 @@ ALTER TABLE ONLY public.cor1440_gen_anexo_efecto
 
 
 --
--- Name: sivel2_sjr_migracion fk_rails_bf8a693ba3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_bf8a693ba3 FOREIGN KEY (llegada_departamento_id_porborrar) REFERENCES public.sip_departamento(id);
-
-
---
 -- Name: sivel2_gen_combatiente fk_rails_bfb49597e1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -15519,14 +15265,6 @@ ALTER TABLE ONLY public.cor1440_gen_proyectofinanciero_usuario
 
 ALTER TABLE ONLY public.sivel2_sjr_migracion
     ADD CONSTRAINT fk_rails_dcf3147f89 FOREIGN KEY (perfilmigracion_id) REFERENCES public.perfilmigracion(id);
-
-
---
--- Name: sivel2_sjr_migracion fk_rails_dfdacffa93; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_migracion
-    ADD CONSTRAINT fk_rails_dfdacffa93 FOREIGN KEY (salida_pais_id_porborrar) REFERENCES public.sip_pais(id);
 
 
 --
@@ -17108,6 +16846,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220816203504'),
 ('20220818133338'),
 ('20220818145228'),
-('20220819022548');
+('20220819022548'),
+('20220822132000'),
+('20220822132710'),
+('20220822132754');
 
 
