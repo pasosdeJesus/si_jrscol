@@ -35,8 +35,8 @@
             placeholder: 'Inicial',
             input_html: {
               "data-behaviour" => "datepicker",
-              value: (params[:reporterepetidos] ? 
-                      params[:reporterepetidos][:fechaini] :
+              value: (params[:reporterepetido] ? 
+                      params[:reporterepetido][:fechaini] :
                       Sip::FormatoFechaHelper.fecha_estandar_local(fpred)
                      )
             }
@@ -50,19 +50,20 @@
             placeholder: 'Final',
             input_html: {
               "data-behaviour" => "datepicker",
-              value: params[:reporterepetidos] ? 
-                params[:reporterepetidos][:fechafin] : ''
+              value: params[:reporterepetido] ? 
+                params[:reporterepetido][:fechafin] : ''
             }
           %>
         </div>
         <div class="offset-sm-0 col-sm-4">
+        <%  ih = { style: 'margin-left: 15px' } %>
+        <% ih[:checked]='checked' if params[:reporterepetido] && 
+          params[:reporterepetido][:deduplicables_autom].to_i == 1 %>
           <%= f.input :deduplicables_autom,
             as: :boolean,
             label: 'Presentar deduplicables automaticamente (demorado)',
             boolean_style: :nested,
-            input_html: {
-              style: 'margin-left: 15px'
-            } %>
+            input_html: ih %>
         </div>
       </div> <!-- row -->
  

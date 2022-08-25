@@ -103,18 +103,19 @@ module Sip
         cuerpo: arr 
       }
 
-      arr = ActiveRecord::Base.connection.select_all(
-        UnificarHelper.consulta_casos_por_arreglar.select(['id']).to_sql
-      )
-      @validaciones << {
-        titulo: 'Casos parcialmente eliminados por arreglar (completar o eliminar)',
-        encabezado: ['Id.'],
-        cuerpo: arr 
-      }
+
+      if params && params[:reporterepetido] && 
+          params[:reporterepetido][:deduplicables_autom] == '1'
+        arr = ActiveRecord::Base.connection.select_all(
+          UnificarHelper.consulta_casos_por_arreglar.select(['id']).to_sql
+        )
+        @validaciones << {
+          titulo: 'Casos parcialmente eliminados por arreglar (completar o eliminar)',
+          encabezado: ['Id.'],
+          cuerpo: arr 
+        }
 
 
-      if params && params[:reporterepetidos] && 
-          params[:reporterepetidos][:deduplicables_autom] == '1'
         arr = ActiveRecord::Base.connection.select_all(
           UnificarHelper.consulta_casos_en_blanco.select(['id_caso']).to_sql
         )
@@ -135,7 +136,7 @@ module Sip
 
         pares = UnificarHelper.consulta_duplicados_autom
         vc = {
-          titulo: 'Beneficarios por deduplicar automaticamente',
+          titulo: 'Beneficarios por intentar deduplicar automaticamente',
           encabezado: [
             'T. Doc', 'Num. doc', 'Id1', 'Nombres', 'Apellidos',
             'Id2', 'Nombres', 'Apellidos'
