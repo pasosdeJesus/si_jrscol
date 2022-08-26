@@ -7,7 +7,7 @@ Rails.start();
 window.Rails = Rails
 
 import './jquery'
-import '../../vendedor/recursos/javascripts/jquery-ui'
+import '../../vendor/assets/javascripts/jquery-ui'
 
 import 'gridstack'
 
