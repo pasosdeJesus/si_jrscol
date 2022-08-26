@@ -7,10 +7,6 @@ class Sivel2Gen::Caso < ActiveRecord::Base
   accepts_nested_attributes_for :migracion, allow_destroy: true, 
     reject_if: :all_blank
 
-  # Permitimos casos sin descripción
-  def caso_no_vacio
-  end
-
   def presenta(atr)
     case atr.to_s
     when 'fecharec'
