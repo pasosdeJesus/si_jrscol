@@ -1,12 +1,13 @@
 <div class="panel-group" id="acordeonrs">
 
+  <%= render 'memo', :f => f, :s => s %>
+
   <%= render partial: 'respuesta_nuevaac', locals: {f: f} %>
 
   <% # SEGUIMIENTO A CASOS %> 
   <% @caso = f.object %>
   <%= render partial: 'sivel2_gen/casos/show_atenciones' %>
 
-  <%= render 'memo', :f => f, :s => s %>
   <a data-bs-toggle="collapse" href='#anexoscol'>
     <h5>ANEXOS</h5>
   </a>
