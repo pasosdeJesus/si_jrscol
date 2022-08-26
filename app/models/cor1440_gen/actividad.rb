@@ -35,10 +35,12 @@ module Cor1440Gen
       end
     end
 
-    validate :valida_beneficiarios
-    validate :no_asistentes_repetidos
-    validate :no_casos_repetidos
+    validates :ubicacionpre_mundep_texto, presence: true
+    validates :proyecto, presence: true
+    validates :resultado, presence: true
 
+
+    validate :no_asistentes_repetidos
     def no_asistentes_repetidos
       asistentes = []
       victimas = []
@@ -69,6 +71,7 @@ module Cor1440Gen
       end 
     end
 
+    validate :no_casos_repetidos
     def no_casos_repetidos
       casos = []
       casrepetidos = []
@@ -82,6 +85,7 @@ module Cor1440Gen
       end
     end
 
+    validate :valida_beneficiarios
     def valida_beneficiarios
       pact = []
       self.detallefinanciero.map{
@@ -96,6 +100,15 @@ module Cor1440Gen
                    "personas si la actividad del marco lógico es la misma") 
       end 
     end 
+
+    validate :valida_actividad_marco_logico
+    def valida_actividad_marco_logico
+      amlmin = Cor1440Gen::Actividadpf.where(proyectofinanciero: 10).pluck(:id)
+      if (amlmin & self.actividadpf_ids) == []
+        errors.add(:proyectofinanciero, "Falta alguna actividad de marco lógico del convenio 'PLAN ESTRATEGICO 1'")
+      end
+    end 
+
 
     # PRESENTACIÓN DE INFORMACIÓN
 

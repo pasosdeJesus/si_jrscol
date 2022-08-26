@@ -94,6 +94,7 @@ es:
         proyectofinanciero: Convenio financiado
         proyectosfinancieros: Convenios financiados
         ubicacionpre: Depto / Municipio
+        ubicacionpre_mundep_texto: Depto / Municipio
       "cor1440_gen/actividadarea":
         actividadarea: Subárea de Actividad
         Actividadareas: Subáreas de Actividad
