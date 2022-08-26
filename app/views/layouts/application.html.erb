@@ -51,12 +51,6 @@
             desplegable: true %>
           <%= opcion_menu "Conteo por actividad del marco lógico", 
             cor1440_gen.contar_actividades_path, desplegable: true %>
-          <% if can? :manage, ::Usuario %>
-            <%= opcion_menu "Antiguo conteo por beneficiario y "\
-              "actividad del marco lógico no paginado", 
-              cor1440_gen.contar_actividades_beneficiarios_path, 
-              desplegable: true %>
-          <% end %>
           <%= opcion_menu "Conteo por beneficiario y "\
             "actividad del marco lógico paginado", 
             main_app.benefactividadpf_path, desplegable: true %>

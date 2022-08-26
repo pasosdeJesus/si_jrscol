@@ -3,10 +3,9 @@
   modelos_path(@registro), :class => 'btn',
   :data => { 
     :confirm => 'Al cancelar se perderán sus cambios. ¿Está seguro(a)?',
-    'turbo-method' => 'cancel'
    }
 %>
-<%= button_to t('.destroy', :default => t("helpers.links.destroy")),
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
   modelo_path(@registro), :class => 'btn btn-danger',
   method: :delete,
   :data => { 
@@ -16,6 +15,7 @@
                     :default => '¿Está seguro(a)?'
                    )
      ),
-     'turbo-method' => 'delete'
+     turbo: true,
+     'turbo-method': :delete
    }
 %>
