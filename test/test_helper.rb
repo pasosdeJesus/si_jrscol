@@ -282,12 +282,21 @@ PRUEBA_ACTIVIDADPF = {
   resultadopf_id: 1,
 }
 
+PRUEBA_AREA = {
+  id: 1,
+  nombre: 'A',
+  fechacreacion: "2018-10-25",
+  created_at: "2018-10-25"
+}
+
 PRUEBA_ACTIVIDAD = {
   id: 1,
   nombre:'n',
   fecha:'2017-03-02',
   oficina_id:1,
-  usuario_id:1
+  usuario_id:1,
+  ubicacionpre_id: 1,
+  resultado: 'x'
 }
 
 PRUEBA_DETALLEFINANCIERO = {
