@@ -115,23 +115,29 @@ class BenefactividadpfController < Heb412Gen::ModelosController
             params['filtro']['proyectofinanciero_id'].to_i).nombre,
         ], style: estilo_base
         hoja.add_row []
-        l = ['Persona', 'Nombres', 'Apellidos', 
-             'Tipo de documento', 'Número de documento',
+        l = ['Fecha últ. act.',
+             'Oficinsa ult. act.',
+             'Tipo de documento', 
+             'Número de documento',
+             'Nombres', 
+             'Apellidos', 
              'Sexo', 
-             'Edad en actividad más reciente',
-             'Rango de edad en actividad más reciente',
-             'Número de caso asociado',
              'Dia Nac.',
              'Mes Nac.',
              'Año Nac.',
-             'Pais Nac.',
-             'Perfil en actividad más reciente'
+             'Edad ult. act.',
+             'Perfil en ult. act.',
+             'Municipio ult. act.',
+        
+             'Id. ult. act.',
+             'Id. Caso',
+             'Id. Persona'
         ]
         caml1 = Benefactividadpf.columns.map(&:name)[5..-2]
         caml2 = caml1.select {|c| c[-4..-1] == '_ids'}.sort
         caml = caml2.map {|c| c.sub('_ids', '')}
         l += caml
-
+#'Persona',
         hoja.merge_cells('A1:N1')
 
         hoja.add_row l, style: [estilo_encabezado] * (8+caml.length)
