@@ -34,6 +34,9 @@ Rails.application.routes.draw do
     post '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',
       as: :envia_beneficiarios_repetidas
 
+    get 'beneficiarios/identificacionsd' => 'sip/personas#identificacionsd',
+      as: :beneficiarios_identificacionsd
+
     post "/actos/agregar" => 'sivel2_sjr/actos#agregar',
       as: :actos_agregar
     get "/actos/eliminar" => 'sivel2_sjr/actos#eliminar',

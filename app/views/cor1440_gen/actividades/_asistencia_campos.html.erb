@@ -1,5 +1,5 @@
-<tr class='nested-fields campos_asistente'>
-  
+<tr class='nested-fields campos_asistente' data-controller='asistente'>
+
   <% if f.object.persona.nil? %>
     <% f.object.persona = Sip::Persona.new %>
   <% end %>
@@ -19,11 +19,19 @@
         label_method: :sigla,
         value_method: :id ,
         label: false,
-        input_html: { style: 'width: 5em' }
+        input_html: {
+          style: 'width: 5em',
+          "data-action": "change->asistente#cambia_tdocumento"
+
+        }
       %>
     </td>
     <td>
-      <%= p.input :id, as: :hidden %>
+      <%= p.input :id,
+        as: :hidden,
+        input_html: {
+          "data-asistente-target": "id"
+        } %>
       <% ph = 'N'
       ac = {'data-autocompleta' => 'no'}
       if (!p.object.numerodocumento || p.object.numerodocumento == 'N' || p.object.numerodocumento == '')
@@ -41,29 +49,30 @@
       %>
       <%= p.input :numerodocumento, placeholder: ph,
         input_html: ac.merge!(
-           style: 'width: 6em',
+          style: 'width: 6em',
+          "data-asistente-target": "numerodocumento",
            title: td),
         label: false %>
     </td>
     <td>
-      <%= p.input :sexo, 
-        collection: [["F", :F], ["M", :M], ["S", :S]], 
+      <%= p.input :sexo,
+        collection: [["F", :F], ["M", :M], ["S", :S]],
         label: false,
         input_html: { style: 'width: 4em' },
         include_blank: false %>
     </td>
     <td>
-      <%= p.input :anionac, 
+      <%= p.input :anionac,
         input_html: { style: 'width: 5em', min: 0 },
         label: false %>
     </td>
     <td>
-      <%= p.input :mesnac, 
+      <%= p.input :mesnac,
         input_html: { style: 'width: 4em', min: 0 },
         label: false %>
     </td>
     <td>
-      <%= p.input :dianac, 
+      <%= p.input :dianac,
         input_html: { style: 'width: 4em', min: 0 },
         label: false %>
     </td>
@@ -88,7 +97,7 @@
   </td>
   <td>
     <%= f.input :id, as: :hidden %>
-    <%= link_to_remove_association "Eliminar", f, 
+    <%= link_to_remove_association "Eliminar", f,
         :class => 'btn-danger',
         :'data-existing'=> true
     %>
