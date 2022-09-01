@@ -1,0 +1,5 @@
+<% sep = '' %>
+<% registro.persona_caso_ids.split(",").try(:each) do |ic|%>
+  <%= sep %>
+  <%= link_to(ic, sivel2_gen.caso_path(ic), target: '_blank') %>
+<% end %>

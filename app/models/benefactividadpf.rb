@@ -30,25 +30,74 @@ class Benefactividadpf < ActiveRecord::Base
     if ARGV.include?("db:migrate")
       return
     end
-    contarb_actividad = Cor1440Gen::Actividad.all
+
+    Benefactividadpf.connection.execute <<-SQL
+      CREATE OR REPLACE VIEW benefext AS 
+        SELECT DISTINCT actividad_id, persona_id, persona_actividad_perfil
+        FROM (
+          SELECT ac.id AS actividad_id, v.id_persona AS persona_id, '' AS persona_actividad_perfil
+          FROM cor1440_gen_actividad AS ac 
+          JOIN sivel2_sjr_actividad_casosjr AS accas ON accas.actividad_id=ac.id 
+          JOIN sivel2_gen_victima as v on v.id_caso=accas.casosjr_id 
+          UNION
+          SELECT ac.id AS actividad_id, asis.persona_id, 
+            COALESCE(porg.nombre) AS person_actividad_perfil
+          FROM cor1440_gen_actividad AS ac 
+          JOIN cor1440_gen_asistencia AS asis ON asis.actividad_id=ac.id
+          LEFT JOIN sip_perfilorgsocial AS porg ON porg.id=asis.perfilorgsocial_id
+        ) as sub
+      ;
+
+      CREATE OR REPLACE VIEW benefext2 AS 
+      SELECT a.fecha AS actividad_fecha,
+        o.nombre AS actividad_oficina,
+        t.sigla AS persona_tipodocumento,
+        p.numerodocumento AS persona_numerodocumento,
+        p.nombres AS persona_nombres,
+        p.apellidos AS persona_apellidos,
+        p.sexo AS persona_sexo,
+        p.dianac AS persona_dianac,
+        p.mesnac AS persona_mesnac,
+        p.anionac AS persona_anionac,
+        public.sip_edad_de_fechanac_fecharef(
+          p.anionac, p.mesnac, p.dianac,
+          EXTRACT(YEAR FROM a.fecha)::integer,
+          EXTRACT(MONTH from a.fecha)::integer,
+          EXTRACT(DAY FROM a.fecha)::integer) AS persona_actividad_edad,
+        b.persona_actividad_perfil,
+        COALESCE(mun.nombre, '') || ' / ' || COALESCE(dep.nombre, '') AS actividad_municipio,
+        a.id AS actividad_id,
+        ARRAY_TO_STRING(ARRAY(SELECT DISTINCT id_caso
+          FROM sivel2_gen_victima
+          WHERE id_persona=p.id), ',') AS persona_caso_ids,
+        p.id AS persona_id
+        FROM benefext AS b 
+        JOIN cor1440_gen_actividad AS a ON a.id=b.actividad_id
+        JOIN sip_oficina AS o ON  o.id=a.oficina_id
+        JOIN sip_persona AS p ON p.id=b.persona_id
+        LEFT JOIN sip_tdocumento AS t ON t.id=p.tdocumento_id
+        LEFT JOIN sip_ubicacionpre AS u ON u.id=a.ubicacionpre_id
+        LEFT JOIN sip_departamento AS dep on dep.id=u.departamento_id
+        LEFT JOIN sip_municipio AS mun on mun.id=u.municipio_id
+      ;
+    SQL
+
+
+    wherebe = "TRUE" 
     if oficina_id
-      contarb_actividad = contarb_actividad.where(oficina_id: oficina_id)
+      obof = Sip::Oficina.find(oficina_id)
+      wherebe << " AND be.actividad_oficina = '#{Sip::SqlHelper.escapar(obof.nombre)}'"
     end
     if pf_id
-      contarb_actividad = contarb_actividad.where(
-        'cor1440_gen_actividad.id IN
+      wherebe << " AND be.actividad_id IN 
         (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero
-          WHERE proyectofinanciero_id=?)', pf_id).where(
-            'cor1440_gen_actividad.id IN
-        (SELECT actividad_id FROM cor1440_gen_actividad_actividadpf)')
+          WHERE proyectofinanciero_id=#{pf_id.to_i})"
     end
     if fechaini
-      contarb_actividad = contarb_actividad.where(
-        'cor1440_gen_actividad.fecha >= ?', fechaini)
+      wherebe << " AND be.actividad_fecha >= '#{Sip::SqlHelper.escapar(fechaini)}'"
     end
     if fechafin
-      contarb_actividad = contarb_actividad.where(
-        'cor1440_gen_actividad.fecha <= ?', fechafin)
+      wherebe << " AND be.actividad_fecha <= '#{Sip::SqlHelper.escapar(fechafin)}'"
     end
 
     contarb_listaac = Cor1440Gen::Actividadpf.where(
@@ -56,12 +105,8 @@ class Benefactividadpf < ActiveRecord::Base
 
     contarpro = Cor1440Gen::Actividadpf.where(
       proyectofinanciero_id: pf_id)
-    asistencias = Cor1440Gen::Asistencia.where(
-      actividad_id: contarb_actividad)
-    personasis = asistencias.select(:persona_id)
-    actividades = asistencias.select(:actividad_id)
 
-    selbenef = Benefactividadpf.subasis(personasis, actividades, contarpro)
+    selbenef = Benefactividadpf.subasis(wherebe, contarpro)
     File.open('/tmp/ba.sql', 'w') do |ma|
       ma.puts selbenef
     end
@@ -74,73 +119,19 @@ class Benefactividadpf < ActiveRecord::Base
     Benefactividadpf.reset_column_information
   end # def crea_consulta
 
-  def self.subasis(personas, actividades, actividadespf)
 
-    c=" SELECT
-        (SELECT nombre FROM sip_perfilorgsocial AS per
-          WHERE per.id=(
-            SELECT perfilorgsocial_id FROM cor1440_gen_asistencia AS as3
-           WHERE as3.id=sub3.id_ultasist LIMIT 1)) AS persona_perfil_ultact,
-        sub3.*
-      FROM (SELECT  --sub3
-         (SELECT id FROM cor1440_gen_asistencia AS as2
-          WHERE as2.actividad_id=sub2.id_ultact
-          AND as2.persona_id=sub2.persona_id
-          ORDER BY 1 LIMIT 1) AS id_ultasist,
 
-         (SELECT nombre FROM cor1440_gen_rangoedadac AS red
-          WHERE id=CASE
-            WHEN (red.limiteinferior IS NULL OR
-              red.limiteinferior<=sub2.edad_en_ultact) AND
-              (red.limitesuperior IS NULL OR
-              red.limitesuperior>=sub2.edad_en_ultact) THEN
-              red.id
-            ELSE
-              7 -- SIN INFORMACION
-           END LIMIT 1) AS rangoedadac_ultact,
+  def self.subasis(wherebe, actividadespf)
 
-          sub2.*
-       FROM (SELECT  --sub2
-         TRIM(TRIM(sub.persona_nombres) || ' '  ||
-         TRIM(sub.persona_apellidos)) AS persona_nombre,
-         TRIM(COALESCE(sub.persona_tipodocumento || ':', '') ||
-           COALESCE(sub.persona_numerodocumento, '')) AS persona_identificacion,
-        (SELECT id FROM cor1440_gen_actividad AS ac2
-          WHERE ac2.fecha=sub.fecha_ultact
-          AND ac2.id IN (SELECT actividad_id
-            FROM cor1440_gen_asistencia AS asis
-            WHERE  asis.persona_id=sub.persona_id
-            AND asis.actividad_id IN (#{actividades.to_sql})
-          )
-          ORDER BY 1 LIMIT 1) AS id_ultact,
-         public.sip_edad_de_fechanac_fecharef(
-           sub.persona_anionac, sub.persona_mesnac, sub.persona_dianac,
-         EXTRACT(YEAR FROM sub.fecha_ultact)::integer,
-         EXTRACT(MONTH from sub.fecha_ultact)::integer,
-         EXTRACT(DAY FROM sub.fecha_ultact)::integer) AS edad_en_ultact,
-         (SELECT nombre FROM sip_pais 
-           WHERE id=sub.persona_paisnac_id LIMIT 1) AS persona_paisnac,
-         sub.*
-      FROM (SELECT p.id AS persona_id, -- sub
-      TRIM(p.nombres) AS persona_nombres,
-      TRIM(p.apellidos) AS persona_apellidos,
-      TRIM(COALESCE(td.sigla, '')) AS persona_tipodocumento,
-      TRIM(COALESCE(p.numerodocumento, '')) AS persona_numerodocumento,
-      p.sexo AS persona_sexo,
-      p.anionac AS persona_anionac,
-      p.mesnac AS persona_mesnac,
-      p.dianac AS persona_dianac,
-      p.id_pais AS persona_paisnac_id,
-      ARRAY_TO_STRING(ARRAY(SELECT DISTINCT id_caso
-        FROM sivel2_gen_victima
-        WHERE id_persona=p.id), ',') AS persona_caso,
-      (SELECT max(fecha) FROM cor1440_gen_actividad AS ac
-        WHERE ac.id IN (SELECT actividad_id FROM cor1440_gen_asistencia AS asis
-          WHERE  asis.persona_id=p.id
-          AND asis.actividad_id IN (#{actividades.to_sql})
-          )
-      ) AS fecha_ultact
-    "
+    c="
+    SELECT be.*, ARRAY_TO_STRING(
+      ARRAY( SELECT DISTINCT apf.nombrecorto || ': ' || apf.titulo 
+        FROM cor1440_gen_actividadpf AS apf
+        WHERE apf.proyectofinanciero_id=10
+        AND apf.id IN (SELECT actividadpf_id 
+          FROM cor1440_gen_actividad_actividadpf AS aapf
+          WHERE aapf.actividad_id=be.actividad_id)), '; ') AS actividad_actividadesml
+     "
     if actividadespf.count > 0
       c+= ", "
       codigos = []
@@ -152,40 +143,19 @@ class Benefactividadpf < ActiveRecord::Base
           cod = cod + "_" + ind.to_s
         end
         codigos.push(cod)
-        c += '(
-           SELECT COUNT(*) FROM cor1440_gen_asistencia AS asistencia
-             JOIN cor1440_gen_actividad_actividadpf AS aapf
-               ON aapf.actividad_id=asistencia.actividad_id
-             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '
-             AND persona_id = p.id
-             AND asistencia.actividad_id IN (' + actividades.to_sql + ')
-        ) AS "'+ cod +'"'
-        c += ',
-            ARRAY(SELECT asistencia.actividad_id
-             FROM cor1440_gen_asistencia AS asistencia
-             JOIN cor1440_gen_actividad_actividadpf AS aapf
-               ON aapf.actividad_id=asistencia.actividad_id
-             WHERE aapf.actividadpf_id = ' + apf.id.to_s + '
-             AND persona_id = p.id
-             AND asistencia.actividad_id IN (' + actividades.to_sql + ') '\
-        ') AS "'+ cod +'_ids"'
-
+        c += "(SELECT COUNT(*) FROM 
+          cor1440_gen_actividad_actividadpf AS aapf
+          WHERE aapf.actividad_id=be.actividad_id 
+          AND aapf.actividadpf_id=#{apf.id}) AS \"#{cod}\""
         if apf != actividadespf.last
           c += ', '
         end
       end
     end
-    c+=" FROM sip_persona AS p
-        LEFT JOIN sip_tdocumento AS td ON td.id=p.tdocumento_id
-        WHERE p.id IN (#{personas.to_sql})
-        AND p.id IN (SELECT persona_id FROM cor1440_gen_asistencia AS asis
-          WHERE asis.actividad_id IN (#{actividades.to_sql}) )
-        ) AS sub
-        ) AS sub2
-        ) AS sub3
-        "
-#        GROUP BY 1,2,3,4,5,6,7) AS sub
-#    "
+    c += " FROM benefext2 AS be 
+      WHERE #{wherebe};"
+    return c
+
   end
 
 

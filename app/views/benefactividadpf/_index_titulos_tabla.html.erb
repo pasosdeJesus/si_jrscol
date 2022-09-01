@@ -1,6 +1,7 @@
-<% atrs_humanos  = ['persona_nombre', 'persona_identificacion', 'persona_sexo', 'persona_id', 'edad_en_actividad', 'rangoedadac_nombre']%>
+<% colh = 0 %>
 <% atributos_index.each do |atr| %>
-  <% if atrs_humanos.include? atr %>
+  <% colh += 1 %>
+  <% if colh < 14 %>
     <th><%= Benefactividadpf.human_attribute_name(atr)%></th>
   <% else %>
     <th><%= atr %></th>
