@@ -9,19 +9,25 @@ class BenefactividadpfController < Heb412Gen::ModelosController
     if Benefactividadpf
       arr = Benefactividadpf.column_names
       primeros =[
-        "persona_id", 
-        "persona_nombres", 
-        "persona_apellidos",
+        "actividad_fecha",
+        "actividad_oficina",
         "persona_tipodocumento", 
         "persona_numerodocumento",
+        "persona_nombres", 
+        "persona_apellidos",
         "persona_sexo", 
-        "persona_actividad_edad" 
-      ]
-      sobran = [
-        "persona_anionac",
+        "persona_anionac", 
         "persona_mesnac", 
-        "persona_dianac"
+        "persona_dianac", 
+        "persona_actividad_edad",
+        "persona_actividad_perfil",
+        "actividad_municipio",
+        "actividad_actividadesml",
+        "actividad_id",
+        "persona_caso_ids", 
+        "persona_id"
       ]
+      sobran = []
       acord1 = (arr-primeros-sobran)
       #acord2 = acord1.select {|c| c[-4..-1] == '_ids'}.sort
       #acord = acord2.map {|c| c.sub('_ids', '_enlace')}

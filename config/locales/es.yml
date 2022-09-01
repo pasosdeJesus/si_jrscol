@@ -55,12 +55,17 @@ es:
         Benefactividadpf: Beneficiarios por actividad de marco lógico
         actividad_actividadesml: Actividades de marco lógico
         actividad_fecha: Fecha de la actividad
+        actividad_id: Id. Actividad
         actividad_municipio: Municipio
         actividad_oficina: Oficina
         persona_apellidos: Apellidos
         edad_en_ultact: Edad en actividad más reciente
         persona_actividad_edad: Edad en actividad
         persona_actividad_perfil: Perfil
+        persona_anionac: Año de nacimiento
+        persona_caso_ids: Id. Caso Beneficiario
+        persona_mesnac: Mes de nacimiento
+        persona_dianac: Día de nacimiento
         persona_caso_ids: Caso del beneficiario
         persona_identificacion: Identificación
         persona_id: Id. Beneficiario
