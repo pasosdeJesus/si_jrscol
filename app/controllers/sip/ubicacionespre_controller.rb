@@ -26,7 +26,7 @@ module Sip
         pais = "AND pais_id=#{params[:pais].to_i}"
         dep = "AND departamento_id=#{params[:dep].to_i}"
         mun = "AND municipio_id=#{params[:mun].to_i}"
-        clas = params[:clas] && params[:clas] != '' ? 
+        clas = params[:clas] && params[:clas] != '' && params[:clas] != '0' ? 
           "AND clase_id=#{params[:clas].to_i}" : ""
         # Usamos la funcion f_unaccent definida con el indice
         # en db/migrate/20200916022934_indice_ubicacionpre.rb
