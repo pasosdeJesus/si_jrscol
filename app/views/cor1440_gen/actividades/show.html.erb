@@ -15,7 +15,9 @@
     <% if ca == '' %>
       Sin casos asociados
     <% else %>
-      <%= ca %>
+      <% ca.split(',').each do |nc| %>
+        <%= link_to nc, sivel2_gen.caso_path(nc), target: '_blank' %>
+      <% end %>
     <% end %><br>
     <b>Municipio:</b><%= @actividad.presenta('municipio') %><br>
   </div>

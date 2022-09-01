@@ -8,7 +8,7 @@ Población beneficiaria: <%= personas.uniq.count  %>
 <table class="tablalistadoasistencia table  table-bordered table-sm ">
   <thead class="thead-light">
     <tr>
-      <th>Código de persona</th>
+      <th>Código de beneficiario(a)</th>
       <th>Nombres</th>
       <th>Apellidos</th>
       <th colspan="2">Identificación</th>
@@ -24,7 +24,9 @@ Población beneficiaria: <%= personas.uniq.count  %>
       <% disponibles -= [asistencia.persona.id] %>
       <tr>
         <td>
-          <%= asistencia.persona.id if asistencia.persona.id %>
+        <%= link_to(
+          asistencia.persona.id, sip.persona_path(asistencia.persona.id), 
+          target: '_blank') if asistencia.persona.id %>
         </td>
         <td>
           <%= asistencia.persona.nombres if asistencia.persona.nombres %>
@@ -55,7 +57,13 @@ Población beneficiaria: <%= personas.uniq.count  %>
         </td>
         <td>
           <% casoa = Sivel2Gen::Victima.where(id_persona: asistencia.persona.id).pluck(:id_caso) %>
-          <%= casoa.empty? ? "Sin caso asociado" : casoa.join(', ') %>
+          <% if casoa.empty? %>
+            <%= "Sin caso asociado" %>
+          <% else %>
+            <% casoa.each do |nc| %>
+              <%= link_to nc, sivel2_gen.caso_path(nc), target: '_blank' %>
+            <% end %>
+          <% end %>
         </td>
       </tr>
     <% end %>
@@ -63,7 +71,9 @@ Población beneficiaria: <%= personas.uniq.count  %>
       <% if disponibles.include? victima.persona.id %>
         <tr>
           <td>
-            <%= victima.persona.id if victima.persona.id %>
+            <%= link_to(
+              victima.persona.id, sip.persona_path(victima.persona.id), 
+              target: '_blank') if victima.persona.id %>
           </td>
           <td>
             <%= victima.persona.nombres if victima.persona.nombres %>
@@ -98,7 +108,7 @@ Población beneficiaria: <%= personas.uniq.count  %>
              No Aplica
           </td>
           <td>
-            <%= victima.id_caso %>
+            <%= link_to victima.id_caso, sivel2_gen.caso_path(victima.id_caso), target: '_blank' %>
           </td>
         </tr>
       <% end %>
