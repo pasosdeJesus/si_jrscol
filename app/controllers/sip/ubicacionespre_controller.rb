@@ -41,6 +41,7 @@ module Sip
           "WHERE #{where} #{pais} #{dep} #{mun} #{clas} " \
           "ORDER BY 1 LIMIT 10"
         puts "OJO cons=\n#{cons}"
+        #debugger
         r = ActiveRecord::Base.connection.select_all cons
         respond_to do |format|
           format.json { render :json, inline: r.to_json }
