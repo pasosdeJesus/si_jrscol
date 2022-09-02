@@ -1,0 +1,14 @@
+<%= f.input :tdocumento_id,
+  collection: Sip::Tdocumento.habilitados,
+  label_method: :sigla,
+  value_method: :id ,
+  input_html: {
+    "data-action": "change->sindocaut#cambia_tdocumento"
+  }
+%>
+
+<%= f.input :id,
+  as: :hidden,
+  input_html: {
+    "data-sindocaut-target": "id"
+  } %>

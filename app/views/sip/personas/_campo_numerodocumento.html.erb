@@ -1,5 +1,5 @@
 <% phd = 'N'
-td = 'Si el tipo de documento es cédula de ciudadania teclee solo digitos'
+td = 'Si el tipo de documento es cédula de ciudadania teclee solo digitos. Si el tipo es SIN DOCUMENTO se asignará automaticamente.'
 acd = {'data-bs-toggle' => 'tooltip',
         title: td,
    'data-autocompleta' => 'no' }
@@ -14,5 +14,8 @@ else
            title: td }
   end
 end %>
-<%= f.input :numerodocumento, placeholder: phd,
-  :input_html => acd %>
+<% acd["data-sindocaut-target".to_sym] = "numerodocumento" %>
+<%= f.input :numerodocumento, 
+  placeholder: phd,
+  :input_html => acd 
+%>

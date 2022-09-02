@@ -7,9 +7,12 @@ export default class extends Controller {
     "id" 
   ]
 
+  connect() {
+    console.log('conectado controlador sindocaut')
+  }
+
   cambia_tdocumento(e) {
 
-    console.log("Hola Stimulus asistente!", this.element)
     console.log("numerodocumento ahora es", this.numerodocumentoTarget.value)
     if (e.target.value == '11' && 
       this.numerodocumentoTarget.value == '') { // SIN DOCUMENTO

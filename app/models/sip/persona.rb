@@ -62,6 +62,15 @@ module Sip
       joins(:etiqueta_persona).where("sip_etiqueta_persona.etiqueta_id" => e)
     }
 
+    after_create :arreglar_sindocumento
+
+    def arreglar_sindocumento
+      if self.tdocumento_id == 11
+        self.numerodocumento = Sip::PersonasController.
+          mejora_nuevo_numerodocumento_sindoc(self.id)
+      end
+    end
+
     # Debe corresponder con la funcion @jrs_persona_presenta_nombre de 
     # app/assets/javascripts/actividad.js.coffee
     def presenta_nombre

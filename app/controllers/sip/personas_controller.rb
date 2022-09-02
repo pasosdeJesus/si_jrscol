@@ -29,6 +29,20 @@ module Sip
       return a
     end
 
+    def new
+      @encform_html = {
+        'data-controller': 'sindocaut'
+      }
+      new_gen
+      render layout: 'application'
+    end
+
+    def edit
+      @encform_html = {
+        'data-controller': 'sindocaut'
+      }
+      edit_gen
+    end
 
     def filtro_etiqueta(ide)
       joins(:sip_etiqueta_persona).where(etiqueta_id: ide)
@@ -278,7 +292,7 @@ module Sip
 
     def identificacionsd
       pid = nil
-      if params && params[:persona_id]
+      if params && params[:persona_id] && params[:persona_id] != ''
         pid = params[:persona_id].to_i
       end
       ndoc = Sip::PersonasController.
@@ -302,7 +316,7 @@ module Sip
       numerodocumento = persona_id
       while Sip::Persona.where(
           tdocumento_id: 11, numerodocumento: numerodocumento
-      ).count > 0 do
+      ).where('id<>?', persona_id).count > 0 do
         numerodocumento = numerodocumento.to_s
         if numerodocumento.length > 0 && numerodocumento[-1] >= 'A' && 
             numerodocumento[-1] < 'Z'

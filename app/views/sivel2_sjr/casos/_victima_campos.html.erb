@@ -1,12 +1,12 @@
 <div class='control-group nested-fields vic'>
   <div class="controls">
-    <% if defined?(numint) %>
-      <% numint = numint + 1 %>
+    <% if defined?(@numint) %>
+      <% @numint = @numint + 1 %>
     <% else %>
-      <% numint = 1 %>
+      <% @numint = 1 %>
     <% end %>
     <a class='itemvictima' data-bs-toggle="collapse" href='#victima-<%=f.object.id%>'>
-      <h3 class= "tituloenlace">Integrante <%= numint %></h3>
+      <h3 class= "tituloenlace">Integrante <%= @numint %></h3>
     </a>
     <div class="collapse multi-collapse divcolapse" id='victima-<%=f.object.id%>'>
       <% if f.object.persona.nil?

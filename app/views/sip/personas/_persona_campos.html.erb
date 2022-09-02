@@ -4,7 +4,6 @@
 <% # f con formulario persona  %>
 <% # fvictima con formulario victima %>
 
-  <%= f.input :id, as: :hidden %>
   <% phn = 'N'
   acn = {
     'data-autocompleta' => 'no',
@@ -38,12 +37,21 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" data-controller='sindocaut'>
+    <%= f.input :id, as: :hidden,
+      input_html: {
+        "data-sindocaut-target": "id"
+      } %>
+
     <div class="col-md-6">
       <%= f.input :tdocumento_id,
         collection: Sip::Tdocumento.habilitados,
         label_method: :nombre,
-        value_method: :id %>
+        value_method: :id,
+        input_html: {
+          'data-action': 'change->sindocaut#cambia_tdocumento'
+        }
+      %>
     </div>
     <% phd = 'N'
     td = 'Si el tipo de documento es cédula de ciudadania teclee solo digitos'
@@ -65,6 +73,7 @@
       end
     end %>
     <% acd['data-sip--cancelar-vacio-es-eliminar-target']='determinador' %>
+    <% acd['data-sindocaut-target']='numerodocumento' %>
     <div class="col-md-6">
       <%= f.input :numerodocumento, placeholder: phd,
         :input_html => acd %>
