@@ -134,6 +134,7 @@ module Cor1440Gen
       render layout: 'application'
     end
 
+
     # Responde a DELETE
     def destroy_si_jrscol
       Detallefinanciero.where(actividad_id: @registro.id).
