@@ -127,8 +127,7 @@ class Benefactividadpf < ActiveRecord::Base
     SELECT be.*, ARRAY_TO_STRING(
       ARRAY( SELECT DISTINCT apf.nombrecorto || ': ' || apf.titulo 
         FROM cor1440_gen_actividadpf AS apf
-        WHERE apf.proyectofinanciero_id=10
-        AND apf.id IN (SELECT actividadpf_id 
+        WHERE apf.id IN (SELECT actividadpf_id 
           FROM cor1440_gen_actividad_actividadpf AS aapf
           WHERE aapf.actividad_id=be.actividad_id)), '; ') AS actividad_actividadesml
      "
