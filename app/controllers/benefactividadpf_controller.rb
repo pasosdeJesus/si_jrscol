@@ -158,7 +158,7 @@ class BenefactividadpfController < Heb412Gen::ModelosController
         hoja.add_row l, style: [estilo_encabezado] * l.length
         registros.order('UPPER(persona_nombres), UPPER(persona_apellidos), persona_id').each do |baml|
           l = [
-            baml['actividad_fecha'],
+            baml['actividad_fecha'].to_s,
             baml['actividad_oficina'],
             baml['persona_tipodocumento'],
             baml['persona_numerodocumento'],
