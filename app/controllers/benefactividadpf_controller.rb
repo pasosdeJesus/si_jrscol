@@ -170,7 +170,7 @@ class BenefactividadpfController < Heb412Gen::ModelosController
             baml['persona_anionac'],
             baml['persona_actividad_edad'],
             baml['persona_actividad_perfil'],
-            baml['actividad_muncipio'],
+            baml['actividad_municipio'],
             baml['actividad_actividadesml']
           ]
           #caml.each do |c|
