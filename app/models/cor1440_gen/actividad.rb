@@ -108,19 +108,22 @@ module Cor1440Gen
       if (amlmin & self.actividadpf_ids) == []
         errors.add(:proyectofinanciero, "Falta alguna actividad de marco lógico del convenio 'PLAN ESTRATEGICO 1'")
       end
-      if controlador && controlador.params && controlador.params[:actividad] && controlador.params[:actividad][:actividad_proyectofinanciero_attributes]
-        a = controlador.params[:actividad][:actividad_proyectofinanciero_attributes].
-          to_h.to_a.map {|x| x[1]}.select {|r| r["proyectofinanciero_id"].to_i != 10}.
-          map {|r| r["actividadpf_ids"]}.flatten.select {|e| e!=""}
-        if (a == [])
-          errors.add(
-            :proyectofinanciero, 
-            "Falta agregar actividad de marco lógico en convenio financiador"
-          )
+      if controlador && controlador.params && controlador.params[:actividad] &&
+          controlador.params[:actividad][:actividad_proyectofinanciero_attributes]
+        controlador.params[:actividad][:actividad_proyectofinanciero_attributes].each do |l, v|
+          if v[:proyectofinanciero_id].to_i != 10 &&
+              v['_destroy'] == 'false' && (v['actividadpf_ids'] == [] || 
+              v['actividadpf_ids'] == [''])
+            errors.add(
+              :proyectofinanciero, 
+              "Falta agregar actividad de marco lógico en "\
+              "convenio financiador #{Cor1440Gen::Proyectofinanciero.
+              find(v['proyectofinanciero_id']).nombre}"
+            )
+          end
         end
-      end
-
-    end 
+      end 
+    end
 
 
     # PRESENTACIÓN DE INFORMACIÓN

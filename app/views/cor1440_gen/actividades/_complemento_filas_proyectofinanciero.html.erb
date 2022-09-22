@@ -1,8 +1,12 @@
-<% if defined?(@pf_incompletos) && @pf_incompletos.count > 0 %>
-  <% l = @pf_incompletos.map {|pfid| 
-    Cor1440Gen::ActividadProyectofinanciero.new(
-      actividad_id: f.object.id, proyectofinanciero_id: pfid
-    ) } %>
+<% if defined?(@pf_respaldo) && @pf_respaldo.count > 0 %>
+  <% l = [] %>
+  <% @pf_respaldo.each do |pfid, acis| %>
+    <% if !f.object.actividad_proyectofinanciero.pluck(:proyectofinanciero_id).
+        include?(pfid) %>
+      <% l << Cor1440Gen::ActividadProyectofinanciero.new(
+        actividad_id: f.object.id, proyectofinanciero_id: pfid) %>
+    <% end %>
+  <% end %>
   <%= f.simple_fields_for(:actividad_proyectofinanciero, l) do |nap| %>
     <%= render partial: 'actividad_proyectofinanciero_campos',
       locals: {f: nap, ac: f} %>

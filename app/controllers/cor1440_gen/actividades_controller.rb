@@ -349,15 +349,34 @@ module Cor1440Gen
     end # def nueva_asistencia
 
     def update
-      @pf_incompletos = []  
+      @pf_respaldo = {}
       # para no perder proyectos financieros sin actividad de marco lógico
+      # en caso de errores de validación
       actividad_params[:actividad_proyectofinanciero_attributes].each do |l,v|
-        if v[:actividadpf_ids] == [""] && v[:_destroy] == 'false' &&
-            v[:proyectofinanciero_id].to_i > 0
-          @pf_incompletos << v[:proyectofinanciero_id].to_i
+        if v[:_destroy] == 'false' && v[:proyectofinanciero_id].to_i > 0
+          @pf_respaldo[v[:proyectofinanciero_id].to_i] = v[:actividadpf_ids]
         end
       end
+
       update_cor1440_gen
+
+      if @registro.valid?
+        # Tras arreglar proyecto financiero que no tenía actividad de marco
+        # lógico y que no esté en base suele no almacenar la actividad 
+        # así que la agregamos
+        ar = @pf_respaldo.values.flatten.select {|x| x != ''}.
+          map(&:to_i).uniq.sort
+        ag = @registro.actividadpf_ids.uniq.sort
+        if ar != ag 
+          f = ar - ag
+          f.each do |apfid|
+            p = Cor1440Gen::ActividadActividadpf.new(
+              actividad_id: @registro.id,
+              actividadpf_id: apfid)
+            p.save!(validate: false)
+          end
+        end
+      end
     end
 
 
