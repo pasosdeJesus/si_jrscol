@@ -348,6 +348,18 @@ module Cor1440Gen
       end
     end # def nueva_asistencia
 
+    def update
+      @pf_incompletos = []  
+      # para no perder proyectos financieros sin actividad de marco lógico
+      actividad_params[:actividad_proyectofinanciero_attributes].each do |l,v|
+        if v[:actividadpf_ids] == [""] && v[:_destroy] == 'false' &&
+            v[:proyectofinanciero_id].to_i > 0
+          @pf_incompletos << v[:proyectofinanciero_id].to_i
+        end
+      end
+      update_cor1440_gen
+    end
+
 
     def otros_impedimentos_para_borrar_persona_ex_asistente(a)
       # Si la persona está en un caso no se puede eliminar

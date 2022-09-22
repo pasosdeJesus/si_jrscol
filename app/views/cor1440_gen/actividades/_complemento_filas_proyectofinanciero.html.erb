@@ -1,0 +1,10 @@
+<% if defined?(@pf_incompletos) && @pf_incompletos.count > 0 %>
+  <% l = @pf_incompletos.map {|pfid| 
+    Cor1440Gen::ActividadProyectofinanciero.new(
+      actividad_id: f.object.id, proyectofinanciero_id: pfid
+    ) } %>
+  <%= f.simple_fields_for(:actividad_proyectofinanciero, l) do |nap| %>
+    <%= render partial: 'actividad_proyectofinanciero_campos',
+      locals: {f: nap, ac: f} %>
+  <% end %>
+<% end %>
