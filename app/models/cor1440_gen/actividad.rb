@@ -113,7 +113,10 @@ module Cor1440Gen
           to_h.to_a.map {|x| x[1]}.select {|r| r["proyectofinanciero_id"].to_i != 10}.
           map {|r| r["actividadpf_ids"]}.flatten.select {|e| e!=""}
         if (a == [])
-          errors.add(:proyectofinanciero, "Falta alguna actividad de marco lógico de un convenio diferente a 'PLAN ESTRATEGICO 1'")
+          errors.add(
+            :proyectofinanciero, 
+            "Falta agregar actividad de marco lógico en convenio financiador"
+          )
         end
       end
 
