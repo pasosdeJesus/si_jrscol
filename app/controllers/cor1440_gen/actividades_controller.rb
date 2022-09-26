@@ -321,12 +321,16 @@ module Cor1440Gen
       @persona = Sip::Persona.create(
         nombres: 'N',
         apellidos: 'N',
-        sexo: 'S'
+        sexo: 'S',
+        tdocumento_id: 11,
+        numerodocumento: 'AAA'
       )
       if !@persona.save
         resp_error 'No pudo crear persona' 
         return
       end
+      @persona.numerodocumento = @persona.id
+      @persona.save
       @asistencia = Cor1440Gen::Asistencia.create(
         actividad_id: act.id,
         persona_id: @persona.id

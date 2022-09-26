@@ -138,6 +138,48 @@ module Sivel2Sjr
 
     end
 
+    def new
+      @registro = @caso = Sivel2Gen::Caso.new
+      @caso.current_usuario = current_usuario
+      @caso.fecha = DateTime.now.strftime('%Y-%m-%d')
+      @caso.memo = ''
+      @caso.casosjr = Sivel2Sjr::Casosjr.new
+      @caso.casosjr.fecharec = DateTime.now.strftime('%Y-%m-%d')
+      @caso.casosjr.asesor = current_usuario.id
+      @caso.casosjr.oficina_id= current_usuario.oficina_id.nil? ?  
+        1 : current_usuario.oficina_id
+      if params[:contacto] && 
+          Sip::Persona.where(id: params[:contacto].to_i).count == 1
+        per = Sip::Persona.find(params[:contacto])
+      else
+        per = Sip::Persona.new
+        per.nombres = 'N'
+        per.apellidos = 'N'
+        per.sexo = 'S'
+        per.tdocumento_id = 11
+        per.save!(validate: false)
+      end
+      vic = Sivel2Gen::Victima.new
+      vic.persona = per
+      @caso.victima<<vic
+      @caso.casosjr.contacto = per
+      @caso.save!(validate: false)
+      vic.id_caso = @caso.id
+      vic.save!(validate: false)
+      logger.debug "Victima salvada: #{vic.inspect}"
+      #debugger
+      vic.victimasjr = Sivel2Sjr::Victimasjr.new
+      vic.victimasjr.id_victima = vic.id
+      vic.victimasjr.save!(validate: false)
+      cu = Sivel2Gen::CasoUsuario.new
+      cu.id_usuario = current_usuario.id
+      cu.id_caso = @caso.id
+      cu.fechainicio = DateTime.now.strftime('%Y-%m-%d')
+      cu.save!(validate: false)
+      redirect_to edit_caso_path(@registro)
+    end
+
+
     def filtrar_ca(conscaso)
       if current_usuario && current_usuario.rol == Ability::ROLINV
         aeu = current_usuario.etiqueta_usuario.map { |eu| eu.etiqueta_id }

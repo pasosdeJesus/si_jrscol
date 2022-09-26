@@ -35,6 +35,12 @@ module Sip
     validates :apellidos, presence: true, allow_blank: false,
       length: { maximum: 100}
 
+    validates :tdocumento_id, presence: true, allow_blank: false
+    validates :numerodocumento, presence: true, allow_blank: false, 
+      uniqueness: { scope: :tdocumento_id,
+                    message: "Tipo y número de documento repetido" 
+      }
+
     attr_accessor :fechanac
     def fechanac
       return Date.new(anionac && anionac > 0 ? anionac : 1900,
