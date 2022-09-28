@@ -842,6 +842,7 @@ class Ability < Sivel2Sjr::Ability
     can :descarga_anexo, Sip::Anexo
     can :contar, Sip::Ubicacion
     can :nuevo, Sip::Ubicacion
+    can :read, Sip::Tdocumento
 
     can :contar, Sivel2Gen::Caso
     can :buscar, Sivel2Gen::Caso
