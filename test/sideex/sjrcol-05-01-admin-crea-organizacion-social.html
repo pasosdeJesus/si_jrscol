@@ -31,7 +31,7 @@
 </tr>
 <tr><td>clickAt</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Organización social</td>
 </tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Sip::Orgsocial creado.</td>
+<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Sip::Orgsocial creada.</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -39,7 +39,7 @@
 <tr><td rowspan="1" colspan="3">organizacion-social-anotaciones</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>link=editar<datalist><option>link=Editar</option><option>//a[contains(text(),'Editar')]</option><option>//div[@id='div_contenido']/div[5]/form/div/div/a[2]</option><option>//a[contains(@href, '/orgsociales/51/edita')]</option><option>//a[2]</option><option>link=editar</option></datalist></td><td>35,21</td>
+<tr><td>clickAt</td><td>link=Editar<datalist><option>link=Editar</option><option>//a[contains(text(),'Editar')]</option><option>//div[@id='div_contenido']/div[5]/form/div/div/a[2]</option><option>//a[contains(@href, '/orgsociales/51/edita')]</option><option>//a[2]</option><option>link=editar</option></datalist></td><td>35,21</td>
 </tr>
 <tr><td>clickAt</td><td>id=orgsocial_grupoper_attributes_anotaciones<datalist><option>id=orgsocial_grupoper_attributes_anotaciones</option><option>name=orgsocial[grupoper_attributes][anotaciones]</option><option>css=#orgsocial_grupoper_attributes_anotaciones</option><option>//input[@id='orgsocial_grupoper_attributes_anotaciones']</option><option>//form[@id='edit_orgsocial_6']/div[3]/div[3]/input</option><option>//div[3]/input</option></datalist></td><td>163,10</td>
 </tr>
@@ -63,7 +63,7 @@
 </tr>
 <tr><td>addSelection</td><td>id=orgsocial_sectororgsocial_ids<datalist><option>id=orgsocial_sectororgsocial_ids</option><option>css=#orgsocial_sectororgsocial_ids</option><option>//select[@id='orgsocial_sectororgsocial_ids']</option><option>//form[@id='edit_orgsocial_44']/div[5]/select</option><option>//div[5]/select</option></datalist></td><td>label=CAMPESINOS</td>
 </tr>
-<tr><td>clickAt</td><td>css=#orgsocial_sectororgsocial_ids &gt; option[value="3"]<datalist><option>css=#orgsocial_sectororgsocial_ids &gt; option[value="3"]</option><option>xpath=(//option[@value='3'])[2]</option><option>//select[@id='orgsocial_sectororgsocial_ids']/option[2]</option><option>//div[5]/select/option[2]</option></datalist></td><td>87,5</td>
+<tr><td>clickAt</td><td>//div[5]/select/option[2]<datalist><option>css=#orgsocial_sectororgsocial_ids &gt; option[value="3"]</option><option>xpath=(//option[@value='3'])[2]</option><option>//select[@id='orgsocial_sectororgsocial_ids']/option[2]</option><option>//div[5]/select/option[2]</option></datalist></td><td>87,5</td>
 </tr>
 <tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
 </tr>
@@ -257,7 +257,7 @@
 </tr>
 <tr><td>clickAt</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Sip::Orgsocial actualizada.</td>
 </tr>
-<tr><td>runScript</td><td>localStorage.setItem('orgsocial_id', +document.querySelector('dd').innerText)<datalist><option>localStorage.setItem('pchr_id', +document.querySelector('dd').innerText)</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(HUILA)').attr('selected', 'selected');</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(TOLIMA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salidam option:contains(Colombia / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(Venezuela)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(Colombia)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(Venezuela)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(Colombia / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_expulsion option:contains(Colombia / CAUCA )').attr('selected', 'selected');</option><option>localStorage.setItem('orgsocial_id', +document.querySelector('dd').innerText)</option></datalist></td><td></td>
+<tr><td>runScript</td><td>localStorage.setItem('orgsocial_id', +document.querySelector('dd').innerText)<datalist><option>localStorage.setItem('pchr_id', +document.querySelector('dd').innerText)</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(HUILA)').attr('selected', 'selected');</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(TOLIMA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salidam option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(COLOMBIA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_expulsion option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>localStorage.setItem('orgsocial_id', +document.querySelector('dd').innerText)</option></datalist></td><td></td>
 </tr>
 <tr><td>clickAt</td><td>css=dd<datalist><option>css=dd</option><option>//div[@id='div_contenido']/dl/dd</option><option>//dd</option></datalist></td><td>17,11</td>
 </tr>
