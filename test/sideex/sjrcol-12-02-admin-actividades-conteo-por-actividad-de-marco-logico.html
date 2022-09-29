@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>sjrcol-12-02-admin-actividades-conteo-por-actividad-de-marco-logico</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">conteo-del-actividades-filtrar-por-fecha-inicial</td></tr>
+</thead>
+<tbody>
+<tr><td>clickAt</td><td>id=navbarDropdownActividades<datalist><option>id=navbarDropdownActividades</option><option>link=Actividades</option><option>css=#navbarDropdownActividades</option><option>//a[contains(text(),'Actividades')]</option><option>//a[@id='navbarDropdownActividades']</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/a</option><option>xpath=(//a[contains(@href, '#')])[3]</option><option>//li[3]/a</option></datalist></td><td>51,25</td>
+</tr>
+<tr><td>clickAt</td><td>link=Conteo por actividad del marco lógico<datalist><option>link=Conteo por actividad del marco lógico</option><option>//a[contains(text(),'Conteo por actividad del marco lógico')]</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/div/a[3]</option><option>//a[contains(@href, '/actividades/contar')]</option><option>//li[3]/div/a[3]</option></datalist></td><td>92,12</td>
+</tr>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Conteo de actividades</td>
+</tr>
+<tr><td>runScript</td><td>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')<datalist><option>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')</option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_fechaini<datalist><option>id=filtro_fechaini</option><option>name=filtro[fechaini]</option><option>css=#filtro_fechaini</option><option>//input[@id='filtro_fechaini']</option><option>//div/input</option></datalist></td><td>102,22</td>
+</tr>
+<tr><td>clickAt</td><td>css=th.prev<datalist><option>css=th.prev</option><option>//div[2]/div/table/thead/tr[2]/th</option></datalist></td><td>6,14</td>
+</tr>
+<tr><td>clickAt</td><td>css=th.datepicker-switch<datalist><option>css=th.datepicker-switch</option><option>//div[2]/div/table/thead/tr[2]/th[2]</option></datalist></td><td>34,11</td>
+</tr>
+<tr><td>clickAt</td><td>css=span.month<datalist><option>css=span.month</option><option>//td/span</option></datalist></td><td>35,27</td>
+</tr>
+<tr><td>clickAt</td><td>//div[2]/div/table/tbody/tr/td[4]<datalist><option>//div[2]/div/table/tbody/tr/td[4]</option></datalist></td><td>11,10</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>51,15</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">conteo-de-actividades-filtrar-por-fecha-final</td></tr>
+</thead>
+<tbody>
+<tr><td>clickAt</td><td>id=filtro_fechafin<datalist><option>id=filtro_fechafin</option><option>name=filtro[fechafin]</option><option>css=#filtro_fechafin</option><option>//input[@id='filtro_fechafin']</option><option>//div/div/div[3]/div/input</option></datalist></td><td>110,20</td>
+</tr>
+<tr><td>clickAt</td><td>css=th.datepicker-switch<datalist><option>css=th.datepicker-switch</option><option>//div[2]/div/table/thead/tr[2]/th[2]</option></datalist></td><td>60,19</td>
+</tr>
+<tr><td>clickAt</td><td>//div[2]/div[2]/table/thead/tr[2]/th<datalist><option>//div[2]/div[2]/table/thead/tr[2]/th</option></datalist></td><td>9,17</td>
+</tr>
+<tr><td>clickAt</td><td>//span[12]<datalist><option>//span[12]</option></datalist></td><td>18,30</td>
+</tr>
+<tr><td>clickAt</td><td>//div[2]/div/table/tbody/tr[5]/td[3]<datalist><option>//div[2]/div/table/tbody/tr[5]/td[3]</option></datalist></td><td>15,13</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>41,16</td>
+</tr>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Conteo de actividades</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">conteo-de-actividades-filtrar-por-oficina</td></tr>
+</thead>
+<tbody>
+<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>label=SIN INFORMACIÓN</td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>-0.5,0</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>28,17</td>
+</tr>
+<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>label=MAGDALENA MEDIO</td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>-0.5,0</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>28,17</td>
+</tr>
+<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>label=CÚCUTA</td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>-0.5,0</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>35,17</td>
+</tr>
+<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>label=NARIÑO</td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>-0.5,0</td>
+</tr>
+<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>label=SOACHA</td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>-0.5,0</td>
+</tr>
+<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>label=NACIONAL</td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>-0.5,0</td>
+</tr>
+<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>label=VALLE</td>
+</tr>
+<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div[2]/div/div/select</option><option>//select</option></datalist></td><td>-0.5,0</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>39,19</td>
+</tr>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Conteo de actividades</td>
+</tr>
+</tbody></table>
+</body>
+</html>
