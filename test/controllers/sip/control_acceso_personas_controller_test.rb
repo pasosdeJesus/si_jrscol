@@ -11,7 +11,7 @@ module Sip
         raise 'CONFIG_HOSTS debe ser www.example.com'
       end
       @persona = Sip::Persona.create!(PRUEBA_PERSONA)
-      @persona2 = Sip::Persona.create!(PRUEBA_PERSONA)
+      @persona2 = Sip::Persona.create!(PRUEBA_PERSONA2)
       @caso = Sivel2Gen::Caso.create!(PRUEBA_CASO)
       @victima = Sivel2Gen::Victima.create!(id_persona: @persona2.id, id_caso: @caso.id)
     end

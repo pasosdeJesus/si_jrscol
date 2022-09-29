@@ -183,8 +183,18 @@ PRUEBA_PERSONA = {
   nombres: 'Luis Alejandro',
   apellidos: 'Cruz Ordoñez',
   sexo: 'M',
-  numerodocumento: '1061769227' 
+  numerodocumento: '1061769227',
+  tdocumento_id: 11
 }
+
+PRUEBA_PERSONA2 = {
+  nombres: 'x',
+  apellidos: 'y',
+  sexo: 'M',
+  numerodocumento: '127935',
+  tdocumento_id: 11
+}
+
 
 PRUEBA_UBICACIONPRE = {
   nombre: "BARRANCOMINAS / BARRANCOMINAS / GUAINÍA / COLOMBIA",
