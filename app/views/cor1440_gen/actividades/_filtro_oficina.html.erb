@@ -1,0 +1,18 @@
+<% sel = [] %>
+<% if params && params[:filtro] && 
+    params[:filtro][:busoficina] %>
+  <% sel = params[:filtro][:busoficina] %>
+<% end %>
+<%= f.input :busoficina,
+  collection: Sip::Oficina.order('nombre'),
+  label_method: :nombre,
+  value_method: :id,
+  include_hidden: false,
+  selected: sel,
+  input_html: { 
+    class: "chosen-select", 
+    multiple: true, 
+    'data-enviarautomatico' => ''
+  },
+  label: false
+%>
