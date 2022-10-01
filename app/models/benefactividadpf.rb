@@ -20,12 +20,12 @@ class Benefactividadpf < ActiveRecord::Base
 
   # Genera consulta
   # @params ordenar_por Criterio de ordenamiento
-  # @params pf_id Entero con dentificación del proyecto financiero  o nil
-  # @params oficina_id Entero con identificación de la oficina o nil
+  # @params pf_ids Lista con identificaciones de proyectos financieros o []
+  # @params oficina_ids Lista con identificación de las oficina o []
   # @params fechaini Fecha inicial en formato estándar o nil
   # @params fechafin Fecha final en formato estándar o nil
   #
-  def self.crea_consulta(ordenar_por = nil, pf_id, oficina_id,
+  def self.crea_consulta(ordenar_por = nil, pf_ids, oficina_ids,
                     fechaini, fechafin)
     if ARGV.include?("db:migrate")
       return
@@ -35,22 +35,26 @@ class Benefactividadpf < ActiveRecord::Base
       CREATE OR REPLACE VIEW benefext AS 
         SELECT DISTINCT actividad_id, persona_id, persona_actividad_perfil
         FROM (
-          SELECT ac.id AS actividad_id, v.id_persona AS persona_id, '' AS persona_actividad_perfil
+          SELECT ac.id AS actividad_id, v.id_persona AS persona_id, 
+            '' AS persona_actividad_perfil
           FROM cor1440_gen_actividad AS ac 
-          JOIN sivel2_sjr_actividad_casosjr AS accas ON accas.actividad_id=ac.id 
-          JOIN sivel2_gen_victima as v on v.id_caso=accas.casosjr_id 
+          JOIN sivel2_sjr_actividad_casosjr AS accas 
+            ON accas.actividad_id=ac.id 
+          JOIN sivel2_gen_victima as v ON v.id_caso=accas.casosjr_id 
           UNION
           SELECT ac.id AS actividad_id, asis.persona_id, 
             COALESCE(porg.nombre) AS person_actividad_perfil
           FROM cor1440_gen_actividad AS ac 
           JOIN cor1440_gen_asistencia AS asis ON asis.actividad_id=ac.id
-          LEFT JOIN sip_perfilorgsocial AS porg ON porg.id=asis.perfilorgsocial_id
-        ) as sub
+          LEFT JOIN sip_perfilorgsocial AS porg 
+            ON porg.id=asis.perfilorgsocial_id
+        ) AS sub
       ;
 
       CREATE OR REPLACE VIEW benefext2 AS 
       SELECT a.fecha AS actividad_fecha,
         o.nombre AS actividad_oficina,
+        us.nusuario AS actividad_responsable,
         t.sigla AS persona_tipodocumento,
         p.numerodocumento AS persona_numerodocumento,
         p.nombres AS persona_nombres,
@@ -75,6 +79,7 @@ class Benefactividadpf < ActiveRecord::Base
         JOIN cor1440_gen_actividad AS a ON a.id=b.actividad_id
         JOIN sip_oficina AS o ON  o.id=a.oficina_id
         JOIN sip_persona AS p ON p.id=b.persona_id
+        JOIN usuario AS us ON us.id=a.usuario_id
         LEFT JOIN sip_tdocumento AS t ON t.id=p.tdocumento_id
         LEFT JOIN sip_ubicacionpre AS u ON u.id=a.ubicacionpre_id
         LEFT JOIN sip_departamento AS dep on dep.id=u.departamento_id
@@ -84,14 +89,15 @@ class Benefactividadpf < ActiveRecord::Base
 
 
     wherebe = "TRUE" 
-    if oficina_id
-      obof = Sip::Oficina.find(oficina_id)
-      wherebe << " AND be.actividad_oficina = '#{Sip::SqlHelper.escapar(obof.nombre)}'"
+    if oficina_ids && oficina_ids.count > 0
+      obof = Sip::Oficina.where(id: oficina_ids)
+      lof = obof.pluck(:nombre).map {|o| "'#{Sip::SqlHelper.escapar(o)}'"}
+      wherebe << " AND be.actividad_oficina IN (#{lof.join(',')})"
     end
-    if pf_id
+    if pf_ids && pf_ids.count > 0
       wherebe << " AND be.actividad_id IN 
         (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero
-          WHERE proyectofinanciero_id=#{pf_id.to_i})"
+          WHERE proyectofinanciero_id IN (#{pf_ids.map(&:to_i).join(',')}))"
     end
     if fechaini
       wherebe << " AND be.actividad_fecha >= '#{Sip::SqlHelper.escapar(fechaini)}'"
@@ -101,10 +107,10 @@ class Benefactividadpf < ActiveRecord::Base
     end
 
     contarb_listaac = Cor1440Gen::Actividadpf.where(
-      proyectofinanciero_id: pf_id).order(:nombrecorto)
+      proyectofinanciero_id: pf_ids).order(:nombrecorto)
 
     contarpro = Cor1440Gen::Actividadpf.where(
-      proyectofinanciero_id: pf_id)
+      proyectofinanciero_id: pf_ids)
 
     selbenef = Benefactividadpf.subasis(wherebe, contarpro)
     File.open('/tmp/ba.sql', 'w') do |ma|
@@ -152,7 +158,7 @@ class Benefactividadpf < ActiveRecord::Base
       end
     end
     c += " FROM benefext2 AS be 
-      WHERE #{wherebe};"
+      WHERE #{wherebe}"
     return c
 
   end

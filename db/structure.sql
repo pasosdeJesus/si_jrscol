@@ -633,554 +633,6 @@ ALTER SEQUENCE public.autoridadrefugio_id_seq OWNED BY public.autoridadrefugio.i
 
 
 --
--- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad (
-    id integer NOT NULL,
-    minutos integer,
-    nombre character varying(500),
-    objetivo character varying(5000),
-    resultado character varying(5000),
-    fecha date NOT NULL,
-    observaciones character varying(5000),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    oficina_id integer NOT NULL,
-    rangoedadac_id integer,
-    usuario_id integer NOT NULL,
-    lugar character varying(500),
-    ubicacionpre_id integer,
-    covid boolean
-);
-
-
---
--- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_asistencia (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    persona_id integer NOT NULL,
-    rangoedadac_id integer,
-    externo boolean,
-    orgsocial_id integer,
-    perfilorgsocial_id integer
-);
-
-
---
--- Name: sip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_perfilorgsocial (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: victima_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.victima_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_victima; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_victima (
-    id_persona integer NOT NULL,
-    id_caso integer NOT NULL,
-    hijos integer,
-    id_profesion integer DEFAULT 22 NOT NULL,
-    id_rangoedad integer DEFAULT 6 NOT NULL,
-    id_filiacion integer DEFAULT 10 NOT NULL,
-    id_sectorsocial integer DEFAULT 15 NOT NULL,
-    id_organizacion integer DEFAULT 16 NOT NULL,
-    id_vinculoestado integer DEFAULT 38 NOT NULL,
-    organizacionarmada integer DEFAULT 35 NOT NULL,
-    anotaciones character varying(1000),
-    id_etnia integer DEFAULT 1 NOT NULL,
-    id_iglesia integer DEFAULT 1,
-    orientacionsexual character(1) DEFAULT 'S'::bpchar NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id integer DEFAULT nextval('public.victima_seq'::regclass) NOT NULL,
-    CONSTRAINT victima_hijos_check CHECK (((hijos IS NULL) OR ((hijos >= 0) AND (hijos <= 100)))),
-    CONSTRAINT victima_orientacionsexual_check CHECK (((orientacionsexual = 'B'::bpchar) OR (orientacionsexual = 'G'::bpchar) OR (orientacionsexual = 'H'::bpchar) OR (orientacionsexual = 'I'::bpchar) OR (orientacionsexual = 'L'::bpchar) OR (orientacionsexual = 'O'::bpchar) OR (orientacionsexual = 'S'::bpchar) OR (orientacionsexual = 'T'::bpchar)))
-);
-
-
---
--- Name: sivel2_sjr_actividad_casosjr; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_actividad_casosjr (
-    id bigint NOT NULL,
-    actividad_id integer,
-    casosjr_id integer
-);
-
-
---
--- Name: benefext; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.benefext AS
- SELECT DISTINCT sub.actividad_id,
-    sub.persona_id,
-    sub.persona_actividad_perfil
-   FROM ( SELECT ac.id AS actividad_id,
-            v.id_persona AS persona_id,
-            ''::character varying AS persona_actividad_perfil
-           FROM ((public.cor1440_gen_actividad ac
-             JOIN public.sivel2_sjr_actividad_casosjr accas ON ((accas.actividad_id = ac.id)))
-             JOIN public.sivel2_gen_victima v ON ((v.id_caso = accas.casosjr_id)))
-        UNION
-         SELECT ac.id AS actividad_id,
-            asis.persona_id,
-            COALESCE(porg.nombre) AS person_actividad_perfil
-           FROM ((public.cor1440_gen_actividad ac
-             JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
-             LEFT JOIN public.sip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
-
-
---
--- Name: sip_departamento_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_departamento_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_departamento; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_departamento (
-    id_deplocal integer,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    latitud double precision,
-    longitud double precision,
-    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_pais integer NOT NULL,
-    id integer DEFAULT nextval('public.sip_departamento_id_seq'::regclass) NOT NULL,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    codiso character varying(6),
-    catiso character varying(64),
-    codreg integer,
-    ultvigenciaini date,
-    ultvigenciafin date,
-    CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sip_municipio_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_municipio_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_municipio; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_municipio (
-    id_munlocal integer,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    latitud double precision,
-    longitud double precision,
-    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_departamento integer,
-    id integer DEFAULT nextval('public.sip_municipio_id_seq'::regclass) NOT NULL,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    codreg integer,
-    ultvigenciaini date,
-    ultvigenciafin date,
-    tipomun character varying(32),
-    CONSTRAINT municipio_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sip_oficina_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_oficina_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_oficina; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_oficina (
-    id integer DEFAULT nextval('public.sip_oficina_id_seq'::regclass) NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    pais_id integer,
-    departamento_id integer,
-    municipio_id integer,
-    clase_id integer,
-    CONSTRAINT regionsjr_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_persona_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_persona (
-    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
-    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    anionac integer,
-    mesnac integer,
-    dianac integer,
-    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
-    numerodocumento character varying(100),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id_pais integer,
-    nacionalde integer,
-    tdocumento_id integer NOT NULL,
-    id_departamento integer,
-    id_municipio integer,
-    id_clase integer,
-    buscable tsvector,
-    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
-    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
-    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
-);
-
-
---
--- Name: sip_tdocumento; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_tdocumento (
-    id integer NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    sigla character varying(100),
-    formatoregex character varying(500),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    ayuda character varying(1000)
-);
-
-
---
--- Name: sip_ubicacionpre; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_ubicacionpre (
-    id bigint NOT NULL,
-    nombre character varying(2000) NOT NULL COLLATE public.es_co_utf_8,
-    pais_id integer,
-    departamento_id integer,
-    municipio_id integer,
-    clase_id integer,
-    lugar character varying(500),
-    sitio character varying(500),
-    tsitio_id integer,
-    latitud double precision,
-    longitud double precision,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    nombre_sin_pais character varying(500)
-);
-
-
---
--- Name: benefext2; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.benefext2 AS
- SELECT a.fecha AS actividad_fecha,
-    o.nombre AS actividad_oficina,
-    t.sigla AS persona_tipodocumento,
-    p.numerodocumento AS persona_numerodocumento,
-    p.nombres AS persona_nombres,
-    p.apellidos AS persona_apellidos,
-    p.sexo AS persona_sexo,
-    p.dianac AS persona_dianac,
-    p.mesnac AS persona_mesnac,
-    p.anionac AS persona_anionac,
-    public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (EXTRACT(year FROM a.fecha))::integer, (EXTRACT(month FROM a.fecha))::integer, (EXTRACT(day FROM a.fecha))::integer) AS persona_actividad_edad,
-    b.persona_actividad_perfil,
-    (((COALESCE(mun.nombre, ''::character varying))::text || ' / '::text) || (COALESCE(dep.nombre, ''::character varying))::text) AS actividad_municipio,
-    a.id AS actividad_id,
-    array_to_string(ARRAY( SELECT DISTINCT sivel2_gen_victima.id_caso
-           FROM public.sivel2_gen_victima
-          WHERE (sivel2_gen_victima.id_persona = p.id)), ','::text) AS persona_caso_ids,
-    p.id AS persona_id
-   FROM (((((((public.benefext b
-     JOIN public.cor1440_gen_actividad a ON ((a.id = b.actividad_id)))
-     JOIN public.sip_oficina o ON ((o.id = a.oficina_id)))
-     JOIN public.sip_persona p ON ((p.id = b.persona_id)))
-     LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
-     LEFT JOIN public.sip_ubicacionpre u ON ((u.id = a.ubicacionpre_id)))
-     LEFT JOIN public.sip_departamento dep ON ((dep.id = u.departamento_id)))
-     LEFT JOIN public.sip_municipio mun ON ((mun.id = u.municipio_id)));
-
-
---
--- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_actividadpf (
-    actividad_id bigint NOT NULL,
-    actividadpf_id bigint NOT NULL
-);
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
-    actividad_id integer NOT NULL,
-    proyectofinanciero_id integer NOT NULL,
-    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
-);
-
-
---
--- Name: cor1440_gen_actividadpf; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividadpf (
-    id integer NOT NULL,
-    proyectofinanciero_id integer,
-    nombrecorto character varying(15),
-    titulo character varying(255),
-    descripcion character varying(5000),
-    resultadopf_id integer,
-    actividadtipo_id integer,
-    indicadorgifmm_id integer,
-    formulario_id integer,
-    heredade_id integer
-);
-
-
---
--- Name: benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.benefactividadpf AS
- SELECT be.actividad_fecha,
-    be.actividad_oficina,
-    be.persona_tipodocumento,
-    be.persona_numerodocumento,
-    be.persona_nombres,
-    be.persona_apellidos,
-    be.persona_sexo,
-    be.persona_dianac,
-    be.persona_mesnac,
-    be.persona_anionac,
-    be.persona_actividad_edad,
-    be.persona_actividad_perfil,
-    be.actividad_municipio,
-    be.actividad_id,
-    be.persona_caso_ids,
-    be.persona_id,
-    array_to_string(ARRAY( SELECT DISTINCT (((apf.nombrecorto)::text || ': '::text) || (apf.titulo)::text)
-           FROM public.cor1440_gen_actividadpf apf
-          WHERE (apf.id IN ( SELECT aapf.actividadpf_id
-                   FROM public.cor1440_gen_actividad_actividadpf aapf
-                  WHERE (aapf.actividad_id = be.actividad_id)))), '; '::text) AS actividad_actividadesml,
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 748))) AS "OE5.R1.A10.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 676))) AS "OE1.R1.A1.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 677))) AS "OE1.R1.A2.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 678))) AS "OE1.R1.A3.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 679))) AS "OE1.R1.A4.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 680))) AS "OE1.R1.A5.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 731))) AS "OE3. R1.A1.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 683))) AS "OE1.R1.A8.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 684))) AS "OE1.R1.A9.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 681))) AS "OE1.R1.A6.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 737))) AS "OE4.R1.A3.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 744))) AS "OE5.R1.A6.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 745))) AS "OE5.R1.A7.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 746))) AS "OE5.R1.A8.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 687))) AS "OE1.R1.A10.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 695))) AS "OE2. R1.A6.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 691))) AS "OE2. R1.A2.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 688))) AS "OE1.R1.A11.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 690))) AS "OE2. R1.A1.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 693))) AS "OE2. R1.A4.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 692))) AS "OE2. R1.A3.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 694))) AS "OE2. R1.A5.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 697))) AS "OE2. R1.A8.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 696))) AS "OE2. R1.A7.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 698))) AS "OE2. R1.A9.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 729))) AS "OE2. R1.A10.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 743))) AS "OE5.R1.A5.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 742))) AS "OE5.R1.A4.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 747))) AS "OE5.R1.A9.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 736))) AS "OE4.R1.A2.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 733))) AS "OE3. R1.A3.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 738))) AS "OE4.R1.A4.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 739))) AS "OE5.R1.A1.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 740))) AS "OE5.R1.A2.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 741))) AS "OE5.R1.A3.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 734))) AS "OE3. R1.A4.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 735))) AS "OE4.R1.A1.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 732))) AS "OE3. R1.A2.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 682))) AS "OE1.R1.A7.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 730))) AS "OE2. R1.A11."
-   FROM public.benefext2 be
-  WHERE (true AND ((be.actividad_oficina)::text = 'NORTE DE SANTANDER'::text) AND (be.actividad_id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
-           FROM public.cor1440_gen_actividad_proyectofinanciero
-          WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 227))) AND (be.actividad_fecha >= '2022-07-01'::date) AND (be.actividad_fecha <= '2022-08-31'::date))
-  WITH NO DATA;
-
-
---
 -- Name: caso_etiqueta_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1333,6 +785,45 @@ CREATE TABLE public.sivel2_gen_caso (
 
 
 --
+-- Name: victima_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.victima_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_victima; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_victima (
+    id_persona integer NOT NULL,
+    id_caso integer NOT NULL,
+    hijos integer,
+    id_profesion integer DEFAULT 22 NOT NULL,
+    id_rangoedad integer DEFAULT 6 NOT NULL,
+    id_filiacion integer DEFAULT 10 NOT NULL,
+    id_sectorsocial integer DEFAULT 15 NOT NULL,
+    id_organizacion integer DEFAULT 16 NOT NULL,
+    id_vinculoestado integer DEFAULT 38 NOT NULL,
+    organizacionarmada integer DEFAULT 35 NOT NULL,
+    anotaciones character varying(1000),
+    id_etnia integer DEFAULT 1 NOT NULL,
+    id_iglesia integer DEFAULT 1,
+    orientacionsexual character(1) DEFAULT 'S'::bpchar NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id integer DEFAULT nextval('public.victima_seq'::regclass) NOT NULL,
+    CONSTRAINT victima_hijos_check CHECK (((hijos IS NULL) OR ((hijos >= 0) AND (hijos <= 100)))),
+    CONSTRAINT victima_orientacionsexual_check CHECK (((orientacionsexual = 'B'::bpchar) OR (orientacionsexual = 'G'::bpchar) OR (orientacionsexual = 'H'::bpchar) OR (orientacionsexual = 'I'::bpchar) OR (orientacionsexual = 'L'::bpchar) OR (orientacionsexual = 'O'::bpchar) OR (orientacionsexual = 'S'::bpchar) OR (orientacionsexual = 'T'::bpchar)))
+);
+
+
+--
 -- Name: sivel2_sjr_casosjr; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1471,6 +962,101 @@ CREATE TABLE public.sip_clase (
     ultvigenciaini date,
     ultvigenciafin date,
     CONSTRAINT clase_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sip_departamento_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_departamento_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_departamento; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_departamento (
+    id_deplocal integer,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    latitud double precision,
+    longitud double precision,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_pais integer NOT NULL,
+    id integer DEFAULT nextval('public.sip_departamento_id_seq'::regclass) NOT NULL,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    codiso character varying(6),
+    catiso character varying(64),
+    codreg integer,
+    ultvigenciaini date,
+    ultvigenciafin date,
+    CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sip_municipio_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_municipio_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_municipio; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_municipio (
+    id_munlocal integer,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    latitud double precision,
+    longitud double precision,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_departamento integer,
+    id integer DEFAULT nextval('public.sip_municipio_id_seq'::regclass) NOT NULL,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    codreg integer,
+    ultvigenciaini date,
+    ultvigenciafin date,
+    tipomun character varying(32),
+    CONSTRAINT municipio_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sip_ubicacionpre; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_ubicacionpre (
+    id bigint NOT NULL,
+    nombre character varying(2000) NOT NULL COLLATE public.es_co_utf_8,
+    pais_id integer,
+    departamento_id integer,
+    municipio_id integer,
+    clase_id integer,
+    lugar character varying(500),
+    sitio character varying(500),
+    tsitio_id integer,
+    latitud double precision,
+    longitud double precision,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    nombre_sin_pais character varying(500)
 );
 
 
@@ -1651,6 +1237,72 @@ CREATE VIEW public.cmunrec AS
 
 
 --
+-- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad (
+    id integer NOT NULL,
+    minutos integer,
+    nombre character varying(500),
+    objetivo character varying(5000),
+    resultado character varying(5000),
+    fecha date NOT NULL,
+    observaciones character varying(5000),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    oficina_id integer NOT NULL,
+    rangoedadac_id integer,
+    usuario_id integer NOT NULL,
+    lugar character varying(500),
+    ubicacionpre_id integer,
+    covid boolean
+);
+
+
+--
+-- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_actividadpf (
+    actividad_id bigint NOT NULL,
+    actividadpf_id bigint NOT NULL
+);
+
+
+--
+-- Name: cor1440_gen_actividadpf; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividadpf (
+    id integer NOT NULL,
+    proyectofinanciero_id integer,
+    nombrecorto character varying(15),
+    titulo character varying(255),
+    descripcion character varying(5000),
+    resultadopf_id integer,
+    actividadtipo_id integer,
+    indicadorgifmm_id integer,
+    formulario_id integer,
+    heredade_id integer
+);
+
+
+--
+-- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_asistencia (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    rangoedadac_id integer,
+    externo boolean,
+    orgsocial_id integer,
+    perfilorgsocial_id integer
+);
+
+
+--
 -- Name: cor1440_gen_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1747,6 +1399,17 @@ CREATE TABLE public.mungifmm (
     fechadeshabilitacion date,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sivel2_sjr_actividad_casosjr; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_actividad_casosjr (
+    id bigint NOT NULL,
+    actividad_id integer,
+    casosjr_id integer
 );
 
 
@@ -1872,6 +1535,29 @@ CREATE SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq OWNED BY public.cor1440_gen_actividad_proyecto.id;
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
+    actividad_id integer NOT NULL,
+    proyectofinanciero_id integer NOT NULL,
+    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
+);
 
 
 --
@@ -4220,6 +3906,46 @@ CREATE SEQUENCE public.instanciader_seq
 
 
 --
+-- Name: sip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_persona (
+    id integer DEFAULT nextval('public.sip_persona_id_seq'::regclass) NOT NULL,
+    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    anionac integer,
+    mesnac integer,
+    dianac integer,
+    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
+    numerodocumento character varying(100),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id_pais integer,
+    nacionalde integer,
+    tdocumento_id integer NOT NULL,
+    id_departamento integer,
+    id_municipio integer,
+    id_clase integer,
+    buscable tsvector,
+    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
+    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
+    CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
+);
+
+
+--
 -- Name: mcben1; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4796,6 +4522,24 @@ CREATE SEQUENCE public.proceso_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+--
+-- Name: sip_tdocumento; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_tdocumento (
+    id integer NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    sigla character varying(100),
+    formatoregex character varying(500),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    ayuda character varying(1000)
+);
 
 
 --
@@ -5546,6 +5290,38 @@ ALTER SEQUENCE public.sip_municipio_histvigencia_id_seq OWNED BY public.sip_muni
 
 
 --
+-- Name: sip_oficina_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_oficina_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_oficina; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_oficina (
+    id integer DEFAULT nextval('public.sip_oficina_id_seq'::regclass) NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    pais_id integer,
+    departamento_id integer,
+    municipio_id integer,
+    clase_id integer,
+    CONSTRAINT regionsjr_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
 -- Name: sip_orgsocial; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5686,6 +5462,21 @@ CREATE SEQUENCE public.sip_pais_id_seq
 --
 
 ALTER SEQUENCE public.sip_pais_id_seq OWNED BY public.sip_pais.id;
+
+
+--
+-- Name: sip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_perfilorgsocial (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -7195,7 +6986,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 102)
+          WHERE ((sivel2_gen_conscaso.fecharec >= '2022-08-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2022-08-31'::date))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -16942,6 +16733,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220902015635'),
 ('20220925214711'),
 ('20220925220223'),
-('20220925223144');
+('20220925223144'),
+('20221001042722');
 
 

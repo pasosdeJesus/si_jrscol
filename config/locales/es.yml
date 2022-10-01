@@ -58,6 +58,7 @@ es:
         actividad_id: Id. Actividad
         actividad_municipio: Municipio
         actividad_oficina: Oficina
+        actividad_responsable: Responsable
         persona_apellidos: Apellidos
         edad_en_ultact: Edad en actividad más reciente
         persona_actividad_edad: Edad en actividad

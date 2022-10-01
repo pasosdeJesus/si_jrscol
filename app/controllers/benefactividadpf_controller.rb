@@ -11,6 +11,7 @@ class BenefactividadpfController < Heb412Gen::ModelosController
       primeros =[
         "actividad_fecha",
         "actividad_oficina",
+        "actividad_responsable",
         "persona_tipodocumento", 
         "persona_numerodocumento",
         "persona_nombres", 
@@ -48,18 +49,18 @@ class BenefactividadpfController < Heb412Gen::ModelosController
   def contar_beneficiarios
     @contarb_actividad = Cor1440Gen::Actividad.all
     @contarb_pf = Cor1440Gen::Proyectofinanciero.all
-    @contarb_pfid = nil
     # Control de acceso
     #filtra_contarb_control_acceso
 
     # Parámetros
     @contarb_pfid = params[:filtro] && 
-      params[:filtro][:proyectofinanciero_id] ?  
-      params[:filtro][:proyectofinanciero_id].to_i : nil
+      params[:filtro][:proyectofinanciero_id] ?
+      params[:filtro][:proyectofinanciero_id].select{|i| i != ""}.map(&:to_i) :
+      []
 
     @contarb_oficinaid = params[:filtro] && 
       params[:filtro][:oficina_id] && params[:filtro][:oficina_id] != "" ?  
-      params[:filtro][:oficina_id].to_i : nil
+      params[:filtro][:oficina_id].select{|i| i != ''}.map(&:to_i) : []
 
     if !params[:filtro] || !params[:filtro]['fechaini'] || 
         params[:filtro]['fechaini'] != ""
@@ -119,17 +120,22 @@ class BenefactividadpfController < Heb412Gen::ModelosController
         hoja.add_row [
           'Fecha inicial', params['filtro']['fechaini'], 
           'Fecha final', params['filtro']['fechafin'] ], style: estilo_base
-        hoja.add_row [
-          'Oficina', params['filtro']['oficina_id'] == '' ? '' :
-          Sip::Oficina.find(params['filtro']['oficina_id'].to_i).nombre,
-          'Proyecto', params['filtro']['proyectofinanciero_id'] == '' ? '' :
-          Cor1440Gen::Proyectofinanciero.find(
-            params['filtro']['proyectofinanciero_id'].to_i).nombre,
-        ], style: estilo_base
+        idof = params['filtro']['oficina_id'] == '' ? [] :
+          params['filtro']['oficina_id'].select {|i| i != ''}.map(&:to_i)
+        idpf = params['filtro']['proyectofinanciero_id'] == '' ? [] :
+          params['filtro']['proyectofinanciero_id'].
+          select {|i| i != ''}.map(&:to_i)
+        nof = idof == [] ? '' : 
+          Sip::Oficina.where(id: idof).pluck(:nombre).join('; ')
+        npf = idpf == [] ? '' :
+          Cor1440Gen::Proyectofinanciero.where(id:idpf).
+          pluck(:nombre).join('; ')
+        hoja.add_row ['Oficina', nof, 'Proyecto', npf], style: estilo_base
         hoja.add_row []
         l = [
           'Fecha Actividad',
           'Oficina Actividad',
+          'Responsable',
           'Tipo de documento', 
           'Número de documento',
           'Nombres', 
@@ -153,13 +159,15 @@ class BenefactividadpfController < Heb412Gen::ModelosController
           'Id. Beneficiario'
         ]
 
-        hoja.merge_cells('A1:R1')
+        hoja.merge_cells('A1:S1')
 
         hoja.add_row l, style: [estilo_encabezado] * l.length
-        registros.order('UPPER(persona_nombres), UPPER(persona_apellidos), persona_id').each do |baml|
+        registros.order('UPPER(persona_nombres), '\
+                        'UPPER(persona_apellidos), persona_id').each do |baml|
           l = [
             baml['actividad_fecha'].to_s,
             baml['actividad_oficina'],
+            baml['actividad_responsable'],
             baml['persona_tipodocumento'],
             baml['persona_numerodocumento'],
             baml['persona_nombres'],
@@ -181,13 +189,13 @@ class BenefactividadpfController < Heb412Gen::ModelosController
           l << baml['persona_id']
           hoja.add_row l, style: estilo_base
         end
-        hoja.column_widths 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
+        hoja.column_widths 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
         if ultf>0
-          l = [nil]*14
+          l = [nil]*15
           fs = hoja.add_row l
           lc = 'O'
           #caml.each do |c|
