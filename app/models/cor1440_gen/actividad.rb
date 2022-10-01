@@ -125,6 +125,14 @@ module Cor1440Gen
       end 
     end
 
+    # FILTROS
+   
+    scope :filtro_proyectofinanciero, lambda { |ids|
+      where('cor1440_gen_actividad.id IN '\
+            '(SELECT actividad_id '\
+            ' FROM cor1440_gen_actividad_proyectofinanciero '\
+            ' WHERE proyectofinanciero_id IN (?))', ids.map(&:to_i))
+    }
 
     # PRESENTACIÓN DE INFORMACIÓN
 
