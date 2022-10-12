@@ -23,6 +23,7 @@ class BenefactividadpfController < Heb412Gen::ModelosController
         "persona_actividad_edad",
         "persona_actividad_perfil",
         "actividad_municipio",
+        "actividad_proyectosfinancieros",
         "actividad_actividadesml",
         "actividad_id",
         "persona_caso_ids", 
@@ -113,7 +114,6 @@ class BenefactividadpfController < Heb412Gen::ModelosController
       #, fg_color: 'FF0000', bg_color: '00FF00'
 
       lt.add_worksheet do |hoja|
-
         hoja.add_row ['Beneficiarios por actividad de marco lógico'], 
           height: 30, style: estilo_titulo
         hoja.add_row []
@@ -147,6 +147,7 @@ class BenefactividadpfController < Heb412Gen::ModelosController
           'Edad en Act.',
           'Perfil Beneficiario',
           'Municipio Actividad',
+          'Convenios financiados',
           'Actividades de Marco Lógico'
         ]
         #caml1 = Benefactividadpf.columns.map(&:name)[5..-2]
@@ -179,6 +180,7 @@ class BenefactividadpfController < Heb412Gen::ModelosController
             baml['persona_actividad_edad'],
             baml['persona_actividad_perfil'],
             baml['actividad_municipio'],
+            baml['actividad_proyectosfinancieros'],
             baml['actividad_actividadesml']
           ]
           #caml.each do |c|
@@ -189,13 +191,13 @@ class BenefactividadpfController < Heb412Gen::ModelosController
           l << baml['persona_id']
           hoja.add_row l, style: estilo_base
         end
-        hoja.column_widths 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
+        hoja.column_widths 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
         if ultf>0
-          l = [nil]*15
+          l = [nil]*16
           fs = hoja.add_row l
           lc = 'O'
           #caml.each do |c|

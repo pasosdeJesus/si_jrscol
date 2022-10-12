@@ -130,12 +130,28 @@ class Benefactividadpf < ActiveRecord::Base
   def self.subasis(wherebe, actividadespf)
 
     c="
-    SELECT be.*, ARRAY_TO_STRING(
-      ARRAY( SELECT DISTINCT apf.nombrecorto || ': ' || apf.titulo 
-        FROM cor1440_gen_actividadpf AS apf
-        WHERE apf.id IN (SELECT actividadpf_id 
-          FROM cor1440_gen_actividad_actividadpf AS aapf
-          WHERE aapf.actividad_id=be.actividad_id)), '; ') AS actividad_actividadesml
+    SELECT be.*, 
+      ARRAY_TO_STRING(
+        ARRAY( SELECT sub.nombre FROM (SELECT DISTINCT pf.id, pf.nombre
+          FROM cor1440_gen_proyectofinanciero AS pf
+          WHERE pf.id IN (SELECT apf.proyectofinanciero_id 
+            FROM cor1440_gen_actividad_proyectofinanciero AS apf
+            WHERE apf.actividad_id=be.actividad_id) 
+            ORDER BY pf.id DESC) AS sub
+        ), '; '
+      ) AS actividad_proyectosfinancieros,
+      ARRAY_TO_STRING(
+        ARRAY( SELECT sub.nom FROM (
+          SELECT DISTINCT apf.proyectofinanciero_id, 
+            apf.nombrecorto || ': ' || apf.titulo AS nom
+          FROM cor1440_gen_actividadpf AS apf
+          WHERE apf.id IN (SELECT actividadpf_id 
+            FROM cor1440_gen_actividad_actividadpf AS aapf
+            WHERE aapf.actividad_id=be.actividad_id) 
+          ORDER BY apf.proyectofinanciero_id DESC) AS sub
+        ), '; '
+      ) AS actividad_actividadesml
+
      "
     if actividadespf.count > 0
       c+= ", "

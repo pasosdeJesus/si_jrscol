@@ -53,7 +53,9 @@ es:
         Autoridadesrefugio: Autoridades ante las cuales declarar refugio
       "benefactividadpf":
         Benefactividadpf: Beneficiarios por actividad de marco lógico
-        actividad_actividadesml: Actividades de marco lógico
+        "actividad_actividadesml": Actividades de marco lógico
+        "actividad_municipio": Municipio
+        "actividad_proyectosfinancieros": Convenios financiados
         actividad_fecha: Fecha de la actividad
         actividad_id: Id. Actividad
         actividad_municipio: Municipio
