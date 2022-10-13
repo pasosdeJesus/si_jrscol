@@ -1081,6 +1081,42 @@ CREATE TABLE public.cor1440_gen_actividadpf (
 
 
 --
+-- Name: cor1440_gen_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_proyectofinanciero (
+    id integer NOT NULL,
+    nombre character varying(1000),
+    observaciones character varying(5000),
+    fechainicio date,
+    fechacierre date,
+    responsable_id integer,
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    compromisos character varying(5000),
+    monto numeric,
+    sectorapc_id integer,
+    titulo character varying(1000),
+    poromision boolean,
+    fechaformulacion date,
+    fechaaprobacion date,
+    fechaliquidacion date,
+    estado character varying(1) DEFAULT 'E'::character varying,
+    dificultad character varying(1) DEFAULT 'N'::character varying,
+    tipomoneda_id integer,
+    saldoaejecutarp numeric(20,2),
+    centrocosto character varying(500),
+    tasaej double precision,
+    montoej double precision,
+    aportepropioej double precision,
+    aporteotrosej double precision,
+    presupuestototalej double precision
+);
+
+
+--
 -- Name: benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
@@ -1102,180 +1138,24 @@ CREATE MATERIALIZED VIEW public.benefactividadpf AS
     be.actividad_id,
     be.persona_caso_ids,
     be.persona_id,
-    array_to_string(ARRAY( SELECT DISTINCT (((apf.nombrecorto)::text || ': '::text) || (apf.titulo)::text)
-           FROM public.cor1440_gen_actividadpf apf
-          WHERE (apf.id IN ( SELECT aapf.actividadpf_id
-                   FROM public.cor1440_gen_actividad_actividadpf aapf
-                  WHERE (aapf.actividad_id = be.actividad_id)))), '; '::text) AS actividad_actividadesml,
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 60))) AS "O1.R1ORGCAM",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 61))) AS "O1.R1MISHUM",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 64))) AS "O1.R1SEGPRO",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 53))) AS "O1.R1PARREU",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 55))) AS "O1.R1PREPON",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 56))) AS "O1.R1MON",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 57))) AS "O1.R1ORGEV",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 58))) AS "O1.R1RESINF",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 67))) AS "O1.R1ACCCOL",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 152))) AS "O1.R1INFO",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 155))) AS "O1.R1REPACO",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 151))) AS "O1.R1TALLER",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 157))) AS "O1.R1CONV",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 65))) AS "O1.R1MOV",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 69))) AS "O1.R1INFORI",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 158))) AS "O1.R1SISINF",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 159))) AS "O1.R1DIADIS",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 162))) AS "O1.R1COMCAM",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 160))) AS "O1.R1ACOCOM",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 161))) AS "O1.R1DISPRO",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 163))) AS "O1.R1COMVIS",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 184))) AS "OER1A4",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 59))) AS "O1.R1ACTCUL",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 62))) AS "O1.R1SEGCAS",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 183))) AS "OER1A3",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 193))) AS "OER2A5",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 187))) AS "OER1A7",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 197))) AS "OER3A2",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 186))) AS "OER1A6",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 195))) AS "OER2A7",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 192))) AS "OER2A4",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 393))) AS "OG.R9.Autocuidado",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 181))) AS "OER1A1",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 196))) AS "OER3A1",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 451))) AS "OER1A9",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 452))) AS "OER1A10",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 482))) AS "OER1A12.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 188))) AS "OER1A8",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 182))) AS "OER1A2",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 185))) AS "OER1A5",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 453))) AS "OER1A11",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 483))) AS "OER1A13.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 484))) AS "OER4A1.",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 194))) AS "OER2A6",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 189))) AS "OER2A1",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 190))) AS "OER2A2",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 191))) AS "OER2A3",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 118))) AS "O1.R1ASJUR",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 125))) AS "O1.R1ACJUR",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 126))) AS "O1.R1OTSERC",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 116))) AS "O1.R3.ASHUM",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 70))) AS "O1.R2.ATEPSI",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 45))) AS "O1.R3.CAPSEM",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 51))) AS "O1.R3.ORGFOR",
-    ( SELECT count(*) AS count
-           FROM public.cor1440_gen_actividad_actividadpf aapf
-          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 156))) AS "O1.R3.ASIPRO"
+    array_to_string(ARRAY( SELECT sub.nombre
+           FROM ( SELECT DISTINCT pf.id,
+                    pf.nombre
+                   FROM public.cor1440_gen_proyectofinanciero pf
+                  WHERE (pf.id IN ( SELECT apf.proyectofinanciero_id
+                           FROM public.cor1440_gen_actividad_proyectofinanciero apf
+                          WHERE (apf.actividad_id = be.actividad_id)))
+                  ORDER BY pf.id DESC) sub), '; '::text) AS actividad_proyectosfinancieros,
+    array_to_string(ARRAY( SELECT sub.nom
+           FROM ( SELECT DISTINCT apf.proyectofinanciero_id,
+                    (((apf.nombrecorto)::text || ': '::text) || (apf.titulo)::text) AS nom
+                   FROM public.cor1440_gen_actividadpf apf
+                  WHERE (apf.id IN ( SELECT aapf.actividadpf_id
+                           FROM public.cor1440_gen_actividad_actividadpf aapf
+                          WHERE (aapf.actividad_id = be.actividad_id)))
+                  ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.benefext2 be
-  WHERE (true AND ((be.actividad_oficina)::text = ANY ((ARRAY['MAGDALENA MEDIO'::character varying, 'SOACHA'::character varying])::text[])) AND (be.actividad_id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
-           FROM public.cor1440_gen_actividad_proyectofinanciero
-          WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = ANY (ARRAY[154, 10])))) AND (be.actividad_fecha >= '2022-01-01'::date) AND (be.actividad_fecha <= '2022-06-30'::date))
+  WHERE (true AND (be.actividad_fecha >= '2022-01-01'::date) AND (be.actividad_fecha <= '2022-06-30'::date))
   WITH NO DATA;
 
 
@@ -1747,42 +1627,6 @@ CREATE VIEW public.cmunrec AS
     public.sivel2_gen_victima victima,
     public.sivel2_sjr_casosjr casosjr
   WHERE ((casosjr.id_caso = desplazamiento.id_caso) AND (desplazamiento.id_caso = victima.id_caso) AND (desplazamiento.llegadaubicacionpre_id = ubicacion.id));
-
-
---
--- Name: cor1440_gen_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_proyectofinanciero (
-    id integer NOT NULL,
-    nombre character varying(1000),
-    observaciones character varying(5000),
-    fechainicio date,
-    fechacierre date,
-    responsable_id integer,
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    compromisos character varying(5000),
-    monto numeric,
-    sectorapc_id integer,
-    titulo character varying(1000),
-    poromision boolean,
-    fechaformulacion date,
-    fechaaprobacion date,
-    fechaliquidacion date,
-    estado character varying(1) DEFAULT 'E'::character varying,
-    dificultad character varying(1) DEFAULT 'N'::character varying,
-    tipomoneda_id integer,
-    saldoaejecutarp numeric(20,2),
-    centrocosto character varying(500),
-    tasaej double precision,
-    montoej double precision,
-    aportepropioej double precision,
-    aporteotrosej double precision,
-    presupuestototalej double precision
-);
 
 
 --
@@ -2300,6 +2144,107 @@ CREATE SEQUENCE public.cor1440_gen_asistencia_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_asistencia_id_seq OWNED BY public.cor1440_gen_asistencia.id;
+
+
+--
+-- Name: cor1440_gen_benefext2; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_benefext2 AS
+ SELECT a.fecha AS actividad_fecha,
+    o.nombre AS actividad_oficina,
+    us.nusuario AS actividad_responsable,
+    t.sigla AS persona_tipodocumento,
+    p.numerodocumento AS persona_numerodocumento,
+    p.nombres AS persona_nombres,
+    p.apellidos AS persona_apellidos,
+    p.sexo AS persona_sexo,
+    p.dianac AS persona_dianac,
+    p.mesnac AS persona_mesnac,
+    p.anionac AS persona_anionac,
+    public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (EXTRACT(year FROM a.fecha))::integer, (EXTRACT(month FROM a.fecha))::integer, (EXTRACT(day FROM a.fecha))::integer) AS persona_actividad_edad,
+    b.persona_actividad_perfil,
+    (((COALESCE(mun.nombre, ''::character varying))::text || ' / '::text) || (COALESCE(dep.nombre, ''::character varying))::text) AS actividad_municipio,
+    a.id AS actividad_id,
+    array_to_string(ARRAY( SELECT DISTINCT sivel2_gen_victima.id_caso
+           FROM public.sivel2_gen_victima
+          WHERE (sivel2_gen_victima.id_persona = p.id)), ','::text) AS persona_caso_ids,
+    p.id AS persona_id
+   FROM ((((((((public.benefext b
+     JOIN public.cor1440_gen_actividad a ON ((a.id = b.actividad_id)))
+     JOIN public.sip_oficina o ON ((o.id = a.oficina_id)))
+     JOIN public.sip_persona p ON ((p.id = b.persona_id)))
+     JOIN public.usuario us ON ((us.id = a.usuario_id)))
+     LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
+     LEFT JOIN public.sip_ubicacionpre u ON ((u.id = a.ubicacionpre_id)))
+     LEFT JOIN public.sip_departamento dep ON ((dep.id = u.departamento_id)))
+     LEFT JOIN public.sip_municipio mun ON ((mun.id = u.municipio_id)));
+
+
+--
+-- Name: cor1440_gen_benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
+ SELECT be.actividad_fecha,
+    be.actividad_oficina,
+    be.actividad_responsable,
+    be.persona_tipodocumento,
+    be.persona_numerodocumento,
+    be.persona_nombres,
+    be.persona_apellidos,
+    be.persona_sexo,
+    be.persona_dianac,
+    be.persona_mesnac,
+    be.persona_anionac,
+    be.persona_actividad_edad,
+    be.persona_actividad_perfil,
+    be.actividad_municipio,
+    be.actividad_id,
+    be.persona_caso_ids,
+    be.persona_id,
+    array_to_string(ARRAY( SELECT sub.nombre
+           FROM ( SELECT DISTINCT pf.id,
+                    pf.nombre
+                   FROM public.cor1440_gen_proyectofinanciero pf
+                  WHERE (pf.id IN ( SELECT apf.proyectofinanciero_id
+                           FROM public.cor1440_gen_actividad_proyectofinanciero apf
+                          WHERE (apf.actividad_id = be.actividad_id)))
+                  ORDER BY pf.id DESC) sub), '; '::text) AS actividad_proyectosfinancieros,
+    array_to_string(ARRAY( SELECT sub.nom
+           FROM ( SELECT DISTINCT apf.proyectofinanciero_id,
+                    (((apf.nombrecorto)::text || ': '::text) || (apf.titulo)::text) AS nom
+                   FROM public.cor1440_gen_actividadpf apf
+                  WHERE (apf.id IN ( SELECT aapf.actividadpf_id
+                           FROM public.cor1440_gen_actividad_actividadpf aapf
+                          WHERE (aapf.actividad_id = be.actividad_id)))
+                  ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
+   FROM public.cor1440_gen_benefext2 be
+  WHERE (true AND (be.actividad_id = 41952))
+  WITH NO DATA;
+
+
+--
+-- Name: cor1440_gen_benefext; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_benefext AS
+ SELECT DISTINCT sub.actividad_id,
+    sub.persona_id,
+    sub.persona_actividad_perfil
+   FROM ( SELECT ac.id AS actividad_id,
+            v.id_persona AS persona_id,
+            ''::character varying AS persona_actividad_perfil
+           FROM ((public.cor1440_gen_actividad ac
+             JOIN public.sivel2_sjr_actividad_casosjr accas ON ((accas.actividad_id = ac.id)))
+             JOIN public.sivel2_gen_victima v ON ((v.id_caso = accas.casosjr_id)))
+        UNION
+         SELECT ac.id AS actividad_id,
+            asis.persona_id,
+            COALESCE(porg.nombre) AS person_actividad_perfil
+           FROM ((public.cor1440_gen_actividad ac
+             JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
+             LEFT JOIN public.sip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
 
 
 --
@@ -7243,7 +7188,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE ((sivel2_gen_conscaso.fecharec >= '2022-08-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2022-08-31'::date))
+          WHERE (sivel2_gen_conscaso.caso_id = 122)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
