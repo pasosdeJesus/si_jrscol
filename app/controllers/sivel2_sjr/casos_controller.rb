@@ -290,7 +290,7 @@ module Sivel2Sjr
 
 
     def cambiar_asesor
-      ah = ::Asesorhistorico.create(
+      ::Asesorhistorico.create(
         casosjr_id: @caso.casosjr.id, usuario_id: @caso.casosjr.asesor,
         fechainicio: @caso.casosjr.asesorfechaini,
         fechafin: Date.today.to_s,

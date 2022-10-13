@@ -608,9 +608,10 @@ class Ability < Sivel2Sjr::Ability
        :persona_sexo,
        :rangoedadac_ultact
       ],
-      controlador: '::BenefesactividadpfController',
+      controlador: 'Cor1440Gen::BenefactividadpfController',
       ruta: '/conteos/benefactividadpf',
-      solo_multiple: true
+      solo_multiple: true,
+      clase_modelo: 'Cor1440Gen::Benefactividadpf'
     },
 
     'Caso' => {
@@ -893,6 +894,7 @@ class Ability < Sivel2Sjr::Ability
         can [:new, :read], Cor1440Gen::Actividad
         can [:new, :read], Cor1440Gen::Actividadpf
         can :manage, Cor1440Gen::Actividad, oficina_id: [1, usuario.oficina_id]
+        can :read, Cor1440Gen::Benefactividadpf
         can :read, Cor1440Gen::Proyectofinanciero
         can [:index, :read], Cor1440Gen::Rangoedadac
 
@@ -911,7 +913,6 @@ class Ability < Sivel2Sjr::Ability
         can [:new, :solicitar], Sivel2Gen::Caso
 
         can :read, Sivel2Sjr::Consactividadcaso
-        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
       when Ability::ROLANALI
@@ -919,6 +920,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Cor1440Gen::Actividad, oficina_id: [1, usuario.oficina_id]
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
+        can :read, Cor1440Gen::Benefactividadpf
         can :read, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
         can :read, Cor1440Gen::Proyectofinanciero
@@ -941,13 +943,13 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
-        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
       when Ability::ROLCOOR
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
         can :manage, Cor1440Gen::Actividad, oficina_id: [1, usuario.oficina_id]
+        can :read, Cor1440Gen::Benefactividadpf
         can :manage, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
         can :read, Cor1440Gen::Proyectofinanciero
@@ -970,12 +972,12 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Sivel2Sjr::Consactividadcaso
-        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
       when Ability::ROLADMIN, Ability::ROLDIR
         can :manage, Cor1440Gen::Actividad
         can :manage, Cor1440Gen::Actividadpf
+        can :read, Cor1440Gen::Benefactividadpf
         can :manage, Cor1440Gen::Informe
         can :manage, Cor1440Gen::Mindicadorpf
         can :manage, Cor1440Gen::Proyectofinanciero
@@ -1003,7 +1005,6 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
 
         can :read, Sivel2Sjr::Consactividadcaso
-        can :read, ::Benefactividadpf
         can :read, ::Consgifmm
 
         can :manage, Usuario

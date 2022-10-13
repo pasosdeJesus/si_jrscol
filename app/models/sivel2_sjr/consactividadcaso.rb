@@ -8,7 +8,7 @@ class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base
   }
 
   def self.consulta
-      "SELECT actividad_id*50000+persona.id AS id,
+    "SELECT actividad_id*50000+persona.id AS id,
         casosjr_id AS caso_id, 
         actividad_id,
         victima.id AS victima_id,
@@ -40,6 +40,6 @@ class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base
         INNER JOIN sivel2_sjr_casosjr AS casosjr ON casosjr.id_caso=casosjr_id
         INNER JOIN sivel2_gen_victima AS victima ON victima.id_caso=caso.id
         INNER JOIN sip_persona AS persona ON persona.id=victima.id_persona
-        "
-    end
+    "
+  end
 end

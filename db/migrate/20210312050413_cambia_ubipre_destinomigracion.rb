@@ -1,5 +1,5 @@
 class CambiaUbipreDestinomigracion < ActiveRecord::Migration[6.1]
-def agrega_sip_ubicacionpre
+  def agrega_sip_ubicacionpre
     t = Sivel2Sjr::Migracion.all.count
     c = 0
     ultp = 0
@@ -19,7 +19,7 @@ def agrega_sip_ubicacionpre
           migracion.destinoubicacionpre_id = ubicacionpre[0].id
           migracion.save! 
         else
-         # byebug
+          # byebug
           puts "En ubicacionpre no se encontró destino_pais=#{destino_pais}, "\
             "destino_departamento=#{destino_departamento}, "\
             "destino_municipio=#{destino_municipio}, "\

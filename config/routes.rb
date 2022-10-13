@@ -50,8 +50,6 @@ Rails.application.routes.draw do
 
     get "/conteos/accionesjuridicas" => 'sivel2_sjr/conteos#accionesjuridicas', 
       as: :conteos_accionesjuridicas
-    get "/conteos/benefactividadpf" => 'benefactividadpf#index', 
-      as: :benefactividadpf
     get "/conteos/desplazamientos" => 'sivel2_sjr/conteos#desplazamientos', 
       as: :conteos_desplazamientos
     get "/conteos/municipios" => 'sivel2_sjr/conteos#municipios', 

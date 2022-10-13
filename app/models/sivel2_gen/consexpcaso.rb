@@ -4,7 +4,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
   include Sivel2Sjr::Concerns::Models::Consexpcaso
   
   def self.edad_familiar(tiempo, numfamiliar)
-    r= "(SELECT #{tiempo} 
+    "(SELECT #{tiempo} 
            FROM public.sip_persona AS persona, 
            public.sivel2_gen_victima AS victima WHERE persona.id=victima.id_persona 
          AND victima.id_caso=caso.id LIMIT 1 OFFSET #{numfamiliar})"

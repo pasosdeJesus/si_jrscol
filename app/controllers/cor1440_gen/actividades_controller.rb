@@ -123,6 +123,46 @@ module Cor1440Gen
     end
 
 
+    def vistas_manejadas
+      ['Actividad', 'Benefactividadpf']
+    end
+
+    def index_plantillas
+      l = index_plantillas_heb412
+      l << ['Beneficiarios por Actividad de Marco Lógico (Excel)', 50]
+      return l
+    end
+
+   
+    # Genera conteo de beneficiarios por actividad de marco lógico desde 
+    # desde actividad
+    def programa_generacion_listado_int50(params, extension, campoid, 
+                                          pl, narch)
+      contarb_pfid = [] # Homologar con filtro de actividad
+      contarb_oficinaid = []
+      contarb_fechaini = nil
+      contarb_fechafin = nil
+      contarb_actividad_ids = @registros.map(&:id)
+
+      Cor1440Gen::Benefactividadpf.crea_consulta(
+        nil, contarb_pfid, contarb_oficinaid, contarb_fechaini, 
+        contarb_fechafin, contarb_actividad_ids
+      )
+      registros = Cor1440Gen::Benefactividadpf.where(
+        actividad_id: contarb_actividad_ids)
+      ids = registros.map(&:persona_id)
+
+      parsimp = {}
+      cparams=params
+      cparams.permit!
+      Heb412Gen::GeneralistadoJob.perform_later(
+        pl.id, 
+        'Cor1440Gen::Benefactividadpf',
+        'Cor1440Gen::BenefactividadpfController',
+        ids, narch, parsimp, extension, 
+        'persona_id', cparams)
+    end
+
     def registrar_en_bitacora
       true
     end

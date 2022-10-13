@@ -1,38 +1,39 @@
-class Benefactividadpf < ActiveRecord::Base
-  include Sip::Modelo
+module Cor1440Gen
+  class Benefactividadpf < ActiveRecord::Base
+    include Sip::Modelo
 
-  scope :filtro_persona_nombre, lambda { |d|
-    where("unaccent(persona_nombre) ILIKE '%' || unaccent(?) || '%'", d)
-  }
+    scope :filtro_persona_nombre, lambda { |d|
+      where("unaccent(persona_nombre) ILIKE '%' || unaccent(?) || '%'", d)
+    }
 
-  scope :filtro_persona_identificacion, lambda { |iden|
-    where("unaccent(persona_identificacion) ILIKE '%' || unaccent(?) || '%'", iden)
-  }
+    scope :filtro_persona_identificacion, lambda { |iden|
+      where("unaccent(persona_identificacion) ILIKE '%' || unaccent(?) || '%'", iden)
+    }
 
-  scope :filtro_persona_sexo, lambda { |sexo|
-    where(persona_sexo: sexo)
-  }
+    scope :filtro_persona_sexo, lambda { |sexo|
+      where(persona_sexo: sexo)
+    }
 
-  scope :filtro_rangoedadac_nombre, lambda { |rac|
-    where(rangoedadac_nombre: rac)
-  }
+    scope :filtro_rangoedadac_nombre, lambda { |rac|
+      where(rangoedadac_nombre: rac)
+    }
 
 
-  # Genera consulta
-  # @params ordenar_por Criterio de ordenamiento
-  # @params pf_ids Lista con identificaciones de proyectos financieros o []
-  # @params oficina_ids Lista con identificación de las oficina o []
-  # @params fechaini Fecha inicial en formato estándar o nil
-  # @params fechafin Fecha final en formato estándar o nil
-  #
-  def self.crea_consulta(ordenar_por = nil, pf_ids, oficina_ids,
-                    fechaini, fechafin)
-    if ARGV.include?("db:migrate")
-      return
-    end
+    # Genera consulta
+    # @params ordenar_por Criterio de ordenamiento
+    # @params pf_ids Lista con identificaciones de proyectos financieros o []
+    # @params oficina_ids Lista con identificación de las oficina o []
+    # @params fechaini Fecha inicial en formato estándar o nil
+    # @params fechafin Fecha final en formato estándar o nil
+    #
+    def self.crea_consulta(ordenar_por = nil, pf_ids, oficina_ids,
+                           fechaini, fechafin, actividad_ids)
+      if ARGV.include?("db:migrate")
+        return
+      end
 
-    Benefactividadpf.connection.execute <<-SQL
-      CREATE OR REPLACE VIEW benefext AS 
+      Benefactividadpf.connection.execute <<-SQL
+      CREATE OR REPLACE VIEW cor1440_gen_benefext AS 
         SELECT DISTINCT actividad_id, persona_id, persona_actividad_perfil
         FROM (
           SELECT ac.id AS actividad_id, v.id_persona AS persona_id, 
@@ -51,7 +52,7 @@ class Benefactividadpf < ActiveRecord::Base
         ) AS sub
       ;
 
-      CREATE OR REPLACE VIEW benefext2 AS 
+      CREATE OR REPLACE VIEW cor1440_gen_benefext2 AS 
       SELECT a.fecha AS actividad_fecha,
         o.nombre AS actividad_oficina,
         us.nusuario AS actividad_responsable,
@@ -85,51 +86,54 @@ class Benefactividadpf < ActiveRecord::Base
         LEFT JOIN sip_departamento AS dep on dep.id=u.departamento_id
         LEFT JOIN sip_municipio AS mun on mun.id=u.municipio_id
       ;
-    SQL
+      SQL
 
 
-    wherebe = "TRUE" 
-    if oficina_ids && oficina_ids.count > 0
-      obof = Sip::Oficina.where(id: oficina_ids)
-      lof = obof.pluck(:nombre).map {|o| "'#{Sip::SqlHelper.escapar(o)}'"}
-      wherebe << " AND be.actividad_oficina IN (#{lof.join(',')})"
-    end
-    if pf_ids && pf_ids.count > 0
-      wherebe << " AND be.actividad_id IN 
+      wherebe = "TRUE" 
+      if oficina_ids && oficina_ids.count > 0
+        obof = Sip::Oficina.where(id: oficina_ids)
+        lof = obof.pluck(:nombre).map {|o| "'#{Sip::SqlHelper.escapar(o)}'"}
+        wherebe << " AND be.actividad_oficina IN (#{lof.join(',')})"
+      end
+      if pf_ids && pf_ids.count > 0
+        wherebe << " AND be.actividad_id IN 
         (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero
           WHERE proyectofinanciero_id IN (#{pf_ids.map(&:to_i).join(',')}))"
-    end
-    if fechaini
-      wherebe << " AND be.actividad_fecha >= '#{Sip::SqlHelper.escapar(fechaini)}'"
-    end
-    if fechafin
-      wherebe << " AND be.actividad_fecha <= '#{Sip::SqlHelper.escapar(fechafin)}'"
-    end
+      end
+      if fechaini
+        wherebe << " AND be.actividad_fecha >= '#{Sip::SqlHelper.escapar(fechaini)}'"
+      end
+      if fechafin
+        wherebe << " AND be.actividad_fecha <= '#{Sip::SqlHelper.escapar(fechafin)}'"
+      end
+      if actividad_ids.count > 0
+        wherebe << " AND be.actividad_id IN (#{actividad_ids.join(',')})"
+      end
 
-    contarb_listaac = Cor1440Gen::Actividadpf.where(
-      proyectofinanciero_id: pf_ids).order(:nombrecorto)
+      #contarb_listaac = Cor1440Gen::Actividadpf.where(
+      #  proyectofinanciero_id: pf_ids).order(:nombrecorto)
 
-    contarpro = Cor1440Gen::Actividadpf.where(
-      proyectofinanciero_id: pf_ids)
+      contarpro = Cor1440Gen::Actividadpf.where(
+        proyectofinanciero_id: pf_ids)
 
-    selbenef = Benefactividadpf.subasis(wherebe, contarpro)
-    File.open('/tmp/ba.sql', 'w') do |ma|
-      ma.puts selbenef
-    end
+      selbenef = Benefactividadpf.subasis(wherebe, contarpro)
+      File.open('/tmp/ba.sql', 'w') do |ma|
+        ma.puts selbenef
+      end
 
-    ActiveRecord::Base.connection.execute(
-      "DROP MATERIALIZED VIEW IF EXISTS benefactividadpf;"\
-      "CREATE MATERIALIZED VIEW benefactividadpf AS "\
-      "  #{selbenef};"
-    )
-    Benefactividadpf.reset_column_information
-  end # def crea_consulta
+      ActiveRecord::Base.connection.execute(
+        "DROP MATERIALIZED VIEW IF EXISTS cor1440_gen_benefactividadpf;"\
+        "CREATE MATERIALIZED VIEW cor1440_gen_benefactividadpf AS "\
+        "  #{selbenef};"
+      )
+      Benefactividadpf.reset_column_information
+    end # def crea_consulta
 
 
 
-  def self.subasis(wherebe, actividadespf)
+    def self.subasis(wherebe, actividadespf)
 
-    c="
+      c="
     SELECT be.*, 
       ARRAY_TO_STRING(
         ARRAY( SELECT sub.nombre FROM (SELECT DISTINCT pf.id, pf.nombre
@@ -152,51 +156,52 @@ class Benefactividadpf < ActiveRecord::Base
         ), '; '
       ) AS actividad_actividadesml
 
-     "
-    if actividadespf.count > 0
-      c+= ", "
-      codigos = []
-      actividadespf.each.with_index(1) do |apf, ind|
-        cod = (apf.objetivopf ? apf.objetivopf.numero : '') +
-          (apf.resultadopf ? apf.resultadopf.numero : '') +
-          (apf.nombrecorto )
-        if codigos.include? cod
-          cod = cod + "_" + ind.to_s
-        end
-        codigos.push(cod)
-        c += "(SELECT COUNT(*) FROM 
+      "
+      if actividadespf.count > 0
+        c+= ", "
+        codigos = []
+        actividadespf.each.with_index(1) do |apf, ind|
+          cod = (apf.objetivopf ? apf.objetivopf.numero : '') +
+            (apf.resultadopf ? apf.resultadopf.numero : '') +
+            (apf.nombrecorto )
+          if codigos.include? cod
+            cod = cod + "_" + ind.to_s
+          end
+          codigos.push(cod)
+          c += "(SELECT COUNT(*) FROM 
           cor1440_gen_actividad_actividadpf AS aapf
           WHERE aapf.actividad_id=be.actividad_id 
           AND aapf.actividadpf_id=#{apf.id}) AS \"#{cod}\""
-        if apf != actividadespf.last
-          c += ', '
+          if apf != actividadespf.last
+            c += ', '
+          end
         end
       end
-    end
-    c += " FROM benefext2 AS be 
+      c += " FROM cor1440_gen_benefext2 AS be 
       WHERE #{wherebe}"
-    return c
+      return c
 
-  end
+    end
 
 
-  def presenta(atr)
-    m =/^(.*)_enlace$/.match(atr.to_s)
-    if m && !self[m[1]].nil? && !self[m[1]+"_ids"].nil?
+    def presenta(atr)
+      m =/^(.*)_enlace$/.match(atr.to_s)
+      if m && !self[m[1]].nil? && !self[m[1]+"_ids"].nil?
         if self[m[1]].to_i == 0
           r = "0"
         else
           bids = self[m[1]+"_ids"].join(',')
           r="<a href='#{Rails.application.routes.url_helpers.sip_path +
-                        'actividades?filtro[busid]=' + bids}'"\
-                        " target='_blank'>"\
-                        "#{self[m[1]]}"\
-                        "</a>".html_safe
+          'actividades?filtro[busid]=' + bids}'"\
+          " target='_blank'>"\
+          "#{self[m[1]]}"\
+          "</a>".html_safe
         end
         return r.html_safe
+      end
+      return presenta_gen(atr)
     end
-    return presenta_gen(atr)
+
+
   end
-
-
 end

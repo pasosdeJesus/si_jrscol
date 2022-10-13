@@ -47,7 +47,7 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
     assert_response :success
     caso = Sivel2Gen::Caso.create! PRUEBA_CASO1
     persona = Sip::Persona.create! PRUEBA_PERSONA
-    victima = Sivel2Gen::Victima.create!(
+    Sivel2Gen::Victima.create!(
       id_caso: caso.id, id_persona: persona.id)
     casosjr = Sivel2Sjr::Casosjr.create PRUEBA_CASOSJR
     casosjr.id_caso=caso.id

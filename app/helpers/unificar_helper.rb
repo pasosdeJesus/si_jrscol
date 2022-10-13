@@ -250,7 +250,6 @@ module UnificarHelper
         if !objeto[atr].nil?
           alf = objeto.class.asociacion_llave_foranea(atr)
           if alf
-            n = alf.name
             nclase = alf.class_name.constantize
             orel = nclase.find(objeto[atr])
             res << (' '*ind) + '* ' + objeto.class.human_attribute_name(atr) + 
@@ -483,7 +482,7 @@ module UnificarHelper
         else
           menserr << "Primer beneficiario (#{p1.id} #{p1.nombres.to_s} #{p1.apellidos.to_s}) es contacto en caso #{cc1[0]} y segundo beneficiario (#{p2.id} #{p2.nombres} #{p2.apellidos}) es contacto en caso #{cc2[0]}. Se intentó sin éxito la unificación de los dos casos.\n"
           return [menserr, nil]
-         end
+        end
       end
       break if cc1.count == 0 || cc2.count == 0;
     end
