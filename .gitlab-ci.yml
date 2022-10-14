@@ -10,7 +10,7 @@ include:
 
 
 
-image: "ruby:3.0.2"
+image: "ruby:3.1.2"
 
 services:
   - name: vtamara/postgis-es_co:13.3-1
@@ -27,7 +27,7 @@ variables:
   POSTGRES_HOST_AUTH_METHOD: trust
   NOKOGIRI_USE_SYSTEM_LIBRARIES: "true"
   SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
-  DAST_WEBSITE: http://colombia.sjrlac.info:5100
+  DAST_WEBSITE: http://colombiajrs.info:5100
   CC_TEST_REPORTER_ID: "829b7f6c38bb12d45bf7b1384fba4a7b8444867b69027726fab095c48ad76b74"
 
 
@@ -43,6 +43,7 @@ test:
       - node_modules
       - vendor/bundle
   before_script:
+    - uname -a
     - ruby -v
     - which ruby
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
