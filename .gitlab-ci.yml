@@ -13,7 +13,6 @@ include:
 image: "ruby:3.1.2"
 
 services:
-  - node:16
   - name: vtamara/postgis-es_co:13.3-1
     alias: postgres
   - name: selenium/standalone-chrome
@@ -45,6 +44,7 @@ test:
       - vendor/bundle
   before_script:
     - uname -a
+    - lsb_release --all
     - ruby -v
     - which ruby
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
