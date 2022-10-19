@@ -6539,13 +6539,11 @@ CREATE TABLE public.sivel2_gen_caso_presponsable (
     tipo integer DEFAULT 0 NOT NULL,
     bloque character varying(50),
     frente character varying(50),
-    brigada character varying(50),
-    batallon character varying(50),
-    division character varying(50),
     otro character varying(500),
     id integer DEFAULT nextval('public.caso_presponsable_seq'::regclass) NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    subdivision character varying
 );
 
 
@@ -7188,7 +7186,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 102)
+          WHERE (sivel2_gen_conscaso.caso_id = 104)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -16936,6 +16934,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220925214711'),
 ('20220925220223'),
 ('20220925223144'),
-('20221001042722');
+('20221001042722'),
+('20221005165307');
 
 
