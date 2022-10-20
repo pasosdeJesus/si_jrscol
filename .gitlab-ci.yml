@@ -44,7 +44,7 @@ test:
       - vendor/bundle
   before_script:
     - uname -a
-    - lsb_release --all
+    - cat /etc/os-release
     - ruby -v
     - which ruby
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
