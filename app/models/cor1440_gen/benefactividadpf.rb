@@ -32,6 +32,12 @@ module Cor1440Gen
         return
       end
 
+      #Benefactividadpf.connection.execute <<-SQL
+      #  DROP VIEW IF EXISTS cor1440_gen_benefext2;
+      #SQL
+      #Benefactividadpf.connection.execute <<-SQL
+      #  DROP VIEW IF EXISTS cor1440_gen_benefext;
+      #SQL
       Benefactividadpf.connection.execute <<-SQL
       CREATE OR REPLACE VIEW cor1440_gen_benefext AS 
         SELECT DISTINCT actividad_id, persona_id, persona_actividad_perfil
@@ -51,7 +57,9 @@ module Cor1440Gen
             ON porg.id=asis.perfilorgsocial_id
         ) AS sub
       ;
+      SQL
 
+      Benefactividadpf.connection.execute <<-SQL
       CREATE OR REPLACE VIEW cor1440_gen_benefext2 AS 
       SELECT a.fecha AS actividad_fecha,
         o.nombre AS actividad_oficina,
@@ -76,7 +84,7 @@ module Cor1440Gen
           FROM sivel2_gen_victima
           WHERE id_persona=p.id), ',') AS persona_caso_ids,
         p.id AS persona_id
-        FROM benefext AS b 
+        FROM cor1440_gen_benefext AS b 
         JOIN cor1440_gen_actividad AS a ON a.id=b.actividad_id
         JOIN sip_oficina AS o ON  o.id=a.oficina_id
         JOIN sip_persona AS p ON p.id=b.persona_id
