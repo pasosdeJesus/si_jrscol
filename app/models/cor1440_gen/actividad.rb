@@ -19,6 +19,37 @@ module Cor1440Gen
     attr_accessor :ubicacionpre_texto
     attr_accessor :ubicacionpre_mundep_texto
 
+    def recalcula_poblacion
+      rangoedad = {}
+      Cor1440Gen::ActividadRangoedadac.where(actividad_id: self.id).delete_all
+      self.asistencia.each do |asis|
+        per = asis.persona
+        #puts "OJO per.id=#{per.id}, per.sexo=#{per.sexo}, per.fechanac=#{per.anionac.to_s}-#{per.mesnac.to_s}-#{per.dianac.to_s}"
+        re = Sivel2Gen::RangoedadHelper.buscar_rango_edad(
+          Sivel2Gen::RangoedadHelper.edad_de_fechanac_fecha(
+            per.anionac, per.mesnac, per.dianac,
+            self.fecha.year, self.fecha.month, self.fecha.day), 
+            'Cor1440Gen::Rangoedadac')
+        #puts "OJO re=#{re}"
+        if !rangoedad[re]
+          rangoedad[re] = {}
+        end
+        if !rangoedad[re][per.sexo]
+          rangoedad[re][per.sexo] = 0
+        end
+        rangoedad[re][per.sexo] += 1
+      end
+      rangoedad.each do |re, vs|
+        Cor1440Gen::ActividadRangoedadac.create(
+          actividad_id: self.id,
+          rangoedadac_id: re,
+          mr: vs['M'] ? vs['M'] : 0,
+          fr: vs['F'] ? vs['F'] : 0,
+          s: vs['S'] ? vs['S'] : 0
+        )
+      end
+    end
+
     def ubicacionpre_texto
       if self.ubicacionpre
         self.ubicacionpre.nombre
