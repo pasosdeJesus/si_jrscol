@@ -51,8 +51,8 @@ module Cor1440Gen
     validates :resultado, presence: true
 
 
-    validate :valida_beneficiarios
-    def valida_beneficiarios
+    validate :valida_detallefinanciero_sin_repetidos
+    def valida_detallefinanciero_sin_repetidos
       pact = []
       self.detallefinanciero.map{
         |t| t.persona_ids.map{ |per| 
@@ -66,6 +66,27 @@ module Cor1440Gen
                    "personas si la actividad del marco lógico es la misma") 
       end 
     end 
+
+    validate :valida_beneficiarios
+    def valida_beneficiarios
+      asistencia.each do |asis|
+        p = asis.persona
+        # No se permiten personas nacidas después de la actividad
+        if p.anionac && 
+            (p.anionac > actividad.fecha.year ||
+             (p.anionac == actividad.fecha.year && 
+              p.mesnac && (p.mesnac > actividad.fecha.month ||
+                           p.dianac && (p.mesnac == actividad.fecha.month && 
+                                        p.dianac > actividad.fecha.day))
+             )
+            )
+        errors.add(:fecha, "Fecha de nacimiento de asistente "\
+                   "'#{p.nombres} #{p.apellidos}' es posterior a la actividad")
+        end
+      end
+
+    end
+ 
 
     validate :valida_actividad_marco_logico
     def valida_actividad_marco_logico
