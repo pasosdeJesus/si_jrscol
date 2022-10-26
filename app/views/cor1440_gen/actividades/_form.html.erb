@@ -1,0 +1,132 @@
+<%= simple_form_for @actividad, 
+  :url => cor1440_gen.actividades_path(@actividad).sub(/\./,"/"), 
+  :html => { 
+    class: 'form-horizontal',
+    'data-controller' => 'sip--cancelar-vacio-es-eliminar'
+  } do |f| 
+%>
+<div data-role="content" class="form-inputs">
+  <div id="errores">
+    <% if f.object.errors.any? %>
+      <div id="error_explanation">
+        <div class="alert alert-error">
+          El formulario tiene 
+          <%= pluralize(f.object.errors.count, "error") %>.
+        </div>
+        <ul>
+          <% f.object.errors.full_messages.each do |msg| %>
+            <li>* <%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= f.error_notification %>
+  </div>
+
+  <div class='row'> <!-- 1 -->
+    <div class='col-sm-2'>
+      <label for="actividad_fecha_localizada"><%= @actividad.class.human_attribute_name(:fecha_localizada) %></label>
+    </div>
+    <div class='col-sm-4'>
+      <%= f.input :fecha_localizada, 
+        label: false,
+        input_html: { "data-behaviour" => "datepicker" }, 
+        class: 'form-control',
+        :as => :string %>
+    </div>
+    <div class='col-sm-2'>
+      <label for="actividad_oficina">
+        <%= @actividad.class.human_attribute_name(:oficina) %>
+      </label>
+    </div>
+    <div class='col-sm-4'>
+      <%= render partial: 'campo_oficina', locals: {f: f, con_label: false} %>
+    </div>
+  </div>
+
+  <%= render partial: 'fila_lugar', locals: {f: f} %>
+
+  <div class='row'> <!-- 3 -->
+    <div class='col-sm-12'>
+      <%= render partial: 'campo_proyectofinanciero',
+        locals: {f: f, con_label: false} %>
+    </div>
+  </div>
+
+  <div class='row'> <!-- 4 -->
+    <div class='col-sm-2'>
+      <label for="actividad_responsable">
+        <%= @actividad.class.human_attribute_name(:responsable) %>
+      </label>
+    </div>
+    <div class='col-sm-4'>
+      <%= render partial: 'campo_responsable',
+        locals: {f: f, con_label: false } %>
+    </div>
+    <div class='col-sm-2'>
+      <label for="actividad_corresponsables">
+        <%= @actividad.class.human_attribute_name(:corresponsables) %>
+      </label>
+    </div>
+    <div class='col-sm-4'>
+      <%= render partial: 'campo_corresponsables', 
+        locals: {f: f, con_label: false } %>
+    </div>
+  </div>
+
+  <div class='row'> <!-- 5 -->
+    <div class='col-sm-2'>
+      <label for="actividad_nombre">
+        <%= @actividad.class.human_attribute_name(:nombre) %>
+      </label>
+    </div>
+    <div class='col-sm-10'>
+      <%= f.input :nombre, 
+        label: false,
+        input_html: {
+          'data-sip--cancelar-vacio-es-eliminar-target' => 'determinador'
+        } %>
+    </div>
+  </div>
+
+
+  <%= render partial: 'cor1440_gen/actividades/form_intermedio_1', 
+    locals: {f: f} %>
+
+ 
+  <%= render partial: 'cor1440_gen/actividades/campo_respuestafor', 
+    locals: {f: f} %>
+
+  
+  <%= render partial: 'cor1440_gen/actividades/campo_orgsocial', 
+    locals: {f: f} %>
+
+  <%= render partial: 'cor1440_gen/actividades/campo_listadoasistencia', 
+    locals: {f: f} %>
+
+  <%= render partial: 'cor1440_gen/actividades/form_intermedio_2', 
+    locals: {f: f} %>
+
+  <div class='row'>
+    <div class='col-sm-2'>
+      <label for="actividad_observaciones">
+        <%= @actividad.class.human_attribute_name(:observaciones) %>
+      </label>
+    </div>
+    <div class='col-sm-10'>
+      <%= f.input :observaciones,
+        label: false
+      %>
+    </div>
+  </div>
+
+  <%= render partial: 'cor1440_gen/actividades/form_intermedio_3', 
+    locals: {f: f} %>
+
+  <%= render partial: 'campo_anexos', locals: {f: f} %>
+  <div class="form-actions">
+    <% idact = @actividad.id.to_s %>
+    <%= f.button :submit, :class => 'btn-primary', 'data-turbo' => false %>
+    <%= render partial: 'form_btncancelar' %>
+  </div>
+<% end %>
