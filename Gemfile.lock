@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 47c163db1b947a73d146bb39812b9312f426bb2a
+  revision: 9de82379a621852e0161b0c4df5c96389edebb5a
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: e96d2626cda8dd3fa618be078a331878b1a518fa
+  revision: 976da37a4b44216288dcee0860b8427ff0b9dbf8
   branch: main
   specs:
     heb412_gen (2.1a1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 724658371c4cdc0f40c466d261bcf9d443533adb
+  revision: b62dfd5f46b8c395e97d22eb94bf6d12a7d5d585
   branch: main
   specs:
     mr519_gen (2.1a1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 2f29397f051c9f807a44cf9ae514dd55adbc33f7
+  revision: 4ad51faa1e50229025932e2b6c1958d25ff5ccd2
   branch: main
   specs:
     sal7711_gen (2.1a1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 3bedaeb649b3e5619792f2c7f73f8ef37bceac37
+  revision: 280c006ced87bd02519f89214691df43de929429
   branch: main
   specs:
     sal7711_web (2.1a1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 45ab942e382b271c81c900db99c6d33af8b9f412
+  revision: 18e1e2d2acd4961df5d892e580e9b5fb93d8503d
   branch: main
   specs:
     sip (2.1a2)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 8e4233387e4cb7c795333832323c138f9c318bea
+  revision: 93f2d695aa841af214271f2c7782b39f480dbb7d
   branch: main
   specs:
     sivel2_gen (2.1a2)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: c55e4fcd582c4d25f91a40a65b898424e8ec8e14
+  revision: 3f15f4f09882ba6b96faa58fcdd5ad33ce7d5bd3
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -99,7 +99,7 @@ GIT
 
 GIT
   remote: https://github.com/teamcapybara/capybara.git
-  revision: 7a2f63592276ca819715053d71e2d1fecc526a90
+  revision: 2d05c203d79bca7b3b093c37f866ee41f294925b
   branch: master
   specs:
     capybara (3.38.0)
@@ -202,7 +202,7 @@ GEM
     builder (3.2.4)
     camertron-eprun (1.1.1)
     cancancan (3.4.0)
-    caxlsx (3.2.0)
+    caxlsx (3.3.0)
       htmlentities (~> 4.3, >= 4.3.4)
       marcel (~> 1.0)
       nokogiri (~> 1.10, >= 1.10.4)
@@ -225,7 +225,7 @@ GEM
     cuprite (0.14.2)
       capybara (~> 3.0)
       ferrum (~> 0.12.0)
-    debug (1.6.2)
+    debug (1.6.3)
       irb (>= 1.3.6)
       reline (>= 0.3.1)
     devise (4.8.1)
@@ -405,7 +405,7 @@ GEM
     tilt (2.0.11)
     timeout (0.3.0)
     ttfunk (1.7.0)
-    turbo-rails (1.3.1)
+    turbo-rails (1.3.2)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)

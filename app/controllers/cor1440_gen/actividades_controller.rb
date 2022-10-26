@@ -1,9 +1,10 @@
-require_dependency "sivel2_sjr/concerns/controllers/actividades_controller"
+require_dependency "cor1440_gen/concerns/controllers/actividades_controller"
 
 module Cor1440Gen
   class ActividadesController < Heb412Gen::ModelosController
 
-    include Sivel2Sjr::Concerns::Controllers::ActividadesController
+    #no más include Sivel2Sjr::Concerns::Controllers::ActividadesController
+    include Cor1440Gen::Concerns::Controllers::ActividadesController
 
     before_action :set_actividad, 
       only: [:show, :edit, :update, :destroy],
@@ -57,6 +58,30 @@ module Cor1440Gen
       return ac
     end
 
+
+    def atributos_show
+      [ :id, 
+        :nombre, 
+        :fecha_localizada, 
+        :lugar, 
+        :oficina, 
+        :proyectofinanciero, 
+        :proyectos,
+        :actividadareas, 
+        :responsable,
+        :corresponsables,
+        :actividadpf, 
+        :respuestafor,
+        :objetivo,
+        :resultado, 
+        :listadocasosjr,
+        :orgsocial,
+        :listadoasistencia,
+        :poblacion,
+        :anexos
+      ]
+    end
+
     def atributos_index
       [ :id,
         :fecha_localizada,
@@ -76,34 +101,8 @@ module Cor1440Gen
       ]
     end
 
-    # Hay vista show
-    # def atributos_show
-    #  [ :id, 
-    #    :nombre, 
-    #    :fecha_localizada, 
-    #    :responsable,
-    #    :oficina, 
-    #    :listado_poblacion,
-    #    :lugar, 
-    #    :listado_proyectos,
-    #    :proyectosfinancieros, 
-    #    :proyectos,
-    #    :actividadareas, 
-    #    :corresponsables,
-    #    :respuestafor,
-    #    :objetivo,
-    #    :resultado, 
-    #    :observaciones,
-    #    :orgsocial,
-    #    :listado_asistencia,
-    #    :listado_casos,
-    #    :anexos,
-    #    :resumen_registros_bitacora
-    #  ]
-    #end
-
     def atributos_form
-      atributos_show - [:id] + [:observaciones]
+      atributos_show - [:id, :poblacion] + [:observaciones]
     end
 
     # Elementos de la presentacion de una actividad
@@ -133,7 +132,76 @@ module Cor1440Gen
       return l
     end
 
-   
+    def new_ac_sivel2_sjr
+      new_cor1440_gen
+      @registro.fecha = Date.today
+      if params['usuario_id'] && 
+          ::Usuario.where(id: params['usuario_id'].to_i).count == 1
+        @registro.usuario_id = params['usuario_id'].to_i
+      end
+      if params['oficina_id'] && 
+          Sip::Oficina.where(id: params['oficina_id'].to_i).count == 1
+        @registro.oficina_id = params['oficina_id'].to_i
+      end
+      if params['proyecto_id'] && 
+          Cor1440Gen::Proyecto.where(id: params['proyecto_id'].to_i).count == 1
+        @registro.proyecto_ids = [params['proyecto_id'].to_i]
+      end
+      if params['nsegresp_proyectofinanciero_id'] && 
+          Cor1440Gen::Proyectofinanciero.where(
+            id: params['nsegresp_proyectofinanciero_id'].to_i).count == 1
+      @registro.proyectofinanciero_ids |= [params[
+        'nsegresp_proyectofinanciero_id'].to_i]
+      end
+      if params['nombre'] 
+        @registro.nombre = params['nombre']
+      end
+      @registro.actividadpf_ids = []
+      @registro.save!(validate: false)
+
+      if params['caso_id'] && 
+          Sivel2Sjr::Casosjr.where(id_caso: params['caso_id'].to_i).
+          count == 1
+        personas = Sivel2Gen::Victima.where(id_caso: params['caso_id'].to_i).
+          pluck(:id_persona)
+        personas.each do |p|
+          Cor1440Gen::Asistencia.create!(
+            persona_id: p,
+            actividad_id: @registro.id,
+            externo: false,
+            orgsocial_id: nil,
+            perfilorgsocial_id: nil
+          )
+        end
+      end
+
+      @registro.proyectofinanciero_ids += 
+        [Cor1440Gen::ActividadesController.pf_planest_id]
+      Cor1440Gen::ActividadesController.posibles_nuevaresp.
+        each do |s, lnumacpf|
+          if params[s] && params[s] == "true"
+            @registro.actividadpf_ids |= 
+              [Cor1440Gen::ActividadesController.actividadpf_segcas_id,
+               lnumacpf[1]]
+            tipo = Cor1440Gen::Actividadpf.
+              find(lnumacpf[1]).actividadtipo_id
+            if tipo
+              presente_otros = Cor1440Gen::Actividadpf.
+                where(actividadtipo_id: tipo).
+                where(proyectofinanciero_id: Cor1440Gen::ActividadesController.pf_planest_id)  # Limitamos a proyecto de tipos de actividades comunes
+              @registro.actividadpf_ids |= presente_otros.pluck(:id).uniq
+            end
+          end
+        end
+      @registro.save!(validate: false)
+    end
+
+    def new
+      new_ac_sivel2_sjr
+
+      redirect_to cor1440_gen.edit_actividad_path(@registro)
+    end
+
     # Genera conteo de beneficiarios por actividad de marco lógico desde 
     # desde actividad
     def programa_generacion_listado_int50(params, extension, campoid, 
@@ -436,8 +504,9 @@ module Cor1440Gen
 
 
     def lista_params
-      lista_params_sivel2_sjr + [:ubicacionpre_id, :covid] + [ 
-        :detallefinanciero_attributes => [
+      lista_params_cor1440_gen  + 
+        [:ubicacionpre_id, :covid] + [ 
+          :detallefinanciero_attributes => [
           'cantidad',
           'convenioactividad',
           'frecuenciaentrega_id',
