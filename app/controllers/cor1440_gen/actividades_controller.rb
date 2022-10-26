@@ -163,6 +163,8 @@ module Cor1440Gen
           Sivel2Sjr::Casosjr.where(id_caso: params['caso_id'].to_i).
           count == 1
         personas = Sivel2Gen::Victima.where(id_caso: params['caso_id'].to_i).
+          joins(:victimasjr).
+          where('sivel2_sjr_victimasjr.fechadesagregacion IS NULL').
           pluck(:id_persona)
         personas.each do |p|
           Cor1440Gen::Asistencia.create!(
