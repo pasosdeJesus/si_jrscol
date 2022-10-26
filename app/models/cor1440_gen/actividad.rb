@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'sivel2_sjr/concerns/models/actividad'
+require 'cor1440_gen/concerns/models/actividad'
 
 module Cor1440Gen
   class Actividad < ActiveRecord::Base
-    include Sivel2Sjr::Concerns::Models::Actividad
+    include Cor1440Gen::Concerns::Models::Actividad
 
     belongs_to :ubicacionpre, class_name: '::Sip::Ubicacionpre',
       foreign_key: 'ubicacionpre_id', optional: true
@@ -14,41 +14,21 @@ module Cor1440Gen
     accepts_nested_attributes_for :detallefinanciero,
       allow_destroy: true, reject_if: :all_blank
 
+
+    validate :oficina_responsable_current_usuario
+    def oficina_responsable_current_usuario
+      if (current_usuario && current_usuario.oficina_id && 
+          responsable && responsable.oficina_id &&
+          responsable.oficina_id != current_usuario.oficina_id)
+        errors.add(:responsable, "Para editar responsable el " +
+                   "usuario actual debe estar en la misma oficina")
+      end
+    end
+
     attr_accessor :controlador
 
     attr_accessor :ubicacionpre_texto
     attr_accessor :ubicacionpre_mundep_texto
-
-    def recalcula_poblacion
-      rangoedad = {}
-      Cor1440Gen::ActividadRangoedadac.where(actividad_id: self.id).delete_all
-      self.asistencia.each do |asis|
-        per = asis.persona
-        #puts "OJO per.id=#{per.id}, per.sexo=#{per.sexo}, per.fechanac=#{per.anionac.to_s}-#{per.mesnac.to_s}-#{per.dianac.to_s}"
-        re = Sivel2Gen::RangoedadHelper.buscar_rango_edad(
-          Sivel2Gen::RangoedadHelper.edad_de_fechanac_fecha(
-            per.anionac, per.mesnac, per.dianac,
-            self.fecha.year, self.fecha.month, self.fecha.day), 
-            'Cor1440Gen::Rangoedadac')
-        #puts "OJO re=#{re}"
-        if !rangoedad[re]
-          rangoedad[re] = {}
-        end
-        if !rangoedad[re][per.sexo]
-          rangoedad[re][per.sexo] = 0
-        end
-        rangoedad[re][per.sexo] += 1
-      end
-      rangoedad.each do |re, vs|
-        Cor1440Gen::ActividadRangoedadac.create(
-          actividad_id: self.id,
-          rangoedadac_id: re,
-          mr: vs['M'] ? vs['M'] : 0,
-          fr: vs['F'] ? vs['F'] : 0,
-          s: vs['S'] ? vs['S'] : 0
-        )
-      end
-    end
 
     def ubicacionpre_texto
       if self.ubicacionpre
@@ -57,7 +37,6 @@ module Cor1440Gen
         ''
       end
     end
-
 
     def ubicacionpre_mundep_texto
       if self.ubicacionpre
@@ -71,51 +50,6 @@ module Cor1440Gen
     validates :proyecto, presence: true
     validates :resultado, presence: true
 
-
-    validate :no_asistentes_repetidos
-    def no_asistentes_repetidos
-      asistentes = []
-      victimas = []
-      self.asistencia.map{ |as| asistentes.push(as.persona_id) }
-      self.actividad_casosjr.map{|cas| 
-        victimas.push(Sivel2Gen::Victima.where(id_caso: cas.casosjr.id_caso).
-                      pluck(:id_persona))
-      }
-      if (asistentes & victimas.flatten).length > 0
-        repetidos = Sip::Persona.where(id: asistentes & victimas.flatten).map{
-          |n| n.nombres + " " + n.apellidos + 
-            " en listado de asistencia y en caso " + 
-            Sivel2Sjr::Casosjr.where(contacto_id: n.id).
-            pluck(:id_caso)[0].to_s
-        }
-        errors.add(
-          :asistencia, "Personas repetidas entre listado de casos " +
-          "(contacto o familiares) y asistencia: " + repetidos.join(", ")) 
-      end
-      if asistentes.length != asistentes.uniq.length
-        asrepetidos = []
-        asrepetidos.push(asistentes.detect{ |e| asistentes.count(e) > 1 })
-        nombres =  Sip::Persona.where(id: asrepetidos).map{
-          |n| n.nombres + " " + n.apellidos
-        }
-        errors.add(:asistencia, "En listado de asistencia se encuentra " +
-                   "repetido: " + nombres.join(", ")) 
-      end 
-    end
-
-    validate :no_casos_repetidos
-    def no_casos_repetidos
-      casos = []
-      casrepetidos = []
-      self.actividad_casosjr.map{|caso| casos.push(caso.casosjr.id_caso)}
-      if casos.length != casos.uniq.length
-        casrepetidos.push(casos.detect{ |e| casos.count(e) > 1 })
-        errors.add(
-          :casosjr, 
-          "En listado de casos se encuentran repetidos los casos con id(s): " +
-          casrepetidos.join(", ")) 
-      end
-    end
 
     validate :valida_beneficiarios
     def valida_beneficiarios
@@ -173,10 +107,11 @@ module Cor1440Gen
     # PRESENTACIÓN DE INFORMACIÓN
 
     def casos_asociados
-      lc = self.casosjr.pluck(:id_caso)
       lp = self.asistencia.pluck(:persona_id) 
-      lv = Sivel2Gen::Victima.where(id_persona: lp) 
-      lc |= lv.pluck(:id_caso)
+      lv = Sivel2Gen::Victima.where(id_persona: lp).joins(:victimasjr).
+        where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+              self.fecha)
+      lc = lv.pluck(:id_caso)
       if lc.empty?
         return ""
       else
@@ -186,25 +121,29 @@ module Cor1440Gen
 
     def cuenta_victimas_condicion
       cuenta = 0
-      casosjr.each do |c|
-        c.caso.victima.each do |v|
-          if (yield(v))
-            cuenta += 1
-          end
+      lp = self.asistencia.pluck(:persona_id) 
+      victimas = Sivel2Gen::Victima.where(id_persona: lp).joins(:victimasjr).
+        where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+              self.fecha)
+      victimas.each do |v|
+        if (yield(v))
+          cuenta += 1
         end
       end
       cuenta
     end
 
-    # Auxiliar que retorna listado de identificaciones de personas de 
-    # las víctimas del listado de casos que cumplan una condición
+    # Auxiliar que retorna listado de identificaciones de asistentes
+    # que cumplan una condición
     def personas_victimas_condicion
       ids = []
-      self.casosjr.each do |c|
-        c.caso.victima.each do |v|
-          if (yield(v))
-            ids << v.id_persona
-          end
+      lp = self.asistencia.pluck(:persona_id) 
+      victimas = Sivel2Gen::Victima.where(id_persona: lp).joins(:victimasjr).
+        where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+              self.fecha)
+      victimas.each do |v|
+        if (yield(v))
+          ids << v.id_persona
         end
       end
       ids
@@ -223,8 +162,7 @@ module Cor1440Gen
     end
 
     def poblacion_ids
-      idp = personas_victimas_condicion {|v| true}
-      idp += personas_asistentes_condicion {|a| true}
+      idp = personas_asistentes_condicion {|a| true}
       idp.uniq!
       idp.join(",")
     end
@@ -240,13 +178,10 @@ module Cor1440Gen
     end
 
     def poblacion_nuevos_ids
-      idp = casosjr.select {|c|
-        c.caso.fecha.at_beginning_of_month >= self.fecha.at_beginning_of_month
-      }.map {|c|
-        c.caso.victima.map(&:id_persona)
-      }.flatten.uniq
       idp += personas_asistentes_condicion {|a| 
-        Sivel2Gen::Victima.where(id_persona: a.persona_id).count > 0 &&
+        Sivel2Gen::Victima.where(id_persona: a.persona_id).joins(:victimasjr).
+          where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+                self.fecha).count > 0 &&
           Sivel2Gen::Victima.where(id_persona: a.persona_id).take.caso.fecha.
             at_beginning_of_month >= self.fecha.at_beginning_of_month
       }
@@ -261,24 +196,19 @@ module Cor1440Gen
 
     def poblacion_colombianos_retornados_ids
       idcol = 170 # Colombia
-      idp = casosjr.select {|c|
-        c.caso.migracion.count > 0
-      }.map {|c|
-        c.caso.victima.select {|v|
-          v.persona &&
-            (v.persona.nacionalde == idcol || v.persona.id_pais == idcol)
-        }.map(&:id_persona)
-      }.flatten.uniq
 
       idp += personas_asistentes_condicion {|a| 
-        Sivel2Gen::Victima.where(id_persona: a.persona_id).count > 0 &&
-          Sivel2Gen::Victima.where(id_persona: a.persona_id).take.
-            caso.migracion.count > 0 &&
-            (a.persona.nacionalde == idcol || a.persona.id_pais == idcol)
+        Sivel2Gen::Victima.where(id_persona: a.persona_id).joins(:victimasjr).
+          where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+                self.fecha).count > 0 &&
+               Sivel2Gen::Victima.where(id_persona: a.persona_id).
+               joins(:victimasjr).
+               where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+                     self.fecha).take.caso.migracion.count > 0 &&
+                    (a.persona.nacionalde == idcol || a.persona.id_pais == idcol)
       }
       idp.uniq!
       idp.join(",")
-
     end
 
     def poblacion_colombianos_retornados
@@ -289,14 +219,6 @@ module Cor1440Gen
     # Retorna listado de ids de personas de casos y asistencia
     # cuyo perfil de migración tenga nombre nomperfil
     def poblacion_perfil_migracion_ids(nomperfil)
-      idp = casosjr.select {|c|
-        c.caso.migracion.count > 0 &&
-          c.caso.migracion[0].perfilmigracion &&
-          c.caso.migracion[0].perfilmigracion.nombre == nomperfil
-      }.map {|c|
-        c.caso.victima.map(&:id_persona)
-      }.flatten.uniq
-
       idp += personas_asistentes_condicion {|a| 
         a.perfilorgsocial &&
           a.perfilorgsocial.nombre == nomperfil
@@ -480,7 +402,7 @@ module Cor1440Gen
         end
 
       when 'listado_casos_ids'
-        casosjr_ids.join(', ')
+        ''
 
       when 'numero_detalles_financieros'
         detallefinanciero.count

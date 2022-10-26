@@ -1,9 +1,4 @@
-<% casos_ids = @registro.casosjr.order(:id_caso).pluck(:id_caso) %>
-<% victimasjr = Sivel2Sjr::Victimasjr.where(id_victima: Sivel2Gen::Victima.where(id_caso: casos_ids).pluck(:id)).where(fechadesagregacion: nil).pluck(:id_victima)%>
-<% victimas = Sivel2Gen::Victima.find(victimasjr) %>
-<% vic_personas = victimas.pluck(:id_persona) %>
-<% asis_personas= @registro.asistencia.pluck(:persona_id) %>
-<% personas =  asis_personas + vic_personas %>
+<% personas= @registro.asistencia.pluck(:persona_id) %>
 Población beneficiaria: <%= personas.uniq.count  %>
 <table class="tablalistadoasistencia table  table-bordered table-sm ">
   <thead class="thead-light">
@@ -56,62 +51,24 @@ Población beneficiaria: <%= personas.uniq.count  %>
           <%= asistencia.perfilorgsocial.nombre if asistencia.perfilorgsocial %>
         </td>
         <td>
-          <% casoa = Sivel2Gen::Victima.where(id_persona: asistencia.persona.id).pluck(:id_caso) %>
-          <% if casoa.empty? %>
+          <% vics = Sivel2Gen::Victima.where(id_persona: asistencia.persona.id) %>
+          <% if vics.empty? %>
             <%= "Sin caso asociado" %>
           <% else %>
-            <% casoa.each do |nc| %>
+            <% vics.each do |vic| %>
+              <% nc = vic.id_caso.to_s %>
+              <% if vic.victimasjr.fechadesagregacion %> 
+                <% if vic.victimasjr.fechadesagregacion < @registro.fecha %>
+                  <% nc += "-(Desagregado antes de act.)" %>
+                <% else %>
+                  <% nc += "-(Desagregado después de act.)" %>
+                <% end %>
+              <% end %>
               <%= link_to nc, sivel2_gen.caso_path(nc), target: '_blank' %>
             <% end %>
           <% end %>
         </td>
       </tr>
-    <% end %>
-    <% victimas.each do |victima| %>
-      <% if disponibles.include? victima.persona.id %>
-        <tr>
-          <td>
-            <%= link_to(
-              victima.persona.id, sip.persona_path(victima.persona.id), 
-              target: '_blank') if victima.persona.id %>
-          </td>
-          <td>
-            <%= victima.persona.nombres if victima.persona.nombres %>
-          </td>
-          <td>
-            <%= victima.persona.apellidos if victima.persona.apellidos %>
-          </td>
-          <td>
-            <%= victima.persona.tdocumento.sigla if victima.persona.tdocumento%>
-          </td>
-          <td>
-            <%= victima.persona.numerodocumento if victima.persona.numerodocumento %>
-          </td>
-          <td>
-            <%= victima.persona.sexo if victima.persona.sexo %>
-          </td>
-          <td>
-            <% if victima.persona %>
-              <% edad =  edad_de_fechanac_fecha(
-                victima.persona.anionac, victima.persona.mesnac, 
-                victima.persona.dianac, Date.today.year, 
-                Date.today.month, Date.today.day)
-              %>
-              <% if edad != -1 %>
-                <%= edad %>
-              <% else %>
-                No indica
-              <% end %>
-            <% end %>
-          </td>
-          <td>
-             No Aplica
-          </td>
-          <td>
-            <%= link_to victima.id_caso, sivel2_gen.caso_path(victima.id_caso), target: '_blank' %>
-          </td>
-        </tr>
-      <% end %>
     <% end %>
   </tbody>
 </table>
