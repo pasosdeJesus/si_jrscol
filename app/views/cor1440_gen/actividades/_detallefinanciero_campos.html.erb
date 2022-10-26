@@ -21,9 +21,6 @@
   <td>
     <% idp = [] %>
     <% if f.object.actividad %>
-      <% if f.object.actividad.casosjr %>
-        <% idp = f.object.actividad.casosjr.map {  |c| c.caso.victima.map(&:id_persona) }.flatten %>
-      <% end %>
       <% if f.object.actividad.asistencia %>
         <% idp += f.object.actividad.asistencia.map(&:persona_id) %>
       <% end %>
