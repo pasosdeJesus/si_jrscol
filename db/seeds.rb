@@ -4,8 +4,10 @@ conexion = ActiveRecord::Base.connection();
 Sip::carga_semillas_sql(conexion, 'sip', :datos)
 motor = ['sivel2_gen', 'sivel2_sjr', 'cor1440_gen', 'sal7711_gen', nil]
 motor.each do |m|
-    Sip::carga_semillas_sql(conexion, m, :cambios)
-    Sip::carga_semillas_sql(conexion, m, :datos)
+  puts "#{m} cambios"
+  Sip::carga_semillas_sql(conexion, m, :cambios)
+  puts "#{m} datos"
+  Sip::carga_semillas_sql(conexion, m, :datos)
 end
 
 # Extrañamente borrar el search_path y falla el siguiente o
