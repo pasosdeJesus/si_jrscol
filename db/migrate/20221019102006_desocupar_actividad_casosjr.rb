@@ -64,7 +64,7 @@ class DesocuparActividadCasosjr < ActiveRecord::Migration[7.0]
       actividad.recalcula_poblacion
       porelim << ac.id
     end
-    STDERR.puts "En total se añadieron #{numpersad} a #{totac} actividades"
+    STDERR.puts "En total se añadieron #{numpersag} a #{totac} actividades"
     porelim.each do |i|
       Sivel2Sjr::ActividadCasosjr.find(i).delete
     end
