@@ -1,39 +1,120 @@
-<div class='row'>
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-body">
+<div class="row">
+  <div class="col-md-12">
+    Nueva respuesta/seguimiento
+  </div>
+</div>
 
+<div class="row">
+  <div class="col-md-7 border">
+    <strong>Líneas del Plan Estratégico</strong>
+  </div>
+  <div class="col-md-3 border">
+    <strong>Proyecto</strong>
+  </div>
+  <div class="col-md-2 border">
+    <strong>Beneficiarios de este caso</strong>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-7 border">
         <% Cor1440Gen::ActividadesController.posibles_nuevaresp.each do |idc, lnomc| %>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" id="<%= idc %>">
             <label class="form-check-label" for="<%= idc %>"><%= lnomc[0] %></label>
           </div> <!-- form-check -->
         <% end %>
-      </div> <!-- card-body -->
-    </div> <!-- card -->
   </div> <!-- col-md-8 -->
 
-  <div class="col-md-2">
-    <%= select_tag('nsegresp_proyectofinanciero_id', 
+  <div class="col-md-3 border centrar-vertical-dircol">
+    <%= select_tag("nsegresp_proyectofinanciero_id", 
                    options_from_collection_for_select(
-                     Cor1440Gen::Proyectofinanciero.where("DATE(fechacierre) > ?", Date.today).where('fechainicio < ?', Date.today), 
-                     'id', 'nombre'), class: 'chosen-select',
+                     Cor1440Gen::Proyectofinanciero.where("DATE(fechacierre) > ?", Date.today).where("fechainicio < ?", Date.today), 
+                     "id", "nombre"), class: "chosen-select",
                     :include_blank => true ) %>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-2 border centrar-vertical-dircol">
     <% if can?(:edit, f.object) %>
-      <% elem = Cor1440Gen::ActividadesController.posibles_nuevaresp.keys + 
-        ['nsegresp_proyectofinanciero_id'] %>
-      <% lfun = "jrs_agrega_paramscv(this,  [" +
-        elem.map {|cv| "'#{cv}'"}.join(", ") + "], " + 
-        Cor1440Gen::ActividadesController.datos_nuevaresp(
-          f.object, controller).to_json + ")" %>
-      <%= link_to 'Nueva respuesta/seguimiento',
-        cor1440_gen.new_actividad_path,
-        target: '_blank',
-        class: 'btn btn-sm',
-        onclick: lfun %>
+      <% elem1 = Cor1440Gen::ActividadesController.posibles_nuevaresp.keys + 
+        ["nsegresp_proyectofinanciero_id"] %>
+      <div>
+        <% lfun1 = "jrs_agrega_paramscv(this,  [" +
+          elem1.map {|cv| "'#{cv}'"}.join(", ") + "], " + 
+          Cor1440Gen::ActividadesController.datos_nuevaresp(
+            f.object, controller).to_json + ")" 
+          %>
+        <%= link_to "Todos",
+          cor1440_gen.new_actividad_path,
+          target: "_blank",
+          class: "btn btn-sm",
+          onclick: lfun1 %>
+      </div>
+      <div>
+        <% elem2 = elem1 + @registro.victima.
+          pluck(:id_persona).map { |idp| "persona-#{idp}"} %>
+        <% lfun2 = "jrs_agrega_paramscv(this,  [" +
+          elem2.map {|cv| "'#{cv}'"}.join(", ") + "], " + 
+          Cor1440Gen::ActividadesController.datos_nuevaresp(
+            f.object, controller).to_json + ")" 
+          %>
+        <%= link_to "Elegir algunos",
+          "#",
+          "data-bs-toggle" => "modal",
+          "data-bs-target" => "#respuesta-algunos",
+          class: "btn btn-sm" %>
+      </div>
     <% end %>
   </div>
 </div> <!-- row -->
+
+<div class="modal fade" id="respuesta-algunos" tabindex="-1"
+    aria-labelledby="respuesta-grupo-etiqueta"
+    aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollabel" 
+              estyle="position: relative; max-width: 800px !important;
+                                       width: 100%;
+                                       height: 80%; ">
+    <div class="modal-content" estyle="height: 85%;">
+      <div class="modal-header" estyle = "word-break: break-all;">
+        <h5 class="modal-title">
+          Elegir beneficiarios para la respuesta/seguimiento
+        </h5>
+        <button type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body" estyle="height: 100%; width: 100%;
+                                    overflow-y: auto;
+                                    overflow-x: auto; ">
+        <% @registro.victima.each do |v| %>
+          <% idh = "persona-#{v.persona.id}" %>
+            <div class="form-check">
+              <input class="form-check-input" 
+                     type="checkbox" 
+                     value="" 
+                     id="<%= idh %>">
+              <label class="form-check-label"
+                     for="<%= idh %>">
+                <%= v.persona.presenta_nombre %>
+              </label>
+            </div>
+          <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <%= link_to "Nuevo seguimiento",
+          cor1440_gen.new_actividad_path,
+          target: '_blank',
+          class: 'btn btn-primary',
+          onclick: lfun2 %>
+      </div>
+    </div> <!--modal-content -->
+  </div> <!-- modal-dialog -->
+</div> <!-- modal fade -->
+
 

@@ -4,9 +4,15 @@
 
   <%= render partial: 'respuesta_nuevaac', locals: {f: f} %>
 
-  <% # SEGUIMIENTO A CASOS %> 
   <% @caso = f.object %>
-  <%= render partial: 'sivel2_gen/casos/show_atenciones' %>
+
+  <div class='row'>
+    <div class='col-md-12' 
+      style='min-height: 2em; display: flex; align-items: flex-end;'>
+      Atención/es en la/s que alguna persona de este caso es beneficiaria:
+    </div>
+  </div>
+  <%= render partial: 'sivel2_gen/casos/tabla_atenciones' %>
 
   <a data-bs-toggle="collapse" href='#anexoscol'>
     <h5>ANEXOS</h5>

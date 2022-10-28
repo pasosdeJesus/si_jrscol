@@ -17,3 +17,13 @@
  *= require_tree .
  *= require_self
  */
+
+/* De
+ * https://stackoverflow.com/questions/22196587/how-to-vertically-center-a-container-in-bootstrap
+ */
+.centrar-vertical-dircol {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}

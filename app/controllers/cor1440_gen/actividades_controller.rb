@@ -159,7 +159,22 @@ module Cor1440Gen
       @registro.actividadpf_ids = []
       @registro.save!(validate: false)
 
-      if params['caso_id'] && 
+      parpers = params.keys.select {|p| p[0..7] == 'persona-'}
+      if parpers.count > 0 
+        parpers.each do |pp|
+          pid = pp[8..].to_i
+          if pid > 0 && params[pp] == "true" &&
+              Sip::Persona.where(id: pid).count == 1
+            Cor1440Gen::Asistencia.create!(
+              persona_id: pid,
+              actividad_id: @registro.id,
+              externo: false,
+              orgsocial_id: nil,
+              perfilorgsocial_id: nil
+            )
+          end
+        end
+      elsif params['caso_id'] && 
           Sivel2Sjr::Casosjr.where(id_caso: params['caso_id'].to_i).
           count == 1
         personas = Sivel2Gen::Victima.where(id_caso: params['caso_id'].to_i).

@@ -72,7 +72,6 @@ module Sivel2Gen
 
       modulo_str = basica[0] + "::" + basica[1].capitalize
       modelo = modulo_str.constantize()
-      muestra = modelo.all.sample
 
       #No autenticado
 
