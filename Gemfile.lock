@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: dd3bb14f63a827d29c72bba048da028f4afb2d3d
+  revision: 0183945c3448daabe00ed625a16d63fe78c786bb
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 79ec03951dcd86cede4d02082d870d32ac8e8886
+  revision: d17bfd3e6aad8ad25fa099d048cf03ba7e7d2e29
   branch: main
   specs:
     heb412_gen (2.1.0.beta1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 7aea026d37b51d4af47f62b169670362254e47ff
+  revision: 8ac9ae4f68254f0640e24def4526dd64207f7a4d
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 24f31616afd283a5582ec556903d24cddeab12c0
+  revision: 7382dbb1ecaebd63789c2cb8be882696b1c9b293
   branch: main
   specs:
     sal7711_gen (2.1.0.beta1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 84a8be377153d6ea2a814cacbeb8ee00e9488b34
+  revision: ed1f2ed878a4c4d568e6216b125a680ce0d37cb3
   branch: main
   specs:
     sal7711_web (2.1.0.beta1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 2965ab8c5bd42a69abfe0720c395c4b7283b8864
+  revision: f6870e519c63ba8479e3f316349a660072b6ea94
   branch: main
   specs:
     sip (2.1.0.beta1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 6500476617fb261fea5d1f3ef78c93b3c6e39e84
+  revision: f797c4d7a7c43a6ce845cdfb75025d3e6e8b5053
   branch: main
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 321065a1364bcc73a10b40594d56091217fd2e96
+  revision: 221d84ec90195af4e6a57368fd071bf47ce3a58b
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -263,7 +263,7 @@ GEM
     jsbundling-rails (1.0.3)
       railties (>= 6.0.0)
     kgio (2.11.4)
-    libxml-ruby (3.2.3)
+    libxml-ruby (3.2.4)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -285,7 +285,7 @@ GEM
       net-protocol
     net-protocol (0.1.3)
       timeout
-    net-smtp (0.3.2)
+    net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
     nokogiri (1.13.9)

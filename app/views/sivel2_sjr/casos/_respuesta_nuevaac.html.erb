@@ -50,8 +50,11 @@
           onclick: lfun1 %>
       </div>
       <div>
-        <% elem2 = elem1 + @registro.victima.
-          pluck(:id_persona).map { |idp| "persona-#{idp}"} %>
+        <% elem2 = elem1 %>
+        <% if @registro && @registro.victima %>
+          <% elem2 = elem1 + @registro.victima.
+            pluck(:id_persona).map { |idp| "persona-#{idp}"} %>
+        <% end %>
         <% lfun2 = "jrs_agrega_paramscv(this,  [" +
           elem2.map {|cv| "'#{cv}'"}.join(", ") + "], " + 
           Cor1440Gen::ActividadesController.datos_nuevaresp(
@@ -86,20 +89,22 @@
       </div>
       <div class="modal-body" estyle="height: 100%; width: 100%;
                                     overflow-y: auto;
-                                    overflow-x: auto; ">
-        <% @registro.victima.each do |v| %>
-          <% idh = "persona-#{v.persona.id}" %>
+                              overflow-x: auto; ">
+        <% if @registro  %>
+          <% @registro.victima.each do |v| %>
+            <% idh = "persona-#{v.persona.id}" %>
             <div class="form-check">
               <input class="form-check-input" 
                      type="checkbox" 
                      value="" 
                      id="<%= idh %>">
-              <label class="form-check-label"
-                     for="<%= idh %>">
-                <%= v.persona.presenta_nombre %>
-              </label>
+                     <label class="form-check-label"
+                            for="<%= idh %>">
+                            <%= v.persona.presenta_nombre %>
+                     </label>
             </div>
           <% end %>
+        <% end %>
       </div>
       <div class="modal-footer">
         <button type="button"
