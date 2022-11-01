@@ -31,3 +31,26 @@ document.addEventListener('change',
   }
 )
 
+window.jrs_pre_agrega_paramscv = (numerr, elema, veccv, datos) => {
+  document.body.style.cursor = 'default'
+  if (numerr == 0) {
+    jrs_agrega_paramscv(elema, veccv, datos)
+    url = elema.getAttribute('href')
+    window.open(url, '_blank').focus();
+  } else {
+    alert("Hay errores que no permiten guardar caso y crear actividad")
+    document.getElementById("errores").focus();
+  }
+}
+
+window.jrs_revisa_y_agrega_paramscv = (elema, evento, veccv, datos) => {
+  evento.stopPropagation()
+  evento.preventDefault()
+  document.body.style.cursor = 'wait'
+  idf = document.querySelector('form').getAttribute('id')
+  listaidsrempl = ['errores']
+  document.getElementById("errores").innerText=''
+  sip_enviarautomatico_formulario_y_repinta_retrollamada3(idf, listaidsrempl,
+    jrs_pre_agrega_paramscv, [elema, veccv, datos], 'POST')
+}
+

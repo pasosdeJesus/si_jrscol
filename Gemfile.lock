@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 0183945c3448daabe00ed625a16d63fe78c786bb
+  revision: 20fc63c1430d6cb7af62a74b7776e717f6a32751
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: d17bfd3e6aad8ad25fa099d048cf03ba7e7d2e29
+  revision: bc713f7a91af2ed0f3e120cfa56cb8b0558e6277
   branch: main
   specs:
     heb412_gen (2.1.0.beta1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 8ac9ae4f68254f0640e24def4526dd64207f7a4d
+  revision: 2280724785996a983e78ec3bf11282f743ce3598
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 7382dbb1ecaebd63789c2cb8be882696b1c9b293
+  revision: b5880ff8b40c2e11aa1645078bd9a81c6e15c7ab
   branch: main
   specs:
     sal7711_gen (2.1.0.beta1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: ed1f2ed878a4c4d568e6216b125a680ce0d37cb3
+  revision: 7a3de6ba6e319c0cab72eef72b49973a6c5124ba
   branch: main
   specs:
     sal7711_web (2.1.0.beta1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: f6870e519c63ba8479e3f316349a660072b6ea94
+  revision: c32843f66244f9c2a101158cb06fc6f5b729fa09
   branch: main
   specs:
     sip (2.1.0.beta1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: f797c4d7a7c43a6ce845cdfb75025d3e6e8b5053
+  revision: 7a89c6fc9c9eb8a31b4bc26b2aa0a937d730f718
   branch: main
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -397,7 +397,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stimulus-rails (1.1.0)
+    stimulus-rails (1.1.1)
       railties (>= 6.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
@@ -433,7 +433,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.1)
+    zeitwerk (2.6.3)
 
 PLATFORMS
   x86_64-openbsd

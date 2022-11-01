@@ -1,3 +1,6 @@
+<% if !@registro && @caso %>
+  <% @registro = @caso %>
+<% end %>
 <div class="row">
   <div class="col-md-12">
     Nueva respuesta/seguimiento
@@ -9,10 +12,10 @@
     <strong>Líneas del Plan Estratégico</strong>
   </div>
   <div class="col-md-3 border">
-    <strong>Proyecto</strong>
+    <strong>Convenio financiado</strong>
   </div>
   <div class="col-md-2 border">
-    <strong>Beneficiarios de este caso</strong>
+    <strong>Beneficiarios</strong>
   </div>
 </div>
 
@@ -38,7 +41,7 @@
       <% elem1 = Cor1440Gen::ActividadesController.posibles_nuevaresp.keys + 
         ["nsegresp_proyectofinanciero_id"] %>
       <div>
-        <% lfun1 = "jrs_agrega_paramscv(this,  [" +
+        <% lfun1 = "jrs_revisa_y_agrega_paramscv(this,  event, [" +
           elem1.map {|cv| "'#{cv}'"}.join(", ") + "], " + 
           Cor1440Gen::ActividadesController.datos_nuevaresp(
             f.object, controller).to_json + ")" 
@@ -55,11 +58,12 @@
           <% elem2 = elem1 + @registro.victima.
             pluck(:id_persona).map { |idp| "persona-#{idp}"} %>
         <% end %>
-        <% lfun2 = "jrs_agrega_paramscv(this,  [" +
+        <% lfun2 = "jrs_revisa_y_agrega_paramscv(this,  event, [" +
           elem2.map {|cv| "'#{cv}'"}.join(", ") + "], " + 
           Cor1440Gen::ActividadesController.datos_nuevaresp(
             f.object, controller).to_json + ")" 
           %>
+        <% end %>
         <%= link_to "Elegir algunos",
           "#",
           "data-bs-toggle" => "modal",
@@ -90,16 +94,17 @@
       <div class="modal-body" estyle="height: 100%; width: 100%;
                                     overflow-y: auto;
                               overflow-x: auto; ">
-        <% if @registro  %>
+        <% if @registro && @registro.victima %>
           <% @registro.victima.each do |v| %>
             <% idh = "persona-#{v.persona.id}" %>
             <div class="form-check">
-              <input class="form-check-input" 
-                     type="checkbox" 
-                     value="" 
-                     id="<%= idh %>">
-                     <label class="form-check-label"
-                            for="<%= idh %>">
+              <input 
+                 class="form-check-input" 
+                 type="checkbox" 
+                 value="" 
+                 id="<%= idh %>">
+                 <label class="form-check-label"
+                        for="<%= idh %>">
                             <%= v.persona.presenta_nombre %>
                      </label>
             </div>
