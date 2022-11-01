@@ -48,7 +48,7 @@
           Cor1440Gen::ActividadesController.datos_nuevaresp(
             f.object, controller).to_json + ")"
           %>
-        <%= link_to "Todos",
+        <%= link_to "Todos los de este caso",
           cor1440_gen.new_actividad_path,
           target: "_blank",
           class: "btn btn-sm",
@@ -65,7 +65,7 @@
           Cor1440Gen::ActividadesController.datos_nuevaresp(
             f.object, controller).to_json + ")"
           %>
-        <%= link_to "Elegir algunos",
+        <%= link_to "Elegir algunos de este caso",
           "#",
           "data-bs-toggle" => "modal",
           "data-bs-target" => "#respuesta-algunos",
