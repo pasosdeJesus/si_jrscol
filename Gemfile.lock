@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 20fc63c1430d6cb7af62a74b7776e717f6a32751
+  revision: b1c915e78e3abfee026c556341eb892f3290f895
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: bc713f7a91af2ed0f3e120cfa56cb8b0558e6277
+  revision: 87e43427f178acc905fbb3be60698902b765f3b6
   branch: main
   specs:
     heb412_gen (2.1.0.beta1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 2280724785996a983e78ec3bf11282f743ce3598
+  revision: 947040d49f4bfe7b05152df616079c87a8d8a801
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: b5880ff8b40c2e11aa1645078bd9a81c6e15c7ab
+  revision: bd9b2ef92df4ec0311b8ac2af0289b59d2a521f8
   branch: main
   specs:
     sal7711_gen (2.1.0.beta1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 7a3de6ba6e319c0cab72eef72b49973a6c5124ba
+  revision: 4aa1d28228dc62790338d5a4db635ba40401c585
   branch: main
   specs:
     sal7711_web (2.1.0.beta1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: c32843f66244f9c2a101158cb06fc6f5b729fa09
+  revision: e6ed8907e324873b20372ff8821f8495be9d54a9
   branch: main
   specs:
     sip (2.1.0.beta1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 7a89c6fc9c9eb8a31b4bc26b2aa0a937d730f718
+  revision: 7241a5794f4ce5a9fee3a385b240e35622b9462d
   branch: main
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 221d84ec90195af4e6a57368fd071bf47ce3a58b
+  revision: 23cc4920b45dd3ba3f7d8cc2b09cb0ab7ca14dd0
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -99,7 +99,7 @@ GIT
 
 GIT
   remote: https://github.com/teamcapybara/capybara.git
-  revision: 2d05c203d79bca7b3b093c37f866ee41f294925b
+  revision: 48fe7018edbbf46c61f1c7632ff49fb8f1116f6c
   branch: master
   specs:
     capybara (3.38.0)
@@ -376,7 +376,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.5.0)
+    selenium-webdriver (4.6.1)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -409,7 +409,7 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
-    twitter_cldr (6.11.3)
+    twitter_cldr (6.11.4)
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)
       tzinfo
@@ -433,7 +433,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.3)
+    zeitwerk (2.6.5)
 
 PLATFORMS
   x86_64-openbsd
@@ -495,4 +495,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.3.24
+   2.3.25
