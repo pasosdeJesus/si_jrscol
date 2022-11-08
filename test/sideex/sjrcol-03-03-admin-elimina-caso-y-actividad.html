@@ -30,34 +30,6 @@
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">caso-actividad</td></tr>
-</thead>
-<tbody>
-<tr><td>clickAt</td><td>css=td &gt; a<datalist><option>link=32816</option><option>css=td &gt; a</option><option>//a[contains(text(),'32816')]</option><option>//a[contains(@href, '/actividades/32816')]</option><option>//td/a</option></datalist></td><td>25,9</td>
-</tr>
-<tr><td>selectWindow</td><td>win_ser_1<datalist><option>win_ser_1</option></datalist></td><td></td>
-</tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">casos-elimina-actividad</td></tr>
-</thead>
-<tbody>
-<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
-</tr>
-<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn-danger.remove_fields.existing</option><option>//a[contains(text(),'Eliminar')]</option><option>//tbody[@id='actividad_casosjr']/tr/td[9]/a</option><option>xpath=(//a[contains(@href, '#')])[8]</option><option>//td[9]/a</option></datalist></td><td>20,12</td>
-</tr>
-<tr><td>pause</td><td><datalist><option></option></datalist></td><td>1000</td>
-</tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Actividades</td>
-</tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Cor1440Gen::Actividad eliminada.</td>
-</tr>
-<tr><td>runScript</td><td>localStorage.setItem('regjrscol030201_numact', +(document.querySelector("td a").innerText));<datalist><option>localStorage.setItem('regjrscol030201_numact', +(document.querySelector("td a").innerText));</option></datalist></td><td></td>
-</tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
 <tr><td rowspan="1" colspan="3">caso-busca-caso-localStorage-y-elimina</td></tr>
 </thead>
 <tbody>
