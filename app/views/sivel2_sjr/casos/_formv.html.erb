@@ -7,7 +7,8 @@
       window.sivel2_enviarFichaCasoCada60()  ;
     });
   </script>
-  <%= simple_form_for @caso, html: { class: 'form-horizontal' } do |f| %>
+  <%= simple_form_for @caso, html: { 
+    class: 'form-horizontal', "data-controller": "respuestacaso" } do |f| %>
     <div data-role="content" class="form-inputs">
 
       <%= render partial: 'sip/hogar/errores', locals: { f: f } %>

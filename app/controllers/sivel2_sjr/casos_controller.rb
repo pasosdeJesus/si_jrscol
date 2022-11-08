@@ -315,6 +315,66 @@ module Sivel2Sjr
     end
 
 
+    def update_sivel2_sjr
+      @casovalido = true if @casovalido.nil? 
+      # No deben venir validaciones en controlador
+      respond_to do |format|
+        if (!params[:caso][:caso_etiqueta_attributes].nil?)
+          params[:caso][:caso_etiqueta_attributes].each {|k,v|
+            if (v[:id_usuario].nil? || v[:id_usuario] == "") 
+              v[:id_usuario] = current_usuario.id
+            end
+          }
+        end
+        if (!params[:caso][:respuesta_attributes].nil?)
+          params[:caso][:respuesta_attributes].each {|k,v|
+            if (v[:id_caso].nil?) 
+              v[:id_caso] = @caso.id
+            end
+          }
+        end
+        @caso.current_usuario = current_usuario
+        @caso.assign_attributes(caso_params)
+        @casovalido &= @caso.valid?
+        @caso.save(validate: false)
+        if registrar_en_bitacora
+          Sip::Bitacora.agregar_actualizar(
+            request, :caso, :bitacora_cambio, 
+            current_usuario.id, params, 'Sivel2Gen::Caso',
+            @caso.id
+          )
+        end
+        if validar_params && @casovalido 
+          format.html { 
+            if request.xhr?
+              if request.params[:siguiente] == 'editar'
+                render(action: 'edit', 
+                       layout: 'application', 
+                       notice: 'Caso actualizado.')
+              else
+                render(action: 'show', 
+                       layout: 'application', 
+                       notice: 'Caso actualizado.')
+              end
+            else
+              redirect_to @caso, notice: 'Caso actualizado.'
+            end
+          }
+          format.json { 
+            head :no_content 
+          }
+          format.js   { 
+            redirect_to @caso, notice: 'Caso actualizado.' 
+          }
+          Sivel2Gen::Conscaso.refresca_conscaso
+        else
+          format.html { render action: 'edit', layout: 'application' }
+          format.json { render json: @caso.errors, status: :unprocessable_entity }
+          format.js   { render action: 'edit' }
+        end
+      end
+    end
+
 
     def update
       # Procesar ubicacionespre de migración
@@ -663,6 +723,17 @@ module Sivel2Sjr
       end
     end
 
+
+    def set_caso
+      @caso = Sivel2Gen::Caso.find(params[:id].to_i)
+      @caso.current_usuario = current_usuario
+      @registro = @caso
+      pcs = Sivel2Sjr::Casosjr.where(id_caso: params[:id].to_i)
+      @casosjr = nil
+      if pcs.count > 0
+        @casosjr = pcs.take
+      end
+    end
 
   end
 end

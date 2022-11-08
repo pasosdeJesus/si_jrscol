@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 23cc4920b45dd3ba3f7d8cc2b09cb0ab7ca14dd0
+  revision: 25d46d519b59153e75b5a6153daee836b2016f34
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -99,7 +99,7 @@ GIT
 
 GIT
   remote: https://github.com/teamcapybara/capybara.git
-  revision: 48fe7018edbbf46c61f1c7632ff49fb8f1116f6c
+  revision: 5c8674713fa964211de43138180edfab1cc041ce
   branch: master
   specs:
     capybara (3.38.0)
