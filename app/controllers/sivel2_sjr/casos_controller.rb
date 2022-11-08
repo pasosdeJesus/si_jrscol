@@ -735,5 +735,235 @@ module Sivel2Sjr
       end
     end
 
+
+
+    def lista_params
+      lp = [
+        :bienes, 
+        :duracion, 
+        :fecha, 
+        :fecha_localizada, 
+        :grconfiabilidad, 
+        :gresclarecimiento, 
+        :grimpunidad, 
+        :grinformacion, 
+        :hora, 
+        :id, 
+        :id_intervalo, 
+        :memo, 
+        :titulo, 
+        :casosjr_attributes => [
+          :asesor, 
+          :comosupo_id, 
+          :contacto, 
+          :concentimientosjr, 
+          :concentimientobd,
+          :categoriaref,
+          :dependen, 
+          :detcomosupo,
+          :direccion, 
+          :docrefugiado,
+          :estatus_refugio,
+          :estrato, 
+          :fecharec, 
+          :fecharec_localizada, 
+          :fechadecrefugio,
+          :fechadecrefugio_localizada,
+          :fechallegada, 
+          :fechallegada_localizada, 
+          :fechallegadam, 
+          :fechallegadam_localizada, 
+          :fechasalida, 
+          :fechasalida_localizada, 
+          :fechasalidam, 
+          :fechasalidam_localizada, 
+          :gastos, 
+          :ingresomensual, 
+          :id, 
+          :id_idioma,
+          :id_llegada, 
+          :id_llegadam, 
+          :id_proteccion, 
+          :id_salida, 
+          :id_salidam, 
+          :id_statusmigratorio,
+          :leerescribir, 
+          :memo1612,
+          :motivom,
+          :observacionesref,
+          :oficina_id, 
+          :sustento, 
+          :telefono, 
+          :_destroy
+        ] + otros_params_casosjr, 
+        :victima_attributes => [
+          :anotaciones,
+          :id, 
+          :id_etnia, 
+          :id_filiacion, 
+          :id_iglesia, 
+          :id_organizacion, 
+          :id_persona, 
+          :id_profesion, 
+          :id_rangoedad, 
+          :id_vinculoestado, 
+          :orientacionsexual, 
+          :_destroy 
+        ] + otros_params_victima + [
+          :persona_attributes => [
+            :apellidos, 
+            :anionac, 
+            :dianac, 
+            :id, 
+            :id_pais, 
+            :id_departamento, 
+            :id_municipio, 
+            :id_clase, 
+            :mesnac, 
+            :nacionalde, 
+            :numerodocumento, 
+            :nombres, 
+            :sexo, 
+            :tdocumento_id
+          ] + otros_params_persona,
+          :victimasjr_attributes => [
+            :asisteescuela, 
+            :cabezafamilia, 
+            :enfermedad, 
+            :eps, 
+            :fechadesagregacion,
+            :fechadesagregacion_localizada,
+            :id, 
+            :id_victima, 
+            :id_rolfamilia,
+            :id_actividadoficio, 
+            :id_escolaridad,
+            :id_estadocivil, 
+            :id_maternidad, 
+            :id_regimensalud, 
+            :ndiscapacidad, 
+            :sindocumento, 
+            :tienesisben
+          ] + otros_params_victimasjr 
+        ], 
+        :ubicacion_attributes => [
+          :id, 
+          :id_clase, 
+          :id_departamento, 
+          :id_municipio, 
+          :id_pais, 
+          :id_tsitio, 
+          :latitud, 
+          :longitud, 
+          :lugar, 
+          :sitio, 
+          :_destroy
+        ],
+        :caso_presponsable_attributes => [
+          :batallon, 
+          :bloque, 
+          :brigada, 
+          :division, 
+          :frente, 
+          :id, 
+          :id_presponsable, 
+          :otro, 
+          :tipo, 
+          :_destroy
+        ],
+        :acto_attributes => [
+          :id, 
+          :id_categoria, 
+          :id_presponsable, 
+          :id_persona, 
+          :_destroy,
+          :actosjr_attributes => [
+            :desplazamiento_id, 
+            :fecha, 
+            :fecha_localizada, 
+            :id, 
+            :id_acto, 
+            :_destroy
+          ]
+        ],
+        :respuesta_attributes => [
+          :accionesder,
+          :cantidadayes,
+          :compromisos,
+          :detalleal, 
+          :detalleap, 
+          :detalleem, 
+          :detallemotivo, 
+          :detallear, 
+          :descatencion,
+          :descamp, 
+          :difobsprog,
+          :efectividad, 
+          :id,
+          :id_personadesea, 
+          :informacionder, 
+          :institucionayes, 
+          :fechaatencion, 
+          :fechaatencion_localizada, 
+          :fechaultima, 
+          :fechaultima_localizada, 
+          :gestionessjr, 
+          :lugar, 
+          :lugarultima, 
+          :montoal,
+          :montoap,
+          :montoar,
+          :montoem,
+          :montoprorrogas,
+          :numprorrogas, 
+          :observaciones,
+          :orientaciones, 
+          :remision,  
+          :turno,
+          :verifcsjr, 
+          :verifcper,
+          :_destroy, 
+          :aslegal_ids => [],
+          :aspsicosocial_ids => [],
+          :ayudaestado_ids => [],
+          :ayudasjr_ids => [],
+          :derecho_ids => [],
+          :emprendimiento_ids => [],
+          :motivosjr_ids => [],
+          :progestado_ids => [],
+        ] + otros_params_respuesta,
+        :anexo_caso_attributes => [
+          :fecha_localizada,
+          :id, 
+          :id_caso,
+          :_destroy,
+          :sip_anexo_attributes => [
+            :adjunto, 
+            :descripcion, 
+            :id, 
+            :_destroy
+          ]
+        ],
+        :caso_etiqueta_attributes => [
+          :fecha, 
+          :id, 
+          :id_etiqueta, 
+          :id_usuario, 
+          :observaciones, 
+          :_destroy
+        ]
+      ] + otros_params  + desplazamiento_params
+
+      lp
+    end
+
+    private
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def caso_params
+      lp = lista_params 
+      params.require(:caso).permit(lp)
+    end
+
   end
 end
