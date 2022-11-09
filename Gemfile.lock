@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: b1c915e78e3abfee026c556341eb892f3290f895
+  revision: d0c0a3c70b04d2fe58dbff2c6237bc1a36389147
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 87e43427f178acc905fbb3be60698902b765f3b6
+  revision: 5c105c06cde8c9cc6a60d5f2ea39302e0da047c4
   branch: main
   specs:
     heb412_gen (2.1.0.beta1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 947040d49f4bfe7b05152df616079c87a8d8a801
+  revision: db668c4f21be0c055b4a2d5ebfc209bf6910e1e0
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: bd9b2ef92df4ec0311b8ac2af0289b59d2a521f8
+  revision: 1ff6c701d4b51a8a9a691b749e1dee27604ca105
   branch: main
   specs:
     sal7711_gen (2.1.0.beta1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 4aa1d28228dc62790338d5a4db635ba40401c585
+  revision: 6661324c3aa68bef140d6ef458f9572d1766fa46
   branch: main
   specs:
     sal7711_web (2.1.0.beta1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 24e939f8afd24d530bc252c4f354bb9219052fe5
+  revision: 93c15bb5eb571395c56d39d6bdd6d3424069f376
   branch: main
   specs:
     sip (2.1.0.beta1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 7241a5794f4ce5a9fee3a385b240e35622b9462d
+  revision: e9992e183a5170ccfb23214232efeebac6982a4a
   branch: main
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 25d46d519b59153e75b5a6153daee836b2016f34
+  revision: 6e3ff1dd1689511b69c2651e8cd45cde31e66ac9
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -433,7 +433,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.5)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   x86_64-openbsd
