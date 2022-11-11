@@ -1,0 +1,32 @@
+<datalist id='fuente-listadocasos'>
+</datalist>
+<hr>
+<div style="display: flex; flex-direction: row; justify-content: flex-end">
+  <div style="margin-right: 1em">
+    <% ph = 'Buscar No. Caso, contacto o identificacion del contacto' %>
+    <% ac = { 
+      list: 'fuente-listadocasos',
+      "data-rapidobenefcaso-target": "caso",
+    } %>
+    <%= fasistencia.input :rapidobenefcaso_id,  
+      placeholder: ph,
+      label: false,
+      as: :string,
+      :input_html => ac %>
+  </div>
+  <div>
+    <%= link_to "Añadir todos los beneficiarios del caso", '#0',
+      "data-action": "click->rapidobenefcaso#agregar",
+      "data-turbo": "false",
+      class: "btn btn-primary btn-sm" %>
+  </div>
+  <div>
+    <%= link_to "Actualizar el listado",
+      "",
+      class: "btn btn-primary btn-sm",
+      id: "boton_actualizar_listado",
+      style: "visibility:hidden"
+    %>
+  </div>
+
+</div>

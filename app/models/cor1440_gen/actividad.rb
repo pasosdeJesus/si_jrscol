@@ -14,6 +14,7 @@ module Cor1440Gen
     accepts_nested_attributes_for :detallefinanciero,
       allow_destroy: true, reject_if: :all_blank
 
+    attr_accessor :rapidobenefcaso_id
 
     validate :oficina_responsable_current_usuario
     def oficina_responsable_current_usuario

@@ -6,6 +6,9 @@ import Rails from "@rails/ujs";
 Rails.start();
 window.Rails = Rails
 
+import * as Turbo from '@hotwired/turbo'
+Turbo.session.drive = false
+
 import './jquery'
 import '../../vendor/assets/javascripts/jquery-ui'
 
@@ -35,6 +38,8 @@ Apex.chart = {
 
 import "./caso_m"
 
+import AutocompletaAjaxRapidobenefcaso from './AutocompletaAjaxRapidobenefcaso'
+window.AutocompletaAjaxRapidobenefcaso = AutocompletaAjaxRapidobenefcaso 
 // https://turbo.hotwired.dev/handbook/building
 // dice
 // When possible, avoid using the turbo:load event to add other event listeners
@@ -99,6 +104,8 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
   sivel2_sjr_prepara_eventos_unicos(root)
   sip_registra_cambios_para_bitacora(root)
 
+  window.AutocompletaAjaxRapidobenefcaso.iniciar()
+
 })
 
 
@@ -112,5 +119,10 @@ document.addEventListener('turbo:load', (e) => {
 
   sip_ejecutarAlCargarPagina(window)
 })
+
+document.addEventListener('turbo:frame-load', (e) => {
+  document.body.style.cursor = 'default'
+})
+
 
 import "./controllers"

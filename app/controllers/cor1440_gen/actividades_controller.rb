@@ -422,20 +422,20 @@ module Cor1440Gen
       end
     end
 
-    # Responde a requerimiento AJAX generado por cocoon creando una
-    # nueva persona como nuevo asistente para la actividad que recibe 
-    # por parámetro  params[:actividad_id].  
-    # Pone valores simples en los campos requeridos
-    # Como crea personas que podrían ser remplazadas por otras por 
-    # autocompletación debería ejecutarse con periodicidad un proceso que
-    # elimine todas las personas de nombres N, apellidos N, sexo N, que
-    # no este en listado de asistencia ni en casos
-    def nueva_asistencia
+    # Añade todos los beneficiarios de un caso al listado de asistencia.
+    # 
+    # Recibe params[:actividad_id] y params[:caso_id]
+    def rapido_benef_caso
       authorize! :new, Sip::Persona
       if params[:actividad_id].nil?
         resp_error 'Falta parámetro actividad_id'
         return
       end
+      if params[:caso_id].nil?
+        resp_error 'Falta parámetro caso_id'
+        return
+      end
+
       puts "** cuenta: #{Cor1440Gen::Actividad.where(id: params[:actividad_id].to_i).count.to_s}"
       if Cor1440Gen::Actividad.where(id: params[:actividad_id].to_i).count == 0
         reps_error 'No se encontró actividad ' + 
@@ -443,39 +443,44 @@ module Cor1440Gen
         return
       end
       act = Cor1440Gen::Actividad.find(params[:actividad_id].to_i)
-      @persona = Sip::Persona.create(
-        nombres: 'N',
-        apellidos: 'N',
-        sexo: 'S',
-        tdocumento_id: 11,
-        numerodocumento: 'AAA'
-      )
-      if !@persona.save
-        resp_error 'No pudo crear persona' 
+      if Sivel2Gen::Caso.where(id: params[:caso_id].to_i).count == 0
+        reps_error "No se encontró caso #{params[:caso_id].to_i}"
         return
       end
-      @persona.numerodocumento = @persona.id
-      @persona.save
-      @asistencia = Cor1440Gen::Asistencia.create(
-        actividad_id: act.id,
-        persona_id: @persona.id
-      )
-      if !@asistencia.save
-        resp_error 'No pudo crear asistencia' 
-        @persona.destroy
-        return
+      res = []
+      yaestaban = []
+      caso = Sivel2Gen::Caso.find(params[:caso_id].to_i)
+      vics = caso.victimasjr.where(fechadesagregacion: nil)
+      vics.each do |v|
+        if Cor1440Gen::Asistencia.where(
+            actividad_id: act.id,
+            persona_id: v.victima.id_persona).count == 0
+          asistencia = Cor1440Gen::Asistencia.create(
+            actividad_id: act.id,
+            persona_id: v.victima.id_persona
+          )
+          if !asistencia.save
+            resp_error 'No pudo crear asistencia' 
+            return
+          end
+          res << v.victima.id_persona
+        else
+          yaestaban << v.victima.id_persona
+        end
       end
-      res = {
-        'asistencia': @asistencia.id.to_s,
-        'persona': @persona.id.to_s
-      }.to_json
       respond_to do |format|
-        format.js { render text: res }
-        format.json { render json: res,
-                      status: :created }
-        format.html { render inline: res }
+        format.js { # Usa este
+          render inline: res.to_json 
+        }
+        format.json { 
+          render json: res.to_json, status: :created 
+        }
+        format.html { 
+          render inline: res.to_json 
+        }
       end
-    end # def nueva_asistencia
+    end # def rapido_benef_caso
+
 
     def update
       @pf_respaldo = {}

@@ -28,7 +28,7 @@ export default class extends Controller {
    * @parama argumento Por pasar a la función retrollamada (se sugiere
    *  que sea un registro).
    */
-  guardarFormularioYRepintar(listaIdsRepintar, retrollamada, argumentos) {
+  static guardarFormularioYRepintar(listaIdsRepintar, retrollamada, argumentos) {
     document.body.style.cursor = 'wait'
     let formulario = document.querySelector('form')
     if (formulario == null) {
@@ -110,8 +110,8 @@ export default class extends Controller {
       e.target.getAttribute('data-parametros')
     )
     let urlActividad = this.armarUrlActividad1(parametrosActividad)
-    this.guardarFormularioYRepintar(['errores'], this.crearActividad, 
-      {urlActividad: urlActividad}) 
+    this.constructor.guardarFormularioYRepintar(
+      ['errores'], this.crearActividad, {urlActividad: urlActividad}) 
   }
 
 
