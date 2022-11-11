@@ -123,7 +123,7 @@ export default class extends Controller {
 
 
   modalAlgunos(e) {
-    this.guardarFormularioYRepintar(['errores', 'modal-respuesta-algunos'], 
+    this.constructor.guardarFormularioYRepintar(['errores', 'modal-respuesta-algunos'], 
       this.abrirModal, {}) 
   }
 
