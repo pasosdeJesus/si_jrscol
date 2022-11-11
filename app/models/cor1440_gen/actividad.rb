@@ -115,7 +115,7 @@ module Cor1440Gen
       if lc.empty?
         return ""
       else
-        return lc.sort.join(", ")
+        return lc.sort.uniq.join(", ")
       end
     end
 
