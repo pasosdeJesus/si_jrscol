@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: d0c0a3c70b04d2fe58dbff2c6237bc1a36389147
+  revision: 92ea2f833db82449072229ce0bfacc52bab703bb
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 5c105c06cde8c9cc6a60d5f2ea39302e0da047c4
+  revision: 67199baf0d599d5ddd7e2eab64296076907e3b8d
   branch: main
   specs:
     heb412_gen (2.1.0.beta1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: db668c4f21be0c055b4a2d5ebfc209bf6910e1e0
+  revision: 569883b5b396f76501df24b685cf044bbc77971c
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 1ff6c701d4b51a8a9a691b749e1dee27604ca105
+  revision: 7628ff196c2cf5a9d1ac32362e9f61e6f101f363
   branch: main
   specs:
     sal7711_gen (2.1.0.beta1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 6661324c3aa68bef140d6ef458f9572d1766fa46
+  revision: 296eb185edfa54f6e7c88ff1646e4150c667eae7
   branch: main
   specs:
     sal7711_web (2.1.0.beta1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 93c15bb5eb571395c56d39d6bdd6d3424069f376
+  revision: 14272dc1722d7a44ec4eddee016a309ac8a1ecc6
   branch: main
   specs:
     sip (2.1.0.beta1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: e9992e183a5170ccfb23214232efeebac6982a4a
+  revision: 13ba1cd084b39fd4997d13c5829988ee9bf38ab7
   branch: main
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -90,27 +90,12 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 6e3ff1dd1689511b69c2651e8cd45cde31e66ac9
+  revision: 9a4a4958dd2daffac3ea67664b1d82115b757437
   branch: main
   specs:
     sivel2_sjr (2.1a1)
       rails
       sivel2_gen
-
-GIT
-  remote: https://github.com/teamcapybara/capybara.git
-  revision: 5c8674713fa964211de43138180edfab1cc041ce
-  branch: master
-  specs:
-    capybara (3.38.0)
-      addressable
-      matrix
-      mini_mime (>= 0.1.3)
-      nokogiri (~> 1.8)
-      rack (>= 1.6.0)
-      rack-test (>= 0.6.3)
-      regexp_parser (>= 1.5, < 3.0)
-      xpath (~> 3.2)
 
 GIT
   remote: https://github.com/vtamara/cocoon.git
@@ -202,6 +187,15 @@ GEM
     builder (3.2.4)
     camertron-eprun (1.1.1)
     cancancan (3.4.0)
+    capybara (3.38.0)
+      addressable
+      matrix
+      mini_mime (>= 0.1.3)
+      nokogiri (~> 1.8)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      regexp_parser (>= 1.5, < 3.0)
+      xpath (~> 3.2)
     caxlsx (3.3.0)
       htmlentities (~> 4.3, >= 4.3.4)
       marcel (~> 1.0)
@@ -290,6 +284,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
     odf-report (0.7.3)
       mime-types
@@ -445,7 +441,7 @@ DEPENDENCIES
   bcrypt
   bootsnap (>= 1.1.0)
   cancancan
-  capybara!
+  capybara
   caxlsx
   cocoon!
   coffee-rails
