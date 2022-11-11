@@ -10,6 +10,9 @@ module Sip
       if ENV['CONFIG_HOSTS'] != 'www.example.com'
         raise 'CONFIG_HOSTS debe ser www.example.com'
       end
+      ActiveRecord::Base.connection.execute <<-SQL
+        REFRESH MATERIALIZED VIEW sip_mundep;
+      SQL
     end
 
     # No autenticado

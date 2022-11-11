@@ -73,6 +73,7 @@ if (test "$?" != "0") then {
   exit 1;
 } fi;
 
+bin/rails db:environment:set RAILS_ENV=test
 CONFIG_HOSTS=www.example.com bin/rails test
 if (test "$?" != "0") then {
   echo "No pasaron pruebas de regresion";

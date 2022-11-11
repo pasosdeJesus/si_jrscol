@@ -25,7 +25,9 @@
 
   <div class='row'> <!-- 1 -->
     <div class='col-sm-2'>
-      <label for="actividad_fecha_localizada"><%= @actividad.class.human_attribute_name(:fecha_localizada) %></label>
+      <label for="actividad_fecha_localizada">
+        <%= @actividad.class.human_attribute_name(:fecha_localizada) %>
+      </label>
     </div>
     <div class='col-sm-4'>
       <%= f.input :fecha_localizada, 

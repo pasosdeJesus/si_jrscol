@@ -17,7 +17,6 @@ window.AutocompletaAjaxCampotexto = AutocompletaAjaxCampotexto // Requerido por 
 
 import 'popper.js'              // Dialogos emergentes usados por bootstrap
 import * as bootstrap from 'bootstrap'              // Maquetacion y elementos de diseño
-//window.bootstrap = bootstrap
 
 import 'chosen-js/chosen.jquery';       // Cuadros de seleccion potenciados
 import 'bootstrap-datepicker'

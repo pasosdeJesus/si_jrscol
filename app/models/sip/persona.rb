@@ -1,11 +1,13 @@
-require 'date'
-require 'sivel2_sjr/concerns/models/persona'
+require 'sivel2_gen/concerns/models/persona'
+require 'cor1440_gen/concerns/models/persona'
 
 module Sip
   class Persona < ActiveRecord::Base
-    include Sip::Modelo
-    include Sivel2Sjr::Concerns::Models::Persona
+    include Sivel2Gen::Concerns::Models::Persona
+    include Cor1440Gen::Concerns::Models::Persona
 
+    has_many :casosjr, class_name: 'Sivel2Sjr::Casosjr',
+      foreign_key: "contacto_id"
 
     has_and_belongs_to_many :detallefinanciero, 
       class_name: '::Detallefinanciero',
@@ -35,9 +37,9 @@ module Sip
     validates :apellidos, presence: true, allow_blank: false,
       length: { maximum: 100}
 
-    validates :tdocumento_id, presence: true, allow_blank: false
+    validates :tdocumento, presence: true, allow_blank: false
     validates :numerodocumento, presence: true, allow_blank: false, 
-      uniqueness: { scope: :tdocumento_id,
+      uniqueness: { scope: :tdocumento,
                     message: "Tipo y número de documento repetido" 
       }
 

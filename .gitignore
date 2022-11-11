@@ -58,3 +58,4 @@ tmpsql/
 ref/
 app/assets/builds
 app/javascript/controllers/sip
+app/javascript/controllers/cor1440_gen

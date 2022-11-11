@@ -1,4 +1,5 @@
-require 'sivel2_sjr/concerns/controllers/personas_controller'
+require 'sivel2_gen/concerns/controllers/personas_controller'
+require 'cor1440_gen/concerns/controllers/personas_controller'
 
 module Sip
   class PersonasController < Heb412Gen::ModelosController
@@ -6,12 +7,42 @@ module Sip
     before_action :set_persona, only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource class: Sip::Persona
 
-    include Sivel2Sjr::Concerns::Controllers::PersonasController
+    include Sivel2Gen::Concerns::Controllers::PersonasController
+    include Cor1440Gen::Concerns::Controllers::PersonasController
+
+
+    def atributos_show_sivel2_sjr
+      a = atributos_show_sip - [
+        :mesnac, 
+        :dianac
+      ] + [ 
+        :caso_ids, 
+        :proyectofinanciero_ids, 
+        :actividad_ids, 
+        :actividadcasobeneficiario_ids 
+      ]
+      a[a.index(:anionac)] = :fechanac 
+      a
+    end
 
     def atributos_show
       atributos_show_sivel2_sjr + [
         :detallefinanciero_ids,
         :etiqueta_ids
+      ]
+    end
+
+    def atributos_index_sivel2_sjr
+      [ :id, 
+        :nombres,
+        :apellidos,
+        :tdocumento_id,
+        :numerodocumento,
+        :fechanac,
+        :sexo,
+        :municipio,
+        :actividad_ids,
+        :actividadcasobeneficiario_ids
       ]
     end
 
@@ -22,6 +53,23 @@ module Sip
       ]
     end 
 
+    def atributos_form_sivel2_sjr
+      a = atributos_show - [
+        # :id,   NO quitamos id porque tiene un campo escondido
+        :caso_ids, 
+        :actividad_ids, 
+        :actividadcasobeneficiario_ids
+      ] + [
+        :caracterizaciones
+      ]
+      # Cambia fechanac por dia, mes, año
+      p = a.index(:fechanac)
+      a[p] = :anionac
+      a.insert(p, :mesnac)
+      a.insert(p, :dianac)
+      return a
+    end
+
     def atributos_form
       a = atributos_form_sivel2_sjr - [
         :detallefinanciero_ids, :etiqueta_ids] +
@@ -29,9 +77,122 @@ module Sip
       return a
     end
 
+
+    def vistas_manejadas
+      ['Persona']
+    end
+
+    # Busca y lista persona(s)
+
+    def index(c = nil)
+      if c == nil
+        c = Sip::Persona.all
+      end
+      if params[:term]
+        term = Sivel2Gen::Caso.connection.quote_string(params[:term])
+        consNomvic = term.downcase.strip #sin_tildes
+        consNomvic.gsub!(/ +/, ":* & ")
+        if consNomvic.length > 0
+          consNomvic += ":*"
+        end
+        where = " persona.buscable @@ "\
+          "to_tsquery('spanish', '#{consNomvic}')";
+
+        partes = [
+          'nombres',
+          'apellidos',
+          'COALESCE(numerodocumento::TEXT, \'\')'
+        ]
+        s = "";
+        l = " persona.id ";
+        seps = "";
+        sepl = " || ';' || ";
+        partes.each do |p|
+          s += seps + p;
+          l += sepl + "char_length(#{p})";
+          seps = " || ' ' || ";
+        end
+        qstring = "SELECT TRIM(#{s}) AS value, #{l} AS id " +
+          "FROM public.sip_persona AS persona " +
+          "WHERE #{where} ORDER BY 1 LIMIT 20"
+        r = ActiveRecord::Base.connection.select_all qstring
+        respond_to do |format|
+          format.json { render :json, inline: r.to_json }
+          format.html { render :json, inline: 'No responde con parametro term' }
+        end
+      else
+        super(c)
+      end
+    end
+
+    # Están listas @persona, @victima, @personaant, @caso
+    # Y está listo para salvar la nueva persona @persona en
+    # @victima --remplazando @personaant.
+    # Continúa si esta función retorna true, de lo contrario
+    # se espera que la función haga render json con el error
+    # y que retorne false.
+    def remplazar_antes_salvar_v
+      ce = Sivel2Sjr::Casosjr.where(contacto: @persona.id)
+      if ce.count > 0
+        render json: "Ya es contacto en el caso #{ce.take.id_caso}.",
+          status: :unprocessable_entity
+        return false
+      end
+      ve = Sivel2Sjr::Victimasjr.joins('JOIN sivel2_gen_victima ' +
+                                       ' ON sivel2_gen_victima.id = sivel2_sjr_victimasjr.id_victima').
+                                       where('sivel2_gen_victima.id_persona' => @persona.id).
+                                       where(fechadesagregacion: nil)
+      if ve.count > 0
+        render json: "Está en núcleo familiar sin desagregar " +
+          "en el caso #{ve.take.victima.id_caso}", 
+          status: :unprocessable_entity
+        return false
+      end
+      # Si se está remplazando el contacto, borra la persona
+      # vacía que era contacto --y por lo mismo sólo permite 
+      # cuando es un contacto vacío.
+      if @caso.casosjr.contacto && @personaant &&
+          @caso.casosjr.contacto_id == @personaant.id 
+        if @caso.casosjr.contacto.nombres != ""
+          render json: "Ya hay una persona asociada. No se remplaza,",
+            status: :unprocessable_entity
+          return false
+        else
+          ppb=@caso.casosjr.contacto_id
+          @caso.casosjr.contacto_id = nil
+          @caso.casosjr.save!(validate: false)
+          vic = @caso.victima.where(id_persona: ppb).take
+          vic.id_persona=@persona.id
+          vic.save(validate: false)
+          @caso.casosjr.contacto_id = @persona.id
+          @caso.casosjr.save!(validate: false)
+          #redirect_to sivel2_gen.edit_caso_path(@caso)
+          begin
+            @personaant.destroy
+            render partial: '/sip/personas/remplazar', layout: false
+          rescue
+          end
+          return false # buscar obligar el redirect_to
+        end
+      end
+
+      return true
+    end
+
+    def remplazar_despues_salvar_v
+      if @caso.casosjr.contacto.id == @personaant.id
+        @caso.casosjr.contacto = @persona
+        @caso.casosjr.save
+        if @caso.validate
+          @caso.save
+        end
+      end
+      return true
+    end
+
     def new
       @encform_html = {
-        'data-controller': 'sindocaut'
+        'data-controller': 'sip--sindocaut'
       }
       new_gen
       render layout: 'application'
@@ -39,7 +200,7 @@ module Sip
 
     def edit
       @encform_html = {
-        'data-controller': 'sindocaut'
+        'data-controller': 'sip--sindocaut'
       }
       edit_gen
     end
@@ -228,35 +389,7 @@ module Sip
         :tdocumento_id,
         :numerodocumento
       ] +
-#     [
-#       :datosbio_attributes => [
-#         :afiliadoarl,
-#         :anioaprobacion,
-#         :correo,
-#         :cvulnerabilidad_id,
-#         :res_departamento_id,
-#         :direccionres,
-#         :otradiscapacidad,
-#         :eps,
-#         :discapacidad_id,
-#         :escolaridad_id,
-#         :espaciopart_id,
-#         :fechaingespaciopp,
-#         :mayores60acargo,
-#         :menores12acargo,
-#         :res_municipio_id,
-#         :nivelsisben,
-#         :nombreespaciopp,
-#         :personashogar,
-#         :telefono,
-#         :veredares,
-#         :sistemapensional,
-#         :subsidioestado,
-#         :telefono,
-#         :tipocotizante
-#       ]
-#      ] + 
-      [
+     [
         "caracterizacionpersona_attributes" =>
         [ :id,
           "respuestafor_attributes" => [
