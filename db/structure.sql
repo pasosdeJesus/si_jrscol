@@ -2161,6 +2161,29 @@ ALTER SEQUENCE public.cor1440_gen_asistencia_id_seq OWNED BY public.cor1440_gen_
 
 
 --
+-- Name: cor1440_gen_benefext; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_benefext AS
+ SELECT DISTINCT sub.actividad_id,
+    sub.persona_id,
+    sub.persona_actividad_perfil
+   FROM ( SELECT ac.id AS actividad_id,
+            v.id_persona AS persona_id,
+            ''::character varying AS persona_actividad_perfil
+           FROM ((public.cor1440_gen_actividad ac
+             JOIN public.sivel2_sjr_actividad_casosjr accas ON ((accas.actividad_id = ac.id)))
+             JOIN public.sivel2_gen_victima v ON ((v.id_caso = accas.casosjr_id)))
+        UNION
+         SELECT ac.id AS actividad_id,
+            asis.persona_id,
+            COALESCE(porg.nombre) AS person_actividad_perfil
+           FROM ((public.cor1440_gen_actividad ac
+             JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
+             LEFT JOIN public.sip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
+
+
+--
 -- Name: cor1440_gen_benefext2; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -2184,7 +2207,7 @@ CREATE VIEW public.cor1440_gen_benefext2 AS
            FROM public.sivel2_gen_victima
           WHERE (sivel2_gen_victima.id_persona = p.id)), ','::text) AS persona_caso_ids,
     p.id AS persona_id
-   FROM ((((((((public.benefext b
+   FROM ((((((((public.cor1440_gen_benefext b
      JOIN public.cor1440_gen_actividad a ON ((a.id = b.actividad_id)))
      JOIN public.sip_oficina o ON ((o.id = a.oficina_id)))
      JOIN public.sip_persona p ON ((p.id = b.persona_id)))
@@ -2234,31 +2257,8 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                           WHERE (aapf.actividad_id = be.actividad_id)))
                   ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_id = 41952))
+  WHERE (true AND (be.actividad_id = ANY (ARRAY[41973, 41952, 41955, 41956, 41924, 41937, 41893, 41894, 41896, 41897, 41915, 41920, 41954, 41961, 41801, 41809, 41817, 41887, 41888, 41889, 41890, 41786, 41799, 41902, 41658, 41741, 41773, 41802, 41803, 41805, 41807, 41810, 41813, 41814, 41818, 41819, 41820, 41821, 41914, 41583, 41588, 41673, 41825, 41550, 41565, 41594, 41943, 41957, 41664, 41932, 41436, 41438, 41468, 41616, 41623, 41627, 41630, 41640, 41644, 41646, 41659, 41661, 41672, 41557, 41578, 41432, 41434, 41437, 41477, 41542, 41546, 41694, 41881, 41882, 41883, 41884, 41885, 41886, 41960, 41330, 41374, 41431, 41524, 41582, 41589, 41765, 41959, 41476, 41552, 41950, 41490, 41506, 41575, 41579, 41632, 41635, 41310, 41573, 41624, 41626, 41628, 41629, 41639, 41641, 41643, 41657, 41696, 41548, 41738, 41483, 41648, 41652, 41685, 41397, 41449, 41540, 41577, 41823, 41958])))
   WITH NO DATA;
-
-
---
--- Name: cor1440_gen_benefext; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.cor1440_gen_benefext AS
- SELECT DISTINCT sub.actividad_id,
-    sub.persona_id,
-    sub.persona_actividad_perfil
-   FROM ( SELECT ac.id AS actividad_id,
-            v.id_persona AS persona_id,
-            ''::character varying AS persona_actividad_perfil
-           FROM ((public.cor1440_gen_actividad ac
-             JOIN public.sivel2_sjr_actividad_casosjr accas ON ((accas.actividad_id = ac.id)))
-             JOIN public.sivel2_gen_victima v ON ((v.id_caso = accas.casosjr_id)))
-        UNION
-         SELECT ac.id AS actividad_id,
-            asis.persona_id,
-            COALESCE(porg.nombre) AS person_actividad_perfil
-           FROM ((public.cor1440_gen_actividad ac
-             JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
-             LEFT JOIN public.sip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
 
 
 --
@@ -7200,7 +7200,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 116)
+          WHERE (sivel2_gen_conscaso.fecharec >= '2022-09-22'::date)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -10269,6 +10269,14 @@ ALTER TABLE ONLY public.sivel2_gen_contexto
 
 
 --
+-- Name: cor1440_gen_actividad cor1440_gen_actividad_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_actividad
+    ADD CONSTRAINT cor1440_gen_actividad_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: cor1440_gen_actividad_proyecto cor1440_gen_actividad_proyecto_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -11493,14 +11501,6 @@ ALTER TABLE ONLY public.sip_vereda
 
 
 --
--- Name: cor1440_gen_actividad sivel2_gen_actividad_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cor1440_gen_actividad
-    ADD CONSTRAINT sivel2_gen_actividad_pkey PRIMARY KEY (id);
-
-
---
 -- Name: cor1440_gen_actividad_rangoedadac sivel2_gen_actividad_rangoedadac_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -12094,6 +12094,20 @@ CREATE INDEX cor1440_gen_actividad_actividadpf_actividadpf_id_ind ON public.cor1
 --
 
 CREATE INDEX cor1440_gen_actividad_fecha_ind ON public.cor1440_gen_actividad USING btree (fecha);
+
+
+--
+-- Name: cor1440_gen_actividad_id_actividadpf_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX cor1440_gen_actividad_id_actividadpf_id_idx ON public.cor1440_gen_actividad_actividadpf USING btree (actividad_id, actividadpf_id);
+
+
+--
+-- Name: cor1440_gen_actividad_id_persona_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX cor1440_gen_actividad_id_persona_id_idx ON public.cor1440_gen_asistencia USING btree (actividad_id, persona_id);
 
 
 --
@@ -16953,6 +16967,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221019102006'),
 ('20221102144613'),
 ('20221102145906'),
-('20221108051532');
+('20221108051532'),
+('20221112113323');
 
 
