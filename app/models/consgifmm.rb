@@ -152,18 +152,28 @@ class Consgifmm < ActiveRecord::Base
 
   def beneficiarios_nuevos_mes_ids
     idp = beneficiarios_ids.split(',').select {|pid|
-      #p = Sip::Persona.find(pid.to_i)
-      c = ::Detallefinanciero.joins(:actividad).joins(:persona).where(
-        proyectofinanciero_id: self.proyectofinanciero_id).where(
-          actividadpf_id: self.actividadpf_id).where(
-            'cor1440_gen_actividad.fecha < ? ' +
-            'OR (cor1440_gen_actividad.fecha = ? '+
-            'AND detallefinanciero.id < ?)', self.fecha, self.fecha, 
-            self.detallefinanciero_id).
-            where('sip_persona.id = ?', pid.to_i)
+
+      c = Cor1440Gen::Asistencia.joins(:actividad).joins(:persona).
+        joins(
+          'JOIN cor1440_gen_actividad_actividadpf '\
+          'ON cor1440_gen_actividad_actividadpf.actividad_id=cor1440_gen_asistencia.actividad_id'\
+          ' AND cor1440_gen_actividad_actividadpf.actividadpf_id='+self.actividadpf_id.to_s).
+          where( # actividadpf lleva implicito proyectopf
+                'cor1440_gen_actividad.fecha < ? ', 
+                self.fecha.at_beginning_of_month).
+                where('sip_persona.id = ?', pid.to_i)
+
+      # Definicion de nuevo si usaran detalle financiero
+      #c = ::Detallefinanciero.joins(:actividad).joins(:persona).where(
+      #  proyectofinanciero_id: self.proyectofinanciero_id).where(
+      #    actividadpf_id: self.actividadpf_id).where(
+      #      'cor1440_gen_actividad.fecha < ? ' +
+      #      'OR (cor1440_gen_actividad.fecha = ? '+
+      #      'AND detallefinanciero.id < ?)', self.fecha, self.fecha, 
+      #      self.detallefinanciero_id).
+      #      where('sip_persona.id = ?', pid.to_i)
       c.count == 0
     }
-
     idp.sort.uniq.join(",")
   end
 
