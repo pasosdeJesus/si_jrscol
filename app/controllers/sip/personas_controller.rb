@@ -19,7 +19,6 @@ module Sip
         :caso_ids, 
         :proyectofinanciero_ids, 
         :actividad_ids, 
-        :actividadcasobeneficiario_ids 
       ]
       a[a.index(:anionac)] = :fechanac 
       a

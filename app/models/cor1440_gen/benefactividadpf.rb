@@ -42,15 +42,8 @@ module Cor1440Gen
       CREATE OR REPLACE VIEW cor1440_gen_benefext AS 
         SELECT DISTINCT actividad_id, persona_id, persona_actividad_perfil
         FROM (
-          SELECT ac.id AS actividad_id, v.id_persona AS persona_id, 
-            '' AS persona_actividad_perfil
-          FROM cor1440_gen_actividad AS ac 
-          JOIN sivel2_sjr_actividad_casosjr AS accas 
-            ON accas.actividad_id=ac.id 
-          JOIN sivel2_gen_victima as v ON v.id_caso=accas.casosjr_id 
-          UNION
           SELECT ac.id AS actividad_id, asis.persona_id, 
-            COALESCE(porg.nombre) AS person_actividad_perfil
+            COALESCE(porg.nombre) AS persona_actividad_perfil
           FROM cor1440_gen_actividad AS ac 
           JOIN cor1440_gen_asistencia AS asis ON asis.actividad_id=ac.id
           LEFT JOIN sip_perfilorgsocial AS porg 

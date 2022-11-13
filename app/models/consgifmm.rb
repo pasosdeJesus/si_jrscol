@@ -562,11 +562,7 @@ class Consgifmm < ActiveRecord::Base
         ARRAY(SELECT DISTINCT persona_id FROM
         (SELECT persona_id FROM cor1440_gen_asistencia 
           WHERE cor1440_gen_asistencia.actividad_id=cor1440_gen_actividad.id
-        UNION
-        SELECT sivel2_gen_victima.id_persona FROM sivel2_sjr_actividad_casosjr
-          JOIN sivel2_gen_victima 
-          ON sivel2_gen_victima.id_caso=sivel2_sjr_actividad_casosjr.casosjr_id
-          WHERE sivel2_sjr_actividad_casosjr.actividad_id=cor1440_gen_actividad.id) AS subpersona_ids)
+        ) AS subpersona_ids)
       ELSE
         ARRAY(SELECT persona_id FROM detallefinanciero_persona WHERE
         detallefinanciero_persona.detallefinanciero_id=detallefinanciero.id)

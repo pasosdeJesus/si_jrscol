@@ -1717,12 +1717,7 @@ CREATE MATERIALIZED VIEW public.consgifmm AS
             WHEN (detallefinanciero.id IS NULL) THEN ARRAY( SELECT DISTINCT subpersona_ids.persona_id
                FROM ( SELECT cor1440_gen_asistencia.persona_id
                        FROM public.cor1440_gen_asistencia
-                      WHERE (cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id)
-                    UNION
-                     SELECT sivel2_gen_victima.id_persona
-                       FROM (public.sivel2_sjr_actividad_casosjr
-                         JOIN public.sivel2_gen_victima ON ((sivel2_gen_victima.id_caso = sivel2_sjr_actividad_casosjr.casosjr_id)))
-                      WHERE (sivel2_sjr_actividad_casosjr.actividad_id = cor1440_gen_actividad.id)) subpersona_ids)
+                      WHERE (cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id)) subpersona_ids)
             ELSE ARRAY( SELECT detallefinanciero_persona.persona_id
                FROM public.detallefinanciero_persona
               WHERE (detallefinanciero_persona.detallefinanciero_id = detallefinanciero.id))
@@ -2158,107 +2153,6 @@ CREATE SEQUENCE public.cor1440_gen_asistencia_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_asistencia_id_seq OWNED BY public.cor1440_gen_asistencia.id;
-
-
---
--- Name: cor1440_gen_benefext; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.cor1440_gen_benefext AS
- SELECT DISTINCT sub.actividad_id,
-    sub.persona_id,
-    sub.persona_actividad_perfil
-   FROM ( SELECT ac.id AS actividad_id,
-            v.id_persona AS persona_id,
-            ''::character varying AS persona_actividad_perfil
-           FROM ((public.cor1440_gen_actividad ac
-             JOIN public.sivel2_sjr_actividad_casosjr accas ON ((accas.actividad_id = ac.id)))
-             JOIN public.sivel2_gen_victima v ON ((v.id_caso = accas.casosjr_id)))
-        UNION
-         SELECT ac.id AS actividad_id,
-            asis.persona_id,
-            COALESCE(porg.nombre) AS person_actividad_perfil
-           FROM ((public.cor1440_gen_actividad ac
-             JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
-             LEFT JOIN public.sip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
-
-
---
--- Name: cor1440_gen_benefext2; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.cor1440_gen_benefext2 AS
- SELECT a.fecha AS actividad_fecha,
-    o.nombre AS actividad_oficina,
-    us.nusuario AS actividad_responsable,
-    t.sigla AS persona_tipodocumento,
-    p.numerodocumento AS persona_numerodocumento,
-    p.nombres AS persona_nombres,
-    p.apellidos AS persona_apellidos,
-    p.sexo AS persona_sexo,
-    p.dianac AS persona_dianac,
-    p.mesnac AS persona_mesnac,
-    p.anionac AS persona_anionac,
-    public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (EXTRACT(year FROM a.fecha))::integer, (EXTRACT(month FROM a.fecha))::integer, (EXTRACT(day FROM a.fecha))::integer) AS persona_actividad_edad,
-    b.persona_actividad_perfil,
-    (((COALESCE(mun.nombre, ''::character varying))::text || ' / '::text) || (COALESCE(dep.nombre, ''::character varying))::text) AS actividad_municipio,
-    a.id AS actividad_id,
-    array_to_string(ARRAY( SELECT DISTINCT sivel2_gen_victima.id_caso
-           FROM public.sivel2_gen_victima
-          WHERE (sivel2_gen_victima.id_persona = p.id)), ','::text) AS persona_caso_ids,
-    p.id AS persona_id
-   FROM ((((((((public.cor1440_gen_benefext b
-     JOIN public.cor1440_gen_actividad a ON ((a.id = b.actividad_id)))
-     JOIN public.sip_oficina o ON ((o.id = a.oficina_id)))
-     JOIN public.sip_persona p ON ((p.id = b.persona_id)))
-     JOIN public.usuario us ON ((us.id = a.usuario_id)))
-     LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
-     LEFT JOIN public.sip_ubicacionpre u ON ((u.id = a.ubicacionpre_id)))
-     LEFT JOIN public.sip_departamento dep ON ((dep.id = u.departamento_id)))
-     LEFT JOIN public.sip_municipio mun ON ((mun.id = u.municipio_id)));
-
-
---
--- Name: cor1440_gen_benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
- SELECT be.actividad_fecha,
-    be.actividad_oficina,
-    be.actividad_responsable,
-    be.persona_tipodocumento,
-    be.persona_numerodocumento,
-    be.persona_nombres,
-    be.persona_apellidos,
-    be.persona_sexo,
-    be.persona_dianac,
-    be.persona_mesnac,
-    be.persona_anionac,
-    be.persona_actividad_edad,
-    be.persona_actividad_perfil,
-    be.actividad_municipio,
-    be.actividad_id,
-    be.persona_caso_ids,
-    be.persona_id,
-    array_to_string(ARRAY( SELECT sub.nombre
-           FROM ( SELECT DISTINCT pf.id,
-                    pf.nombre
-                   FROM public.cor1440_gen_proyectofinanciero pf
-                  WHERE (pf.id IN ( SELECT apf.proyectofinanciero_id
-                           FROM public.cor1440_gen_actividad_proyectofinanciero apf
-                          WHERE (apf.actividad_id = be.actividad_id)))
-                  ORDER BY pf.id DESC) sub), '; '::text) AS actividad_proyectosfinancieros,
-    array_to_string(ARRAY( SELECT sub.nom
-           FROM ( SELECT DISTINCT apf.proyectofinanciero_id,
-                    (((apf.nombrecorto)::text || ': '::text) || (apf.titulo)::text) AS nom
-                   FROM public.cor1440_gen_actividadpf apf
-                  WHERE (apf.id IN ( SELECT aapf.actividadpf_id
-                           FROM public.cor1440_gen_actividad_actividadpf aapf
-                          WHERE (aapf.actividad_id = be.actividad_id)))
-                  ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
-   FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_id = ANY (ARRAY[41973, 41952, 41955, 41956, 41924, 41937, 41893, 41894, 41896, 41897, 41915, 41920, 41954, 41961, 41801, 41809, 41817, 41887, 41888, 41889, 41890, 41786, 41799, 41902, 41658, 41741, 41773, 41802, 41803, 41805, 41807, 41810, 41813, 41814, 41818, 41819, 41820, 41821, 41914, 41583, 41588, 41673, 41825, 41550, 41565, 41594, 41943, 41957, 41664, 41932, 41436, 41438, 41468, 41616, 41623, 41627, 41630, 41640, 41644, 41646, 41659, 41661, 41672, 41557, 41578, 41432, 41434, 41437, 41477, 41542, 41546, 41694, 41881, 41882, 41883, 41884, 41885, 41886, 41960, 41330, 41374, 41431, 41524, 41582, 41589, 41765, 41959, 41476, 41552, 41950, 41490, 41506, 41575, 41579, 41632, 41635, 41310, 41573, 41624, 41626, 41628, 41629, 41639, 41641, 41643, 41657, 41696, 41548, 41738, 41483, 41648, 41652, 41685, 41397, 41449, 41540, 41577, 41823, 41958])))
-  WITH NO DATA;
 
 
 --
@@ -16968,6 +16862,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221102144613'),
 ('20221102145906'),
 ('20221108051532'),
-('20221112113323');
+('20221112113323'),
+('20221113023328'),
+('20221113120724');
 
 
