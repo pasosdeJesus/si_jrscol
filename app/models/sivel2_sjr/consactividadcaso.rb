@@ -9,7 +9,7 @@ class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base
 
   def self.consulta
     "SELECT actividad_id*50000+persona.id AS id,
-        casosjr_id AS caso_id, 
+        caso.id AS caso_id, 
         actividad_id,
         victima.id AS victima_id,
         CASE WHEN casosjr.contacto_id=persona.id THEN 1 ELSE 0 END 
@@ -31,15 +31,15 @@ class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base
         persona.tdocumento_id AS persona_tipodocumento,
         caso.memo AS caso_memo,
         casosjr.fecharec AS caso_fecharec
-        FROM public.sivel2_sjr_actividad_casosjr AS ac
+        FROM public.cor1440_gen_asistencia AS asi
+        INNER JOIN sip_persona AS persona ON persona.id=asi.persona_id 
         INNER JOIN cor1440_gen_actividad AS actividad 
           ON actividad_id=actividad.id
         INNER JOIN sip_oficina AS oficinaac 
           ON oficinaac.id=actividad.oficina_id
-        INNER JOIN sivel2_gen_caso AS caso ON caso.id=casosjr_id
-        INNER JOIN sivel2_sjr_casosjr AS casosjr ON casosjr.id_caso=casosjr_id
-        INNER JOIN sivel2_gen_victima AS victima ON victima.id_caso=caso.id
-        INNER JOIN sip_persona AS persona ON persona.id=victima.id_persona
+        INNER JOIN sivel2_gen_victima AS victima ON victima.id_persona=persona.id
+        INNER JOIN sivel2_gen_caso AS caso ON victima.id_caso=caso.id
+        INNER JOIN sivel2_sjr_casosjr AS casosjr ON caso.id=casosjr.id_caso
     "
   end
 end
