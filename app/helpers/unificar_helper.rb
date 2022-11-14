@@ -325,19 +325,6 @@ module UnificarHelper
       tmenserr << "Primera y segunda identificación son iguales, no unificando.\n"
     end
 
-    c = Sivel2Sjr::ActividadCasosjr.connection.execute "
-     SELECT DISTINCT ac1.actividad_id FROM sivel2_sjr_actividad_casosjr AS ac1 
-       JOIN sivel2_sjr_actividad_casosjr AS ac2 
-       ON ac1.actividad_id=ac2.actividad_id 
-       WHERE ac1.casosjr_id=#{c1_id}
-       AND ac2.casosjr_id=#{c2_id}
-    "
-    if c.count > 0
-      tmenserr << "Ambos casos son casos beneficiarios simultaneamente en "\
-        "#{c.count} actividades (#{c.pluck("actividad_id").join(", ")}). "\
-        "Elimine uno de los dos casos en cada una.\n"
-    end
-
     if tmenserr != ""
       menserror << tmenserr
       return nil

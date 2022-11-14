@@ -52,14 +52,18 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
     if !ActiveRecord::Base.connection.data_source_exists? 'sivel2_sjr_ultimaatencion_aux'
       ActiveRecord::Base.connection.execute(
         "CREATE OR REPLACE VIEW sivel2_sjr_ultimaatencion_aux AS 
-           SELECT ac1.casosjr_id AS caso_id, a1.fecha, a1.id AS actividad_id
-           FROM  public.sivel2_sjr_actividad_casosjr AS ac1
-             LEFT JOIN public.cor1440_gen_actividad AS a1 ON ac1.actividad_id=a1.id
-             WHERE (ac1.casosjr_id, a1.fecha, a1.id) IN
-           (SELECT ac2.casosjr_id, a2.fecha, a2.id AS actividad_id
-             FROM public.sivel2_sjr_actividad_casosjr AS ac2
-             JOIN public.cor1440_gen_actividad AS a2 ON ac2.actividad_id=a2.id
-             WHERE ac2.casosjr_id=ac1.casosjr_id
+           SELECT v1.id_caso AS caso_id, a1.fecha, a1.id AS actividad_id
+           FROM  public.cor1440_gen_asistencia AS asi1
+             JOIN public.cor1440_gen_actividad AS a1 ON asi1.actividad_id=a1.id
+             JOIN public.sip_persona as p1 ON p1.id=asi1.persona_id
+             JOIN public.sivel2_gen_victima as v1 ON v1.id_persona=p1.id
+             WHERE (v1.id_caso, a1.fecha, a1.id) IN
+           (SELECT v2.id_caso, a2.fecha, a2.id AS actividad_id
+             FROM public.cor1440_gen_asistencia AS asi2
+             JOIN public.cor1440_gen_actividad AS a2 ON asi2.actividad_id=a2.id
+             JOIN public.sip_persona as p2 ON p2.id=asi2.persona_id
+             JOIN public.sivel2_gen_victima as v2 ON v2.id_persona=p2.id
+             WHERE v2.id_caso=v1.id_caso
              ORDER BY 2 DESC, 3 DESC LIMIT 1);"
       )
     end

@@ -23,9 +23,7 @@ end
 def cuenta_poblacion_0
   ap0 = Cor1440Gen::Actividad.all
   puts "Encontrando actividades con cuenta de poblacion en 0 entre las #{ap0.count}"
-  ap0 = ap0.where(
-    'id IN (SELECT actividad_id FROM cor1440_gen_asistencia '\
-    '  UNION SELECT actividad_id FROM sivel2_sjr_actividad_casosjr)')
+  ap0 = ap0.where('id IN (SELECT actividad_id FROM cor1440_gen_asistencia)')
   puts "Limitando a #{ap0.count} que tienen listaso de asistencia o listado de casos"
   univ = ap0.count
   c = 0
@@ -45,11 +43,6 @@ def cuenta_poblacion_0
     personas = {}
     a.asistencia.each do |asist|
       personas[asist.persona.id] = 1
-    end
-    a.actividad_casosjr.each do |ac|
-      Sivel2Sjr::Victimasjr.joins(:victima).where('sivel2_gen_victima.id_caso' => ac.casosjr.id_caso).where(fechadesagregacion: nil).each do |vs|
-        personas[vs.victima.id_persona] = 1
-      end
     end
 
     rangoedadsexo = {}

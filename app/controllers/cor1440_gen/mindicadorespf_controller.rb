@@ -267,9 +267,9 @@ module Cor1440Gen
         return Sivel2Gen::Victima.
           joins('JOIN sivel2_sjr_victimasjr ON sivel2_gen_victima.id=sivel2_sjr_victimasjr.id_victima').
           joins('JOIN sip_persona ON sip_persona.id=sivel2_gen_victima.id_persona').
-          joins('JOIN sivel2_sjr_actividad_casosjr ON casosjr_id=sivel2_gen_victima.id_caso').
-          where(:'sivel2_sjr_actividad_casosjr.actividad_id' => idacs).
-          where(:'sivel2_sjr_victimasjr.id_maternidad' => idmat).
+          joins('JOIN cor1440_gen_asistencia ON cor1440_gen_asistencia.persona_id=sip_persona.id').
+          where('cor1440_gen_asistencia.actividad.id': idacs).
+          where('sivel2_sjr_victimasjr.id_maternidad':  idmat).
           pluck('id_persona').uniq
       end
 
@@ -280,9 +280,10 @@ module Cor1440Gen
           anio_ac = act.fecha.year
           mes_ac = act.fecha.month
           dia_ac = act.fecha.day
-          act.actividad_casosjr.each do |acaso|
-            acaso.casosjr.caso.victima.each do |victima|
-              if acaso.casosjr.contacto_id != victima.id_persona # Beneficiario
+          act.asistencia.each do |asis|
+            v = Sivel2Gen::Victima.where(id_persona: asis.persona_id)
+            v.each do |victima|
+              if v.caso.casosjr.contacto_id != victima.id_persona # Beneficiario
                 per = victima.persona
                 edad_ben = Sivel2Gen::RangoedadHelper.
                   edad_de_fechanac_fecha(per.anionac, per.mesnac, per.dianac, 
