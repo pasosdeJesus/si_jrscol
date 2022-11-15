@@ -43,9 +43,17 @@ module Sip
 
     attr_accessor :fechanac
     def fechanac
-      return Date.new(anionac && anionac > 0 ? anionac : 1900,
-                  mesnac && mesnac > 0 && mesnac < 13 ? mesnac : 6,
-                  dianac && dianac > 0 && dianac < 32 ? dianac : 15)
+      a = anionac && anionac > 0 ? anionac : 1900
+      m = mesnac && mesnac > 0 && mesnac < 13 ? mesnac : 6
+      d = dianac && dianac > 0 && dianac < 32 ? dianac : 15
+      ud = Date.civil(a, m, -1)
+      if d > ud.day
+        self.dianac = ud.day
+        self.save(validate: false)
+        puts "Arreglando fecha invalida (#{a}, #{m}, #{d}) por (#{a}, #{m}, #{self.dianac})"
+        d = self.dianac
+      end
+      return Date.new(a, m, d)
     end
 
     def fechanac=(valc)
