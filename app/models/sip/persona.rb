@@ -50,10 +50,8 @@ module Sip
       d = dianac && dianac > 0 && dianac < 32 ? dianac : 15
       ud = Date.civil(a, m, -1)
       if d > ud.day
-        self.dianac = ud.day
-        self.save(validate: false)
-        puts "Arreglando fecha invalida (#{a}, #{m}, #{d}) por (#{a}, #{m}, #{self.dianac})"
-        d = self.dianac
+        puts "En persona #{self.id} fecha de nacimiento invalida (#{a}, #{m}, #{d}) por (#{a}, #{m}, #{self.dianac})"
+        d = ud.day
       end
       return Date.new(a, m, d)
     end
