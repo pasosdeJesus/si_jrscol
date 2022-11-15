@@ -1630,6 +1630,120 @@ CREATE VIEW public.cmunrec AS
 
 
 --
+-- Name: depgifmm; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.depgifmm (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: detallefinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.detallefinanciero (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    proyectofinanciero_id integer,
+    actividadpf_id integer,
+    unidadayuda_id integer,
+    cantidad integer,
+    valorunitario integer,
+    valortotal integer,
+    mecanismodeentrega_id integer,
+    modalidadentrega_id integer,
+    tipotransferencia_id integer,
+    frecuenciaentrega_id integer,
+    numeromeses integer,
+    numeroasistencia integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: detallefinanciero_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.detallefinanciero_persona (
+    detallefinanciero_id integer NOT NULL,
+    persona_id integer
+);
+
+
+--
+-- Name: mungifmm; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mungifmm (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: consgifmm; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.consgifmm AS
+ SELECT (((((cor1440_gen_actividad.id)::text || '-'::text) || (cor1440_gen_actividadpf.id)::text) || '-'::text) || COALESCE((detallefinanciero.id)::text, ''::text)) AS id,
+    detallefinanciero.id AS detallefinanciero_id,
+    cor1440_gen_actividad.id AS actividad_id,
+    cor1440_gen_actividadpf.proyectofinanciero_id,
+    cor1440_gen_actividadpf.id AS actividadpf_id,
+    detallefinanciero.unidadayuda_id,
+    detallefinanciero.cantidad,
+    detallefinanciero.valorunitario,
+    detallefinanciero.valortotal,
+    detallefinanciero.mecanismodeentrega_id,
+    detallefinanciero.modalidadentrega_id,
+    detallefinanciero.tipotransferencia_id,
+    detallefinanciero.frecuenciaentrega_id,
+    detallefinanciero.numeromeses,
+    detallefinanciero.numeroasistencia,
+        CASE
+            WHEN (detallefinanciero.id IS NULL) THEN ARRAY( SELECT DISTINCT subpersona_ids.persona_id
+               FROM ( SELECT cor1440_gen_asistencia.persona_id
+                       FROM public.cor1440_gen_asistencia
+                      WHERE (cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id)) subpersona_ids)
+            ELSE ARRAY( SELECT detallefinanciero_persona.persona_id
+               FROM public.detallefinanciero_persona
+              WHERE (detallefinanciero_persona.detallefinanciero_id = detallefinanciero.id))
+        END AS persona_ids,
+    cor1440_gen_actividad.objetivo AS actividad_objetivo,
+    cor1440_gen_actividad.fecha,
+    cor1440_gen_proyectofinanciero.nombre AS conveniofinanciado_nombre,
+    cor1440_gen_actividadpf.titulo AS actividadmarcologico_nombre,
+    depgifmm.nombre AS departamento_gifmm,
+    mungifmm.nombre AS municipio_gifmm
+   FROM (((((((((public.cor1440_gen_actividad
+     JOIN public.cor1440_gen_actividad_actividadpf ON ((cor1440_gen_actividad.id = cor1440_gen_actividad_actividadpf.actividad_id)))
+     JOIN public.cor1440_gen_actividadpf ON ((cor1440_gen_actividadpf.id = cor1440_gen_actividad_actividadpf.actividadpf_id)))
+     JOIN public.cor1440_gen_proyectofinanciero ON ((cor1440_gen_actividadpf.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)))
+     LEFT JOIN public.detallefinanciero ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
+     LEFT JOIN public.sip_ubicacionpre ON ((cor1440_gen_actividad.ubicacionpre_id = sip_ubicacionpre.id)))
+     LEFT JOIN public.sip_departamento ON ((sip_ubicacionpre.departamento_id = sip_departamento.id)))
+     LEFT JOIN public.depgifmm ON ((sip_departamento.id_deplocal = depgifmm.id)))
+     LEFT JOIN public.sip_municipio ON ((sip_ubicacionpre.municipio_id = sip_municipio.id)))
+     LEFT JOIN public.mungifmm ON ((((sip_departamento.id_deplocal * 1000) + sip_municipio.id_munlocal) = mungifmm.id)))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)))
+  ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
+  WITH NO DATA;
+
+
+--
 -- Name: copiaacran; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2039,6 +2153,100 @@ CREATE SEQUENCE public.cor1440_gen_asistencia_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_asistencia_id_seq OWNED BY public.cor1440_gen_asistencia.id;
+
+
+--
+-- Name: cor1440_gen_benefext; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_benefext AS
+ SELECT DISTINCT sub.actividad_id,
+    sub.persona_id,
+    sub.persona_actividad_perfil
+   FROM ( SELECT ac.id AS actividad_id,
+            asis.persona_id,
+            COALESCE(porg.nombre) AS persona_actividad_perfil
+           FROM ((public.cor1440_gen_actividad ac
+             JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
+             LEFT JOIN public.sip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
+
+
+--
+-- Name: cor1440_gen_benefext2; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_benefext2 AS
+ SELECT a.fecha AS actividad_fecha,
+    o.nombre AS actividad_oficina,
+    us.nusuario AS actividad_responsable,
+    t.sigla AS persona_tipodocumento,
+    p.numerodocumento AS persona_numerodocumento,
+    p.nombres AS persona_nombres,
+    p.apellidos AS persona_apellidos,
+    p.sexo AS persona_sexo,
+    p.dianac AS persona_dianac,
+    p.mesnac AS persona_mesnac,
+    p.anionac AS persona_anionac,
+    public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (EXTRACT(year FROM a.fecha))::integer, (EXTRACT(month FROM a.fecha))::integer, (EXTRACT(day FROM a.fecha))::integer) AS persona_actividad_edad,
+    b.persona_actividad_perfil,
+    (((COALESCE(mun.nombre, ''::character varying))::text || ' / '::text) || (COALESCE(dep.nombre, ''::character varying))::text) AS actividad_municipio,
+    a.id AS actividad_id,
+    array_to_string(ARRAY( SELECT DISTINCT sivel2_gen_victima.id_caso
+           FROM public.sivel2_gen_victima
+          WHERE (sivel2_gen_victima.id_persona = p.id)), ','::text) AS persona_caso_ids,
+    p.id AS persona_id
+   FROM ((((((((public.cor1440_gen_benefext b
+     JOIN public.cor1440_gen_actividad a ON ((a.id = b.actividad_id)))
+     JOIN public.sip_oficina o ON ((o.id = a.oficina_id)))
+     JOIN public.sip_persona p ON ((p.id = b.persona_id)))
+     JOIN public.usuario us ON ((us.id = a.usuario_id)))
+     LEFT JOIN public.sip_tdocumento t ON ((t.id = p.tdocumento_id)))
+     LEFT JOIN public.sip_ubicacionpre u ON ((u.id = a.ubicacionpre_id)))
+     LEFT JOIN public.sip_departamento dep ON ((dep.id = u.departamento_id)))
+     LEFT JOIN public.sip_municipio mun ON ((mun.id = u.municipio_id)));
+
+
+--
+-- Name: cor1440_gen_benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
+ SELECT be.actividad_fecha,
+    be.actividad_oficina,
+    be.actividad_responsable,
+    be.persona_tipodocumento,
+    be.persona_numerodocumento,
+    be.persona_nombres,
+    be.persona_apellidos,
+    be.persona_sexo,
+    be.persona_dianac,
+    be.persona_mesnac,
+    be.persona_anionac,
+    be.persona_actividad_edad,
+    be.persona_actividad_perfil,
+    be.actividad_municipio,
+    be.actividad_id,
+    be.persona_caso_ids,
+    be.persona_id,
+    array_to_string(ARRAY( SELECT sub.nombre
+           FROM ( SELECT DISTINCT pf.id,
+                    pf.nombre
+                   FROM public.cor1440_gen_proyectofinanciero pf
+                  WHERE (pf.id IN ( SELECT apf.proyectofinanciero_id
+                           FROM public.cor1440_gen_actividad_proyectofinanciero apf
+                          WHERE (apf.actividad_id = be.actividad_id)))
+                  ORDER BY pf.id DESC) sub), '; '::text) AS actividad_proyectosfinancieros,
+    array_to_string(ARRAY( SELECT sub.nom
+           FROM ( SELECT DISTINCT apf.proyectofinanciero_id,
+                    (((apf.nombrecorto)::text || ': '::text) || (apf.titulo)::text) AS nom
+                   FROM public.cor1440_gen_actividadpf apf
+                  WHERE (apf.id IN ( SELECT aapf.actividadpf_id
+                           FROM public.cor1440_gen_actividad_actividadpf aapf
+                          WHERE (aapf.actividad_id = be.actividad_id)))
+                  ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
+   FROM public.cor1440_gen_benefext2 be
+  WHERE (true AND (be.actividad_fecha >= '2022-01-01'::date) AND (be.actividad_fecha <= '2022-06-30'::date))
+  WITH NO DATA;
 
 
 --
@@ -3222,21 +3430,6 @@ ALTER SEQUENCE public.declaracionruv_id_seq OWNED BY public.declaracionruv.id;
 
 
 --
--- Name: depgifmm; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.depgifmm (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: depgifmm_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3283,30 +3476,6 @@ CREATE TABLE public.despacho (
 
 
 --
--- Name: detallefinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.detallefinanciero (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    proyectofinanciero_id integer,
-    actividadpf_id integer,
-    unidadayuda_id integer,
-    cantidad integer,
-    valorunitario integer,
-    valortotal integer,
-    mecanismodeentrega_id integer,
-    modalidadentrega_id integer,
-    tipotransferencia_id integer,
-    frecuenciaentrega_id integer,
-    numeromeses integer,
-    numeroasistencia integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: detallefinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3323,16 +3492,6 @@ CREATE SEQUENCE public.detallefinanciero_id_seq
 --
 
 ALTER SEQUENCE public.detallefinanciero_id_seq OWNED BY public.detallefinanciero.id;
-
-
---
--- Name: detallefinanciero_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.detallefinanciero_persona (
-    detallefinanciero_id integer NOT NULL,
-    persona_id integer
-);
 
 
 --
@@ -4567,21 +4726,6 @@ CREATE SEQUENCE public.mr519_gen_valorcampo_id_seq
 --
 
 ALTER SEQUENCE public.mr519_gen_valorcampo_id_seq OWNED BY public.mr519_gen_valorcampo.id;
-
-
---
--- Name: mungifmm; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.mungifmm (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
 
 
 --
@@ -7053,7 +7197,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 116)
+          WHERE (sivel2_gen_conscaso.fecharec >= '2022-10-01'::date)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -8153,6 +8297,49 @@ CREATE SEQUENCE public.sivel2_sjr_comosupo_id_seq
 --
 
 ALTER SEQUENCE public.sivel2_sjr_comosupo_id_seq OWNED BY public.sivel2_sjr_comosupo.id;
+
+
+--
+-- Name: sivel2_sjr_consactividadcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.sivel2_sjr_consactividadcaso AS
+ SELECT ((asi.actividad_id * 50000) + persona.id) AS id,
+    caso.id AS caso_id,
+    asi.actividad_id,
+    victima.id AS victima_id,
+        CASE
+            WHEN (casosjr.contacto_id = persona.id) THEN 1
+            ELSE 0
+        END AS es_contacto,
+    actividad.fecha AS actividad_fecha,
+    ( SELECT sip_oficina.nombre
+           FROM public.sip_oficina
+          WHERE (sip_oficina.id = actividad.oficina_id)
+         LIMIT 1) AS actividad_oficina,
+    ( SELECT usuario.nusuario
+           FROM public.usuario
+          WHERE (usuario.id = actividad.usuario_id)
+         LIMIT 1) AS actividad_responsable,
+    array_to_string(ARRAY( SELECT cor1440_gen_proyectofinanciero.nombre
+           FROM public.cor1440_gen_proyectofinanciero
+          WHERE (cor1440_gen_proyectofinanciero.id IN ( SELECT apf.proyectofinanciero_id
+                   FROM public.cor1440_gen_actividad_proyectofinanciero apf
+                  WHERE (apf.actividad_id = actividad.id)))), ','::text) AS actividad_convenios,
+    persona.id AS persona_id,
+    persona.nombres AS persona_nombres,
+    persona.apellidos AS persona_apellidos,
+    persona.tdocumento_id AS persona_tipodocumento,
+    caso.memo AS caso_memo,
+    casosjr.fecharec AS caso_fecharec
+   FROM ((((((public.cor1440_gen_asistencia asi
+     JOIN public.sip_persona persona ON ((persona.id = asi.persona_id)))
+     JOIN public.cor1440_gen_actividad actividad ON ((asi.actividad_id = actividad.id)))
+     JOIN public.sip_oficina oficinaac ON ((oficinaac.id = actividad.oficina_id)))
+     JOIN public.sivel2_gen_victima victima ON ((victima.id_persona = persona.id)))
+     JOIN public.sivel2_gen_caso caso ON ((victima.id_caso = caso.id)))
+     JOIN public.sivel2_sjr_casosjr casosjr ON ((caso.id = casosjr.id_caso)))
+  WITH NO DATA;
 
 
 --
@@ -16783,6 +16970,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221113120724'),
 ('20221114032511'),
 ('20221114034442'),
-('20221115023319');
+('20221115023319'),
+('20221115102504');
 
 
