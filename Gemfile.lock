@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 92d47c12009aa4deccfe5f48e71ef86d3dd67036
+  revision: 5a0265e8b20e405542fe467b6171ec200fbe9aa9
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 96b61ca2865d3f5a4d55521c59154dce9ea8d676
+  revision: 07ee05a3d3c6729f32c715880aa8faaf14122a3f
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
