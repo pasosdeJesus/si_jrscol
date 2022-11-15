@@ -113,7 +113,7 @@ $(document).on('cocoon:after-insert', '#filas_detallefinanciero', (e, objetivo) 
   $('.chosen-select').chosen()
   actualiza_opciones_convenioactividad()
   # Tras agregar fila a detalle financiero refrescar beneficiarios posibles
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
  )
 
 $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes_][id$=convenioactividad]', (e, res) ->
@@ -174,18 +174,12 @@ $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes][id$
   r = nombres + " " + apellidos + " (" + ip + ")"
   r
 
-@jrs_refresca_posibles_beneficiarios_casos_asistentes = (root, res) ->
-  # Recorre listado de casos (sin _destroy) y recorre listado de 
-  # asistentes (sin _destroy) para recolectar personas y de cada una 
-  # lo necesario para presentarlas en columna Beneficiario(s) Directo(s)
-  # del detall financiero
+@jrs_refresca_posibles_beneficiarios_asistentes = () ->
+  # Recorre listado de asistentes (sin _destroy) para recolectar personas 
+  # y de cada una lo necesario para presentarlas en columna Beneficiario(s) 
+  # Directo(s) del detalle financiero
 
-  # Procesamos personas en casos que recibimos
   posbenef = []
-  console.log('El resultado res es: ', res)
-  for p in res
-      n = jrs_persona_presenta_nombre(p.nombres, p.apellidos, p.tdocumento_sigla, p.numerodocumento)
-      posbenef.push({id: p.persona_id, nombre: n})
 
   $('[id^=actividad_asistencia_attributes][id$=__destroy]').each((i,v) ->
     # excluye asistentes destruidos
@@ -221,76 +215,46 @@ $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes][id$
       sip_remplaza_opciones_select(idpi, posbenefu, true);
   )
 
-
-@jrs_refresca_posibles_beneficiarios_casos = () ->
-  cids = []
-  $('[id^=actividad_actividad_casosjr_][id$=__destroy]').each((i,v) ->
-    # excluye casos destruidos
-    if $(this).val() != "1"
-      casoid = $(this).parent().parent().find("a").first().text()
-      cids.push(casoid)
-  )
-  console.log('El arreglo cids es:', cids)
-  console.log(cids)
-  root = window
-  rutac = root.puntomontaje + 'personas_casos' + '.json'
-  $.ajax({
-    url: rutac, 
-    data: {caso_ids: cids.join(',')},
-    dataType: 'json',
-    method: 'GET'
-  }).fail( (jqXHR, texto) ->
-    alert('Error - ' + texto )
-  ).done( (e, r) ->
-    jrs_refresca_posibles_beneficiarios_casos_asistentes(root, e)
-  )
-
-
 # En actividad tras cambiar nombres de asistente refrescar beneficiario posibles
 $(document).on('change', '[id^=actividad_asistencia_attributes][id$=_nombres]', (e, objetivo) ->
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 # En actividad tras cambiar apellidos de asistente refrescar beneficiario posibles
 $(document).on('change', '[id^=actividad_asistencia_attributes][id$=_apellidos]', (e, objetivo) ->
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 # En actividad tras cambiar tipo de documento refrescar beneficiario posibles
 $(document).on('change', '[id^=actividad_asistencia_attributes][id$=_tdocumento_id]', (e, objetivo) ->
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 # Tras cambiar número de documento refrescar beneficiario posibles
 $(document).on('change', '[id^=actividad_asistencia_attributes][id$=_numerodocumento]', (e, objetivo) ->
-  jrs_refresca_posibles_beneficiarios_casos()
-)
-
-# Tras eliminar caso beneficiario refrescar beneficiarios posibles
-$(document).on('cocoon:after-remove', '#actividad_casosjr', (e, papa) ->
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 # Tras eliminar asistente refrescar beneficiarios posibles
 $(document).on('cocoon:after-remove', '#asistencia', (e, papa) ->
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 # Tras autocompletar asistente refrescar beneficiarios posibles
 $(document).on('cor1440gen:autocompletado-asistente', (e, papa) ->
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 # Tras autocompletar caso beneficiario refrescar beneficiarios posibles
 $(document).on('sivel2sjr:autocompletado-contactoactividad', (e, papa) ->
   console.log('entro por evento autocompletado-contactoactividad')
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 
 # En caso de que ocurra un error de valida
 $(document).on('focusin', '.actividad_detallefinanciero_persona', (e, papa) ->
-  jrs_refresca_posibles_beneficiarios_casos()
+  jrs_refresca_posibles_beneficiarios_asistentes()
 )
 
 # En caso de que en detalle financiero 
