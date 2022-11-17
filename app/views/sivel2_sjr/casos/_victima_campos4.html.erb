@@ -16,17 +16,19 @@
       value_method: :id %>
   </div>
   <div class="col-md-6">
-    <%= fvictimasjr.association :rolfamilia,
-      as: :hidden,
-      collection: Sivel2Sjr::Rolfamilia.habilitados,
-      include_blank: false,
-      label: "Rol en Familia",
-      label_method: :nombre, 
-      value_method: :id,
-      input_html: {
-        "data-toggle" => 'tooltip',
-        "title" => 'Solicite a la persona identificar su rol en la familia, con ello podremos analizar el tipo de ayuda que requiere'
-      } %>
+    <% if !escontacto %>
+      <%= fvictimasjr.association :rolfamilia,
+        as: :hidden,
+        collection: Sivel2Sjr::Rolfamilia.habilitados,
+        include_blank: false,
+        label: "Rol en Familia",
+        label_method: :nombre, 
+        value_method: :id,
+        input_html: {
+          "data-toggle" => 'tooltip',
+          "title" => 'Solicite a la persona identificar su rol en la familia, con ello podremos analizar el tipo de ayuda que requiere'
+        } %>
+    <% end %>
   </div>
 </div>
 
