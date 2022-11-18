@@ -27,7 +27,6 @@ module Cor1440Gen
     end
 
     attr_accessor :controlador
-
     attr_accessor :ubicacionpre_texto
     attr_accessor :ubicacionpre_mundep_texto
 
