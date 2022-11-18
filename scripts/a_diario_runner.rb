@@ -1,7 +1,7 @@
 # Ejecutar con bin/cron_diario
 
-def alertas
-  puts "Inicio de verificacion alertas"
+def notificar
+  puts "Inicio de verificacion notificaciones"
 end
 
 def eliminar_generados
@@ -20,6 +20,19 @@ def eliminar_generados
     puts res
 end
 
+def envia_alerta_mantenimiento(resultado)
+    puts "Enviando correo sobre mantenimiento realizado:"
+    puts resultado
+    begin
+      NotificacionMailer.with(
+        resultado: resultado
+      ).
+      notificar_mantenimiento.deliver_now
+    rescue => e
+      puts "** No se pudo enviar correo (#{e.to_s})"
+    end
+end
+
 def arregla_poblacion
   resultados = ''
   numdif = Cor1440Gen::ConteosHelper.arregla_tablas_poblacion_desde_2020(resultados)
@@ -27,6 +40,7 @@ def arregla_poblacion
 
   if numdif > 0
     puts "Se hicieron #{numdif} correcciones, enviando correo"
+    evia_alerta_mantenimiento(resultados)
   end
 end
 
@@ -35,7 +49,7 @@ def run
     puts "No esta definida variable de ambiente SMTP_MAQ"
     exit 1
   end
-  alertas
+  notificar
   eliminar_generados
   m = UnificarHelper.eliminar_casos_en_blanco
   puts m;
@@ -46,7 +60,7 @@ def run
   Sip::Persona.connection.execute <<-SQL
     REFRESH MATERIALIZED VIEW sivel2_gen_conscaso;
   SQL
-  cuenta_poblacion_0
+  arregla_poblacion
 end
 
 run
