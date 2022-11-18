@@ -42,8 +42,8 @@ Población beneficiaria: <%= personas.uniq.count  %>
           <% if asistencia.persona %>
             <%= edad_de_fechanac_fecha(
               asistencia.persona.anionac, asistencia.persona.mesnac, 
-              asistencia.persona.dianac, Date.today.year, 
-              Date.today.month, Date.today.day)
+              asistencia.persona.dianac, @registro.fecha.year, 
+              @registro.fecha.month, @registro.fecha.day)
             %>
           <% end %>
         </td>
