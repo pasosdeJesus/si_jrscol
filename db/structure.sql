@@ -3245,6 +3245,93 @@ ALTER SEQUENCE public.cor1440_gen_valorcampotind_id_seq OWNED BY public.cor1440_
 
 
 --
+-- Name: cor1440_gen_vista_asist_rangoe_sexo; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_vista_asist_rangoe_sexo AS
+ SELECT sub2.actividad_id,
+    sub2.rangoedadac_id,
+    sub2.sexo,
+    count(sub2.persona_id) AS cuenta
+   FROM ( SELECT sub.actividad_id,
+            sub.persona_id,
+            sub.sexo,
+            re.id AS rangoedadac_id
+           FROM (( SELECT asi.actividad_id,
+                    asi.persona_id,
+                    p.sexo,
+                    public.sip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac, (EXTRACT(year FROM a.fecha))::integer, (EXTRACT(month FROM a.fecha))::integer, (EXTRACT(day FROM a.fecha))::integer) AS edad
+                   FROM ((public.cor1440_gen_asistencia asi
+                     JOIN public.sip_persona p ON ((p.id = asi.persona_id)))
+                     JOIN public.cor1440_gen_actividad a ON ((a.id = asi.actividad_id)))) sub
+             JOIN public.cor1440_gen_rangoedadac re ON ((((re.id = 7) AND (sub.edad IS NULL)) OR ((re.id <> 7) AND (re.limiteinferior <= sub.edad) AND ((re.limitesuperior IS NULL) OR (sub.edad <= re.limitesuperior))))))) sub2
+  GROUP BY sub2.actividad_id, sub2.rangoedadac_id, sub2.sexo
+  ORDER BY sub2.actividad_id, sub2.rangoedadac_id, sub2.sexo;
+
+
+--
+-- Name: cor1440_gen_vista_resumentpob; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_vista_resumentpob AS
+ SELECT sub.actividad_id,
+    sub.tpob
+   FROM ( SELECT a.id AS actividad_id,
+            array_to_string(ARRAY( SELECT (((((((cor1440_gen_actividad_rangoedadac.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.fr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.mr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.s)::text, '0'::text))
+                   FROM public.cor1440_gen_actividad_rangoedadac
+                  WHERE (cor1440_gen_actividad_rangoedadac.actividad_id = a.id)
+                  ORDER BY cor1440_gen_actividad_rangoedadac.rangoedadac_id), ' | '::text) AS tpob
+           FROM public.cor1440_gen_actividad a) sub
+  WHERE (sub.tpob <> ''::text)
+  ORDER BY sub.actividad_id;
+
+
+--
+-- Name: cor1440_gen_vista_tpoblacion_de_asist; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cor1440_gen_vista_tpoblacion_de_asist AS
+ SELECT sub.actividad_id,
+    sub.rangoedadac_id,
+    COALESCE(sub.fn, (0)::bigint) AS f,
+    COALESCE(sub.mn, (0)::bigint) AS m,
+    COALESCE(sub.sn, (0)::bigint) AS s
+   FROM ( SELECT DISTINCT v.actividad_id,
+            v.rangoedadac_id,
+            ( SELECT i.cuenta
+                   FROM public.cor1440_gen_vista_asist_rangoe_sexo i
+                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'F'::bpchar))
+                 LIMIT 1) AS fn,
+            ( SELECT i.cuenta
+                   FROM public.cor1440_gen_vista_asist_rangoe_sexo i
+                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'M'::bpchar))
+                 LIMIT 1) AS mn,
+            ( SELECT i.cuenta
+                   FROM public.cor1440_gen_vista_asist_rangoe_sexo i
+                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'S'::bpchar))
+                 LIMIT 1) AS sn
+           FROM public.cor1440_gen_vista_asist_rangoe_sexo v) sub;
+
+
+--
+-- Name: cor1440_gen_vista_resumentpob2; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.cor1440_gen_vista_resumentpob2 AS
+ SELECT sub.actividad_id,
+    sub.tpob
+   FROM ( SELECT a.id AS actividad_id,
+            array_to_string(ARRAY( SELECT (((((((cor1440_gen_vista_tpoblacion_de_asist.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.f)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.m)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.s)::text, '0'::text))
+                   FROM public.cor1440_gen_vista_tpoblacion_de_asist
+                  WHERE (cor1440_gen_vista_tpoblacion_de_asist.actividad_id = a.id)
+                  ORDER BY cor1440_gen_vista_tpoblacion_de_asist.rangoedadac_id), ' | '::text) AS tpob
+           FROM public.cor1440_gen_actividad a) sub
+  WHERE (sub.tpob <> ''::text)
+  ORDER BY sub.actividad_id
+  WITH NO DATA;
+
+
+--
 -- Name: mr519_gen_valorcampo; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -7197,7 +7284,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 116)
+          WHERE (sivel2_gen_conscaso.fecharec >= '2022-10-01'::date)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -10295,6 +10382,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividad_proyectofinanciero
 
 ALTER TABLE ONLY public.cor1440_gen_actividad_proyectofinanciero
     ADD CONSTRAINT cor1440_gen_actividad_proyectofinanciero_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cor1440_gen_actividad_rangoedadac cor1440_gen_actividad_rangoedadac_unicos; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_actividad_rangoedadac
+    ADD CONSTRAINT cor1440_gen_actividad_rangoedadac_unicos UNIQUE (actividad_id, rangoedadac_id);
 
 
 --
@@ -16971,6 +17066,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221114032511'),
 ('20221114034442'),
 ('20221115023319'),
-('20221115102504');
+('20221115102504'),
+('20221118010717');
 
 
