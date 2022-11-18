@@ -152,27 +152,27 @@ module Sip
       # cuando es un contacto vacío.
       if @caso.casosjr.contacto && @personaant &&
           @caso.casosjr.contacto_id == @personaant.id 
-        if @caso.casosjr.contacto.nombres != ""
-          render json: "Ya hay una persona asociada. No se remplaza,",
-            status: :unprocessable_entity
-          return false
-        else
-          ppb=@caso.casosjr.contacto_id
-          @caso.casosjr.contacto_id = nil
-          @caso.casosjr.save!(validate: false)
-          vic = @caso.victima.where(id_persona: ppb).take
-          vic.id_persona=@persona.id
-          vic.save(validate: false)
-          @caso.casosjr.contacto_id = @persona.id
-          @caso.casosjr.save!(validate: false)
-          #redirect_to sivel2_gen.edit_caso_path(@caso)
-          begin
-            @personaant.destroy
-            render partial: '/sip/personas/remplazar', layout: false
-          rescue
-          end
-          return false # buscar obligar el redirect_to
+        eliminar_persona = false
+        if @caso.casosjr.contacto.nombres == ""
+          eliminar_persona = true
         end
+        ppb=@caso.casosjr.contacto_id
+        @caso.casosjr.contacto_id = nil
+        @caso.casosjr.save!(validate: false)
+        vic = @caso.victima.where(id_persona: ppb).take
+        vic.id_persona=@persona.id
+        vic.save(validate: false)
+        @caso.casosjr.contacto_id = @persona.id
+        @caso.casosjr.save!(validate: false)
+        #redirect_to sivel2_gen.edit_caso_path(@caso)
+        begin
+          if eliminar_persona
+            @personaant.destroy
+          end
+          render partial: '/sip/personas/remplazar', layout: false
+        rescue
+        end
+        return false # buscar obligar el redirect_to
       end
 
       return true

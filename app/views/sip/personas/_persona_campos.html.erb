@@ -6,28 +6,25 @@
 
   <% phn = 'N'
   acn = {
-    'data-autocompleta' => 'no',
+    list: 'fuente-victimas' 
   }
+
   if (!f.object.nombres || f.object.nombres == 'N' || f.object.nombres == '')
     phn = 'Buscar'
-    acn = { 
-      list: 'fuente-victimas' 
-    }
   end %>
   <% acn['data-sip--cancelar-vacio-es-eliminar-target']='determinador' %>
   <div class="row">
     <div class="col-md-6">
       <%= f.input :nombres, placeholder: phn,
         value_method: lambda {|t| '' if t.nombres == 'N'},
-        :input_html => acn %>
+        input_html: acn %>
     </div>
     <% pha = 'N'
-    aca = {'data-autocompleta' => 'no' }
+    aca = {
+      list: 'fuente-victimas' 
+    }
     if (!f.object.apellidos || f.object.apellidos == 'N' || f.object.apellidos == '')
       pha = 'Buscar'
-      aca = { 
-        list: 'fuente-victimas' 
-      }
     end %>
     <% aca['data-sip--cancelar-vacio-es-eliminar-target']='determinador' %>
     <div class="col-md-6">
@@ -57,19 +54,13 @@
     td = 'Si el tipo de documento es cédula de ciudadania teclee solo digitos'
     acd = {'data-toggle' => 'tooltip',
            title: td,
-           'data-autocompleta' => 'no' }
+           list: 'fuente-victimas' 
+    }
     if (!f.object.numerodocumento || f.object.numerodocumento == 'N' || f.object.numerodocumento == '')
       phd = 'Buscar'
-      acd = {
-        'data-toggle' => 'tooltip',
-        title: td,
-        list: 'fuente-victimas' 
-      }
     else
       if (f.object.tdocumento)
         td = f.object.tdocumento.ayuda
-        acd = {'data-toggle' => 'tooltip',
-               title: td }
       end
     end %>
     <% acd['data-sip--cancelar-vacio-es-eliminar-target']='determinador' %>
