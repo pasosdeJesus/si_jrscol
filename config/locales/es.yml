@@ -199,15 +199,6 @@ es:
       "sectorgifmm":
         Sectorgifmm: Sector GIFMM
         Sectoresgifmm: Sectores GIFMM
-      "sip/orgsocial":
-        tipoorgsocial: Tipo
-        tipoorgsocial_id: Tipo
-        sectororgsocial: Población relacionada
-        sectoresorgsocial: Poblaciones relacionadas
-        sectororgsocial_ids: Población(es) relacionada(s)
-        "{:sectororgsocial_ids=>[]}": Población(es) relacionada(s)
-        lineaorgsocial: Línea de trabajo
-        lineaorgsocial_id: Línea de trabajo
       "sip/claverespaldo":
         Claverespaldo: Clave para respaldo automático
         Clavesrespaldos: Claves para respaldos automáticos
@@ -238,6 +229,18 @@ es:
       "sip/lineaorgsocial":
         Lineaorgsocial: Línea de trabajo de organización social
         Lineasorgsocial: Líneas de trabajo de organización social
+      "sip/orgsocial":
+        tipoorgsocial: Tipo
+        tipoorgsocial_id: Tipo
+        sectororgsocial: Población relacionada
+        sectoresorgsocial: Poblaciones relacionadas
+        sectororgsocial_ids: Población(es) relacionada(s)
+        "{:sectororgsocial_ids=>[]}": Población(es) relacionada(s)
+        lineaorgsocial: Línea de trabajo
+        lineaorgsocial_id: Línea de trabajo
+      "sip/perfilorgsocial":
+        Perfilorgsocial: Perfil poblacional
+        Perfilesorgsocial: Perfiles poblacionales
       "sip/persona":
         detallefinanciero_ids: Detalles financieros en los que aparece
         etiqueta_ids: Etiqueta(s)
