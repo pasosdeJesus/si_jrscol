@@ -6,7 +6,7 @@ module Sip
     include Sivel2Gen::Concerns::Models::Persona
     include Cor1440Gen::Concerns::Models::Persona
 
-    belongs_to :ultimoperfil, foreign_key: 'ultimoperfil_id',
+    belongs_to :ultimoperfilorgsocial, foreign_key: 'ultimoperfilorgsocial_id',
       validate: true, class_name: 'Sip::Perfilorgsocial', optional: true
     
     belongs_to :ultimoestatusmigratorio, 

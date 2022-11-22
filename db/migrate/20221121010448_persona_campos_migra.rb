@@ -1,7 +1,7 @@
 class PersonaCamposMigra < ActiveRecord::Migration[7.0]
   def change
-    add_column :sip_persona, :ultimoperfil_id, :integer
-    add_foreign_key :sip_persona, :sip_perfilorgsocial, column: :ultimoperfil_id
+    add_column :sip_persona, :ultimoperfilorgsocial_id, :integer
+    add_foreign_key :sip_persona, :sip_perfilorgsocial, column: :ultimoperfilorgsocial_id
 
     add_column :sip_persona, :ultimoestatusmigratorio_id, :integer
     add_foreign_key :sip_persona, :sivel2_sjr_statusmigratorio, 

@@ -16,7 +16,7 @@ module Sip
         :mesnac, 
         :dianac
       ] + [ 
-        :ultimoperfil_id,
+        :ultimoperfilorgsocial_id,
         :ultimoestatusmigratorio_id,
         :ppt,
         :caso_ids, 
@@ -375,7 +375,7 @@ module Sip
         :id_clase,
         :numerodocumento,
         :tdocumento_id,
-        :ultperfil_id,
+        :ultimoperfilorgsocial_id,
         :ultimoestatusmigratorio_id,
         :ppt,
       ] +
