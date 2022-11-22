@@ -3,7 +3,7 @@
     <tr>
       <th colspan="2">Nombre</th>
       <th colspan="2">Identificación</th>
-      <th>Rol en familia</th>
+      <th>Relación con contacto</th>
     </tr>
   </thead>
   <tbody id="victima">
@@ -22,8 +22,10 @@
           <%= victima.persona.numerodocumento if victima.persona.numerodocumento %>
         </td>
         <td>
-          <%= Sivel2Sjr::Victimasjr.find(victima.id).rolfamilia.nombre if 
-          Sivel2Sjr::Victimasjr.find(victima.id).rolfamilia %>
+          <% if @registro.casosjr.contacto_id.to_i != victima.persona.id %>
+            <%= Sivel2Sjr::Victimasjr.find(victima.id).rolfamilia.nombre if 
+            Sivel2Sjr::Victimasjr.find(victima.id).rolfamilia %>
+        <% end %>
         </td>
       </tr>
     <% end %>
