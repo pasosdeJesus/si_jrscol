@@ -6,6 +6,14 @@ module Sip
     include Sivel2Gen::Concerns::Models::Persona
     include Cor1440Gen::Concerns::Models::Persona
 
+    belongs_to :ultimoperfil, foreign_key: 'ultimoperfil_id',
+      validate: true, class_name: 'Sip::Perfilorgsocial', optional: true
+    
+    belongs_to :ultimoestatusmigratorio, 
+      foreign_key: 'ultimoestatusmigratorio_id',
+      validate: true, class_name: 'Sivel2Sjr::Statusmigratorio', 
+      optional: true
+
     has_many :casosjr, class_name: 'Sivel2Sjr::Casosjr',
       foreign_key: "contacto_id"
 
@@ -42,6 +50,8 @@ module Sip
       uniqueness: { scope: :tdocumento,
                     message: "Tipo y número de documento repetido" 
       }
+
+    validates :ppt, length: { maximum: 32}
 
     attr_accessor :fechanac
     def fechanac

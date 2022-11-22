@@ -11,27 +11,33 @@ module Sip
     include Cor1440Gen::Concerns::Controllers::PersonasController
 
 
-    def atributos_show_sivel2_sjr
+    def atributos_comunes
       a = atributos_show_sip - [
         :mesnac, 
         :dianac
       ] + [ 
+        :ultimoperfil_id,
+        :ultimoestatusmigratorio_id,
+        :ppt,
         :caso_ids, 
         :proyectofinanciero_ids, 
         :actividad_ids, 
-      ]
-      a[a.index(:anionac)] = :fechanac 
-      a
-    end
-
-    def atributos_show
-      atributos_show_sivel2_sjr + [
         :detallefinanciero_ids,
         :etiqueta_ids
       ]
+      a[a.index(:anionac)] = :fechanac 
+      return a
     end
 
-    def atributos_index_sivel2_sjr
+    def atributos_show
+      a = atributos_comunes
+      if @registro.ultimoestatusmigratorio_id.to_i != 1
+        a -= [:ppt]
+      end
+      return a
+    end
+
+    def atributos_index
       [ :id, 
         :nombres,
         :apellidos,
@@ -41,38 +47,31 @@ module Sip
         :sexo,
         :municipio,
         :actividad_ids,
-        :actividadcasobeneficiario_ids
-      ]
-    end
-
-    def atributos_index
-      atributos_index_sivel2_sjr  + [
+        :actividadcasobeneficiario_ids,
         :detallefinanciero_ids,
         :etiqueta_ids
       ]
     end 
 
-    def atributos_form_sivel2_sjr
-      a = atributos_show - [
+    def atributos_form
+      a = atributos_comunes - [
         # :id,   NO quitamos id porque tiene un campo escondido
         :caso_ids, 
         :actividad_ids, 
-        :actividadcasobeneficiario_ids
+        :actividadcasobeneficiario_ids,
+        :detallefinanciero_ids, 
+        :etiqueta_ids,
       ] + [
         :caracterizaciones
+      ] + [
+        :etiqueta_ids => []
       ]
       # Cambia fechanac por dia, mes, año
       p = a.index(:fechanac)
       a[p] = :anionac
       a.insert(p, :mesnac)
       a.insert(p, :dianac)
-      return a
-    end
 
-    def atributos_form
-      a = atributos_form_sivel2_sjr - [
-        :detallefinanciero_ids, :etiqueta_ids] +
-        [:etiqueta_ids => []]
       return a
     end
 
@@ -189,19 +188,8 @@ module Sip
       return true
     end
 
-    def new
-      @encform_html = {
-        'data-controller': 'sip--sindocaut'
-      }
-      new_gen
-      render layout: 'application'
-    end
-
-    def edit
-      @encform_html = {
-        'data-controller': 'sip--sindocaut'
-      }
-      edit_gen
+    def atributos_html_encabezado_formulario
+      {'data-controller': 'sip--sindocaut persona-ppt'}
     end
 
     def filtro_etiqueta(ide)
@@ -385,8 +373,11 @@ module Sip
         :id_departamento,
         :id_municipio,
         :id_clase,
+        :numerodocumento,
         :tdocumento_id,
-        :numerodocumento
+        :ultperfil_id,
+        :ultimoestatusmigratorio_id,
+        :ppt,
       ] +
      [
         "caracterizacionpersona_attributes" =>

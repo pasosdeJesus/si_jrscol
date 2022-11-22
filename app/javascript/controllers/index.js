@@ -7,6 +7,9 @@ import { application } from "./application"
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import PersonaPptController from "./persona_ppt_controller"
+application.register("persona-ppt", PersonaPptController)
+
 import RapidobenefcasoController from "./rapidobenefcaso_controller"
 application.register("rapidobenefcaso", RapidobenefcasoController)
 

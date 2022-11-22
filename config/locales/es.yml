@@ -241,6 +241,11 @@ es:
       "sip/persona":
         detallefinanciero_ids: Detalles financieros en los que aparece
         etiqueta_ids: Etiqueta(s)
+        ppt: Número de PPT
+        ultimoestatusmigratorio: Último estatus migratorio
+        ultimoestatusmigratorio_id: Último estatus migratorio
+        ultimoperfil: Último perfil poblacional
+        ultimoperfil_id: Último perfil poblacional
       "sip/sectororgsocial":
         Sectororgsocial: Población relacionada con organización social
         Sectoresorgsocial: Poblaciones relacionadas con organización social
