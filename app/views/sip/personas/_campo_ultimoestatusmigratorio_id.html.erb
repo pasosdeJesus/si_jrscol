@@ -1,12 +1,12 @@
-<%= render partial: 'sip/modelos/sip_campo_aut',
-  locals: {
-    f: f, 
-    atr: 'ultimoestatusmigratorio_id', 
-    atributos_internos: {
-      'data-action': 'change->persona-ppt#cambia_ultimoestatusmigratorio'
-    },
-    opciones: {
-      chosen: false 
-    }
+<% col = Sip::ModeloHelper.opciones_tabla_basica(
+  Sivel2Sjr::Statusmigratorio, f, 'ultimoestatusmigratorio_id')
+%>
+<% col = col.where(formupersona: true) %>
+<%= f.input :ultimoestatusmigratorio_id,
+  collection: col,
+  label_method: :nombre,
+  value_method: :id,
+  input_html: {
+    'data-action': 'change->persona-ppt#cambia_ultimoestatusmigratorio'
   }
 %>

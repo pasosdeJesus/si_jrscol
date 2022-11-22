@@ -2792,6 +2792,9 @@ CREATE TABLE public.sip_persona (
     id_municipio integer,
     id_clase integer,
     buscable tsvector,
+    ultimoperfil_id integer,
+    ultimoestatusmigratorio_id integer,
+    ppt character varying(32),
     CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
     CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
     CONSTRAINT persona_sexo_check CHECK (((sexo = 'S'::bpchar) OR (sexo = 'F'::bpchar) OR (sexo = 'M'::bpchar)))
@@ -7016,11 +7019,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.id_persona = contacto.id) AND (vcontacto.id_caso = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 135)
-          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
-  ORDER BY conscaso.fecha, conscaso.caso_id
+  WHERE (true = false)
   WITH NO DATA;
 
 
@@ -8638,7 +8637,8 @@ CREATE TABLE public.sivel2_sjr_statusmigratorio (
     fechadeshabilitacion date,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    observaciones character varying(5000)
+    observaciones character varying(5000),
+    formupersona boolean
 );
 
 
@@ -14274,6 +14274,14 @@ ALTER TABLE ONLY public.sivel2_sjr_agreenpais_migracion
 
 
 --
+-- Name: sip_persona fk_rails_5d2bf02b86; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_persona
+    ADD CONSTRAINT fk_rails_5d2bf02b86 FOREIGN KEY (ultimoperfil_id) REFERENCES public.sip_perfilorgsocial(id);
+
+
+--
 -- Name: sip_etiqueta_persona fk_rails_5e6e6f10da; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14487,6 +14495,14 @@ ALTER TABLE ONLY public.sip_grupo_usuario
 
 ALTER TABLE ONLY public.sivel2_sjr_migracion
     ADD CONSTRAINT fk_rails_757246b473 FOREIGN KEY (pagoingreso_id) REFERENCES public.sip_trivalente(id);
+
+
+--
+-- Name: sip_persona fk_rails_75a6c8eb10; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_persona
+    ADD CONSTRAINT fk_rails_75a6c8eb10 FOREIGN KEY (ultimoestatusmigratorio_id) REFERENCES public.sivel2_sjr_statusmigratorio(id);
 
 
 --
@@ -16773,6 +16789,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221118010717'),
 ('20221118023539'),
 ('20221118032223'),
-('20221118051631');
+('20221118051631'),
+('20221121010448'),
+('20221121131424');
 
 

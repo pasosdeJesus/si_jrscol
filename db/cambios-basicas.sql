@@ -81,7 +81,8 @@ UPDATE sivel2_sjr_statusmigratorio SET nombre = 'REGULAR MIGRANTE' WHERE ID=1;
 UPDATE sivel2_sjr_statusmigratorio SET nombre = 'REGULAR NACIONAL POR NACIMIENTO' WHERE ID=5;
 UPDATE sivel2_sjr_statusmigratorio SET nombre = 'REGULAR NACIONAL POR NATURALIZACIÓN' WHERE ID=6;
 
-
+UPDATE sivel2_sjr_statusmigratorio SET formupersona='t' 
+WHERE id in (1, 7, 8);
 
 ---- Plantilla listado de casos extra-completo
 
