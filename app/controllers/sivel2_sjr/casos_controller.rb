@@ -823,8 +823,11 @@ module Sivel2Sjr
             :nacionalde, 
             :numerodocumento, 
             :nombres, 
+            :ppt, 
             :sexo, 
-            :tdocumento_id
+            :tdocumento_id,
+            :ultimoestatusmigratorio_id,
+            :ultimoperfilorgsocial_id,
           ] + otros_params_persona,
           :victimasjr_attributes => [
             :asisteescuela, 

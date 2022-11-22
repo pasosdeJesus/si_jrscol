@@ -1,16 +1,11 @@
-
 <% estiloext = 'display: none' %>
 <% if f.object && f.object.ultimoestatusmigratorio_id &&
     f.object.ultimoestatusmigratorio_id == 1 %>
   <% estiloext = 'display: block' %>
 <% end %>
-<%= render partial: 'sip/modelos/sip_campo_aut',
-  locals: {
-    f: f, 
-    atr: 'ppt', 
-    atributos_externos: {
-      'data-persona-ppt-target': 'ppt',
-      style: estiloext
-    }
-  }
+<%= f.input :ppt,
+  wrapper_html: {
+    'data-persona-ppt-target': 'ppt',
+    style: estiloext
+  } 
 %>
