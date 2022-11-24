@@ -444,7 +444,7 @@ module Cor1440Gen
       end
       act = Cor1440Gen::Actividad.find(params[:actividad_id].to_i)
       if Sivel2Gen::Caso.where(id: params[:caso_id].to_i).count == 0
-        reps_error "No se encontró caso #{params[:caso_id].to_i}"
+        resp_error "No se encontró caso #{params[:caso_id].to_i}"
         return
       end
       res = []

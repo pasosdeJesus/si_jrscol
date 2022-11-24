@@ -2792,7 +2792,7 @@ CREATE TABLE public.sip_persona (
     id_municipio integer,
     id_clase integer,
     buscable tsvector,
-    ultimoperfilorgsocial_id integer,
+    ultimoperfil_id integer,
     ultimoestatusmigratorio_id integer,
     ppt character varying(32),
     CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
@@ -14274,6 +14274,14 @@ ALTER TABLE ONLY public.sivel2_sjr_agreenpais_migracion
 
 
 --
+-- Name: sip_persona fk_rails_5d2bf02b86; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_persona
+    ADD CONSTRAINT fk_rails_5d2bf02b86 FOREIGN KEY (ultimoperfil_id) REFERENCES public.sip_perfilorgsocial(id);
+
+
+--
 -- Name: sip_etiqueta_persona fk_rails_5e6e6f10da; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -15311,14 +15319,6 @@ ALTER TABLE ONLY public.heb412_gen_carpetaexclusiva
 
 ALTER TABLE ONLY public.sip_ubicacionpre
     ADD CONSTRAINT fk_rails_eba8cc9124 FOREIGN KEY (pais_id) REFERENCES public.sip_pais(id);
-
-
---
--- Name: sip_persona fk_rails_ebe5d3759e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_persona
-    ADD CONSTRAINT fk_rails_ebe5d3759e FOREIGN KEY (ultimoperfilorgsocial_id) REFERENCES public.sip_perfilorgsocial(id);
 
 
 --

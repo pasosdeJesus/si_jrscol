@@ -26,6 +26,7 @@ export default class Cor1440GenAutocompletaAjaxAsistentes {
         divcp.querySelector('[id$=_attributes_nombres]').value = resp.nombres
         divcp.querySelector('[id$=_attributes_apellidos]').value = resp.apellidos
         divcp.querySelector('[id$=_attributes_sexo]').value = resp.sexo
+        divcp.querySelector('[id$=_perfilorgsocial_id]').value = resp.ultimoperfilorgsocial_id
         const tdocid = divcp.querySelector('[id$=_attributes_tdocumento_id]')
         if (tdocid != null) {
           let idop = null

@@ -188,6 +188,32 @@ module Sip
       return true
     end
 
+
+    def datos
+      return if !params[:id_persona] 
+      @persona = Sip::Persona.find(params[:id_persona].to_i)
+      authorize! :read, @persona
+      oj = { 
+        id: @persona.id,
+        nombres: @persona.nombres,
+        apellidos: @persona.apellidos,
+        sexo: @persona.sexo,
+        tdocumento: @persona.tdocumento ? @persona.tdocumento.sigla :
+        '',
+        numerodocumento: @persona.numerodocumento,
+        dianac: @persona.dianac,
+        mesnac: @persona.mesnac,
+        anionac: @persona.anionac,
+        ultimoestatusmigratorio_id: @persona.ultimoestatusmigratorio_id,
+        ultimoperfilorgsocial_id: @persona.ultimoperfilorgsocial_id,
+        ppt: @persona.ppt,
+      }
+      respond_to do |format|
+        format.json { render json: oj, status: :ok }
+        format.html { render inilne: oj.to_s, status: :ok }
+      end
+    end
+
     def atributos_html_encabezado_formulario
       {'data-controller': 'sip--sindocaut persona-ppt'}
     end
