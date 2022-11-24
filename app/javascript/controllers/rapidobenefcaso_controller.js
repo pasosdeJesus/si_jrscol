@@ -13,13 +13,30 @@ export default class extends Controller {
   }
 
   agregar(e) {
+    if (e.target.getAttribute('disabled') == 'true') {
+      alert('Modificación al listado de asistencia en curso, espere por favor')
+      return;
+    }
     document.body.style.cursor = 'wait'
+    e.target.setAttribute('disabled', true)
     let actividad_id=document.getElementById('actividad_id').value
     let caso_id = this.casoTarget.value
     if (caso_id == '') {
+      document.body.style.cursor = 'default'
+      e.target.setAttribute('disabled', false)
       alert('Primero debe elegir un caso')
       return;
     }
+    if (caso_id != +caso_id) {
+      document.body.style.cursor = 'default'
+      e.target.setAttribute('disabled', false)
+      alert("Se espera el número de caso.\n" +
+        "Puede buscar por nombre del contacto y cuando lo vea " +
+        "elijalo en la lista de autocompletación para que se diligencie " +
+        "el número de caso de manera automática")
+      return;
+    }
+
     let url = `/asistencia/rapidobenefcaso?actividad_id=${actividad_id}&`+
       `caso_id=${caso_id}`
     window.Rails.ajax({
@@ -33,7 +50,10 @@ export default class extends Controller {
       },
       error: (req, estado, xhr) => {
         document.body.style.cursor = 'default'
-        window.alert('No se pudo llamar función')
+        e.target.setAttribute('disabled', false)
+        window.alert("Antes debe elegir uno de los casos que se " +
+          "ven en la lista desplegable de autocompletación cuando ha " +
+          "digitado más de 4 caracteres")
       }
     })
   }
