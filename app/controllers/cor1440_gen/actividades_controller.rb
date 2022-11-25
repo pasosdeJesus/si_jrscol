@@ -513,6 +513,20 @@ module Cor1440Gen
             p.save!(validate: false)
           end
         end
+
+        # Actualizar último perfil cuando corresponda y se pueda
+        @registro.asistencia.each do |asi|
+          mf = Cor1440Gen::Asistencia.joins(:actividad).
+            where(persona_id: asi.persona_id).maximum(:fecha)
+          if asi.actividad.fecha >= mf && 
+              asi.persona.ultimoperfilorgsocial_id.to_i != 
+              asi.perfilorgsocial_id.to_i
+            asi.persona.ultimoperfilorgsocial_id = asi.perfilorgsocial_id
+            if asi.persona.valid?
+              asi.persona.save
+            end
+          end
+        end
       end
     end
 
