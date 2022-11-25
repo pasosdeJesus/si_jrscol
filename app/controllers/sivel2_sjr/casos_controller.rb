@@ -336,13 +336,18 @@ module Sivel2Sjr
         @caso.current_usuario = current_usuario
         @caso.assign_attributes(caso_params)
         @casovalido &= @caso.valid?
-        @caso.save(validate: false)
-        if registrar_en_bitacora
-          Sip::Bitacora.agregar_actualizar(
-            request, :caso, :bitacora_cambio, 
-            current_usuario.id, params, 'Sivel2Gen::Caso',
-            @caso.id
-          )
+        begin
+          @caso.save(validate: false)
+          if registrar_en_bitacora
+            Sip::Bitacora.agregar_actualizar(
+              request, :caso, :bitacora_cambio, 
+              current_usuario.id, params, 'Sivel2Gen::Caso',
+              @caso.id
+            )
+          end
+        rescue
+          puts "No pudo salvar caso"
+          @casovalido = false
         end
         if validar_params && @casovalido 
           format.html { 
