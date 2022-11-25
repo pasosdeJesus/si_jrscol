@@ -25,14 +25,19 @@ export default class extends Controller {
    *   Si hay uno llamado errores no vacio después de pintar detiene
    *   con mensaje de error.
    * @param retrollamada Función por llamar en caso de éxito
-   * @parama argumento Por pasar a la función retrollamada (se sugiere
+   * @parama argumentos Por pasar a la función retrollamada (se sugiere
    *  que sea un registro).
    */
   static guardarFormularioYRepintar(listaIdsRepintar, retrollamada, argumentos) {
+    if (document.body.style.cursor == 'wait') {
+      alert('Hay un procedimiento en curso, por favor espere a que termine')
+      return
+    }
     document.body.style.cursor = 'wait'
     let formulario = document.querySelector('form')
     if (formulario == null) {
       alert('** respuestacaso: No se encontró formulario')
+      return
     }
     let datos = new FormData(formulario);
     datos.set('commit', 'Enviar')
@@ -65,6 +70,7 @@ export default class extends Controller {
       error: (req, estado, xhr) => {
         document.body.style.cursor = 'default'
         window.alert('No se pudo guardar formulario.')
+        return
       }
     })
   }
