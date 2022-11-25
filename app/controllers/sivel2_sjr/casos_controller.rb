@@ -465,6 +465,55 @@ module Sivel2Sjr
       update_sivel2_sjr
     end
 
+
+    # DELETE /casos/1.json
+    # Este método obligó a definir sivel2_gen_destroy en sivel2_gen/concerns/controllers/casos_controllers
+    # y a repetir before_action :set_caso, only: [:show, :edit, :update, :destroy]
+    # en el included do de este
+    def sivel2_sjr_destroy
+      if @caso.casosjr && @caso.casosjr.respuesta
+        # No se logró hacer ni con dependente:destroy en
+        # las relaciones ni borrando con delete 
+        @caso.casosjr.respuesta.each do |r|
+          Sivel2Sjr::AslegalRespuesta.where(id_respuesta: r.id).delete_all
+          #r.aslegal_respuesta.delete
+          Sivel2Sjr::AyudaestadoRespuesta.where(id_respuesta: r.id).delete_all
+          #r.ayudaestado_respuesta.delete
+          Sivel2Sjr::AyudasjrRespuesta.where(id_respuesta: r.id).delete_all
+          #r.ayudasjr_respuesta.delete
+          Sivel2Sjr::DerechoRespuesta.where(id_respuesta: r.id).delete_all
+          #r.derecho_respuesta.delete
+          Sivel2Sjr::MotivosjrRespuesta.where(id_respuesta: r.id).delete_all
+          #r.motivosjr_respuesta.delete
+          Sivel2Sjr::ProgestadoRespuesta.where(id_respuesta: r.id).delete_all
+          #r.progestado_respuesta.delete
+        end
+        @caso.casosjr.respuesta.delete
+        Sivel2Sjr::Respuesta.where(id_caso: @caso.id).delete_all
+      end
+      Sivel2Sjr::Casosjr.connection.execute <<-SQL
+        DELETE FROM sivel2_sjr_actosjr 
+          WHERE id_acto IN (SELECT id FROM sivel2_gen_acto 
+            WHERE id_caso='#{@caso.id}');
+        DELETE FROM sivel2_sjr_desplazamiento 
+          WHERE id_caso = #{@caso.id};
+        DELETE FROM sivel2_sjr_actividad_casosjr
+          WHERE casosjr_id = #{@caso.id};
+      SQL
+      @caso.casosjr.destroy if @caso.casosjr
+      if @caso.casosjr && @caso.casosjr.errors.present?
+        mens = 'No puede borrar caso: ' + @caso.casosjr.errors.messages.values.flatten.join('; ')
+        puts mens
+        redirect_to caso_path(@caso), alert: mens
+        return
+      else
+        sivel2_gen_destroy
+        Sivel2Gen::Conscaso.refresca_conscaso
+        # redirect_to casos_path
+      end
+    end
+
+
     def destroy
       if @caso.casosjr && @caso.casosjr.respuesta
         # No se logró hacer ni con dependente:destroy en
@@ -730,6 +779,11 @@ module Sivel2Sjr
 
 
     def set_caso
+      if Sivel2Gen::Caso.where(id: params[:id].to_i).count == 0
+        redirect_to sivel2_gen.casos_path, 
+          alert: "Ya no existe el caso #{params[:id].to_i}"
+        return
+      end
       @caso = Sivel2Gen::Caso.find(params[:id].to_i)
       @caso.current_usuario = current_usuario
       @registro = @caso
