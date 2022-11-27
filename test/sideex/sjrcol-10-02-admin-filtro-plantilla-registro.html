@@ -8,184 +8,54 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">respuestas-y-derechos-filtro-fec-atencion-inicial</td></tr>
+<tr><td rowspan="1" colspan="3">plantilla-registro-filtro-localStorage</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownConteos<datalist><option>id=navbarDropdownConteos</option><option>link=Conteos</option><option>css=#navbarDropdownConteos</option><option>//a[contains(text(),'Conteos')]</option><option>//a[@id='navbarDropdownConteos']</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/a</option><option>xpath=(//a[contains(@href, '#')])[2]</option><option>//li[2]/a</option></datalist></td><td>34,25</td>
+<tr><td>clickAt</td><td>id=navbarDropdownDocumentos<datalist><option>id=navbarDropdownDocumentos</option><option>link=Documentos</option><option>css=#navbarDropdownDocumentos</option><option>//a[contains(text(),'Documentos')]</option><option>//a[@id='navbarDropdownDocumentos']</option><option>//div[@id='navbarSupportedContent']/ul[2]/li/a</option><option>xpath=(//a[contains(@href, '#')])[5]</option><option>//ul[2]/li/a</option></datalist></td><td>48,24</td>
 </tr>
-<tr><td>clickAt</td><td>link=Respuestas y Derechos Vulnerados<datalist><option>link=Respuestas y Derechos Vulnerados</option><option>//a[contains(text(),'Respuestas y Derechos Vulnerados')]</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/div/a[2]</option><option>//a[contains(@href, '/conteos/respuestas')]</option><option>//li[2]/div/a[2]</option></datalist></td><td>131,12</td>
+<tr><td>clickAt</td><td>link=Definir plantillas para un registro en hoja de calculo<datalist><option>link=Definir plantillas para un registro en hoja de calculo</option><option>//a[contains(text(),'Definir plantillas para un registro en hoja de calculo')]</option><option>//div[@id='navbarSupportedContent']/ul[2]/li/div/a[5]</option><option>//a[contains(@href, '/plantillashcr')]</option><option>//ul[2]/li/div/a[5]</option></datalist></td><td>98,10</td>
 </tr>
-<tr><td>clickAt</td><td>id=filtro_fechaini<datalist><option>id=filtro_fechaini</option><option>name=filtro[fechaini]</option><option>css=#filtro_fechaini</option><option>//input[@id='filtro_fechaini']</option><option>//div/input</option></datalist></td><td>99,17</td>
+<tr><td>clickAt</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td>29,9</td>
 </tr>
-<tr><td>clickAt</td><td>//div[3]<datalist><option>//div[3]</option></datalist></td><td>196,13</td>
+<tr><td>runScript</td><td>document.querySelector('#filtro_busid').value = localStorage.getItem('plantilla-registro_id')<datalist><option>document.querySelector('#filtro_busid').value = localStorage.getItem('pchr_id')</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(HUILA)').attr('selected', 'selected');</option><option>$('[id^=caso_desplazamiento_attributes][id$=_id_expulsion] option:contains(TOLIMA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salidam option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(COLOMBIA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_llegada option:contains(VENEZUELA)').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_salida option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>$('#caso_casosjr_attributes_id_expulsion option:contains(COLOMBIA / CAUCA )').attr('selected', 'selected');</option><option>localStorage.setItem('pchr_id', +document.querySelector('dd').innerText)</option><option>document.querySelector('#filtro_busid').value = localStorage.getItem('plantilla-registro_id')</option></datalist></td><td>document.querySelector('#filtro_busid').value = localStorage.getItem('pchr_id')</td>
 </tr>
-<tr><td>clickAt</td><td>id=filtro_fechaini<datalist><option>id=filtro_fechaini</option><option>name=filtro[fechaini]</option><option>css=#filtro_fechaini</option><option>//input[@id='filtro_fechaini']</option><option>//div/input</option></datalist></td><td>54,22</td>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td[6]/input</option><option>//td[6]/input</option></datalist></td><td>32,14</td>
 </tr>
-<tr><td>type</td><td>id=filtro_fechaini<datalist><option>id=filtro_fechaini</option><option>name=filtro[fechaini]</option><option>css=#filtro_fechaini</option><option>//input[@id='filtro_fechaini']</option><option>//div/input</option></datalist></td><td>2020-04-01</td>
+<tr><td>assertText</td><td>css=div.offset-sm-4.col-sm-4<datalist><option>css=div.offset-sm-4.col-sm-4</option><option>//div[@id='div_contenido']/form/div/div[2]</option><option>//form/div/div[2]</option></datalist></td><td>Plantilla para registro: 1</td>
 </tr>
-<tr><td>clickAt</td><td>css=th.datepicker-switch<datalist><option>css=th.datepicker-switch</option><option>//tr[2]/th[2]</option></datalist></td><td>58,20</td>
+<tr><td>clickAt</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td>6,21</td>
 </tr>
-<tr><td>clickAt</td><td>css=span.month<datalist><option>css=span.month</option><option>//td/span</option></datalist></td><td>24,36</td>
+<tr><td>type</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td></td>
 </tr>
-<tr><td>clickAt</td><td>//td[3]<datalist><option>//td[3]</option></datalist></td><td>11,15</td>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td[6]/input</option><option>//td[6]/input</option></datalist></td><td>32,14</td>
 </tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>36,17</td>
-</tr>
-<tr><td>clickAt</td><td>//div/div/div[2]<datalist><option>//div/div/div[2]</option></datalist></td><td>13,23</td>
-</tr>
-<tr><td>type</td><td>id=filtro_fechaini<datalist><option>id=filtro_fechaini</option><option>name=filtro[fechaini]</option><option>css=#filtro_fechaini</option><option>//input[@id='filtro_fechaini']</option><option>//div/input</option></datalist></td><td></td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>36,25</td>
-</tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Respuestas y Derechos vulnerados</td>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//div[@id='div_contenido']/div/h1</option><option>//h1</option></datalist></td><td>Plantilla para registro</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">respuestas-y-derechos-filtro-fec-atencion-final</td></tr>
+<tr><td rowspan="1" colspan="3">plantilla-registro-filtro-id</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownConteos<datalist><option>id=navbarDropdownConteos</option><option>link=Conteos</option><option>css=#navbarDropdownConteos</option><option>//a[contains(text(),'Conteos')]</option><option>//a[@id='navbarDropdownConteos']</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/a</option><option>xpath=(//a[contains(@href, '#')])[2]</option><option>//li[2]/a</option></datalist></td><td>34,25</td>
+<tr><td>clickAt</td><td>id=navbarDropdownDocumentos<datalist><option>id=navbarDropdownDocumentos</option><option>link=Documentos</option><option>css=#navbarDropdownDocumentos</option><option>//a[contains(text(),'Documentos')]</option><option>//a[@id='navbarDropdownDocumentos']</option><option>//div[@id='navbarSupportedContent']/ul[2]/li/a</option><option>xpath=(//a[contains(@href, '#')])[5]</option><option>//ul[2]/li/a</option></datalist></td><td>48,24</td>
 </tr>
-<tr><td>clickAt</td><td>link=Respuestas y Derechos Vulnerados<datalist><option>link=Respuestas y Derechos Vulnerados</option><option>//a[contains(text(),'Respuestas y Derechos Vulnerados')]</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/div/a[2]</option><option>//a[contains(@href, '/conteos/respuestas')]</option><option>//li[2]/div/a[2]</option></datalist></td><td>131,12</td>
+<tr><td>clickAt</td><td>link=Definir plantillas para un registro en hoja de calculo<datalist><option>link=Definir plantillas para un registro en hoja de calculo</option><option>//a[contains(text(),'Definir plantillas para un registro en hoja de calculo')]</option><option>//div[@id='navbarSupportedContent']/ul[2]/li/div/a[5]</option><option>//a[contains(@href, '/plantillashcr')]</option><option>//ul[2]/li/div/a[5]</option></datalist></td><td>98,10</td>
 </tr>
-<tr><td>clickAt</td><td>id=filtro_fechafin<datalist><option>id=filtro_fechafin</option><option>name=filtro[fechafin]</option><option>css=#filtro_fechafin</option><option>//input[@id='filtro_fechafin']</option><option>//div/div/div[3]/div/input</option></datalist></td><td>151,13</td>
+<tr><td>clickAt</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td>19,27</td>
 </tr>
-<tr><td>type</td><td>id=filtro_fechafin<datalist><option>id=filtro_fechafin</option><option>name=filtro[fechafin]</option><option>css=#filtro_fechafin</option><option>//input[@id='filtro_fechafin']</option><option>//div/div/div[3]/div/input</option></datalist></td><td>31/Dic/202</td>
+<tr><td>type</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td>11</td>
 </tr>
-<tr><td>clickAt</td><td>css=th.datepicker-switch<datalist><option>css=th.datepicker-switch</option><option>//tr[2]/th[2]</option></datalist></td><td>79,9</td>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td[6]/input</option><option>//td[6]/input</option></datalist></td><td>32,14</td>
 </tr>
-<tr><td>clickAt</td><td>//div[2]/table/thead/tr[2]/th[2]<datalist><option>//div[2]/table/thead/tr[2]/th[2]</option></datalist></td><td>85,9</td>
+<tr><td>clickAt</td><td>css=div.offset-sm-4.col-sm-4<datalist><option>css=div.offset-sm-4.col-sm-4</option><option>//div[@id='div_contenido']/form/div/div[2]</option><option>//div/div[2]</option></datalist></td><td>1</td>
 </tr>
-<tr><td>clickAt</td><td>//div[3]/table/thead/tr[2]/th[2]<datalist><option>//div[3]/table/thead/tr[2]/th[2]</option></datalist></td><td>85,9</td>
+<tr><td>clickAt</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td>19,27</td>
 </tr>
-<tr><td>clickAt</td><td>//div[4]/table/thead/tr[2]/th[2]<datalist><option>//div[4]/table/thead/tr[2]/th[2]</option></datalist></td><td>85,9</td>
+<tr><td>type</td><td>id=filtro_busid<datalist><option>id=filtro_busid</option><option>name=filtro[busid]</option><option>css=#filtro_busid</option><option>//input[@id='filtro_busid']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td/div/input</option><option>//input</option></datalist></td><td>11</td>
 </tr>
-<tr><td>clickAt</td><td>//div[5]/table/thead/tr[2]/th[2]<datalist><option>//div[5]/table/thead/tr[2]/th[2]</option></datalist></td><td>85,9</td>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td[6]/input</option><option>//td[6]/input</option></datalist></td><td>32,14</td>
 </tr>
-<tr><td>clickAt</td><td>css=span.century.new<datalist><option>css=span.century.new</option><option>//div[5]/table/tbody/tr/td/span[12]</option></datalist></td><td>11,25</td>
-</tr>
-<tr><td>clickAt</td><td>//div[4]/table/thead/tr[2]/th[2]<datalist><option>//div[4]/table/thead/tr[2]/th[2]</option></datalist></td><td>142,16</td>
-</tr>
-<tr><td>clickAt</td><td>//div[5]/table/thead/tr[2]/th[2]<datalist><option>//div[5]/table/thead/tr[2]/th[2]</option></datalist></td><td>69,21</td>
-</tr>
-<tr><td>clickAt</td><td>css=span.century.new<datalist><option>css=span.century.new</option><option>//div[5]/table/tbody/tr/td/span[12]</option></datalist></td><td>15,24</td>
-</tr>
-<tr><td>clickAt</td><td>//div[4]/table/tbody/tr/td/span[4]<datalist><option>//div[4]/table/tbody/tr/td/span[4]</option></datalist></td><td>33,28</td>
-</tr>
-<tr><td>clickAt</td><td>css=span.year.focused<datalist><option>css=span.year.focused</option><option>//div[3]/table/tbody/tr/td/span[2]</option></datalist></td><td>21,32</td>
-</tr>
-<tr><td>clickAt</td><td>css=span.month.focused<datalist><option>css=span.month.focused</option><option>//span[12]</option></datalist></td><td>13,29</td>
-</tr>
-<tr><td>clickAt</td><td>//tr[5]/td[4]<datalist><option>//tr[5]/td[4]</option></datalist></td><td>14,11</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>43,15</td>
-</tr>
-<tr><td>clickAt</td><td>//div/div/div[3]<datalist><option>//div/div/div[3]</option></datalist></td><td>0,17</td>
-</tr>
-<tr><td>type</td><td>id=filtro_fechafin<datalist><option>id=filtro_fechafin</option><option>name=filtro[fechafin]</option><option>css=#filtro_fechafin</option><option>//input[@id='filtro_fechafin']</option><option>//div/div/div[3]/div/input</option></datalist></td><td></td>
-</tr>
-<tr><td>clickAt</td><td>//div[@id='resultado']/table/thead/tr/th[2]<datalist><option>//div[@id='resultado']/table/thead/tr/th[2]</option><option>//th[2]</option></datalist></td><td>226,28</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>45,21</td>
-</tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Respuestas y Derechos vulnerados</td>
-</tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">respuestas-y-derechos-filtro-oficina</td></tr>
-</thead>
-<tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownConteos<datalist><option>id=navbarDropdownConteos</option><option>link=Conteos</option><option>css=#navbarDropdownConteos</option><option>//a[contains(text(),'Conteos')]</option><option>//a[@id='navbarDropdownConteos']</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/a</option><option>xpath=(//a[contains(@href, '#')])[2]</option><option>//li[2]/a</option></datalist></td><td>34,25</td>
-</tr>
-<tr><td>clickAt</td><td>link=Respuestas y Derechos Vulnerados<datalist><option>link=Respuestas y Derechos Vulnerados</option><option>//a[contains(text(),'Respuestas y Derechos Vulnerados')]</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/div/a[2]</option><option>//a[contains(@href, '/conteos/respuestas')]</option><option>//li[2]/div/a[2]</option></datalist></td><td>131,12</td>
-</tr>
-<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>label=MAGDALENA MEDIO</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>-850,-171</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>48,31</td>
-</tr>
-<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>label=NACIONAL</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>-850,-171</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>52,23</td>
-</tr>
-<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>label=NARIÑO</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>-850,-171</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>50,23</td>
-</tr>
-<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div/div[4]/div/select</option><option>//select</option></datalist></td><td>label=CÚCUTA</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div/div[4]/div/select</option><option>//select</option></datalist></td><td>0,0</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>38,32</td>
-</tr>
-<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>label=SIN INFORMACIÓN</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>-850,-171</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>38,21</td>
-</tr>
-<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div/div[4]/div/select</option><option>//select</option></datalist></td><td>label=VALLE</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//div[@id='div_contenido']/form/div/div/div[4]/div/select</option><option>//select</option></datalist></td><td>0,0</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>36,12</td>
-</tr>
-<tr><td>select</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>label=-- Oficina</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_oficina_id<datalist><option>id=filtro_oficina_id</option><option>name=filtro[oficina_id]</option><option>css=#filtro_oficina_id</option><option>//select[@id='filtro_oficina_id']</option><option>//select</option></datalist></td><td>-850,-171</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>36,12</td>
-</tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Respuestas y Derechos vulnerados</td>
-</tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">respuestas-y-derechos-filtro-ayuda-del-estado</td></tr>
-</thead>
-<tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownConteos<datalist><option>id=navbarDropdownConteos</option><option>link=Conteos</option><option>css=#navbarDropdownConteos</option><option>//a[contains(text(),'Conteos')]</option><option>//a[@id='navbarDropdownConteos']</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/a</option><option>xpath=(//a[contains(@href, '#')])[2]</option><option>//li[2]/a</option></datalist></td><td>34,25</td>
-</tr>
-<tr><td>clickAt</td><td>link=Respuestas y Derechos Vulnerados<datalist><option>link=Respuestas y Derechos Vulnerados</option><option>//a[contains(text(),'Respuestas y Derechos Vulnerados')]</option><option>//div[@id='navbarSupportedContent']/ul/li[2]/div/a[2]</option><option>//a[contains(@href, '/conteos/respuestas')]</option><option>//li[2]/div/a[2]</option></datalist></td><td>131,12</td>
-</tr>
-<tr><td>select</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>label=Ayuda Humanitaria del SJR</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>-295,-215</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>51,19</td>
-</tr>
-<tr><td>select</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>label=Derecho vulnerado</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>-295,-215</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>29,18</td>
-</tr>
-<tr><td>select</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>label=Servicio/Asesoria del SJR</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>-295,-215</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>62,27</td>
-</tr>
-<tr><td>select</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>label=Subsidio/Programa del Estado</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>-295,-215</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>15,21</td>
-</tr>
-<tr><td>select</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>label=Ayuda del Estado</td>
-</tr>
-<tr><td>clickAt</td><td>id=filtro_contar<datalist><option>id=filtro_contar</option><option>name=filtro[contar]</option><option>css=#filtro_contar</option><option>//select[@id='filtro_contar']</option><option>//div[2]/div/select</option></datalist></td><td>-295,-215</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//div[3]/div/input</option></datalist></td><td>37,29</td>
-</tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Respuestas y Derechos vulnerados</td>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//div[@id='div_contenido']/div/h1</option><option>//h1</option></datalist></td><td>Plantilla para registro</td>
 </tr>
 </tbody></table>
 </body>
