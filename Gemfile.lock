@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: be9a3ebaa15f1cae11297aa20f26dd017a4d495b
+  revision: 1c190bccdf3a441963ec93d9d8c90d08dc7cadd8
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 5e008dab4bfc8f9286a3a4d019e552de1ecf7ef6
+  revision: 76e34fc0a413f193642c4f2994fabc8365fa7306
   branch: main
   specs:
     heb412_gen (2.1.0.beta1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 4438833cce626954e6970c21b3a9d1a7ff62c095
+  revision: 28d27b1ca62c2a16798c814a84d42b7aba24ded0
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: a3bf9b608f29b5c808b95b4af3120088698da902
+  revision: a5cf9d263c3147f2f75962ca29057acd9f6f3d40
   branch: main
   specs:
     sal7711_gen (2.1.0.beta1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: caa131754a21a718fea171e60010c83db8c7a5f8
+  revision: 50d0a78f1b49731af016d9a751ee7b0a2dbcec3e
   branch: main
   specs:
     sal7711_web (2.1.0.beta1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 9be468091896af8f53224eaa1ebc24dd8c6cd1f6
+  revision: f6e0efff565110d41d447a9090b823f9f49289dd
   branch: main
   specs:
     sip (2.1.0.beta1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 8918c3ca377c67e4ba5bc76c8ece8c37899fd7e3
+  revision: f752b6089c6e09986d3cb5017d3e572a57e37234
   branch: main
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: b12b6501e77cb70c3d6a459c12574ee8e507ef09
+  revision: 37c472c81b83a66064aab0e92e85f886cc276f0f
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -182,7 +182,7 @@ GEM
       execjs (~> 2.0)
     bcrypt (3.1.18)
     bindex (0.8.1)
-    bootsnap (1.14.0)
+    bootsnap (1.15.0)
       msgpack (~> 1.2)
     builder (3.2.4)
     camertron-eprun (1.1.1)
@@ -391,7 +391,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stimulus-rails (1.1.1)
+    stimulus-rails (1.2.0)
       railties (>= 6.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
