@@ -14,8 +14,8 @@ module GifmmHelper
       where('sivel2_sjr_casosjr.fecharec <= ?', fecha).
       order('sivel2_sjr_casosjr.fecharec DESC').find { |c| 
       v = c.victima.where(id_persona: idp).take
-      (v.victimasjr.fechadesagregacion.nil? || 
-       v.victimasjr.fechadesagregacion > fecha) &&
+      (v.victimasjr && (v.victimasjr.fechadesagregacion.nil? || 
+       v.victimasjr.fechadesagregacion > fecha)) &&
       c.migracion.count > 0 &&
       c.migracion[0].perfilmigracion
     }

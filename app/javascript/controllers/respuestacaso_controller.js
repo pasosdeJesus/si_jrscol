@@ -12,70 +12,6 @@ export default class extends Controller {
     console.log('conectado controlador respuestacaso')
   }
 
-  /*
-   * Con AJAX actualiza formulario, espera recibir formulario guardado
-   * para repintar áreas identificadas con listaIdsRepintar y llamar
-   * la retrollamada.
-   *
-   * Se espera que en rails la función update, maneje request.xhr?
-   * para no ir a hacer redirect_to con lo proveniente de un XHR 
-   * (ver ejemplo en app/controllers/sivel2_sjr/casos_controller.rb)
-   *
-   * @param listaIdsRepintar Lista de ids de elementos por repintar
-   *   Si hay uno llamado errores no vacio después de pintar detiene
-   *   con mensaje de error.
-   * @param retrollamada Función por llamar en caso de éxito
-   * @parama argumentos Por pasar a la función retrollamada (se sugiere
-   *  que sea un registro).
-   */
-  static guardarFormularioYRepintar(listaIdsRepintar, retrollamada, argumentos) {
-    if (document.body.style.cursor == 'wait') {
-      alert('Hay un procedimiento en curso, por favor espere a que termine')
-      return
-    }
-    document.body.style.cursor = 'wait'
-    let formulario = document.querySelector('form')
-    if (formulario == null) {
-      alert('** respuestacaso: No se encontró formulario')
-      return
-    }
-    let datos = new FormData(formulario);
-    datos.set('commit', 'Enviar')
-    datos.set('siguiente', 'editar')
-    let paramUrl = new URLSearchParams(datos).toString()
-    document.getElementById('errores').innerText=''
-    window.Rails.ajax({
-      type: 'PATCH',
-      url: formulario.getAttribute('action'),
-      data: datos,
-      success: (resp, estado, xhr) => {
-        document.body.style.cursor = 'default'
-        let hayErrores = false
-        listaIdsRepintar.forEach((idfrag) => {
-          let f = document.getElementById(idfrag)
-          let nf = resp.getElementById(idfrag)
-          if (nf) {
-            f.innerHTML = nf.innerHTML
-            if (idfrag === 'errores' && nf.innerHTML.trim() !== '') {
-              hayErrores = true
-            }
-          }
-        })
-        if (hayErrores) {
-          alert('Hay errores que no permiten guardar el caso y crear la actividad')
-          return
-        }
-        retrollamada(argumentos)
-      },
-      error: (req, estado, xhr) => {
-        document.body.style.cursor = 'default'
-        window.alert('No se pudo guardar formulario.')
-        return
-      }
-    })
-  }
-
-
   crearActividad(opciones) {
     window.open(opciones.urlActividad, '_blank').focus();
   }
@@ -116,7 +52,7 @@ export default class extends Controller {
       e.target.getAttribute('data-parametros')
     )
     let urlActividad = this.armarUrlActividad1(parametrosActividad)
-    this.constructor.guardarFormularioYRepintar(
+    window.SipGuardarFormularioYRepintar(
       ['errores'], this.crearActividad, {urlActividad: urlActividad}) 
   }
 
@@ -129,8 +65,9 @@ export default class extends Controller {
 
 
   modalAlgunos(e) {
-    this.constructor.guardarFormularioYRepintar(['errores', 'modal-respuesta-algunos'], 
-      this.abrirModal, {}) 
+    window.SipGuardarFormularioYRepintar(
+      ['errores', 'modal-respuesta-algunos'], 
+      this.abrirModal, {})
   }
 
 

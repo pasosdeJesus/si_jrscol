@@ -352,7 +352,7 @@ module Sivel2Sjr
         if validar_params && @casovalido 
           format.html { 
             if request.xhr?
-              if request.params[:siguiente] == 'editar'
+              if request.params[:_sip_enviarautomatico_y_repintar] 
                 render(action: 'edit', 
                        layout: 'application', 
                        notice: 'Caso actualizado.')

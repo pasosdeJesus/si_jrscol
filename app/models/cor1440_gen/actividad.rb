@@ -79,11 +79,13 @@ module Cor1440Gen
           if v[:proyectofinanciero_id].to_i != 10 &&
               v['_destroy'] == 'false' && (v['actividadpf_ids'] == [] || 
               v['actividadpf_ids'] == [''])
+            cf = v[:proyectofinanciero_id].to_i > 0 ?
+            Cor1440Gen::Proyectofinanciero.find(
+              v[:proyectofinanciero_id]).nombre : ''
             errors.add(
               :proyectofinanciero, 
               "Falta agregar actividad de marco lógico en "\
-              "convenio financiador #{Cor1440Gen::Proyectofinanciero.
-              find(v['proyectofinanciero_id']).nombre}"
+              "convenio financiador #{cf}"
             )
           end
         end
