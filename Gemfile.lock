@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 1c190bccdf3a441963ec93d9d8c90d08dc7cadd8
+  revision: 35b3c30d6e82973a52e5195dbb60968b6027f1e7
   branch: main
   specs:
     cor1440_gen (2.1a1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: 76e34fc0a413f193642c4f2994fabc8365fa7306
+  revision: 2856178a6703552efdd1b900c4d9166d9ca0453f
   branch: main
   specs:
     heb412_gen (2.1.0.beta1)
@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: 28d27b1ca62c2a16798c814a84d42b7aba24ded0
+  revision: cb90995d0f5d346923097df5aa170518a6d74a70
   branch: main
   specs:
     mr519_gen (2.1.0.beta1)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: a5cf9d263c3147f2f75962ca29057acd9f6f3d40
+  revision: 0b8181d7a2a900800e6576620c84f23a0ee84e15
   branch: main
   specs:
     sal7711_gen (2.1.0.beta1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 50d0a78f1b49731af016d9a751ee7b0a2dbcec3e
+  revision: 40ab0b4ac1be6a9ffacfb858a0f744db31776c1f
   branch: main
   specs:
     sal7711_web (2.1.0.beta1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: deb6008da2cc88469af95cdff7be18a36c05b8e1
+  revision: 00280a7e51f4063b2a7e50a91b4ac58af45f8306
   branch: main
   specs:
     sip (2.1.0.beta1)
@@ -80,7 +80,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: f752b6089c6e09986d3cb5017d3e572a57e37234
+  revision: bd26503118ae53fabab69f900236bb386c7631aa
   branch: main
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 37c472c81b83a66064aab0e92e85f886cc276f0f
+  revision: 027c0cffdbc02948fdc482cbb413cbdb0b3eca71
   branch: main
   specs:
     sivel2_sjr (2.1a1)
@@ -391,7 +391,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stimulus-rails (1.2.0)
+    stimulus-rails (1.2.1)
       railties (>= 6.0.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
