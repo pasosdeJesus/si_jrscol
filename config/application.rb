@@ -83,6 +83,8 @@ module Sivel2Sjrcol
         ENV.fetch('RAILS_ENV', '') == 'development'
       config.web_console.permissions = ENV['WC_PERMISOS']
     end
+
+    config.action_mailer.raise_delivery_errors = true
   end
 end
 
