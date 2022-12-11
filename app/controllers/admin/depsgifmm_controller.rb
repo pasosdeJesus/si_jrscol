@@ -1,5 +1,5 @@
 module Admin
-  class DepsgifmmController < Sip::Admin::BasicasController
+  class DepsgifmmController < Msip::Admin::BasicasController
     before_action :set_depgifmm, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Depgifmm

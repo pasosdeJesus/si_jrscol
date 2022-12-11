@@ -7,7 +7,7 @@ module GifmmHelper
   # reciente hasta esa fecha.
   # Si no encuentra perfil migratorio retorna ''
   def self.perfilmigracion_de_beneficiario(idp, fecha)
-    p = Sip::Persona.find(idp)
+    p = Msip::Persona.find(idp)
     mc = p.caso.joins(
       'JOIN sivel2_sjr_casosjr ON ' +
       'sivel2_gen_caso.id=sivel2_sjr_casosjr.id_caso').
@@ -45,7 +45,7 @@ module GifmmHelper
   end
 
   
-  # Recibe Sip::Persona y fecha hasta la cual mirar casos
+  # Recibe Msip::Persona y fecha hasta la cual mirar casos
   # para determinar y retornar cadena con su etnia
   # más reciente hasta esa fecha en casos de los que no haya
   # sido desagregado.

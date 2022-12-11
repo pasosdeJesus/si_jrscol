@@ -54,7 +54,7 @@ module UnificarHelper
         SET id_llegadam=NULL WHERE id_caso=#{c.id};")
       Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
         SET id_salidam=NULL WHERE id_caso=#{c.id};")
-      Sivel2Gen::Caso.connection.execute("DELETE FROM sip_ubicacion
+      Sivel2Gen::Caso.connection.execute("DELETE FROM msip_ubicacion
         WHERE id_caso=#{c.id};")
       Sivel2Gen::Caso.connection.execute(
         "DELETE FROM sivel2_sjr_actividad_casosjr
@@ -84,7 +84,7 @@ module UnificarHelper
 
   def consulta_casos_en_blanco
     return Sivel2Gen::Caso.joins(:casosjr).where(
-      "contacto_id IN (SELECT id FROM sip_persona "\
+      "contacto_id IN (SELECT id FROM msip_persona "\
       "  WHERE COALESCE(nombres, '')='' "\
       "  AND COALESCE(apellidos, '')='') "\
       "AND COALESCE(memo, '')='' "
@@ -191,17 +191,17 @@ module UnificarHelper
   module_function :arreglar_casos_medio_borrados
 
   def consulta_personas_en_blanco_por_eliminar
-    Sip::Persona.where(
+    Msip::Persona.where(
       "(tdocumento_id is null) AND
       (numerodocumento is null OR numerodocumento='') AND
       id NOT IN (SELECT persona_id FROM cor1440_gen_asistencia) AND
       id NOT IN (SELECT persona_id FROM cor1440_gen_caracterizacionpersona) AND
-      id NOT IN (SELECT persona_id FROM sip_orgsocial_persona) AND
+      id NOT IN (SELECT persona_id FROM msip_orgsocial_persona) AND
       id NOT IN (SELECT id_persona FROM sivel2_gen_victima) AND
       (trim(nombres) IN ('','N','NN')) AND
       (trim(apellidos) in ('','N','NN')) AND
-      id NOT IN (SELECT  persona1 FROM sip_persona_trelacion) AND
-      id NOT IN (SELECT persona2 FROM sip_persona_trelacion) AND
+      id NOT IN (SELECT  persona1 FROM msip_persona_trelacion) AND
+      id NOT IN (SELECT persona2 FROM msip_persona_trelacion) AND
       id NOT IN (SELECT persona_id FROM detallefinanciero_persona) AND
       id NOT IN (SELECT persona_id FROM cor1440_gen_beneficiariopf)"
     )
@@ -333,7 +333,7 @@ module UnificarHelper
     c1 = Sivel2Gen::Caso.find([c1_id.to_i, c2_id.to_i].min)
     c2 = Sivel2Gen::Caso.find([c1_id.to_i, c2_id.to_i].max)
 
-    eunif = Sip::Etiqueta.where(nombre:'BENEFICIARIOS UNIFICADOS').take
+    eunif = Msip::Etiqueta.where(nombre:'BENEFICIARIOS UNIFICADOS').take
     if !eunif
       tmenserr << "No se encontró etiqueta BENEFICIARIOS UNIFICADOS.\n"
     end
@@ -394,11 +394,11 @@ module UnificarHelper
   def unificar_dos_beneficiarios(p1_id, p2_id, current_usuario)
     menserr = ''
     if !p1_id || p1_id.to_i <= 0 ||
-        Sip::Persona.where(id: p1_id.to_i).count == 0
+        Msip::Persona.where(id: p1_id.to_i).count == 0
       menserr += "Primera identificación de persona no válida #{p1_id.to_s}.\n"
     end
     if !p2_id || p2_id.to_i <= 0 ||
-        Sip::Persona.where(id: p2_id.to_i).count == 0
+        Msip::Persona.where(id: p2_id.to_i).count == 0
       menserr += "Segunda identificación de persona no válida #{p2_id.to_s}.\n"
     end
     if p1_id.to_i == p2_id.to_i
@@ -408,8 +408,8 @@ module UnificarHelper
       return [menserr, nil]
     end
 
-    p1 = Sip::Persona.find([p1_id.to_i, p2_id.to_i].min)
-    p2 = Sip::Persona.find([p1_id.to_i, p2_id.to_i].max)
+    p1 = Msip::Persona.find([p1_id.to_i, p2_id.to_i].min)
+    p2 = Msip::Persona.find([p1_id.to_i, p2_id.to_i].max)
 
     cp1 = Sivel2Gen::Victima.where(id_persona: p1.id).pluck(:id_caso)
     cp2 = Sivel2Gen::Victima.where(id_persona: p2.id).pluck(:id_caso)
@@ -430,7 +430,7 @@ module UnificarHelper
       menserr += "Las actividades #{ac.inspect} tienen a ambos beneficiarios como asistentes; por previción antes en cada una de esas actividades debe eliminar alguno de los dos asistentes.\n"
     end
 
-    eunif = Sip::Etiqueta.where(nombre:'BENEFICIARIOS UNIFICADOS').take
+    eunif = Msip::Etiqueta.where(nombre:'BENEFICIARIOS UNIFICADOS').take
     if !eunif
       menserr += "No se encontró etiqueta BENEFICIARIOS UNIFICADOS.\n"
     end
@@ -439,7 +439,7 @@ module UnificarHelper
       return [menserr, nil]
     end
 
-    ep = Sip::EtiquetaPersona.new(
+    ep = Msip::EtiquetaPersona.new(
       persona_id: p1.id,
       etiqueta_id: eunif.id,
       usuario_id: current_usuario.id,
@@ -523,26 +523,26 @@ module UnificarHelper
       cp.save
       ep.observaciones << "Cambiada caracterizacíon #{cp.id}\n"
     end
-    Sip::PersonaTrelacion.where(persona1: p2.id).each do |pt|
+    Msip::PersonaTrelacion.where(persona1: p2.id).each do |pt|
       pt.persona1 = p1.id
       pt.save
       ep.observaciones << "Cambiada relacion con persona #{pt.persona2}\n"
     end
-    Sip::PersonaTrelacion.where(persona2: p2.id).each do |pt|
+    Msip::PersonaTrelacion.where(persona2: p2.id).each do |pt|
       pt.persona2 = p1.id
       pt.save
       ep.observaciones << "Cambiada relacion con persona #{pt.persona1}\n"
     end
 
-    #sip_datosbio no debe estar lleno
-    Sip::OrgsocialPersona.where(persona_id: p2.id).each do |op|
+    #msip_datosbio no debe estar lleno
+    Msip::OrgsocialPersona.where(persona_id: p2.id).each do |op|
       op.persona_id = p1.id
       op.save
       ep.observaciones << "Cambiada organización social #{op.orgsocial_id}\n"
     end
 
     #mr519_gen_encuestapersona no debería estar llena
-    Sip::EtiquetaPersona.where(persona_id: p2.id).each do |ep2|
+    Msip::EtiquetaPersona.where(persona_id: p2.id).each do |ep2|
       ep2.persona_id = p1.id
       ep2.save
       ep.observaciones << "Cambiada etiqueta #{ep.etiqueta.nombre}\n"
@@ -568,7 +568,7 @@ module UnificarHelper
       SQL
     end
     ::Detallefinanciero.joins(:persona).where(
-      'sip_persona.id' => p2.id
+      'msip_persona.id' => p2.id
     ).each do |bp|
       bp.persona_id = p1.id
       bp.save
@@ -606,7 +606,7 @@ module UnificarHelper
   def consulta_duplicados_autom
 # La siguiente vista haría breve la siguiente consulta pero
 # su refresco toma como 15 min.
-#    Sip::Persona.connection.execute <<-SQL
+#    Msip::Persona.connection.execute <<-SQL
 #       DROP MATERIALIZED VIEW IF EXISTS duplicados_rep;
 #       CREATE MATERIALIZED VIEW duplicados_rep AS (
 #         SELECT sub.sigla,
@@ -626,13 +626,13 @@ module UnificarHelper
 #           p.tdocumento_id,
 #           p.numerodocumento,
 #           count(p.id) AS rep
-#           FROM sip_persona p
-#             LEFT JOIN sip_tdocumento t ON t.id = p.tdocumento_id
+#           FROM msip_persona p
+#             LEFT JOIN msip_tdocumento t ON t.id = p.tdocumento_id
 #           GROUP BY t.sigla, p.tdocumento_id, p.numerodocumento) AS sub
-#         JOIN sip_persona AS p1 ON
+#         JOIN msip_persona AS p1 ON
 #           p1.tdocumento_id=sub.tdocumento_id
 #           AND p1.numerodocumento=sub.numerodocumento
-#         JOIN sip_persona AS p2 ON
+#         JOIN msip_persona AS p2 ON
 #           p1.id<p2.id AND
 #           p2.tdocumento_id=sub.tdocumento_id
 #           AND p2.numerodocumento=sub.numerodocumento
@@ -664,15 +664,15 @@ module UnificarHelper
       depura << " AND p2.id<#{ENV.fetch('DEPURA_MAX', -1).to_i}"
     end
 
-    return Sip::Persona.connection.execute <<-SQL
+    return Msip::Persona.connection.execute <<-SQL
 
       SELECT p1.tdocumento_id, p1.numerodocumento, 
         p1.id AS id1, p1.nombres AS nombres1, soundexespm(p1.nombres) AS sn1,
         p1.apellidos AS apellidos1, soundexespm(p1.apellidos) AS sa1,
         p2.id AS id2, p2.nombres AS nombres2, soundexespm(p2.nombres) AS sn2,
         p2.apellidos AS apellidos2, soundexespm(p2.apellidos) AS sa2
-      FROM sip_persona AS p1
-      JOIN sip_persona AS p2 
+      FROM msip_persona AS p1
+      JOIN msip_persona AS p2 
       ON p1.id<p2.id
         #{depura}
         AND p1.tdocumento_id=p2.tdocumento_id

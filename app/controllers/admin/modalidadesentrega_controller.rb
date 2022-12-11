@@ -1,5 +1,5 @@
 module Admin
-  class ModalidadesentregaController < Sip::Admin::BasicasController
+  class ModalidadesentregaController < Msip::Admin::BasicasController
     before_action :set_modalidadentrega, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Modalidadentrega

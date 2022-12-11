@@ -63,13 +63,13 @@
             <%= opcion_menu "Medición de indicadores de resultado", 
               cor1440_gen.mindicadorespf_path, desplegable: true %>
           <% end %>
-          <% if can? :read, Sip::Orgsocial then %>
-            <%= opcion_menu "Organizaciones sociales", sip.orgsociales_path, desplegable: true %>
+          <% if can? :read, Msip::Orgsocial then %>
+            <%= opcion_menu "Organizaciones sociales", msip.orgsociales_path, desplegable: true %>
           <% end %>
-          <% if can? :read, Sip::Persona then %>
-            <%= opcion_menu "Beneficiarios", sip.personas_path, desplegable: true %>
+          <% if can? :read, Msip::Persona then %>
+            <%= opcion_menu "Beneficiarios", msip.personas_path, desplegable: true %>
             <%= opcion_menu "Reporte de beneficiarios repetidos", main_app.beneficiarios_repetidos_path, desplegable: true %>
-            <% if can? :deduplicar, Sip::Persona then %>
+            <% if can? :deduplicar, Msip::Persona then %>
               <%= opcion_menu "Deduplicar beneficiarios automaticamente", main_app.beneficiarios_deduplicar_path, desplegable: true %>
             <% end %>
           <% end %>
@@ -133,12 +133,12 @@
           <!-- %= #opcion_menu "Casos", admin_casos_path % -->
         <% end %>
         <%= opcion_menu "Ver Control de Acceso", 
-          sip.ayuda_controldeacceso_path, desplegable: true %>
+          msip.ayuda_controldeacceso_path, desplegable: true %>
 
       <% end %>
       <%= opcion_menu "Salir #{current_usuario.nusuario}", main_app.sign_out_path %>
     <% else %>
-      <%= opcion_menu "Acerca de", sip.acercade_path %>
+      <%= opcion_menu "Acerca de", msip.acercade_path %>
       <%= opcion_menu "Iniciar Sesión", main_app.new_usuario_session_path %> 
     <% end %>
   <% end %>
@@ -150,4 +150,4 @@
     </span></p>
 <% end %>
 
-<%= render template: "layouts/sip/application" %>
+<%= render template: "layouts/msip/application" %>

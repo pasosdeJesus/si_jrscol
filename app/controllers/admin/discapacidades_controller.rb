@@ -1,5 +1,5 @@
 module Admin
-  class DiscapacidadesController < Sip::Admin::BasicasController
+  class DiscapacidadesController < Msip::Admin::BasicasController
     before_action :set_discapacidad, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Discapacidad

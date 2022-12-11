@@ -1,6 +1,6 @@
 module Sivel2Sjr
   module Admin
-    class ProgsestadoController < Sip::Admin::BasicasController
+    class ProgsestadoController < Msip::Admin::BasicasController
       before_action :set_progestado, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource  class: Sivel2Sjr::Progestado
 

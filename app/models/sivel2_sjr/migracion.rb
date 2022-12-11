@@ -1,10 +1,10 @@
-require 'sip/accesores_ubicacionpre'
+require 'msip/accesores_ubicacionpre'
 
 class Sivel2Sjr::Migracion < ActiveRecord::Base
 
-  include Sip::Modelo
+  include Msip::Modelo
 
-  extend Sip::AccesoresUbicacionpre
+  extend Msip::AccesoresUbicacionpre
 
   accesores_ubicacionpre :destino
 
@@ -59,7 +59,7 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
     class_name: 'Causamigracion', foreign_key: "causamigracion_id", 
     optional: true
   belongs_to :pagoingreso, 
-    class_name: 'Sip::Trivalente', foreign_key: "pagoingreso_id", 
+    class_name: 'Msip::Trivalente', foreign_key: "pagoingreso_id", 
     optional: true  
   belongs_to :miembrofamiliar,
     class_name: 'Miembrofamiliar', foreign_key: "miembrofamiliar_id", 

@@ -10,7 +10,7 @@
     </a>
     <div class="collapse multi-collapse divcolapse" id='victima-<%=f.object.id%>'>
       <% if f.object.persona.nil?
-           f.object.persona = Sip::Persona.new(nombres: '')
+           f.object.persona = Msip::Persona.new(nombres: '')
            f.object.victimasjr = Sivel2Sjr::Victimasjr.new
            f.object.victimasjr.victima = f.object
       end %>
@@ -26,7 +26,7 @@
               <%= f.input :id, as: :hidden %> 
               <%= fvictimasjr.input :id_victima, as: :hidden %> 
               <%= fvictimasjr.input :id, as: :hidden %> 
-              <%= render partial: 'sip/personas/persona_campos', 
+              <%= render partial: 'msip/personas/persona_campos', 
                 locals: {f: fp, fvictima: f, fvictimasjr: fvictimasjr} %>
             </div>
           </div>

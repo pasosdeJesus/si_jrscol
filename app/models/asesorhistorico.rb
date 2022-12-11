@@ -1,7 +1,7 @@
 class Asesorhistorico < ActiveRecord::Base
 
-  include Sip::Localizacion
-  include Sip::FormatoFechaHelper
+  include Msip::Localizacion
+  include Msip::FormatoFechaHelper
 
   belongs_to :casosjr,
     foreign_key: 'casosjr_id',
@@ -14,7 +14,7 @@ class Asesorhistorico < ActiveRecord::Base
   belongs_to :oficina,
     foreign_key: 'oficina_id',
     validate: true,
-    class_name: 'Sip::Oficina', optional: true
+    class_name: 'Msip::Oficina', optional: true
 
 
   campofecha_localizado :fechainicio

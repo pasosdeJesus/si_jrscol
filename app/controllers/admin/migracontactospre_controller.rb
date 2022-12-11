@@ -1,5 +1,5 @@
 module Admin
-  class MigracontactospreController < Sip::Admin::BasicasController
+  class MigracontactospreController < Msip::Admin::BasicasController
     before_action :set_migracontactopre, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Migracontactopre

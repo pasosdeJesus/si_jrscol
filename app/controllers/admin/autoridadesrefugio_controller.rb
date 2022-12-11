@@ -1,5 +1,5 @@
 module Admin
-  class AutoridadesrefugioController < Sip::Admin::BasicasController
+  class AutoridadesrefugioController < Msip::Admin::BasicasController
     before_action :set_autoridadrefugio, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Autoridadrefugio

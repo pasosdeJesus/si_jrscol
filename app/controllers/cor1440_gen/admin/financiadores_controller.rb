@@ -2,7 +2,7 @@ require_dependency "cor1440_gen/concerns/controllers/financiadores_controller"
 
 module Cor1440Gen
   module Admin
-    class FinanciadoresController < Sip::Admin::BasicasController
+    class FinanciadoresController < Msip::Admin::BasicasController
       include Cor1440Gen::Concerns::Controllers::FinanciadoresController
         before_action :set_financiador, 
           only: [:show, :edit, :update, :destroy]

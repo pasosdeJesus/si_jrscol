@@ -1,5 +1,5 @@
 module Admin
-  class TiposproteccionController < Sip::Admin::BasicasController
+  class TiposproteccionController < Msip::Admin::BasicasController
     before_action :set_tipoproteccion, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Tipoproteccion

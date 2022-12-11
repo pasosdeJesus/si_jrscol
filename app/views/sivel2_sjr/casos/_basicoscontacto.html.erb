@@ -28,13 +28,13 @@
         value_method: :id %>
     <% else %>
       <label class="select required" for="temporal_asesor">Asesor JRS</label>
-      <input class="form-control select required sip-sf-bs-input" name="temporal_asesor" id="temporal_asesor" style="background-color: rgb(242, 242, 255); color: rgb(0, 0, 0);" value="<%= @caso.presenta('asesor') %>" disabled>
+      <input class="form-control select required msip-sf-bs-input" name="temporal_asesor" id="temporal_asesor" style="background-color: rgb(242, 242, 255); color: rgb(0, 0, 0);" value="<%= @caso.presenta('asesor') %>" disabled>
     <% end %>
   </div>
   <div class="col-md-6">
     <% colof= current_usuario.oficina_id ? 
-      Sip::Oficina.habilitados.where(id: current_usuario.oficina_id) :
-      Sip::Oficina.habilitados %>
+      Msip::Oficina.habilitados.where(id: current_usuario.oficina_id) :
+      Msip::Oficina.habilitados %>
     <%= s.association :oficina,
       collection: colof,
       include_blank: false,
@@ -73,7 +73,7 @@
   <%= fvictima.simple_fields_for :persona do |fpersona| %>
     <div class='campos-persona-con-victima-id'>
       <%= fvictima.input :id, as: :hidden %> 
-      <%= render partial: 'sip/personas/persona_campos', 
+      <%= render partial: 'msip/personas/persona_campos', 
         locals: {f: fpersona, fvictima: fvictima} %>
     </div>
 

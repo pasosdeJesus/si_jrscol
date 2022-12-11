@@ -43,7 +43,7 @@
       </div>
       <div class="offset-sm-0 col-sm-4 offset-md-0 col-md-3">
         <%= f.input :tdocumento,
-          collection: Sip::Tdocumento.habilitados,
+          collection: Msip::Tdocumento.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -102,7 +102,7 @@
       </div>
       <div class="offset-sm-0 col-sm-7">
         <%= f.input :oficina_id,
-          collection: Sip::Oficina.habilitados,
+          collection: Msip::Oficina.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -188,7 +188,7 @@
       </div>
       <div class="offset-sm-0 col-sm-3 col-md-3">
         <%= f.input :expulsion_pais_id,
-          collection: Sip::Pais.habilitados,
+          collection: Msip::Pais.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -197,7 +197,7 @@
       </div>
       <div class="col-md-2">
         <%= f.input :expulsion_departamento_id,
-          collection: Sip::Departamento.habilitados,
+          collection: Msip::Departamento.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -207,7 +207,7 @@
       </div>
       <div class="col-md-2">
         <%= f.input :expulsion_municipio_id,
-          collection: Sip::Municipio.habilitados,
+          collection: Msip::Municipio.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -232,7 +232,7 @@
       </div>
       <div class="offset-sm-0 col-sm-3 col-md-3">
         <%= f.input :llegada_pais_id,
-          collection: Sip::Pais.habilitados,
+          collection: Msip::Pais.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -241,7 +241,7 @@
       </div>
       <div class="col-md-2">
         <%= f.input :llegada_departamento_id,
-          collection: Sip::Departamento.habilitados,
+          collection: Msip::Departamento.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -251,7 +251,7 @@
       </div>
       <div class="col-md-2">
         <%= f.input :llegada_municipio_id,
-          collection: Sip::Municipio.habilitados,
+          collection: Msip::Municipio.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -328,7 +328,7 @@
 
       <div class="offset-sm-0 col-sm-4 col-md-3">
         <%= f.input :sexo, 
-          collection: Sip::Persona::sexo_opciones,
+          collection: Msip::Persona::sexo_opciones,
           label: false,
           include_blank: '-- Sexo'
         %>
@@ -384,7 +384,7 @@
       </div>
       <div class="offset-sm-0 col-sm-2">
         <%= f.input :etiqueta1,
-          collection: Sip::Etiqueta.habilitados,
+          collection: Msip::Etiqueta.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -400,7 +400,7 @@
       </div>
       <div class="offset-sm-0 col-sm-2">
         <%= f.input :etiqueta2,
-          collection: Sip::Etiqueta.habilitados,
+          collection: Msip::Etiqueta.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,

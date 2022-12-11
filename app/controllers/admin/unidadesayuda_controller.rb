@@ -1,5 +1,5 @@
 module Admin
-  class UnidadesayudaController < Sip::Admin::BasicasController
+  class UnidadesayudaController < Msip::Admin::BasicasController
     before_action :set_unidadayuda, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Unidadayuda

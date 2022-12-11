@@ -18,11 +18,11 @@ module Sivel2Gen
       if dsol == ''
         return "codsol desconocido"
       end
-      sol = Sip::Solicitud.create(
+      sol = Msip::Solicitud.create(
         usuario_id: remitente.id,
         fecha: Date.today,
         solicitud: dsol,
-        estadosol_id: Sip::Solicitud::PENDIENTE
+        estadosol_id: Msip::Solicitud::PENDIENTE
       );
       sol.usuarionotificar_ids = destinatarios.pluck(:id)
       sol.save

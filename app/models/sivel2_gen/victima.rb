@@ -21,9 +21,9 @@ class Sivel2Gen::Victima < ActiveRecord::Base
     inverse_of: :victima
   accepts_nested_attributes_for :anexo_victima, allow_destroy: true, 
     reject_if: :all_blank
-  has_many :sip_anexo, :through => :anexo_victima, 
-    class_name: 'Sip::Anexo'
-  accepts_nested_attributes_for :sip_anexo,  reject_if: :all_blank
+  has_many :msip_anexo, :through => :anexo_victima, 
+    class_name: 'Msip::Anexo'
+  accepts_nested_attributes_for :msip_anexo,  reject_if: :all_blank
 
   #validates_associated :persona # Genera un mensaje demasiado simple: 
   # En 'Victima' no es válido 'Persona'

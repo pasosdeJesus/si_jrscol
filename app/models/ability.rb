@@ -69,9 +69,9 @@ class Ability < Sivel2Sjr::Ability
     ['Sivel2Sjr', 'accionjuridica'],
     ['Sivel2Sjr', 'motivosjr'],
     ['Sivel2Sjr', 'regimensalud'],
-    ['Sip', 'lineaorgsocial'],
-    ['Sip', 'tipoanexo'],
-    ['Sip', 'tipoorgsocial'],
+    ['Msip', 'lineaorgsocial'],
+    ['Msip', 'tipoanexo'],
+    ['Msip', 'tipoorgsocial'],
     ['', 'agresionmigracion'],
     ['', 'autoridadrefugio'],
     ['', 'causaagresion'],
@@ -98,13 +98,13 @@ class Ability < Sivel2Sjr::Ability
   ]
 
   def tablasbasicas
-    Sip::Ability::BASICAS_PROPIAS +
+    Msip::Ability::BASICAS_PROPIAS +
       Cor1440Gen::Ability::BASICAS_PROPIAS +
       Sal7711Gen::Ability::BASICAS_PROPIAS +
       Sivel2Gen::Ability::BASICAS_PROPIAS +
       Sivel2Sjr::Ability::BASICAS_PROPIAS +
       BASICAS_PROPIAS - [
-        ['Sip', 'grupo'],
+        ['Msip', 'grupo'],
         ['Sivel2Gen', 'filiacion'],
         ['Sivel2Gen', 'frontera'],
         ['Sivel2Gen', 'iglesia'],
@@ -120,19 +120,19 @@ class Ability < Sivel2Sjr::Ability
   end
 
   def basicas_id_noauto
-    Sip::Ability::BASICAS_ID_NOAUTO +
+    Msip::Ability::BASICAS_ID_NOAUTO +
       Sivel2Gen::Ability::BASICAS_ID_NOAUTO +
       Cor1440Gen::Ability::BASICAS_ID_NOAUTO
   end
 
   def nobasicas_indice_seq_con_id
-    Sip::Ability::NOBASICAS_INDSEQID +
+    Msip::Ability::NOBASICAS_INDSEQID +
       Sivel2Gen::Ability::NOBASICAS_INDSEQID + 
       Cor1440Gen::Ability::NOBASICAS_INDSEQID
   end
 
   def tablasbasicas_prio
-    Sip::Ability::BASICAS_PRIO +
+    Msip::Ability::BASICAS_PRIO +
       Sivel2Gen::Ability::BASICAS_PRIO +
       Sivel2Sjr::Ability::BASICAS_PRIO + 
       [
@@ -593,7 +593,7 @@ class Ability < Sivel2Sjr::Ability
         'tipo',
         'web'
       ],
-      controlador: 'Sip::Orgsocial',
+      controlador: 'Msip::Orgsocial',
       ruta: '/orgsocial'
     },
 
@@ -833,15 +833,15 @@ class Ability < Sivel2Sjr::Ability
   end
 
   def initialize(usuario = nil)
-    can :read, [Sip::Pais, Sip::Departamento, Sip::Municipio, Sip::Clase]
+    can :read, [Msip::Pais, Msip::Departamento, Msip::Municipio, Msip::Clase]
     if !usuario || usuario.fechadeshabilitacion
       return
     end
     can :read, Sal7711Gen::Categoriaprensa
 
-    can :descarga_anexo, Sip::Anexo
-    can :contar, Sip::Ubicacion
-    can :nuevo, Sip::Ubicacion
+    can :descarga_anexo, Msip::Anexo
+    can :contar, Msip::Ubicacion
+    can :nuevo, Msip::Ubicacion
 
     can :contar, Sivel2Gen::Caso
     can :buscar, Sivel2Gen::Caso
@@ -860,15 +860,15 @@ class Ability < Sivel2Sjr::Ability
     if !usuario.nil? && !usuario.rol.nil? then
       can :read, Sal7711Gen::Articulo
 
-      can :read, Sip::Persona
-      can :read, Sip::Tdocumento
+      can :read, Msip::Persona
+      can :read, Msip::Tdocumento
 
       can :read, Heb412Gen::Plantilladoc
       can :read, Heb412Gen::Plantillahcm
       can :read, Heb412Gen::Plantillahcr
     
-      can :read, Sip::Ubicacionpre
-      can :mundep, Sip::Ubicacionpre
+      can :read, Msip::Ubicacionpre
+      can :mundep, Msip::Ubicacionpre
 
       case usuario.rol
       when Ability::ROLINV
@@ -900,10 +900,10 @@ class Ability < Sivel2Sjr::Ability
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
-        can :read, Sip::Oficina
-        can [:read, :index], Sip::Orgsocial
-        can :manage, Sip::Persona
-        can :manage, Sip::Ubicacionpre
+        can :read, Msip::Oficina
+        can [:read, :index], Msip::Orgsocial
+        can :manage, Msip::Persona
+        can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
         can :read, Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
@@ -930,10 +930,10 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
-        can :read, Sip::Oficina
-        can [:read, :index], Sip::Orgsocial
-        can :manage, Sip::Persona
-        can :manage, Sip::Ubicacionpre
+        can :read, Msip::Oficina
+        can [:read, :index], Msip::Orgsocial
+        can :manage, Msip::Persona
+        can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
@@ -959,10 +959,10 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
-        can :read, Sip::Oficina
-        can [:new, :create, :read, :index, :edit, :update], Sip::Orgsocial
-        can :manage, Sip::Persona
-        can :manage, Sip::Ubicacionpre
+        can :read, Msip::Oficina
+        can [:new, :create, :read, :index, :edit, :update], Msip::Orgsocial
+        can :manage, Msip::Persona
+        can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Acto
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
@@ -981,8 +981,8 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Cor1440Gen::Mindicadorpf
         can :manage, Cor1440Gen::Proyectofinanciero
 
-        can :manage, Sip::Respaldo7z
-        can [:new, :create, :show, :index], Sip::Claverespaldo # No editables
+        can :manage, Msip::Respaldo7z
+        can [:new, :create, :show, :index], Msip::Claverespaldo # No editables
 
         can :manage, Heb412Gen::Carpetaexclusiva
         can :manage, Heb412Gen::Doc
@@ -995,10 +995,10 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Sal7711Gen::Articulo
 
-        can :manage, Sip::Orgsocial
-        can :manage, Sip::Sectororgsocial
-        can :manage, Sip::Persona
-        can :manage, Sip::Ubicacionpre
+        can :manage, Msip::Orgsocial
+        can :manage, Msip::Sectororgsocial
+        can :manage, Msip::Persona
+        can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Caso
         can :manage, Sivel2Gen::Acto

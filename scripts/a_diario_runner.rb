@@ -53,7 +53,7 @@ def run
   puts m;
   m = UnificarHelper.arreglar_casos_medio_borrados
   puts m;
-  Sip::Persona.connection.execute <<-SQL
+  Msip::Persona.connection.execute <<-SQL
     REFRESH MATERIALIZED VIEW sivel2_gen_conscaso;
   SQL
 end

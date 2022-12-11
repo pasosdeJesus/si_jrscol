@@ -23,7 +23,7 @@ class DetallefinancieroPersonaTest < ActiveSupport::TestCase
     area = Cor1440Gen::Proyecto.create!(PRUEBA_AREA)
     assert(area.valid?)
 
-    upre = Sip::Ubicacionpre.create!(PRUEBA_UBICACIONPRE)
+    upre = Msip::Ubicacionpre.create!(PRUEBA_UBICACIONPRE)
     assert(upre.valid?)
 
     actividad = Cor1440Gen::Actividad.new(PRUEBA_ACTIVIDAD)
@@ -39,7 +39,7 @@ class DetallefinancieroPersonaTest < ActiveSupport::TestCase
     detallefinanciero = ::Detallefinanciero.create!(PRUEBA_DETALLEFINANCIERO)
     assert(detallefinanciero.valid?)
 
-    p = Sip::Persona.create!(PRUEBA_PERSONA)
+    p = Msip::Persona.create!(PRUEBA_PERSONA)
     assert(p.valid?)
 
     detallefinanciero.persona_ids = [p.id]

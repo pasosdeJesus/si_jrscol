@@ -1,5 +1,5 @@
 class Consgifmm < ActiveRecord::Base
-  include Sip::Modelo
+  include Msip::Modelo
 
   belongs_to :detallefinanciero, 
     class_name: 'Detallefinanciero', 
@@ -161,7 +161,7 @@ class Consgifmm < ActiveRecord::Base
           where( # actividadpf lleva implicito proyectopf
                 'cor1440_gen_actividad.fecha < ? ', 
                 self.fecha.at_beginning_of_month).
-                where('sip_persona.id = ?', pid.to_i)
+                where('msip_persona.id = ?', pid.to_i)
 
       # Definicion de nuevo si usaran detalle financiero
       #c = ::Detallefinanciero.joins(:actividad).joins(:persona).where(
@@ -171,7 +171,7 @@ class Consgifmm < ActiveRecord::Base
       #      'OR (cor1440_gen_actividad.fecha = ? '+
       #      'AND detallefinanciero.id < ?)', self.fecha, self.fecha, 
       #      self.detallefinanciero_id).
-      #      where('sip_persona.id = ?', pid.to_i)
+      #      where('msip_persona.id = ?', pid.to_i)
       c.count == 0
     }
     idp.sort.uniq.join(",")
@@ -184,7 +184,7 @@ class Consgifmm < ActiveRecord::Base
   def beneficiarios_nuevos_condicion_ids
     idn = beneficiarios_nuevos_mes_ids.split(',')
     idv = idn.select {|ip|
-      p = Sip::Persona.find(ip)
+      p = Msip::Persona.find(ip)
       yield(p)
     }
     idv.sort.join(',')
@@ -436,7 +436,7 @@ class Consgifmm < ActiveRecord::Base
     if m && respond_to?("beneficiari#{m[1].parameterize}ids")
       bids = send("beneficiari#{m[1].parameterize}ids").split(',')
       return bids.map {|i|
-        r="<a href='#{Rails.application.routes.url_helpers.sip_path + 
+        r="<a href='#{Rails.application.routes.url_helpers.msip_path + 
         'personas/' + i.to_s}' target='_blank'>#{i.to_s}</a>"
         r.html_safe
       }.join(", ".html_safe).html_safe
@@ -467,7 +467,7 @@ class Consgifmm < ActiveRecord::Base
 
     when :mes
       actividad.fecha ? 
-        Sip::FormatoFechaHelper::MESES[actividad.fecha.month] : ''
+        Msip::FormatoFechaHelper::MESES[actividad.fecha.month] : ''
 
     when :objetivo
       actividad.objetivo ? actividad.objetivo : ''
@@ -582,16 +582,16 @@ class Consgifmm < ActiveRecord::Base
         cor1440_gen_actividadpf.proyectofinanciero_id=cor1440_gen_proyectofinanciero.id
       LEFT JOIN detallefinanciero ON
         detallefinanciero.actividad_id=cor1440_gen_actividad.id
-      LEFT JOIN sip_ubicacionpre ON
-        cor1440_gen_actividad.ubicacionpre_id=sip_ubicacionpre.id
-      LEFT JOIN sip_departamento ON
-        sip_ubicacionpre.departamento_id=sip_departamento.id
+      LEFT JOIN msip_ubicacionpre ON
+        cor1440_gen_actividad.ubicacionpre_id=msip_ubicacionpre.id
+      LEFT JOIN msip_departamento ON
+        msip_ubicacionpre.departamento_id=msip_departamento.id
       LEFT JOIN depgifmm ON
-        sip_departamento.id_deplocal=depgifmm.id
-      LEFT JOIN sip_municipio ON
-        sip_ubicacionpre.municipio_id=sip_municipio.id
+        msip_departamento.id_deplocal=depgifmm.id
+      LEFT JOIN msip_municipio ON
+        msip_ubicacionpre.municipio_id=msip_municipio.id
       LEFT JOIN mungifmm ON
-        (sip_departamento.id_deplocal*1000+sip_municipio.id_munlocal)=
+        (msip_departamento.id_deplocal*1000+msip_municipio.id_munlocal)=
           mungifmm.id
       WHERE cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL
       AND (detallefinanciero.proyectofinanciero_id IS NULL OR

@@ -1,5 +1,5 @@
 module Admin
-  class CausasmigracionController < Sip::Admin::BasicasController
+  class CausasmigracionController < Msip::Admin::BasicasController
     before_action :set_causamigracion, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Causamigracion

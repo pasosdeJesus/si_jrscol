@@ -15,7 +15,7 @@ y sitios con su latitud y longitud.
 
 En tablas se esperan campos de la forma:
   `salidaubicacionpre_id`, `expulsionubicacionpre_id`, etc.
-que sean llaves foráneas a tabla `sip_ubicacionpre`
+que sean llaves foráneas a tabla `msip_ubicacionpre`
 
 En modelos se usan accesores que proveen
   `salida_pais_id`, `salida_departamento_id`,  etc. para eso:
@@ -35,7 +35,7 @@ ubicación) a ubicacionpre con:
 ```
       (caso_params[:migracion_attributes] || []).each do |clave, mp|
         mi = Sivel2Sjr::Migracion.find(mp[:id].to_i)
-        mi.salidaubicacionpre_id = Sip::Ubicacionpre::buscar_o_agregar(
+        mi.salidaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           mp[:salida_pais_id], mp[:salida_departamento_id],
           mp[:salida_municipio_id], mp[:salida_clase_id],
           mp[:salida_lugar], mp[:salida_sitio], mp[:salida_tsitio_id],
@@ -61,7 +61,7 @@ En vistas donde se deben incrustar las 2 filas del control usar:
 
 ```
     <% htmlid=f.object && f.object.id ? f.object.id : 0 %>
-    <%= render partial: 'sip/ubicacionespre/dos_filas_confecha', locals: {
+    <%= render partial: 'msip/ubicacionespre/dos_filas_confecha', locals: {
       f: f,
       htmlid: "salida-#{htmlid}",
       estilogen: '',

@@ -8,7 +8,7 @@
       </div>
     </div>
     <% htmlid=f.object && f.object.id ? f.object.id : 0 %>
-    <%= render partial: 'sip/ubicacionespre/dos_filas_confecha', locals: {
+    <%= render partial: 'msip/ubicacionespre/dos_filas_confecha', locals: {
       f: f,
       htmlid: "expulsion-#{htmlid}",
       estilogen: '',
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-      <%= render partial: 'sip/ubicacionespre/dos_filas_confecha', locals: {
+      <%= render partial: 'msip/ubicacionespre/dos_filas_confecha', locals: {
         f: f,
         htmlid: "llegada-#{htmlid}",
         estilogen: '',

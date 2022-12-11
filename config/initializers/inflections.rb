@@ -12,7 +12,7 @@
 
 # Podria forzarse orden con:
 
-#['sip', 'mr519_gen', 'heb412_gen', 'cor1440_gen', 'sal7711_gen', 'sal7711_web',
+#['msip', 'mr519_gen', 'heb412_gen', 'cor1440_gen', 'sal7711_gen', 'sal7711_web',
 # 'sivel2_gen', 'sivel2_sjr'].each do |s| 
 #  byebug
 #  require_dependency File.join(Gem::Specification.find_by_name(s).gem_dir,

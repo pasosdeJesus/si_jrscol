@@ -140,7 +140,7 @@ module Cor1440Gen
         @registro.usuario_id = params['usuario_id'].to_i
       end
       if params['oficina_id'] && 
-          Sip::Oficina.where(id: params['oficina_id'].to_i).count == 1
+          Msip::Oficina.where(id: params['oficina_id'].to_i).count == 1
         @registro.oficina_id = params['oficina_id'].to_i
       end
       if params['proyecto_id'] && 
@@ -164,7 +164,7 @@ module Cor1440Gen
         parpers.each do |pp|
           pid = pp[8..].to_i
           if pid > 0 && params[pp] == "true" &&
-              Sip::Persona.where(id: pid).count == 1
+              Msip::Persona.where(id: pid).count == 1
             Cor1440Gen::Asistencia.create!(
               persona_id: pid,
               actividad_id: @registro.id,
@@ -358,7 +358,7 @@ module Cor1440Gen
           if Cor1440Gen::Asistencia.where(id: v[:id].to_i).count == 0 ||
               !v[:persona_attributes] || 
               !v[:persona_attributes][:id] || v[:persona_attributes][:id] == '' ||
-              Sip::Persona.where(id: v[:persona_attributes][:id].to_i).count == 0
+              Msip::Persona.where(id: v[:persona_attributes][:id].to_i).count == 0
             next
           end
           asi = Cor1440Gen::Asistencia.find(v[:id].to_i)
@@ -372,7 +372,7 @@ module Cor1440Gen
             porelim.push(l)  
             next
           end
-          per = Sip::Persona.find(v[:persona_attributes][:id].to_i)
+          per = Msip::Persona.find(v[:persona_attributes][:id].to_i)
           if asi.persona_id != per.id && asi.persona.nombres == 'N' && 
               asi.persona.apellidos == 'N'
             # Era nueva asistencia cuya nueva persona se remplazó tras 
@@ -426,7 +426,7 @@ module Cor1440Gen
     # 
     # Recibe params[:actividad_id] y params[:caso_id]
     def rapido_benef_caso
-      authorize! :new, Sip::Persona
+      authorize! :new, Msip::Persona
       if params[:actividad_id].nil?
         resp_error 'Falta parámetro actividad_id'
         return

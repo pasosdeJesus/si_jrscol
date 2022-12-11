@@ -7,7 +7,7 @@
       </div>
     </div>
     <% htmlid=(f.object && f.object.id ? f.object.id : 0) %>
-    <%= render partial: 'sip/ubicacionespre/dos_filas_confecha', locals: {
+    <%= render partial: 'msip/ubicacionespre/dos_filas_confecha', locals: {
       f: f,
       htmlid: "salida-#{htmlid}",
       estilogen: '',
@@ -79,7 +79,7 @@
       <div class="col-md-6">
         ¿Pagó por el ingreso a Colombia?
         <%= f.association :pagoingreso,
-          collection: Sip::Trivalente.habilitados,
+          collection: Msip::Trivalente.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
@@ -202,7 +202,7 @@
         Llegada
       </div>
     </div>
-    <%= render partial: 'sip/ubicacionespre/dos_filas_confecha', locals: {
+    <%= render partial: 'msip/ubicacionespre/dos_filas_confecha', locals: {
       f: f,
       htmlid: "llegada-#{htmlid}",
       estilogen: '',
@@ -263,7 +263,7 @@
       f.object.perfilmigracion_id != 2 ? 
       'display: none' : 'display: block' %>
 
-    <%= render partial: 'sip/ubicacionespre/dos_filas_confecha', locals: {
+    <%= render partial: 'msip/ubicacionespre/dos_filas_confecha', locals: {
       f: f,
       htmlid: "destino-#{htmlid}",
       estilogen: edest,

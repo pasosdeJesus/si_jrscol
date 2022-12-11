@@ -1,5 +1,5 @@
 module Admin
-  class AgresionesmigracionController < Sip::Admin::BasicasController
+  class AgresionesmigracionController < Msip::Admin::BasicasController
     before_action :set_agresionmigracion, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Agresionmigracion

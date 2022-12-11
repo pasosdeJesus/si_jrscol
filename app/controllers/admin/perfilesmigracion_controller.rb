@@ -1,5 +1,5 @@
 module Admin
-  class PerfilesmigracionController < Sip::Admin::BasicasController
+  class PerfilesmigracionController < Msip::Admin::BasicasController
     before_action :set_perfilmigracion, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Perfilmigracion

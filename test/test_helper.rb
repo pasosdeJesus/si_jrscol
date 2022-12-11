@@ -10,10 +10,10 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
 
-  if Sip::Tclase.all.count == 0
+  if Msip::Tclase.all.count == 0
     load "#{Rails.root}/db/seeds.rb"
     Sivel2Sjrcol::Application.load_tasks
-    Rake::Task['sip:indices'].invoke
+    Rake::Task['msip:indices'].invoke
   end
 
   protected

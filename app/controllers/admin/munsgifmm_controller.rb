@@ -1,5 +1,5 @@
 module Admin
-  class MunsgifmmController < Sip::Admin::BasicasController
+  class MunsgifmmController < Msip::Admin::BasicasController
     before_action :set_mungifmm, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Mungifmm

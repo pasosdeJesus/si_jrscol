@@ -1,5 +1,5 @@
 module Admin
-  class DificultadesmigracionController < Sip::Admin::BasicasController
+  class DificultadesmigracionController < Msip::Admin::BasicasController
     before_action :set_dificultadmigracion, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Dificultadmigracion
