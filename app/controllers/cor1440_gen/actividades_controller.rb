@@ -379,8 +379,14 @@ module Cor1440Gen
             # autocompletar. Dejar asignada la remplazada y borrar la vacia
             op = asi.persona
             asi.persona_id = per.id
-            asi.save
-            op.destroy
+            if asi.valid?
+              asi.save
+              op.destroy
+            else
+              flash.alert = asi.errors.messages.to_s
+              resp_error(asi.errors.messages.to_s)
+              return false
+            end
           end
         end
         porelim.each do |l|
