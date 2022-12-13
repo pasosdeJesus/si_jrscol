@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'apexcharts'
+gem 'apexcharts',
+  git: 'https://github.com/styd/apexcharts.rb.git', branch: :master
 
 gem 'babel-transpiler'
 

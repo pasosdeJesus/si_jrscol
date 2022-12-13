@@ -1,7 +1,6 @@
 <% 
-  @hg = {}
+  @hg2 = {}
   @iderecho = {} 
-  @irespuesta = {} 
 %>
 <table class="table table-striped">
   <thead>
@@ -30,25 +29,23 @@
              if i == 1
                if campo[1]
                  @resp = campo[1].to_s
-                 @nom = @nom + ':' + @resp
+                 @nom1 = @nom
+                 @nom2 = @resp
                else
-                 @nom = @nom + ':' + 'SIN RESPUESTA'
+                 @nom1 = @nom
+                 @nom2 = 'SIN RESPUESTA'
                end
+               @nom = @nom1 + ':' + @nom2
              end
              if i == 3 && campo[1] 
-               @hg[@nom] = campo[1].to_i
+               if !@hg2[@nom1]
+                 @hg2[@nom1] = {}
+               end
+               @hg2[@nom1][@nom2] = campo[1].to_i
                if @iderecho[@derecho] 
                  @iderecho[@derecho] += campo[1].to_i
                else
                  @iderecho[@derecho] = campo[1].to_i
-               end
-               if !@irespuesta[@derecho]
-                 @irespuesta[@derecho] = {}
-               end
-               if @nom == @derecho
-                 @irespuesta[@derecho]["SIN RESPUESTA"] = campo[1].to_i
-               else
-                 @irespuesta[@derecho][@resp] = campo[1].to_i
                end
              end
              i += 1
@@ -69,7 +66,7 @@
   </tbody>
 </table>
 
-<%= 
+<% 
 
   def hex_a_rgb(c)
     r = []
@@ -96,50 +93,28 @@
   end
 
   puts "iderecho=" ; puts @iderecho
-  puts "irespuesta=" ; puts @irespuesta
   puts "----"
   # De Highcharts.getOptions().colors
   @colors = ["#7cb5ec", "#434348", "#90ed7d", "#f7a35c", "#8085e9", 
     "#f15c80", "#e4d354", "#8085e8", "#8d4653", "#91e8e1"]
-  @pd = []
-  @pr = []
-  i = 0
-  @iderecho.each do |d, v|
-    @pd.push({
-      name: d,
-      y: v,
-      color: @colors[i % @colors.size]
-    })
-    j = 0
-    @irespuesta[d].each do |r, vr|
-      @pr.push({
-        name: r,
-        y: vr,
-        color: @colors[i % @colors.size]
-        #brighten( @colors[i % @colors.size], 0.2 - (j / irespuesta[d].size) / 5))
-      })
-    end
-    i += 1
-  end
-    @series = [
-    {name: 'Derechos',
-    data: @pd,
-    size: '60%',
-    dataLabels: {
-        color: 'white',
-        distance: -30 }
-    }, 
-    {name: 'Respuestas',
-    data: @pr,
-    size: '80%',
-    innerSize: '60%' }
-    ]
-    puts @hg; 
-    puts @series;
-    #line_chart [
-    #  {name: "Series A", data: [8.0, 10.0]},
-    #  {name: "Series B", data: [2.3, 4.9]}
-    #] 
-    #line_chart(@hg) 
-    pie_chart(@hg) 
-    %>
+  @series = [
+    {name: 'Ayudas',
+     data: @iderecho,
+     size: '60%',
+     dataLabels: {
+       color: 'white',
+       distance: -30 }
+    } 
+  ]
+  puts "series=#{@series}";
+     %>
+<%= bar_chart(@series, title: 'VULNERACIONES POR DERECHO', module: true)  %>
+<% i = 2 %>
+<% @hg2.each do |d, o| %>
+  <% @serie = [ {data: o } ] %>
+  <%= column_chart(
+    @serie, title: "RESPUESTAS DEL JRSCOL A VULNERACIONES AL #{d}", 
+    module: true, theme: "palette#{i % 10}")  %>
+  <% i += 1 %>
+<% end %>
+
