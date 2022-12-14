@@ -432,6 +432,18 @@ class Consgifmm < ActiveRecord::Base
       return ids.split(",").count
     end
 
+    m =/^beneficiari(.*)cuenta_y_enlaces$/.match(atr.to_s)
+    if m && respond_to?("beneficiari#{m[1].parameterize}ids")
+      bids = send("beneficiari#{m[1].parameterize}ids").split(',')
+      enlaces = bids.map {|i|
+        r="<a href='#{Rails.application.routes.url_helpers.sip_path + 
+        'personas/' + i.to_s}' target='_blank'>#{i.to_s}</a>"
+        r.html_safe
+      }.join(", ".html_safe).html_safe
+      return "#{bids.count} : #{enlaces}".html_safe
+    end
+
+
     m =/^beneficiari(.*)enlaces$/.match(atr.to_s)
     if m && respond_to?("beneficiari#{m[1].parameterize}ids")
       bids = send("beneficiari#{m[1].parameterize}ids").split(',')
