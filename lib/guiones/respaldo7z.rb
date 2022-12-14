@@ -7,22 +7,22 @@
 d=Date.today.day
 
 if !ENV['HEB412_RUTA']
-  puts "Falta variable de enterno HEB412_RUTA"
+  puts "Falta variable de entorno HEB412_RUTA"
   exit 1
 end
 nube=ENV['HEB412_RUTA']
 
-if !ENV['RUTA_ANEXOS']
-  puts "Falta variable de enterno RUTA_ANEXOS"
+if !ENV['SIP_RUTA_ANEXOS']
+  puts "Falta variable de entorno SIP_RUTA_ANEXOS"
   exit 1
 end
-anexos=ENV['RUTA_ANEXOS']
+anexos=ENV['SIP_RUTA_ANEXOS']
 
-if !ENV['RUTA_VOLCADOS']
-  puts "Falta variable de enterno RUTA_VOLCADOS"
+if !ENV['SIP_RUTA_VOLCADOS']
+  puts "Falta variable de entorno SIP_RUTA_VOLCADOS"
   exit 1
 end
-volcados=ENV['RUTA_VOLCADOS']
+volcados=ENV['SIP_RUTA_VOLCADOS']
 
 
 # https://stackoverflow.com/questions/690151/getting-output-of-system-calls-in-ruby
