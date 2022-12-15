@@ -52,7 +52,8 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
     if !ActiveRecord::Base.connection.data_source_exists? 'sivel2_sjr_ultimaatencion_aux'
       ActiveRecord::Base.connection.execute(
         "CREATE OR REPLACE VIEW sivel2_sjr_ultimaatencion_aux AS 
-           SELECT v1.id_caso AS caso_id, a1.fecha, a1.id AS actividad_id
+           SELECT DISTINCT v1.id_caso AS caso_id, a1.fecha, 
+             a1.id AS actividad_id
            FROM  public.cor1440_gen_asistencia AS asi1
              JOIN public.cor1440_gen_actividad AS a1 ON asi1.actividad_id=a1.id
              JOIN public.sip_persona as p1 ON p1.id=asi1.persona_id
