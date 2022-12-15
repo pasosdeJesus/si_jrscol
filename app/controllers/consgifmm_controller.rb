@@ -58,8 +58,6 @@ class ConsgifmmController < Heb412Gen::ModelosController
   end
 
   def self.valor_campo_compuesto(registro, campo)
-    puts "registro=#{registro}"
-    puts "campo=#{campo}"
     p = campo.split('.')
     if Mr519Gen::Formulario.where(nombreinterno: p[0]).count == 0
       return "No se encontró formulario con nombreinterno #{p[0]}"
@@ -117,5 +115,127 @@ class ConsgifmmController < Heb412Gen::ModelosController
     vc.presenta_valor(false)
   end
 
+
+  def self.vista_consgifmm_excel(
+    plant, registros, narch, parsimp, extension, params)
+
+    ruta = File.join(Rails.application.config.x.heb412_ruta, 
+                     plant.ruta).to_s
+
+    p = Axlsx::Package.new
+    lt = p.workbook
+    e = lt.styles
+
+    estilo_base = e.add_style sz: 12
+    estilo_titulo = e.add_style sz: 20
+    estilo_encabezado = e.add_style sz: 12, b: true
+    #, fg_color: 'FF0000', bg_color: '00FF00'
+
+    lt.add_worksheet do |hoja|
+      hoja.add_row ['Reporte GIFMM'], 
+        height: 30, style: estilo_titulo
+      hoja.add_row []
+      hoja.add_row [
+        'Fecha inicial', params['filtro']['busfechaini'], 
+        'Fecha final', params['filtro']['busfechafin'] ], style: estilo_base
+      idpf = (!params['filtro'] || 
+              !params['filtro']['busconveniofinanciado_nombre'] || 
+              params['filtro']['busconveniofinanciado_nombre'] == ''
+             ) ? nil : params['filtro']['busconveniofinanciado_nombre']
+      idaml = (!params['filtro'] || 
+              !params['filtro']['busactividadmarcologico_nombre'] || 
+              params['filtro']['busactividadmarcologico_nombre'] == ''
+              ) ? nil : params['filtro']['busactividadmarcologico_nombre']
+
+      npf = idpf.nil? ? '' :
+        Cor1440Gen::Proyectofinanciero.where(id: idpf).
+        pluck(:nombre).join('; ')
+      naml = idaml.nil? ? '' :
+        Cor1440Gen::Actividadpf.where(id: idaml).
+        pluck(:titulo).join('; ')
+
+      hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
+      hoja.add_row []
+      l = [
+        'Actividad',
+        'Fecha',
+        'Objetivo',
+        'Convenio Financiado', 
+        'Actividad de marco lógico',
+        'Socio Principal', 
+        'Tipo implementaciones',
+        'Socio implementador',
+        'Departamento', 
+        'Municipio', 
+        'Mes',
+        'Estado',
+        'Parte RMRP',
+        'Sector GIFMM',
+        'Indicador GIFMM',
+        'Beneficiarios',
+        'Beneficiarios nuevos', 
+      ]
+      numfilas = l.length
+
+      hoja.merge_cells('A1:Q1')
+
+      hoja.add_row l, style: [estilo_encabezado] * numfilas
+      
+      registros.each do |reg|
+        l = [
+          reg['actividad_id'].to_s,
+          reg['fecha'].to_s,
+          reg['actividad_objetivo'],
+          reg['conveniofinanciado_nombre'],
+          reg['actividadmarcologico_nombre'],
+          reg.socio_principal,
+          reg.presenta('tipo_implementacion'),
+          reg.presenta('socio_implementador'),
+          reg['departamento_gifmm'],
+          reg['municipio_gifmm'],
+          reg.presenta('mes'),
+          reg.presenta('estado'),
+          reg.presenta('parte_rmrp'),
+          reg.sector_gifmm,
+          reg.indicador_gifmm,
+          reg.beneficiarios_ids.split(",").count,
+          reg.beneficiarios_nuevos_mes_ids.split(",").count
+        ]
+        hoja.add_row l, style: estilo_base
+      end
+      anchos = [20] * numfilas
+      hoja.column_widths(*anchos)
+      ultf = 0
+      hoja.rows.last.tap do |row|
+        ultf = row.row_index
+      end
+      if ultf>0
+        l = [nil] * numfilas
+        hoja.add_row l
+      end
+
+    end
+
+    n=File.join('/tmp', File.basename(narch + ".xlsx"))
+    p.serialize n
+    FileUtils.rm(narch + "#{extension}-0")
+
+    return n
+  end
+
+
+  def self.vista_listado(plant, ids, modelo, narch, parsimp, extension,
+                         campoid = :id, params)
+    registros = modelo.where(campoid => ids)
+    case plant.vista
+    when 'Consgifmm'
+      r = self.vista_consgifmm_excel(
+        plant, registros, narch, parsimp, extension, params)
+      return r
+    else
+      r = registros
+    end
+    return r
+  end
 
 end
