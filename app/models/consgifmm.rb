@@ -474,6 +474,9 @@ class Consgifmm < ActiveRecord::Base
     when :actividad_responsable
       self.actividad.responsable.nusuario
 
+    when :actividad_resultado
+      self.actividad.resultado
+
     when :estado
       'En proceso'
 

@@ -753,8 +753,10 @@ class Ability < Sivel2Sjr::Ability
       solo_multiple: true,
       campos: [
           'actividad_id',
+          'actividad_nombre',
           'actividad_observaciones',
           'actividad_responsable',
+          'actividad_resultado',
           'actividadmarcologico_nombre',
           'beneficiarias_nuevas_niñas_adolescentes_y_se',
           'beneficiarias_nuevas_mujeres_adultas',
