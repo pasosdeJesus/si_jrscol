@@ -227,15 +227,16 @@ class ConsgifmmController < Heb412Gen::ModelosController
   def self.vista_listado(plant, ids, modelo, narch, parsimp, extension,
                          campoid = :id, params)
     registros = modelo.where(campoid => ids)
-    case plant.vista
-    when 'Consgifmm'
+    if plant.id == 51
       r = self.vista_consgifmm_excel(
         plant, registros, narch, parsimp, extension, params)
       return r
     else
-      r = registros
+      if self.respond_to?(:index_reordenar)
+        registros = self.index_reordenar(registros)
+      end
+      return registros
     end
-    return r
   end
 
 end
