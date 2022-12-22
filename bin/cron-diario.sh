@@ -5,4 +5,9 @@
 if (test -f .env) then {
   . .env
 } fi;
-bin/railsp runner -e production scripts/a_diario_runner.rb
+if (test "$RAILS_ENV" = "production") then {
+  bin/railsp runner -e production scripts/a_diario_runner.rb
+} else {
+  bin/rails runner -e $RAILS_ENV scripts/a_diario_runner.rb
+} fi;
+
