@@ -527,7 +527,7 @@
             } %>
         </div>
         <div class="offset-md-0 col-md-6">
-          Miembros del grupo familiar incluidos en refugio
+          Integrante del grupo familiar incluidos en refugio
           <%= f.association :miembrofamiliar,
             collection: Miembrofamiliar.habilitados,
             label_method: :nombre,
@@ -535,7 +535,7 @@
             label: false,
             input_html: {
               "data-toggle" => 'tooltip',
-              'data-placeholder' => "Miembros familiares...",
+              'data-placeholder' => "Integrantes del grupo familiar...",
               class: 'chosen-select' 
             } %>
           <% miemest = f.object.miembrofamiliar && f.object.miembrofamiliar_id == 6 ? 

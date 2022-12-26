@@ -24,13 +24,13 @@ module Sip
     # No autenticado
     ################
 
-    test "sin autenticar no debe acceder a grupos de personas" do
+    test "sin autenticar no debe acceder a grupos de beneficiarios" do
       assert_raise CanCan::AccessDenied do
         get sip.gruposper_path + '?term="Cauca"'
       end
     end
 
-    test "sin autenticar no debe acceder a grupos de personas reemplazar" do
+    test "sin autenticar no debe acceder a grupos de beneficiarios reemplazar" do
       assert_raise CanCan::AccessDenied do
         get sip.gruposper_remplazar_path + "?id_grupoper=#{@grupoper.id}&id_victimacolectiva=#{@vicol.id}"
       end

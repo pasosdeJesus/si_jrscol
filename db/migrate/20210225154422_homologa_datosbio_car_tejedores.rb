@@ -31,7 +31,7 @@ class HomologaDatosbioCarTejedores < ActiveRecord::Migration[6.0]
       JOIN mr519_gen_respuestafor AS r ON c.respuestafor_id=r.id 
       AND formulario_id=101)').order('id')
     dbs.each do |db|
-      puts "Procesando datos de persona #{nump} con id #{db.persona_id}"
+      puts "Procesando datos del beneficiario #{nump} con id #{db.persona_id}"
       r = Mr519Gen::Respuestafor.create(formulario_id: 101,
                                         fechaini: Date.today,
                                         fechacambio: Date.today)

@@ -28,7 +28,7 @@
         <% end %>
       <% end %>
       <%= despliega_abajo "Conteos" do %>
-        <%= opcion_menu "Personas Atendidas", '/conteos/personas',
+        <%= opcion_menu "Beneficiarios Atendidos", '/conteos/personas',
           desplegable: true %>
         <%= opcion_menu "Respuestas y Derechos Vulnerados", 
           '/conteos/respuestas', desplegable: true %>
@@ -38,7 +38,7 @@
           '/conteos/municipios', desplegable: true %>
         <%= opcion_menu "Rutas de desplazamiento", 
           '/conteos/rutas', desplegable: true %>
-        <%= opcion_menu "Desplazamientos por persona", 
+        <%= opcion_menu "Desplazamientos por beneficiario", 
           '/conteos/desplazamientos', desplegable: true %>
         <%= opcion_menu "Vacíos de protección", 
           '/conteos/vacios', desplegable: true %>
@@ -66,20 +66,14 @@
           <% if can? :read, Sip::Orgsocial then %>
             <%= opcion_menu "Organizaciones sociales", sip.orgsociales_path, desplegable: true %>
           <% end %>
-          <% if can? :read, Sip::Persona then %>
-            <%= opcion_menu "Beneficiarios", sip.personas_path, desplegable: true %>
-            <%= opcion_menu "Reporte de beneficiarios repetidos", main_app.beneficiarios_repetidos_path, desplegable: true %>
-            <% if can? :deduplicar, Sip::Persona then %>
-              <%= opcion_menu "Deduplicar beneficiarios automaticamente", main_app.beneficiarios_deduplicar_path, desplegable: true %>
-            <% end %>
-          <% end %>
         <% end %>
       <% end %>
 
-      <%= despliega_abajo "Archivo de Prensa" do %>
-        <%= opcion_menu "Buscar", sal7711_gen.buscar_path, desplegable: true %>
-        <% if can? :manage, Sal7711Gen::Articulo then %>
-          <%= opcion_menu "Añadir Artículo", sal7711_gen.new_articulo_path, desplegable: true %>
+      <%= despliega_abajo "Beneficiarios" do %>
+        <%= opcion_menu "Lista", sip.personas_path, desplegable: true %>
+        <%= opcion_menu "Reporte de identificaciones repetidos", main_app.beneficiarios_repetidos_path, desplegable: true %>
+        <% if can? :deduplicar, Sip::Persona then %>
+          <%= opcion_menu "Deduplicar automaticamente", main_app.beneficiarios_deduplicar_path, desplegable: true %>
         <% end %>
       <% end %>
     <% end %>

@@ -263,7 +263,7 @@ module Sivel2Sjr
                   where(tdocumento_id: p[:tdocumento_id]).
                   where('id<>?', p[:id])
                 if idrep.count > 0
-                  @caso.errors.add(:persona, "#{n.capitalize} tiene identificación repetida con #{idrep.count} persona(s)")
+                  @caso.errors.add(:persona, "#{n.capitalize} tiene identificación repetida con #{idrep.count} beneficiarios(s)")
                 end
               end
             end

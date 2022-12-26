@@ -63,7 +63,7 @@ module Cor1440Gen
       }
       if pact.length != pact.uniq.length
         errors.add(:persona, "En Detalle Financiero no se puden repetir " +
-                   "personas si la actividad del marco lógico es la misma") 
+                   "beneficiarios si la actividad del marco lógico es la misma") 
       end 
     end 
 

@@ -214,13 +214,13 @@ module UnificarHelper
     lpore = []
     pore.each do |p|
       lpore += ["#{p.id} #{p.nombres} #{p.apellidos}"]
-      puts "Eliminando persona en blanco #{p.id}"
+      puts "Eliminando beneficiario en blanco #{p.id}"
       p.destroy
     end
     if lpore.count == 0
-      mens = "No hay personas en blanco.\n"
+      mens = "No hay beneficiarios en blanco.\n"
     else
-      mens = "Se eliminaron #{lpore.count} personas en blanco no asociadas a casos ni a actividades (#{lpore.join(', ')}).\n"
+      mens = "Se eliminaron #{lpore.count} beneficiarios en blanco no asociadas a casos ni a actividades (#{lpore.join(', ')}).\n"
     end
     return mens
   end
@@ -395,11 +395,11 @@ module UnificarHelper
     menserr = ''
     if !p1_id || p1_id.to_i <= 0 ||
         Sip::Persona.where(id: p1_id.to_i).count == 0
-      menserr += "Primera identificación de persona no válida #{p1_id.to_s}.\n"
+      menserr += "Primera identificación de beneficiario no válida #{p1_id.to_s}.\n"
     end
     if !p2_id || p2_id.to_i <= 0 ||
         Sip::Persona.where(id: p2_id.to_i).count == 0
-      menserr += "Segunda identificación de persona no válida #{p2_id.to_s}.\n"
+      menserr += "Segunda identificación de beneficiario no válida #{p2_id.to_s}.\n"
     end
     if p1_id.to_i == p2_id.to_i
       menserr += "Primera y segunda identificación son iguales no unificando.\n"
@@ -511,7 +511,7 @@ module UnificarHelper
           ep.observaciones << "Cambiado acto en caso #{cid}\n"
         end
         ep.save
-        ep.observaciones << "Elimina víctima #{vic.id_persona} del caso #{cid}\n"
+        ep.observaciones << "Elimina beneficiario #{vic.id_persona} del caso #{cid}\n"
         vic.destroy
         ep.observaciones = ep.observaciones[0..4998]
         ep.save
@@ -526,12 +526,12 @@ module UnificarHelper
     Sip::PersonaTrelacion.where(persona1: p2.id).each do |pt|
       pt.persona1 = p1.id
       pt.save
-      ep.observaciones << "Cambiada relacion con persona #{pt.persona2}\n"
+      ep.observaciones << "Cambiada relacion con beneficiario #{pt.persona2}\n"
     end
     Sip::PersonaTrelacion.where(persona2: p2.id).each do |pt|
       pt.persona2 = p1.id
       pt.save
-      ep.observaciones << "Cambiada relacion con persona #{pt.persona1}\n"
+      ep.observaciones << "Cambiada relacion con beneficiario #{pt.persona1}\n"
     end
 
     #sip_datosbio no debe estar lleno
