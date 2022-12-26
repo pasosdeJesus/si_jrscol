@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ksh
 # Elimina actividades en blanco
 # vtamara@pasosdeJesus.org. 2020. Dominio público.
 
@@ -9,7 +9,7 @@ if (test ! -f .env) then {
 	echo 'Falta archivo .env'
 	exit 1;
 } fi;
-. .env
+. ./.env
 if (test "$USUARIO_AP" = "") then {
 	echo 'Falta USUARIO_AP en .env'
 	exit 1;
