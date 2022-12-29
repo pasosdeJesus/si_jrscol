@@ -53,6 +53,12 @@
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
+<tr><td rowspan="1" colspan="3">tabla-perfiles-poblacionales</td></tr>
+</thead>
+<tbody>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
 <tr><td rowspan="1" colspan="3">tabla-accidentes-o-dificultades-en-la-migracion</td></tr>
 </thead>
 <tbody>
@@ -1702,6 +1708,42 @@
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
+<tr><td rowspan="1" colspan="3">tabla-integrantes-del-grupo-familiar-incluidos-en-refugio</td></tr>
+</thead>
+<tbody>
+<tr><td>clickAt</td><td>id=navbarDropdownAdministrar<datalist><option>id=navbarDropdownAdministrar</option><option>link=Administrar</option><option>css=#navbarDropdownAdministrar</option><option>//a[contains(text(),'Administrar')]</option><option>//a[@id='navbarDropdownAdministrar']</option><option>//div[@id='navbarSupportedContent']/ul[2]/li[2]/a</option><option>xpath=(//a[contains(@href, '#')])[6]</option><option>//ul[2]/li[2]/a</option></datalist></td><td>56,19</td>
+</tr>
+<tr><td>clickAt</td><td>link=Tablas Básicas<datalist><option>link=Tablas Básicas</option><option>//a[contains(text(),'Tablas Básicas')]</option><option>//div[@id='navbarSupportedContent']/ul[2]/li[2]/div/a[5]</option><option>//a[contains(@href, '/tablasbasicas')]</option><option>//ul[2]/li[2]/div/a[5]</option></datalist></td><td>57,15</td>
+</tr>
+<tr><td>clickAt</td><td>link=Integrantes del grupo familiar incluidos en refugio<datalist><option>link=Integrantes del grupo familiar incluidos en refugio</option><option>//a[contains(text(),'Integrantes del grupo familiar incluidos en refugio')]</option><option>//div[@id='div_contenido']/article/ul/li[41]/a</option><option>//a[contains(@href, 'admin/miembrosfamiliar')]</option><option>//li[41]/a</option></datalist></td><td>131,6</td>
+</tr>
+<tr><td>clickAt</td><td>css=a.btn.btn-primary<datalist><option>css=a.btn.btn-primary</option><option>xpath=(//a[contains(text(),'Nuevo')])[2]</option><option>//a[contains(@href, '/admin/miembrosfamiliar/nueva')]</option><option>//div/div/a</option></datalist></td><td>56,23</td>
+</tr>
+<tr><td>clickAt</td><td>id=miembrofamiliar_nombre<datalist><option>id=miembrofamiliar_nombre</option><option>name=miembrofamiliar[nombre]</option><option>css=#miembrofamiliar_nombre</option><option>//input[@id='miembrofamiliar_nombre']</option><option>//form[@id='new_miembrofamiliar']/div[2]/input</option><option>//div[2]/input</option></datalist></td><td>130,24</td>
+</tr>
+<tr><td>type</td><td>id=miembrofamiliar_nombre<datalist><option>id=miembrofamiliar_nombre</option><option>name=miembrofamiliar[nombre]</option><option>css=#miembrofamiliar_nombre</option><option>//input[@id='miembrofamiliar_nombre']</option><option>//form[@id='new_miembrofamiliar']/div[2]/input</option><option>//div[2]/input</option></datalist></td><td>aaa</td>
+</tr>
+<tr><td>clickAt</td><td>id=miembrofamiliar_observaciones<datalist><option>id=miembrofamiliar_observaciones</option><option>name=miembrofamiliar[observaciones]</option><option>css=#miembrofamiliar_observaciones</option><option>//input[@id='miembrofamiliar_observaciones']</option><option>//form[@id='new_miembrofamiliar']/div[3]/input</option><option>//div[3]/input</option></datalist></td><td>72,23</td>
+</tr>
+<tr><td>type</td><td>id=miembrofamiliar_observaciones<datalist><option>id=miembrofamiliar_observaciones</option><option>name=miembrofamiliar[observaciones]</option><option>css=#miembrofamiliar_observaciones</option><option>//input[@id='miembrofamiliar_observaciones']</option><option>//form[@id='new_miembrofamiliar']/div[3]/input</option><option>//div[3]/input</option></datalist></td><td>bbb</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='new_miembrofamiliar']/div[6]/input</option><option>//div[6]/input</option></datalist></td><td>43,8</td>
+</tr>
+<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/admin/miembrosfamiliar/101')])[2]</option><option>//div[4]/a</option></datalist></td><td>40,22</td>
+</tr>
+<tr><td>pause</td><td><datalist><option></option></datalist></td><td>1000</td>
+</tr>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Integrantes del grupo familiar incluidos en refugio</td>
+</tr>
+<tr><td>clickAt</td><td>id=div_contenido<datalist><option>id=div_contenido</option><option>css=#div_contenido</option><option>//div[@id='div_contenido']</option><option>//body/div</option></datalist></td><td>554,57</td>
+</tr>
+<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>::Miembrofamiliar eliminado.</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
 <tr><td rowspan="1" colspan="3">tabla-linea-de-trabajo-de-org-social</td></tr>
 </thead>
 <tbody>
@@ -1812,40 +1854,6 @@
 <tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Mecanismos de Entrega</td>
 </tr>
 <tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success</option><option>//div/div</option><option>css=div.alert.alert-success &gt; span</option></datalist></td><td>::Mecanismodeentrega eliminado.</td>
-</tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">tabla-miembros-del-grupo-familiar-incluidos-en-refugio</td></tr>
-</thead>
-<tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownAdministrar<datalist><option>id=navbarDropdownAdministrar</option><option>link=Administrar</option><option>css=#navbarDropdownAdministrar</option><option>//a[contains(text(),'Administrar')]</option><option>//a[@id='navbarDropdownAdministrar']</option><option>//div[@id='navbarSupportedContent']/ul[2]/li[2]/a</option><option>xpath=(//a[contains(@href, '#')])[6]</option><option>//ul[2]/li[2]/a</option></datalist></td><td>56,19</td>
-</tr>
-<tr><td>clickAt</td><td>link=Tablas Básicas<datalist><option>link=Tablas Básicas</option><option>//a[contains(text(),'Tablas Básicas')]</option><option>//div[@id='navbarSupportedContent']/ul[2]/li[2]/div/a[5]</option><option>//a[contains(@href, '/tablasbasicas')]</option><option>//ul[2]/li[2]/div/a[5]</option></datalist></td><td>57,15</td>
-</tr>
-<tr><td>clickAt</td><td>link=Miembros del grupo familiar incluidos en refugio<datalist><option>link=Miembros del grupo familiar incluidos en refugio</option><option>//a[contains(text(),'Miembros del grupo familiar incluidos en refugio')]</option><option>//a[contains(@href, 'admin/miembrosfamiliar')]</option><option>//li[37]/a</option></datalist></td><td>126,10</td>
-</tr>
-<tr><td>clickAt</td><td>css=a.btn.btn-primary<datalist><option>css=a.btn.btn-primary</option><option>xpath=(//a[contains(text(),'Nuevo')])[2]</option><option>//a[contains(@href, '/admin/miembrosfamiliar/nueva')]</option><option>//div/div/a</option></datalist></td><td>56,23</td>
-</tr>
-<tr><td>clickAt</td><td>id=miembrofamiliar_nombre<datalist><option>id=miembrofamiliar_nombre</option><option>name=miembrofamiliar[nombre]</option><option>css=#miembrofamiliar_nombre</option><option>//input[@id='miembrofamiliar_nombre']</option><option>//form[@id='new_miembrofamiliar']/div[2]/input</option><option>//div[2]/input</option></datalist></td><td>130,24</td>
-</tr>
-<tr><td>type</td><td>id=miembrofamiliar_nombre<datalist><option>id=miembrofamiliar_nombre</option><option>name=miembrofamiliar[nombre]</option><option>css=#miembrofamiliar_nombre</option><option>//input[@id='miembrofamiliar_nombre']</option><option>//form[@id='new_miembrofamiliar']/div[2]/input</option><option>//div[2]/input</option></datalist></td><td>aaa</td>
-</tr>
-<tr><td>clickAt</td><td>id=miembrofamiliar_observaciones<datalist><option>id=miembrofamiliar_observaciones</option><option>name=miembrofamiliar[observaciones]</option><option>css=#miembrofamiliar_observaciones</option><option>//input[@id='miembrofamiliar_observaciones']</option><option>//form[@id='new_miembrofamiliar']/div[3]/input</option><option>//div[3]/input</option></datalist></td><td>72,23</td>
-</tr>
-<tr><td>type</td><td>id=miembrofamiliar_observaciones<datalist><option>id=miembrofamiliar_observaciones</option><option>name=miembrofamiliar[observaciones]</option><option>css=#miembrofamiliar_observaciones</option><option>//input[@id='miembrofamiliar_observaciones']</option><option>//form[@id='new_miembrofamiliar']/div[3]/input</option><option>//div[3]/input</option></datalist></td><td>bbb</td>
-</tr>
-<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='new_miembrofamiliar']/div[6]/input</option><option>//div[6]/input</option></datalist></td><td>43,8</td>
-</tr>
-<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
-</tr>
-<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>xpath=(//a[contains(@href, '/admin/miembrosfamiliar/101')])[2]</option><option>//div[4]/a</option></datalist></td><td>40,22</td>
-</tr>
-<tr><td>pause</td><td><datalist><option></option></datalist></td><td>1000</td>
-</tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Miembros del grupo familiar incluidos en refugio</td>
-</tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>::Miembrofamiliar eliminado.</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -2278,57 +2286,6 @@
 <tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Perfiles de migración</td>
 </tr>
 <tr><td>clickAt</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>126,11</td>
-</tr>
-</tbody></table>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">tabla-personas-desean</td></tr>
-</thead>
-<tbody>
-<tr>
-	<td>click</td>
-	<td>link=Administrar<datalist><option>link=Administrar</option></datalist></td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Tablas Básicas<datalist><option>link=Tablas Básicas</option></datalist></td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Personas desean<datalist><option>link=Personas desean</option></datalist></td>
-	<td></td>
-</tr>
-<tr><td>clickAt</td><td>link=Nueva<datalist><option>link=Nueva</option><option>css=a.btn.btn-primary</option><option>//a[contains(text(),'Nueva')]</option><option>//a[contains(@href, '/admin/actividadoficios/nueva')]</option><option>//div/div/a</option></datalist></td><td>25,17</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=personadesea_nombre<datalist><option>id=personadesea_nombre</option></datalist></td>
-	<td>aaa</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=personadesea_observaciones<datalist><option>id=personadesea_observaciones</option></datalist></td>
-	<td>bbb</td>
-</tr>
-<tr>
-	<td>clickAt</td>
-	<td>name=commit<datalist><option>name=commit</option></datalist></td>
-	<td></td>
-</tr>
-<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Eliminar<datalist><option>link=Eliminar</option></datalist></td>
-	<td></td>
-</tr>
-<tr><td>pause</td><td><datalist><option></option></datalist></td><td>1000</td>
-</tr>
-<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Personas desean</td>
-</tr>
-<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Sivel2Sjr::Personadesea eliminada.</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -3697,6 +3654,44 @@
 <tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Unidades de Ayuda</td>
 </tr>
 <tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>::Unidadayuda eliminado.</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">tabla-veredas</td></tr>
+</thead>
+<tbody>
+<tr><td>clickAt</td><td>id=navbarDropdownAdministrar<datalist><option>id=navbarDropdownAdministrar</option><option>link=Administrar</option><option>css=#navbarDropdownAdministrar</option><option>//a[contains(text(),'Administrar')]</option><option>//a[@id='navbarDropdownAdministrar']</option><option>//div[@id='navbarSupportedContent']/ul[2]/li[2]/a</option><option>xpath=(//a[contains(@href, '#')])[6]</option><option>//ul[2]/li[2]/a</option></datalist></td><td>70,26</td>
+</tr>
+<tr><td>click</td><td>link=Tablas Básicas<datalist><option>link=Tablas Básicas</option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>link=Veredas<datalist><option>link=Veredas</option><option>//a[contains(text(),'Veredas')]</option><option>//div[@id='div_contenido']/article/ul/li[86]/a</option><option>//a[contains(@href, 'admin/veredas')]</option><option>//li[86]/a</option></datalist></td><td>12,9</td>
+</tr>
+<tr><td>clickAt</td><td>link=Nueva<datalist><option>link=Nueva</option><option>css=a.btn.btn-primary</option><option>//a[contains(text(),'Nueva')]</option><option>//div[@id='div_contenido']/form/div/div/a</option><option>//a[contains(@href, '/admin/veredas/nueva.%23%3CSip::Vereda::ActiveRecord_Relation:0x0000063f542f3c78%3E')]</option><option>//div/div/a</option></datalist></td><td>26,15</td>
+</tr>
+<tr><td>clickAt</td><td>id=vereda_nombre<datalist><option>id=vereda_nombre</option><option>name=vereda[nombre]</option><option>css=#vereda_nombre</option><option>//input[@id='vereda_nombre']</option><option>//form[@id='new_vereda']/div[2]/input</option><option>//div[2]/input</option></datalist></td><td>78,14</td>
+</tr>
+<tr><td>type</td><td>id=vereda_nombre<datalist><option>id=vereda_nombre</option><option>name=vereda[nombre]</option><option>css=#vereda_nombre</option><option>//input[@id='vereda_nombre']</option><option>//form[@id='new_vereda']/div[2]/input</option><option>//div[2]/input</option></datalist></td><td>aaa</td>
+</tr>
+<tr><td>runScript</td><td>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')<datalist><option>$('.chosen-select').removeAttr('style'); $('.chosen-container').remove(); $('.chosen-select').removeClass('chosen-select')</option></datalist></td><td></td>
+</tr>
+<tr><td>select</td><td>id=vereda_municipio_id<datalist><option>id=vereda_municipio_id</option><option>name=vereda[municipio_id]</option><option>css=#vereda_municipio_id</option><option>//select[@id='vereda_municipio_id']</option><option>//form[@id='new_vereda']/div[3]/select</option><option>//select</option></datalist></td><td>label=Abejorral / Antioquia</td>
+</tr>
+<tr><td>clickAt</td><td>id=vereda_municipio_id<datalist><option>id=vereda_municipio_id</option><option>name=vereda[municipio_id]</option><option>css=#vereda_municipio_id</option><option>//select[@id='vereda_municipio_id']</option><option>//form[@id='new_vereda']/div[3]/select</option><option>//select</option></datalist></td><td>0,0</td>
+</tr>
+<tr><td>clickAt</td><td>id=vereda_observaciones<datalist><option>id=vereda_observaciones</option><option>name=vereda[observaciones]</option><option>css=#vereda_observaciones</option><option>//textarea[@id='vereda_observaciones']</option><option>//form[@id='new_vereda']/div[7]/textarea</option><option>//textarea</option></datalist></td><td>33,35</td>
+</tr>
+<tr><td>type</td><td>id=vereda_observaciones<datalist><option>id=vereda_observaciones</option><option>name=vereda[observaciones]</option><option>css=#vereda_observaciones</option><option>//textarea[@id='vereda_observaciones']</option><option>//form[@id='new_vereda']/div[7]/textarea</option><option>//textarea</option></datalist></td><td>bbb</td>
+</tr>
+<tr><td>clickAt</td><td>name=commit<datalist><option>name=commit</option><option>css=input[name="commit"]</option><option>//input[@name='commit']</option><option>//form[@id='new_vereda']/div[10]/input</option><option>//div[10]/input</option></datalist></td><td>37,29</td>
+</tr>
+<tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
+</tr>
+<tr><td>clickAt</td><td>link=Eliminar<datalist><option>link=Eliminar</option><option>css=a.btn.btn-danger</option><option>//a[contains(text(),'Eliminar')]</option><option>//div[@id='div_contenido']/div[5]/form/div/div[4]/a</option><option>xpath=(//a[contains(@href, '/admin/veredas/33268')])[2]</option><option>//div[4]/a</option></datalist></td><td>47,20</td>
+</tr>
+<tr><td>assertText</td><td>css=h1<datalist><option>css=h1</option><option>//h1</option></datalist></td><td>Veredas</td>
+</tr>
+<tr><td>assertText</td><td>css=div.alert.alert-success &gt; span<datalist><option>css=div.alert.alert-success &gt; span</option><option>//div/span</option></datalist></td><td>Sip::Vereda eliminada.</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
