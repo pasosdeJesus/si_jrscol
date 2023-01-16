@@ -2,7 +2,7 @@
 # La deja en carpeta Respaldos de la nube
 # Para el cifrado y compresión usa 7z
 # Como clave de cifrado usa la que tenga mayor id de la tabla
-# sip_claverespaldo
+# msip_claverespaldo
 
 d=Date.today.day
 
@@ -46,10 +46,10 @@ salida="#{nube}/Respaldos/si_jrscol-#{d}.7z"
 # Ojo mejor que la clave no tenga caracteres por escapar que podrían 
 # resultar diferentes en otros sistemas operativos al comprimir.
 # Mejor asegurar que se compone solo de letras y números
-if Sip::Claverespaldo.count == 0
+if Msip::Claverespaldo.count == 0
   clave='lalocura'  #;
 else
-  clave=Sip::Claverespaldo.order(:id).last.clave
+  clave=Msip::Claverespaldo.order(:id).last.clave
 end
 
 

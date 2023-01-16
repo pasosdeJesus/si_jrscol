@@ -1,5 +1,5 @@
 module Admin
-  class MecanismosdeentregaController < Sip::Admin::BasicasController
+  class MecanismosdeentregaController < Msip::Admin::BasicasController
     before_action :set_mecanismodeentrega, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Mecanismodeentrega

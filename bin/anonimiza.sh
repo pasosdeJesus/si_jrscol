@@ -13,7 +13,7 @@ if (test ! -f .env) then {
 cmd="psql -h /var/www/var/run/postgresql -U $BD_USUARIO $BD_DES"
 echo "$cmd"
 psql -h /var/www/var/run/postgresql -U $BD_USUARIO $BD_DES <<EOF
-  UPDATE sip_persona SET nombres='nombre'||id, apellidos='apellidos'||id;
+  UPDATE msip_persona SET nombres='nombre'||id, apellidos='apellidos'||id;
   UPDATE usuario SET nombre='nombre'||id, descripcion='descripcion'||id,
     email='email'||id||'@ejemplo.org',last_sign_in_ip=null,
     current_sign_in_ip=null;

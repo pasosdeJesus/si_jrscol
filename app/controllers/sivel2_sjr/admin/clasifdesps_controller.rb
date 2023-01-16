@@ -1,6 +1,6 @@
 module Sivel2Sjr
   module Admin
-    class ClasifdespsController < Sip::Admin::BasicasController
+    class ClasifdespsController < Msip::Admin::BasicasController
       before_action :set_clasifdesp, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Clasifdesp
 

@@ -7,7 +7,7 @@
 # Ignore bundler config.
 /.bundle
 config/database.yml
-config/initializers/sip.rb
+config/initializers/msip.rb
 .byebug_history
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -20,8 +20,8 @@ config/initializers/sip.rb
 public/assets/
 public/colchon-articulos/
 archivos/
-config/initializers/sip.rb
-app/views/sip/hogar/_local.html.erb
+config/initializers/msip.rb
+app/views/msip/hogar/_local.html.erb
 bin/actu.sh
 db/base.sql
 db/datos-basicas.sql
@@ -57,5 +57,5 @@ tmpsql/
 *.log
 ref/
 app/assets/builds
-app/javascript/controllers/sip
+app/javascript/controllers/msip
 app/javascript/controllers/cor1440_gen

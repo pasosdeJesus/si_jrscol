@@ -4,7 +4,7 @@
   <% sel = params[:filtro][:busoficina] %>
 <% end %>
 <%= f.input :busoficina,
-  collection: Sip::Oficina.order('nombre'),
+  collection: Msip::Oficina.order('nombre'),
   label_method: :nombre,
   value_method: :id,
   include_hidden: false,

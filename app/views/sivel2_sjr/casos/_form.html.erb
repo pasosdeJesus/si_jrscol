@@ -10,11 +10,11 @@
   <%= simple_form_for @caso, 
     :html => { 
       class: 'form-horizontal',
-      "data-controller": 'sip--cancelar-vacio-es-eliminar respuestacaso'
+      "data-controller": 'msip--cancelar-vacio-es-eliminar respuestacaso'
     } do |f| %>
     <div data-role="content" class="form-inputs">
 
-      <%= render partial: 'sip/hogar/errores', locals: { f: f } %>
+      <%= render partial: 'msip/hogar/errores', locals: { f: f } %>
 
       <%= render partial: 'sivel2_gen/casos/datos_interjs', locals: { f: f } %>
 

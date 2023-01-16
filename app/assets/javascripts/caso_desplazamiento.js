@@ -16,13 +16,13 @@ $(document).on('change',
 )
 
 
-sip_ubicacionpre_expandible_registra(
+msip_ubicacionpre_expandible_registra(
   'caso_desplazamiento_attributes', 'expulsion', window)
 
-sip_ubicacionpre_expandible_registra(
+msip_ubicacionpre_expandible_registra(
   'caso_desplazamiento_attributes', 'llegada', window)
 
-sip_ubicacionpre_expandible_registra(
+msip_ubicacionpre_expandible_registra(
   'caso_desplazamiento_attributes', 'destino', window)
 
 
@@ -38,14 +38,14 @@ $(document).on('cocoon:after-insert', '#desplazamiento',
 
     // Poner ids para expandir/contraer ubicaciones
     // Debe estar en sincronia con
-    // app/views/sip/ubicacionpre/_dos_filas_confecha
+    // app/views/msip/ubicacionpre/_dos_filas_confecha
     control = $('#ubicacionpre-expulsion-0').parent()
     cocoonid = control.find('[id$=fechaexpulsion]').attr('id').split('_')[3]
 
     console.log(cocoonid);
 
     ['expulsion', 'llegada', 'destino'].forEach(function (v, i) {
-      sip_ubicacionpre_expandible_cambia_ids(v, cocoonid)
+      msip_ubicacionpre_expandible_cambia_ids(v, cocoonid)
     })
     //asigna id de tabla actos al crear
     desplazamiento.find('.actos_div').attr("id", "actos_" + cocoonid)

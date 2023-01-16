@@ -2,7 +2,7 @@
 # Saca copia de base de producción junto con nube y anexos en 
 # archivo cifrado que ubica en carpeta Respaldos de la nube para
 # descarga por parte de un adminsitrador.
-# Usa la clave más reciente de la tabla Sip::Claverespaldo
+# Usa la clave más reciente de la tabla Msip::Claverespaldo
 
 f=`date +%Y-%m-%d`
 fecharep=$f bin/railsp runner -e production lib/guiones/respaldo7z.rb

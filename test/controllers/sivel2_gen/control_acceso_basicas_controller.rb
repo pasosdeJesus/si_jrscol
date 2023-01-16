@@ -17,13 +17,13 @@ module Sivel2Gen
 
     def inicia_analista
       current_usuario = Usuario.create!(PRUEBA_USUARIO_AN)
-      current_usuario.sip_grupo_ids = [20]
+      current_usuario.grupo_ids = [20]
       current_usuario.save
       return current_usuario
     end
 
     test "sin autenticar no debe listar tablas básicas" do
-      get sip.tablasbasicas_path
+      get msip.tablasbasicas_path
       mih = Nokogiri::HTML(@response.body)
       filas_index = mih.at_css('article').css('li').count
       assert(filas_index == 0)
@@ -275,7 +275,7 @@ module Sivel2Gen
     test "autenticado como operador sin grupo no debe presentar listado" do
       skip
       sign_in @ope_sin_grupo
-      get sip.tablasbasicas_path
+      get msip.tablasbasicas_path
       mih = Nokogiri::HTML(@response.body)
       filas_index = mih.at_css('div#div_contenido').at_css('ul').count
       assert(filas_index == 0)
@@ -284,7 +284,7 @@ module Sivel2Gen
     test "autenticado como operador analista no debe presentar listado" do
       skip
       sign_in @ope_analista
-      get sip.tablasbasicas_path
+      get msip.tablasbasicas_path
       mih = Nokogiri::HTML(@response.body)
       filas_index = mih.at_css('div#div_contenido').at_css('ul').count
       assert(filas_index == 0)

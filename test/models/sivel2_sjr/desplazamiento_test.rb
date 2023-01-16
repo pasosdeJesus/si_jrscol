@@ -53,7 +53,7 @@ module Sivel2Sjr
     test "valido" do
       caso = Sivel2Gen::Caso.create(PRUEBA_CASO)
       assert caso.valid?
-      persona= Sip::Persona.create(PRUEBA_PERSONA)
+      persona= Msip::Persona.create(PRUEBA_PERSONA)
       #puts persona.valid?
       #puts persona.errors.full_messages.join('. ')
       assert persona.valid?
@@ -65,9 +65,9 @@ module Sivel2Sjr
       casosjr = Sivel2Sjr::Casosjr.create(PRUEBA_CASOSJR.merge(
         {id_caso: caso.id, contacto_id: persona.id}))
       assert casosjr.valid?
-      u1 = Sip::Ubicacionpre.create(PRUEBA_UBICACIONPRE1)
+      u1 = Msip::Ubicacionpre.create(PRUEBA_UBICACIONPRE1)
       assert u1.valid?
-      u2 = Sip::Ubicacionpre.create(PRUEBA_UBICACIONPRE2)
+      u2 = Msip::Ubicacionpre.create(PRUEBA_UBICACIONPRE2)
       assert u2.valid?
 
       desplazamiento = Desplazamiento.create(PRUEBA_DESPLAZAMIENTO.merge({ 

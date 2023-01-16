@@ -1,6 +1,6 @@
 module Sivel2Sjr
   module Admin
-    class MotivossjrController < Sip::Admin::BasicasController
+    class MotivossjrController < Msip::Admin::BasicasController
       before_action :set_motivosjr, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Motivosjr
 

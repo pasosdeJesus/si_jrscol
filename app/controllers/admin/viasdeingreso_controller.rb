@@ -1,5 +1,5 @@
 module Admin
-  class ViasdeingresoController < Sip::Admin::BasicasController
+  class ViasdeingresoController < Msip::Admin::BasicasController
     before_action :set_viadeingreso, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Viadeingreso

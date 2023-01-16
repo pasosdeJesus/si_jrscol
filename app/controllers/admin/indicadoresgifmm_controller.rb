@@ -1,5 +1,5 @@
 module Admin
-  class IndicadoresgifmmController < Sip::Admin::BasicasController
+  class IndicadoresgifmmController < Msip::Admin::BasicasController
     before_action :set_indicadorgifmm, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Indicadorgifmm

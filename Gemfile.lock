@@ -11,77 +11,59 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: bfdaaa204149e0b3bde8a97c6e076a7503c9fada
-  branch: main
+  revision: 78aae86fb691057405d30fac15309fb800b9a3fb
+  branch: msip
   specs:
     cor1440_gen (2.1a1)
       devise
       heb412_gen
       kt-paperclip
       mr519_gen
+      msip
       rails
-      sip
 
 GIT
   remote: https://github.com/pasosdeJesus/heb412_gen.git
-  revision: d13cca20c42a7e49e311adb6b4f5f67d398b5274
-  branch: main
+  revision: 5901ed2d3d0cfe717275cbca2a816163640a3b3c
+  branch: msip
   specs:
     heb412_gen (2.1.0.beta1)
       mr519_gen
+      msip
       redcarpet
       rspreadsheet
-      sip
 
 GIT
   remote: https://github.com/pasosdeJesus/mr519_gen.git
-  revision: a8dae6635fb9224d036f798d003434bdcaef9142
-  branch: main
+  revision: 6eeb618b63128874881eb5b1e990dc1bc5e466c3
+  branch: msip
   specs:
     mr519_gen (2.1.0.beta1)
+      msip
       rails
-      sip
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_gen.git
-  revision: 630e0ed6105480a6a78106ab63da5e605e751a62
-  branch: main
+  revision: 154d28946640dd7fc1c797fa2fb4b6f7ed49762c
+  branch: msip
   specs:
     sal7711_gen (2.1.0.beta1)
+      msip
       rails
-      sip
 
 GIT
   remote: https://github.com/pasosdeJesus/sal7711_web.git
-  revision: 4436240972243ef4a061aaa2c955af156b865418
-  branch: main
+  revision: e975d4152408b7b90130bd3407ec20c132f53133
+  branch: msip
   specs:
     sal7711_web (2.1.0.beta1)
       rails
       sal7711_gen
 
 GIT
-  remote: https://github.com/pasosdeJesus/sip.git
-  revision: 323392d2043a648b0a5d9e17bcbb6f981ba3da50
-  branch: main
-  specs:
-    sip (2.1.0.beta1)
-      cancancan
-      coffee-rails
-      devise
-      devise-i18n
-      kt-paperclip
-      minitest
-      rails
-      rails-i18n
-      sassc-rails
-      simple_form
-      twitter_cldr
-
-GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: e812334adf0e853b88b8e4e5b1b2e3a2579f4fd3
-  branch: main
+  revision: 98c43f27fd17bf929333e8d449eb976a9e75a103
+  branch: msip
   specs:
     sivel2_gen (2.1.0.beta1)
       color
@@ -90,8 +72,8 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: b0f4e16c9957e740c4e8f3ce6f6948315431aaf1
-  branch: main
+  revision: 35d3e7fb29d908b0ac9a2ef29b06cfeb561c450a
+  branch: msip
   specs:
     sivel2_sjr (2.1a1)
       rails
@@ -110,6 +92,26 @@ GIT
   branch: new_id_with_ajax
   specs:
     cocoon (1.2.11)
+
+GIT
+  remote: https://gitlab.com/pasosdeJesus/msip.git
+  revision: 5a50abbbfb9c88e7a1cbe6f7ea0f0f116eb9a0ae
+  branch: main
+  specs:
+    msip (2.2.0.alfa3)
+      cancancan (~> 3)
+      devise (~> 4)
+      devise-i18n (~> 1)
+      kt-paperclip (~> 7)
+      pg (~> 1)
+      rails (~> 7.0)
+      rails-i18n (~> 7)
+      sassc-rails (~> 2)
+      simple_form (~> 5)
+      sprockets-rails (~> 3)
+      stimulus-rails (~> 1)
+      twitter_cldr (~> 6)
+      will_paginate (~> 3)
 
 GEM
   remote: https://rubygems.org/
@@ -280,7 +282,7 @@ GEM
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    minitest (5.16.3)
+    minitest (5.17.0)
     msgpack (1.6.0)
     net-imap (0.3.4)
       date
@@ -312,7 +314,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (5.0.1)
-    puma (6.0.1)
+    puma (6.0.2)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.5)
@@ -464,6 +466,7 @@ DEPENDENCIES
   kt-paperclip!
   libxml-ruby
   mr519_gen!
+  msip!
   nokogiri (>= 1.11.1)
   odf-report
   parslet
@@ -485,7 +488,6 @@ DEPENDENCIES
   selenium-webdriver
   simple_form
   simplecov
-  sip!
   sivel2_gen!
   sivel2_sjr!
   sprockets-rails
@@ -498,4 +500,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.4.1
+   2.4.3

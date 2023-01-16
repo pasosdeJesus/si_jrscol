@@ -1,6 +1,6 @@
 <% opnom = consentimiento ? "="  : "<>" %>
 <%= f.simple_fields_for :anexo_victima,
-  f.object.anexo_victima.where("tipoanexo_id IN (SELECT id FROM sip_tipoanexo WHERE nombre #{opnom} ?)", 'CONSENTIMIENTO DE DATOS') do |anexo| %>
+  f.object.anexo_victima.where("tipoanexo_id IN (SELECT id FROM msip_tipoanexo WHERE nombre #{opnom} ?)", 'CONSENTIMIENTO DE DATOS') do |anexo| %>
   <%= render partial: 'anexo_caso_campos', locals: {:f => anexo,
   consentimiento: consentimiento } %>
 <% end %>

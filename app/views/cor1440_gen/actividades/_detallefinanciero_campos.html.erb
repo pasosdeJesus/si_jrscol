@@ -26,7 +26,7 @@
       <% end %>
       <% idp.uniq! %>
     <% end %>
-    <% colper = Sip::Persona.where(id: idp).order(
+    <% colper = Msip::Persona.where(id: idp).order(
       'upper(nombres)', 'upper(apellidos)') %>
     <%= f.association :persona,
       collection: colper,

@@ -35,16 +35,16 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
 
   scope :filtro_numerodocumento, lambda { |a|
     joins('JOIN sivel2_gen_victima ON sivel2_gen_victima.id_caso='+
-          'sivel2_gen_conscaso.caso_id').joins('JOIN sip_persona ON '+
-          'sivel2_gen_victima.id_persona = sip_persona.id')
-      .where('sip_persona.numerodocumento=?', a)
+          'sivel2_gen_conscaso.caso_id').joins('JOIN msip_persona ON '+
+          'sivel2_gen_victima.id_persona = msip_persona.id')
+      .where('msip_persona.numerodocumento=?', a)
   }
 
   scope :filtro_tdocumento, lambda { |a|
     joins('JOIN sivel2_gen_victima ON sivel2_gen_victima.id_caso='+
-          'sivel2_gen_conscaso.caso_id').joins('JOIN sip_persona ON '+
-          'sivel2_gen_victima.id_persona = sip_persona.id')
-      .where('sip_persona.tdocumento_id=?', a.to_i)
+          'sivel2_gen_conscaso.caso_id').joins('JOIN msip_persona ON '+
+          'sivel2_gen_victima.id_persona = msip_persona.id')
+      .where('msip_persona.tdocumento_id=?', a.to_i)
   }
 
 
@@ -56,13 +56,13 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
              a1.id AS actividad_id
            FROM  public.cor1440_gen_asistencia AS asi1
              JOIN public.cor1440_gen_actividad AS a1 ON asi1.actividad_id=a1.id
-             JOIN public.sip_persona as p1 ON p1.id=asi1.persona_id
+             JOIN public.msip_persona as p1 ON p1.id=asi1.persona_id
              JOIN public.sivel2_gen_victima as v1 ON v1.id_persona=p1.id
              WHERE (v1.id_caso, a1.fecha, a1.id) IN
            (SELECT v2.id_caso, a2.fecha, a2.id AS actividad_id
              FROM public.cor1440_gen_asistencia AS asi2
              JOIN public.cor1440_gen_actividad AS a2 ON asi2.actividad_id=a2.id
-             JOIN public.sip_persona as p2 ON p2.id=asi2.persona_id
+             JOIN public.msip_persona as p2 ON p2.id=asi2.persona_id
              JOIN public.sivel2_gen_victima as v2 ON v2.id_persona=p2.id
              WHERE v2.id_caso=v1.id_caso
              ORDER BY 2 DESC, 3 DESC LIMIT 1);"
@@ -76,7 +76,7 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
              a.fecha AS fecha, 
              a.objetivo, 
              a.resultado,
-             sip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, 
+             msip_edad_de_fechanac_fecharef(contacto.anionac, contacto.mesnac, 
                contacto.dianac, CAST(EXTRACT(YEAR FROM a.fecha) AS INTEGER),
                CAST(EXTRACT(MONTH FROM a.fecha) AS INTEGER),
                CAST(EXTRACT(DAY FROM a.fecha) AS INTEGER) ) AS contacto_edad
@@ -84,7 +84,7 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
              JOIN public.cor1440_gen_actividad AS a ON uaux.actividad_id=a.id 
              JOIN public.sivel2_sjr_casosjr AS casosjr ON 
                uaux.caso_id=casosjr.id_caso 
-             JOIN public.sip_persona AS contacto ON
+             JOIN public.msip_persona AS contacto ON
                contacto.id=casosjr.contacto_id"
       )
     end
@@ -122,21 +122,21 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
           JOIN sivel2_gen_caso AS caso ON
             desplazamiento.id_caso=caso.id
             AND desplazamiento.fechaexpulsion=caso.fecha
-          LEFT JOIN public.sip_ubicacionpre AS ubicacionpreex
+          LEFT JOIN public.msip_ubicacionpre AS ubicacionpreex
             ON ubicacionpreex.id=desplazamiento.expulsionubicacionpre_id
-          LEFT JOIN public.sip_pais AS paisex
+          LEFT JOIN public.msip_pais AS paisex
             ON ubicacionpreex.pais_id=paisex.id
-          LEFT JOIN public.sip_departamento AS departamentoex
+          LEFT JOIN public.msip_departamento AS departamentoex
             ON ubicacionpreex.departamento_id=departamentoex.id
-          LEFT JOIN public.sip_municipio AS municipioex
+          LEFT JOIN public.msip_municipio AS municipioex
             ON ubicacionpreex.municipio_id=municipioex.id
-          LEFT JOIN public.sip_ubicacionpre AS ubicacionprel
+          LEFT JOIN public.msip_ubicacionpre AS ubicacionprel
             ON ubicacionprel.id=desplazamiento.llegadaubicacionpre_id
-          LEFT JOIN public.sip_pais AS paisl
+          LEFT JOIN public.msip_pais AS paisl
             ON ubicacionprel.pais_id=paisl.id
-          LEFT JOIN public.sip_departamento AS departamentol
+          LEFT JOIN public.msip_departamento AS departamentol
             ON ubicacionprel.departamento_id=departamentol.id
-          LEFT JOIN public.sip_municipio AS municipiol
+          LEFT JOIN public.msip_municipio AS municipiol
             ON ubicacionprel.municipio_id=municipiol.id
           ORDER BY desplazamiento.id
           ) UNION
@@ -169,21 +169,21 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
           JOIN sivel2_gen_caso AS caso ON
             migracion.caso_id=caso.id
             AND migracion.fechasalida=caso.fecha
-          LEFT JOIN public.sip_ubicacionpre AS ubicacionpres
+          LEFT JOIN public.msip_ubicacionpre AS ubicacionpres
             ON ubicacionpres.id=migracion.salidaubicacionpre_id
-          LEFT JOIN public.sip_pais AS paiss
+          LEFT JOIN public.msip_pais AS paiss
             ON ubicacionpres.pais_id=paiss.id
-          LEFT JOIN public.sip_departamento AS departamentos
+          LEFT JOIN public.msip_departamento AS departamentos
             ON ubicacionpres.departamento_id=departamentos.id
-          LEFT JOIN public.sip_municipio AS municipios
+          LEFT JOIN public.msip_municipio AS municipios
             ON ubicacionpres.municipio_id=municipios.id
-          LEFT JOIN public.sip_ubicacionpre AS ubicacionprel
+          LEFT JOIN public.msip_ubicacionpre AS ubicacionprel
             ON ubicacionprel.id=migracion.llegadaubicacionpre_id
-          LEFT JOIN public.sip_pais AS paisl
+          LEFT JOIN public.msip_pais AS paisl
             ON ubicacionprel.pais_id=paisl.id
-          LEFT JOIN public.sip_departamento AS departamentol
+          LEFT JOIN public.msip_departamento AS departamentol
             ON ubicacionprel.departamento_id=departamentol.id
-          LEFT JOIN public.sip_municipio AS municipiol
+          LEFT JOIN public.msip_municipio AS municipiol
             ON ubicacionprel.municipio_id=municipiol.id
           ORDER BY migracion.id
           ) 
@@ -232,9 +232,9 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
         caso.memo AS memo
         FROM public.sivel2_sjr_casosjr AS casosjr 
           JOIN public.sivel2_gen_caso AS caso ON casosjr.id_caso = caso.id 
-          JOIN public.sip_oficina AS oficina ON oficina.id=casosjr.oficina_id
+          JOIN public.msip_oficina AS oficina ON oficina.id=casosjr.oficina_id
           JOIN public.usuario ON usuario.id = casosjr.asesor
-          JOIN public.sip_persona AS contacto ON contacto.id=casosjr.contacto_id
+          JOIN public.msip_persona AS contacto ON contacto.id=casosjr.contacto_id
           JOIN public.sivel2_gen_victima AS vcontacto ON 
             vcontacto.id_persona = contacto.id AND vcontacto.id_caso = caso.id
           LEFT JOIN public.sivel2_sjr_ultimaatencion AS ultimaatencion ON

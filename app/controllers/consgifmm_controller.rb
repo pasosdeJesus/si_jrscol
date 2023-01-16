@@ -54,7 +54,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
       params[:filtro][:busfechaini] = fant.to_s
     end
     ::Consgifmm.refresca_consulta
-    index_sip(::Consgifmm.all)
+    index_msip(::Consgifmm.all)
   end
 
   def self.valor_campo_compuesto(registro, campo)

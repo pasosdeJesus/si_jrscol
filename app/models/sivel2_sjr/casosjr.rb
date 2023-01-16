@@ -3,9 +3,9 @@ require 'sivel2_sjr/concerns/models/casosjr'
 class Sivel2Sjr::Casosjr < ActiveRecord::Base
   include Sivel2Sjr::Concerns::Models::Casosjr
 
-  belongs_to :llegadam, class_name: 'Sip::Ubicacion', validate: true,
+  belongs_to :llegadam, class_name: 'Msip::Ubicacion', validate: true,
     foreign_key: 'id_llegadam', optional: true
-  belongs_to :salidam, class_name: 'Sip::Ubicacion', validate: true,
+  belongs_to :salidam, class_name: 'Msip::Ubicacion', validate: true,
     foreign_key: 'id_salidam', optional: true
 
   has_many :asesorhistorico,

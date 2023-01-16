@@ -120,12 +120,12 @@
               <tbody>
                 <tr>
                   <td><%= rt = aj.valorcampo.where(campo_id: 140).take.valor; rt == nil? || rt == '' ? '' : Sivel2Sjr::Accionjuridica.find(rt).nombre %></td>
-                  <td><%= rt = aj.valorcampo.where(campo_id: 141).take.valor; rt == nil? || rt == '' ? '' : Sip::Trivalente.find(rt).nombre %></td>
+                  <td><%= rt = aj.valorcampo.where(campo_id: 141).take.valor; rt == nil? || rt == '' ? '' : Msip::Trivalente.find(rt).nombre %></td>
                 </tr>
                 <% if aj.valorcampo.where(campo_id: 142).count == 1 %>
                   <tr>
                     <td><%= rt = aj.valorcampo.where(campo_id: 142).take.valor; rt == nil? || rt == '' ? '' : Sivel2Sjr::Accionjuridica.find(rt).nombre %></td>
-                    <td><%= rt = aj.valorcampo.where(campo_id: 143).take.valor; rt == nil? || rt == '' ? '' : Sip::Trivalente.find(rt).nombre %></td>
+                    <td><%= rt = aj.valorcampo.where(campo_id: 143).take.valor; rt == nil? || rt == '' ? '' : Msip::Trivalente.find(rt).nombre %></td>
                   </tr>
                 <% end %>
               </tbody>

@@ -1,13 +1,13 @@
 conexion = ActiveRecord::Base.connection();
 
 # De motores
-Sip::carga_semillas_sql(conexion, 'sip', :datos)
+Msip::carga_semillas_sql(conexion, 'msip', :datos)
 motor = ['sivel2_gen', 'sivel2_sjr', 'cor1440_gen', 'sal7711_gen', nil]
 motor.each do |m|
   puts "#{m} cambios"
-  Sip::carga_semillas_sql(conexion, m, :cambios)
+  Msip::carga_semillas_sql(conexion, m, :cambios)
   puts "#{m} datos"
-  Sip::carga_semillas_sql(conexion, m, :datos)
+  Msip::carga_semillas_sql(conexion, m, :datos)
 end
 
 # Extrañamente borrar el search_path y falla el siguiente o

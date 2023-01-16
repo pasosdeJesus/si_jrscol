@@ -1,6 +1,6 @@
 module Sivel2Sjr
   module Admin
-    class AccionesjuridicasController < Sip::Admin::BasicasController
+    class AccionesjuridicasController < Msip::Admin::BasicasController
       before_action :set_accionjuridica, 
         only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource  class: Sivel2Sjr::Accionjuridica

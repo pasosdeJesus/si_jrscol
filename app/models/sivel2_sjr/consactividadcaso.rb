@@ -15,8 +15,8 @@ class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base
         CASE WHEN casosjr.contacto_id=persona.id THEN 1 ELSE 0 END 
           AS es_contacto,
         actividad.fecha AS actividad_fecha,
-        (SELECT nombre FROM sip_oficina 
-          WHERE sip_oficina.id=actividad.oficina_id LIMIT 1) 
+        (SELECT nombre FROM msip_oficina 
+          WHERE msip_oficina.id=actividad.oficina_id LIMIT 1) 
           AS actividad_oficina,
         (SELECT nusuario FROM usuario 
           WHERE usuario.id=actividad.usuario_id LIMIT 1)
@@ -32,10 +32,10 @@ class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base
         caso.memo AS caso_memo,
         casosjr.fecharec AS caso_fecharec
         FROM public.cor1440_gen_asistencia AS asi
-        INNER JOIN sip_persona AS persona ON persona.id=asi.persona_id 
+        INNER JOIN msip_persona AS persona ON persona.id=asi.persona_id 
         INNER JOIN cor1440_gen_actividad AS actividad 
           ON actividad_id=actividad.id
-        INNER JOIN sip_oficina AS oficinaac 
+        INNER JOIN msip_oficina AS oficinaac 
           ON oficinaac.id=actividad.oficina_id
         INNER JOIN sivel2_gen_victima AS victima ON victima.id_persona=persona.id
         INNER JOIN sivel2_gen_caso AS caso ON victima.id_caso=caso.id

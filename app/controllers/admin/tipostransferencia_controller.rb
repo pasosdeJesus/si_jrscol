@@ -1,5 +1,5 @@
 module Admin
-  class TipostransferenciaController < Sip::Admin::BasicasController
+  class TipostransferenciaController < Msip::Admin::BasicasController
     before_action :set_tipotransferencia, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Tipotransferencia

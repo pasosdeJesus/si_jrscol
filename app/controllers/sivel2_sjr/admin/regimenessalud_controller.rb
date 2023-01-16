@@ -1,6 +1,6 @@
 module Sivel2Sjr
   module Admin
-    class RegimenessaludController < Sip::Admin::BasicasController
+    class RegimenessaludController < Msip::Admin::BasicasController
       before_action :set_regimensalud, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Regimensalud
 

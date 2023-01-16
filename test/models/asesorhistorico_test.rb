@@ -40,7 +40,7 @@ class AsesorhistoricoTest < ActiveSupport::TestCase
   test "valido" do
     caso = Sivel2Gen::Caso.create(PRUEBA_CASO)
     assert caso.valid?
-    persona= Sip::Persona.create(PRUEBA_PERSONA)
+    persona= Msip::Persona.create(PRUEBA_PERSONA)
     #puts persona.valid?
     #puts persona.errors.full_messages.join('. ')
     assert persona.valid?

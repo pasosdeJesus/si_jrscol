@@ -2,7 +2,7 @@
 # En listado de asistencia permite autocompletar nombres
 $(document).on('focusin',
   'input[id^=actividad_ubicacionpre_mundep_texto]', (e) -> 
-   sip_busca_ubicacionpre_mundep($(this))
+   msip_busca_ubicacionpre_mundep($(this))
 )
 
 # En formulario de actividad si escoge Plan Estratégico se elimina el boton eliminar mde la fila
@@ -44,7 +44,7 @@ $(document).on('change', 'select[id^=caso_migracion_attributes_][id$=causamigrac
       div_detallefinanciero.css("display", "block")
     else
       div_detallefinanciero.css("display", "none")
-  sip_ajax_recibe_json(root, 'actividadespflistado.json?' + f_actividadespf + '&' + f_tipo, null, buscatipoactividad)
+  msip_ajax_recibe_json(root, 'actividadespflistado.json?' + f_actividadespf + '&' + f_tipo, null, buscatipoactividad)
 
 @valida_visibilidad_detallefinanciero = () ->
   actividadespf = []
@@ -212,7 +212,7 @@ $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes][id$
     # Excluye filas de detalle destruidas
     if $(this).val() != "1"
       idpi = $(this).parent().parent().find("[id$=_persona_ids]").attr('id');
-      sip_remplaza_opciones_select(idpi, posbenefu, true);
+      msip_remplaza_opciones_select(idpi, posbenefu, true);
   )
 
 # En actividad tras cambiar nombres de asistente refrescar beneficiario posibles
@@ -294,7 +294,7 @@ $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes][id$
         elenm.val(datos.numeromeses)
         elenm.prop('disabled', 'disabled');
         elenm.trigger('chosen:updated')
-        sip_remplaza_opciones_select(elena.attr('id'), datos.asistencias, true);
+        msip_remplaza_opciones_select(elena.attr('id'), datos.asistencias, true);
       else
          elenm.removeAttr('disabled');
          elenm.val("")
