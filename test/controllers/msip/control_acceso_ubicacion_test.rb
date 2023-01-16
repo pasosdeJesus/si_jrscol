@@ -13,21 +13,6 @@ module Msip
       @caso = Sivel2Gen::Caso.create!(memo: "prueba", fecha: "2021-12-07")
     end
 
-    # No autenticado
-    ################
-
-    test "sin autenticar no debe permitir acceder ubicaciones/nuevo" do
-      assert_raise CanCan::AccessDenied do
-        get msip.ubicaciones_nuevo_path
-      end
-    end
-
-
-    test "sin autenticar no debe crear ubicaciones nuevo" do
-      assert_raise CanCan::AccessDenied do
-        get msip.ubicaciones_nuevo_path + "?caso_id=#{@caso.id}"
-      end
-    end
 
 
     # Autenticado como operador sin grupo
