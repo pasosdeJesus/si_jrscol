@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 130b9be11b46cf4c67b94714d844e4604324b3bd
+  revision: a350543d8cdd2eba2f8201bac6948338cfbcb959
   branch: msip
   specs:
     cor1440_gen (2.1a1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 6fc6d267caae905f41a62efd9a53b24b9b37bbfe
+  revision: a6c4273784bf4fb727acd2220c42cff84c12f99b
   branch: msip
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -72,10 +72,10 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_sjr.git
-  revision: 35d3e7fb29d908b0ac9a2ef29b06cfeb561c450a
+  revision: 47b8f652b1224e508ec6ee57244aeb033cb117c0
   branch: msip
   specs:
-    sivel2_sjr (2.1a1)
+    sivel2_sjr (2.2a1)
       rails
       sivel2_gen
 
@@ -95,7 +95,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 95b70d07336a4823cd49efff1f412ec92823bb4b
+  revision: c68c36eaa6d44778b40b034ad39684b3a3e87a74
   branch: main
   specs:
     msip (2.2.0.alfa3)
