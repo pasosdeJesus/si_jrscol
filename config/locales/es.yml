@@ -201,10 +201,10 @@ es:
       "sectorgifmm":
         Sectorgifmm: Sector GIFMM
         Sectoresgifmm: Sectores GIFMM
-      "sip/claverespaldo":
+      "msip/claverespaldo":
         Claverespaldo: Clave para respaldo automático
         Clavesrespaldos: Claves para respaldos automáticos
-      "sip/datosbio":
+      "msip/datosbio":
         afiliadoarl: Afiliado a ARL
         anioaprobacion: Año de aprobacioń
         correo: Correo electrónico
@@ -228,10 +228,10 @@ es:
         telefono: Teléfono
         tipocotizante: Tipo de afiliacioń
         veredares: Vereda de residencia
-      "sip/lineaorgsocial":
+      "msip/lineaorgsocial":
         Lineaorgsocial: Línea de trabajo de organización social
         Lineasorgsocial: Líneas de trabajo de organización social
-      "sip/orgsocial":
+      "msip/orgsocial":
         tipoorgsocial: Tipo
         tipoorgsocial_id: Tipo
         sectororgsocial: Población relacionada
@@ -240,10 +240,10 @@ es:
         "{:sectororgsocial_ids=>[]}": Población(es) relacionada(s)
         lineaorgsocial: Línea de trabajo
         lineaorgsocial_id: Línea de trabajo
-      "sip/perfilorgsocial":
+      "msip/perfilorgsocial":
         Perfilorgsocial: Perfil poblacional
         Perfilesorgsocial: Perfiles poblacionales
-      "sip/persona":
+      "msip/persona":
         detallefinanciero_ids: Detalles financieros en los que aparece
         etiqueta_ids: Etiqueta(s)
         ppt: Número de PPT
@@ -251,16 +251,16 @@ es:
         ultimoestatusmigratorio_id: Último estatus migratorio
         ultimoperfilorgsocial: Último perfil poblacional
         ultimoperfilorgsocial_id: Último perfil poblacional
-      "sip/sectororgsocial":
+      "msip/sectororgsocial":
         Sectororgsocial: Población relacionada con organización social
         Sectoresorgsocial: Poblaciones relacionadas con organización social
-      "sip/tipoorgsocial":
+      "msip/tipoorgsocial":
         Tipoorgsocial: Tipo de organización social
         Tiposorgsocial: Tipos de organización social
-      "sip/tipoanexo":
+      "msip/tipoanexo":
         Tipoanexo: Tipo de anexo
         Tiposanexo: Tipos de anexo
-      "sip/ubicacion":
+      "msip/ubicacion":
         Ubicacion: Ubicación
       "sivel2_gen/anexo_victima":
         tipoanexo: Tipo de anexo

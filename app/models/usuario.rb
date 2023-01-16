@@ -13,7 +13,7 @@ class Usuario < ActiveRecord::Base
     foreign_key: 'usuario_id',
     validate: true,
     dependent: :destroy,
-    class_name: 'Sip::EtiquetaPersona'
+    class_name: 'Msip::EtiquetaPersona'
 
   def active_for_authentication?
     #logger.debug self.to_yaml

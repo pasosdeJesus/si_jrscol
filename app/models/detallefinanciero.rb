@@ -41,7 +41,7 @@ class Detallefinanciero < ActiveRecord::Base
 
 
   has_and_belongs_to_many :persona, 
-    class_name: 'Sip::Persona',
+    class_name: 'Msip::Persona',
     foreign_key: 'detallefinanciero_id',
     association_foreign_key: 'persona_id',
     join_table: 'detallefinanciero_persona'

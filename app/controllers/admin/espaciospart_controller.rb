@@ -1,5 +1,5 @@
 module Admin
-  class EspaciospartController < Sip::Admin::BasicasController
+  class EspaciospartController < Msip::Admin::BasicasController
     before_action :set_espaciopart, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Espaciopart

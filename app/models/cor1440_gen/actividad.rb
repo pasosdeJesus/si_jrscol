@@ -6,7 +6,7 @@ module Cor1440Gen
   class Actividad < ActiveRecord::Base
     include Cor1440Gen::Concerns::Models::Actividad
 
-    belongs_to :ubicacionpre, class_name: '::Sip::Ubicacionpre',
+    belongs_to :ubicacionpre, class_name: '::Msip::Ubicacionpre',
       foreign_key: 'ubicacionpre_id', optional: true
     has_many :detallefinanciero, dependent: :delete_all,
       class_name: 'Detallefinanciero',
@@ -417,7 +417,7 @@ module Cor1440Gen
 
       when 'mes'
         if fecha
-          Sip::FormatoFechaHelper::MESES[fecha.month]
+          Msip::FormatoFechaHelper::MESES[fecha.month]
         else
           ''
         end

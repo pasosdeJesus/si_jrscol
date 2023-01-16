@@ -23,18 +23,18 @@ Rails.application.routes.draw do
     end
     resources :usuarios, path_names: { new: 'nuevo', edit: 'edita' } 
 
-    post '/beneficiarios/unificar' => 'sip/personas#unificar',
+    post '/beneficiarios/unificar' => 'msip/personas#unificar',
       as: :beneficiarios_unificar
-    get '/beneficiarios/unificar' => 'sip/personas#unificar',
+    get '/beneficiarios/unificar' => 'msip/personas#unificar',
       as: :beneficiarios_unificar_get
-    get '/beneficiarios/deduplicar' => 'sip/personas#deduplicar',
+    get '/beneficiarios/deduplicar' => 'msip/personas#deduplicar',
       as: :beneficiarios_deduplicar
-    get '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',
+    get '/beneficiarios/repetidos' => 'msip/personas#reporterepetidos',
       as: :beneficiarios_repetidos
-    post '/beneficiarios/repetidos' => 'sip/personas#reporterepetidos',
+    post '/beneficiarios/repetidos' => 'msip/personas#reporterepetidos',
       as: :envia_beneficiarios_repetidas
 
-    get 'beneficiarios/identificacionsd' => 'sip/personas#identificacionsd',
+    get 'beneficiarios/identificacionsd' => 'msip/personas#identificacionsd',
       as: :beneficiarios_identificacionsd
 
     post "/actos/agregar" => 'sivel2_sjr/actos#agregar',
@@ -46,7 +46,7 @@ Rails.application.routes.draw do
 
     # No se requiere edición
     resources :clavesrespaldos, path_names: { new: 'nueva' },
-      controller: 'sip/clavesrespaldos'
+      controller: 'msip/clavesrespaldos'
 
     get "/conteos/accionesjuridicas" => 'sivel2_sjr/conteos#accionesjuridicas', 
       as: :conteos_accionesjuridicas
@@ -61,8 +61,8 @@ Rails.application.routes.draw do
 
     get '/migraciones/nuevo' => 'sivel2_sjr/migraciones#nuevo'  
 
-    #get "/personas" => 'sip/personas#index'
-    #get "/personas/remplazar" => 'sip/personas#remplazar'
+    #get "/personas" => 'msip/personas#index'
+    #get "/personas/remplazar" => 'msip/personas#remplazar'
 
     get "/casos/:id/fichaimp" => "sivel2_sjr/casos#fichaimp",
       as: :caso_fichaimp
@@ -76,11 +76,11 @@ Rails.application.routes.draw do
     get '/personas_casos' => 'sivel2_sjr/casos#personas_casos',
       as: :personas_casos
 
-    get '/ubicacionespre' => 'sip/ubicacionespre#index',
+    get '/ubicacionespre' => 'msip/ubicacionespre#index',
       as: :ubicacionespre
-    get '/ubicacionespre_mundep' => 'sip/ubicacionespre#mundep',
+    get '/ubicacionespre_mundep' => 'msip/ubicacionespre#mundep',
       as: :ubicacionespre_mundep
-    get '/ubicacionespre_lugar' => 'sip/ubicacionespre#lugar',
+    get '/ubicacionespre_lugar' => 'msip/ubicacionespre#lugar',
       as: :ubicacionespre_lugar
 
     get '/actividadespf/nueva' => 'cor1440_gen/actividadespf#new',
@@ -102,7 +102,7 @@ Rails.application.routes.draw do
 
     get '/revisaben_detalle' => 'cor1440_gen/actividades#revisaben_detalle'
 
-    root "sip/hogar#index"
+    root "msip/hogar#index"
 
     namespace :admin do
       ab = ::Ability.new
@@ -122,6 +122,6 @@ Rails.application.routes.draw do
   mount Sal7711Gen::Engine, at: rutarel, as: 'sal7711_gen'
   mount Mr519Gen::Engine, at: rutarel, as: 'mr519_gen'
   mount Heb412Gen::Engine, at: rutarel, as: 'heb412_gen'
-  mount Sip::Engine, at: rutarel, as: 'sip'
+  mount Msip::Engine, at: rutarel, as: 'msip'
 
 end

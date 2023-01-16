@@ -1,6 +1,6 @@
 module Sivel2Sjr
   class Accionjuridica < ActiveRecord::Base
-    include Sip::Basica
+    include Msip::Basica
 
     has_many :accionjuridica_respuesta, 
       class_name: 'Sivel2Sjr::AccionjuridicaRespuesta',

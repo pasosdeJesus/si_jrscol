@@ -106,7 +106,7 @@ module Sivel2Sjr
 
     # Fución API que retorna personas de un caso
     def personas_casos
-      authorize! :read, Sip::Persona
+      authorize! :read, Msip::Persona
       res = []
       if params && params['caso_ids']
         puts "params es #{params.inspect}"
@@ -149,10 +149,10 @@ module Sivel2Sjr
       @caso.casosjr.oficina_id= current_usuario.oficina_id.nil? ?  
         1 : current_usuario.oficina_id
       if params[:contacto] && 
-          Sip::Persona.where(id: params[:contacto].to_i).count == 1
-        per = Sip::Persona.find(params[:contacto])
+          Msip::Persona.where(id: params[:contacto].to_i).count == 1
+        per = Msip::Persona.find(params[:contacto])
       else
-        per = Sip::Persona.new
+        per = Msip::Persona.new
         per.nombres = 'N'
         per.apellidos = 'N'
         per.sexo = 'S'
@@ -247,7 +247,7 @@ module Sivel2Sjr
           if !p[:tdocumento_id] || p[:tdocumento_id].strip == ''
             @caso.errors.add(:persona, "#{n} no tiene tipo de documento")
           else
-            pt = Sip::Tdocumento.where(id: p[:tdocumento_id].to_i)
+            pt = Msip::Tdocumento.where(id: p[:tdocumento_id].to_i)
             if pt.count != 1
               @caso.errors.add(:persona, 
                                "#{n} tiene tipo de documento desconocido")
@@ -259,7 +259,7 @@ module Sivel2Sjr
                                  "#{n} tiene número de documento con formato errado. "\
                                  "#{pt.ayuda ? pt.ayuda : ''}")
               else
-                idrep = Sip::Persona.where(numerodocumento: p[:numerodocumento]).
+                idrep = Msip::Persona.where(numerodocumento: p[:numerodocumento]).
                   where(tdocumento_id: p[:tdocumento_id]).
                   where('id<>?', p[:id])
                 if idrep.count > 0
@@ -305,10 +305,10 @@ module Sivel2Sjr
       cs = @caso.solicitud.where(
         solicitud: "Ser asesor del caso #{@caso.id}",
         usuario_id: @caso.casosjr.asesor,
-        estadosol_id: Sip::Solicitud::PENDIENTE)
+        estadosol_id: Msip::Solicitud::PENDIENTE)
       if cs.count > 0
         cs.each do |csi| 
-          csi.estadosol_id = Sip::Solicitud::RESUELTA
+          csi.estadosol_id = Msip::Solicitud::RESUELTA
           csi.save
         end
       end
@@ -339,7 +339,7 @@ module Sivel2Sjr
         begin
           @caso.save(validate: false)
           if registrar_en_bitacora
-            Sip::Bitacora.agregar_actualizar(
+            Msip::Bitacora.agregar_actualizar(
               request, :caso, :bitacora_cambio, 
               current_usuario.id, params, 'Sivel2Gen::Caso',
               @caso.id
@@ -352,7 +352,7 @@ module Sivel2Sjr
         if validar_params && @casovalido 
           format.html { 
             if request.xhr?
-              if request.params[:_sip_enviarautomatico_y_repintar] 
+              if request.params[:_msip_enviarautomatico_y_repintar] 
                 render(action: 'edit', 
                        layout: 'application', 
                        notice: 'Caso actualizado.')
@@ -385,19 +385,19 @@ module Sivel2Sjr
       # Procesar ubicacionespre de migración
       (caso_params[:migracion_attributes] || []).each do |clave, mp|
         mi = Sivel2Sjr::Migracion.find(mp[:id].to_i)
-        mi.salidaubicacionpre_id = Sip::Ubicacionpre::buscar_o_agregar(
+        mi.salidaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           mp[:salida_pais_id], mp[:salida_departamento_id],
           mp[:salida_municipio_id], mp[:salida_clase_id],
           mp[:salida_lugar], mp[:salida_sitio], mp[:salida_tsitio_id],
           mp[:salida_latitud], mp[:salida_longitud]
         )
-        mi.llegadaubicacionpre_id = Sip::Ubicacionpre::buscar_o_agregar(
+        mi.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           mp[:llegada_pais_id], mp[:llegada_departamento_id],
           mp[:llegada_municipio_id], mp[:llegada_clase_id],
           mp[:llegada_lugar], mp[:llegada_sitio], mp[:llegada_tsitio_id],
           mp[:llegada_latitud], mp[:llegada_longitud]
         )
-        mi.destinoubicacionpre_id = Sip::Ubicacionpre::buscar_o_agregar(
+        mi.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           mp[:destino_pais_id], mp[:destino_departamento_id],
           mp[:destino_municipio_id], mp[:destino_clase_id],
           mp[:destino_lugar], mp[:destino_sitio], mp[:destino_tsitio_id],
@@ -408,19 +408,19 @@ module Sivel2Sjr
 
       (caso_params[:desplazamiento_attributes] || []).each do |clave, dp|
         de = Sivel2Sjr::Desplazamiento.find(dp[:id].to_i)
-        de.expulsionubicacionpre_id = Sip::Ubicacionpre::buscar_o_agregar(
+        de.expulsionubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           dp[:expulsion_pais_id], dp[:expulsion_departamento_id],
           dp[:expulsion_municipio_id], dp[:expulsion_clase_id],
           dp[:expulsion_lugar], dp[:expulsion_sitio], dp[:expulsion_tsitio_id],
           dp[:expulsion_latitud], dp[:expulsion_longitud]
         )
-        de.llegadaubicacionpre_id = Sip::Ubicacionpre::buscar_o_agregar(
+        de.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           dp[:llegada_pais_id], dp[:llegada_departamento_id],
           dp[:llegada_municipio_id], dp[:llegada_clase_id],
           dp[:llegada_lugar], dp[:llegada_sitio], dp[:llegada_tsitio_id],
           dp[:llegada_latitud], dp[:llegada_longitud]
         )
-        de.destinoubicacionpre_id = Sip::Ubicacionpre::buscar_o_agregar(
+        de.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           dp[:destino_pais_id], dp[:destino_departamento_id],
           dp[:destino_municipio_id], dp[:destino_clase_id],
           dp[:destino_lugar], dp[:destino_sitio], dp[:destino_tsitio_id],
@@ -548,7 +548,7 @@ module Sivel2Sjr
         :id, 
         :id_victima,
         :_destroy,
-        :sip_anexo_attributes => [
+        :msip_anexo_attributes => [
           :adjunto, 
           :descripcion, 
           :id, 
@@ -705,7 +705,7 @@ module Sivel2Sjr
               :id, 
               :desplazamiento_id,
               :_destroy,
-              :sip_anexo_attributes => [
+              :msip_anexo_attributes => [
                 :adjunto, 
                 :descripcion, 
                 :id, 
@@ -999,7 +999,7 @@ module Sivel2Sjr
           :id, 
           :id_caso,
           :_destroy,
-          :sip_anexo_attributes => [
+          :msip_anexo_attributes => [
             :adjunto, 
             :descripcion, 
             :id, 

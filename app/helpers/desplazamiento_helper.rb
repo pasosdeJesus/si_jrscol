@@ -3,8 +3,8 @@ module DesplazamientoHelper
 
   # calcula clasificacion de modalidad geográfica y submodalidad
   def modageo_desplazamiento(expulsion, llegada)
-    pe = Sip::UbicacionHelper.formato_ubicacion(expulsion).split(' / ')
-    pl = Sip::UbicacionHelper.formato_ubicacion(llegada).split(' / ')
+    pe = Msip::UbicacionHelper.formato_ubicacion(expulsion).split(' / ')
+    pl = Msip::UbicacionHelper.formato_ubicacion(llegada).split(' / ')
     if pe.length > 0 && pl.length > 0
       if pe[0] != pl[0]
         cl = "TRANSFRONTERIZO"

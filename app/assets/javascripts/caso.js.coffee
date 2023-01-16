@@ -207,14 +207,14 @@ $(document).on('click', 'a.agregaractos[href^="#"]', (e) ->
 # $(document).on('focusin', 
 # 'input[id^=caso_victima_attributes][id$=persona_attributes_apellidos]', (e) ->
 #   root = window
-#   sip_arregla_puntomontaje(root)
+#   msip_arregla_puntomontaje(root)
 #   busca_persona_nombre($(this), root)
 # )
 # 
 # $(document).on('focusin', 
 # 'input[id^=caso_victima_attributes][id$=persona_attributes_numerodocumento]', (e) ->
 #   root = window
-#   sip_arregla_puntomontaje(root)
+#   msip_arregla_puntomontaje(root)
 #   busca_persona_nombre($(this), root)
 # )
 
@@ -224,14 +224,14 @@ $(document).off('focusin',
 $(document).on('change',
 'select[id=persona_tdocumento_id]', (e) ->
   root = window
-  sip_arregla_puntomontaje(root)
+  msip_arregla_puntomontaje(root)
   std = $(this)
   obtener_ayuda(root, std)
 )
 $(document).on('change',
 'select[id$=persona_attributes_tdocumento_id]', (e) ->
   root = window
-  sip_arregla_puntomontaje(root)
+  msip_arregla_puntomontaje(root)
   std = $(this)
   obtener_ayuda(root, std)
 )

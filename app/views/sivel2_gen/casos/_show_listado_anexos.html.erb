@@ -8,7 +8,7 @@
   </thead>
   <tbody id="victima">
     <% anexosids = Sivel2Gen::Caso.find(@registro.id).anexo_caso.pluck(:id_anexo) %>
-    <% anexos = Sip::Anexo.find(anexosids)%>
+    <% anexos = Msip::Anexo.find(anexosids)%>
     <% anexos.each do |anexo| %>
       <tr>
         <td>
@@ -19,7 +19,7 @@
           <%= anexo.descripcion if anexo.descripcion %>
         </td>
         <td>
-          <a href="<%= sip.descarga_anexo_path(anexo.id) %>", style="text-decoration:none" data-turbo='false'><%= anexo.adjunto_file_name %></a>
+          <a href="<%= msip.descarga_anexo_path(anexo.id) %>", style="text-decoration:none" data-turbo='false'><%= anexo.adjunto_file_name %></a>
         </td>
       </tr>
     <% end %>

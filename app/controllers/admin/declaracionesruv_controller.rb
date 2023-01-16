@@ -1,5 +1,5 @@
 module Admin
-  class DeclaracionesruvController < Sip::Admin::BasicasController
+  class DeclaracionesruvController < Msip::Admin::BasicasController
     before_action :set_declaracionruv, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Declaracionruv

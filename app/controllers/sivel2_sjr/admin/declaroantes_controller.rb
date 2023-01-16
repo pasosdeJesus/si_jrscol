@@ -1,6 +1,6 @@
 module Sivel2Sjr
   module Admin
-    class DeclaroantesController < Sip::Admin::BasicasController
+    class DeclaroantesController < Msip::Admin::BasicasController
       before_action :set_declaroante, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Declaroante
 

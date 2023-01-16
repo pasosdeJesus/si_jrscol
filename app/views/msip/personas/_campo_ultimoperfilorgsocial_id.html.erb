@@ -1,0 +1,8 @@
+<% col = Msip::ModeloHelper.opciones_tabla_basica(
+  Msip::Perfilorgsocial, f, 'ultimoperfilorgsocial_id')
+%>
+<%= f.input :ultimoperfilorgsocial_id,
+  collection: col,
+  label_method: :nombre,
+  value_method: :id
+%>

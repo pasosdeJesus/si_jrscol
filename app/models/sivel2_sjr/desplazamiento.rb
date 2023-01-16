@@ -1,11 +1,11 @@
 require 'sivel2_sjr/concerns/models/desplazamiento'
-require 'sip/accesores_ubicacionpre'
+require 'msip/accesores_ubicacionpre'
 
 module Sivel2Sjr
   class Desplazamiento < ActiveRecord::Base
     include Sivel2Sjr::Concerns::Models::Desplazamiento
 
-    extend Sip::AccesoresUbicacionpre
+    extend Msip::AccesoresUbicacionpre
 
     accesores_ubicacionpre :destino
 
@@ -29,9 +29,9 @@ module Sivel2Sjr
       inverse_of: :desplazamiento
     accepts_nested_attributes_for :anexo_desplazamiento, allow_destroy: true, 
       reject_if: :all_blank
-    has_many :sip_anexo, :through => :anexo_desplazamiento, 
-      class_name: 'Sip::Anexo'
-    accepts_nested_attributes_for :sip_anexo,  reject_if: :all_blank
+    has_many :msip_anexo, :through => :anexo_desplazamiento, 
+      class_name: 'Msip::Anexo'
+    accepts_nested_attributes_for :msip_anexo,  reject_if: :all_blank
 
     validates :tipodesp, presence: true
 

@@ -54,14 +54,14 @@ $(document).on('cocoon:after-insert', '#migracion',
 
     // Poner ids para expandir/contraer ubicaciones
     // Debe estar en sincronia con
-    // app/views/sip/ubicacionpre/_dos_filas_confecha
+    // app/views/msip/ubicacionpre/_dos_filas_confecha
     control = $('#ubicacionpre-salida-0').parent()
     cocoonid = control.find('[id$=fechasalida]').attr('id').split('_')[3]
 
     console.log(cocoonid);
 
     ['salida', 'llegada', 'destino'].forEach(function (v, i) {
-      sip_ubicacionpre_expandible_cambia_ids(v, cocoonid)
+      msip_ubicacionpre_expandible_cambia_ids(v, cocoonid)
     })
 
     e.stopPropagation()
@@ -152,13 +152,13 @@ $(document).on('change', '#persona_id_pais',
 )
 
 
-sip_ubicacionpre_expandible_registra(
+msip_ubicacionpre_expandible_registra(
   'caso_migracion_attributes', 'salida', window)
 
-sip_ubicacionpre_expandible_registra(
+msip_ubicacionpre_expandible_registra(
   'caso_migracion_attributes', 'llegada', window)
 
-sip_ubicacionpre_expandible_registra(
+msip_ubicacionpre_expandible_registra(
   'caso_migracion_attributes', 'destino', window)
 
 

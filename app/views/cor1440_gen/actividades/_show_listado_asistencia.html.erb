@@ -20,7 +20,7 @@ Población beneficiaria: <%= personas.uniq.count  %>
       <tr>
         <td>
         <%= link_to(
-          asistencia.persona.id, sip.persona_path(asistencia.persona.id), 
+          asistencia.persona.id, msip.persona_path(asistencia.persona.id), 
           target: '_blank') if asistencia.persona.id %>
         </td>
         <td>

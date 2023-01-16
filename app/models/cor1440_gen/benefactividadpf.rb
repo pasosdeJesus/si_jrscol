@@ -1,6 +1,6 @@
 module Cor1440Gen
   class Benefactividadpf < ActiveRecord::Base
-    include Sip::Modelo
+    include Msip::Modelo
 
     scope :filtro_persona_nombre, lambda { |d|
       where("unaccent(persona_nombre) ILIKE '%' || unaccent(?) || '%'", d)
@@ -46,7 +46,7 @@ module Cor1440Gen
             COALESCE(porg.nombre) AS persona_actividad_perfil
           FROM cor1440_gen_actividad AS ac 
           JOIN cor1440_gen_asistencia AS asis ON asis.actividad_id=ac.id
-          LEFT JOIN sip_perfilorgsocial AS porg 
+          LEFT JOIN msip_perfilorgsocial AS porg 
             ON porg.id=asis.perfilorgsocial_id
         ) AS sub
       ;
@@ -65,7 +65,7 @@ module Cor1440Gen
         p.dianac AS persona_dianac,
         p.mesnac AS persona_mesnac,
         p.anionac AS persona_anionac,
-        public.sip_edad_de_fechanac_fecharef(
+        public.msip_edad_de_fechanac_fecharef(
           p.anionac, p.mesnac, p.dianac,
           EXTRACT(YEAR FROM a.fecha)::integer,
           EXTRACT(MONTH from a.fecha)::integer,
@@ -79,21 +79,21 @@ module Cor1440Gen
         p.id AS persona_id
         FROM cor1440_gen_benefext AS b 
         JOIN cor1440_gen_actividad AS a ON a.id=b.actividad_id
-        JOIN sip_oficina AS o ON  o.id=a.oficina_id
-        JOIN sip_persona AS p ON p.id=b.persona_id
+        JOIN msip_oficina AS o ON  o.id=a.oficina_id
+        JOIN msip_persona AS p ON p.id=b.persona_id
         JOIN usuario AS us ON us.id=a.usuario_id
-        LEFT JOIN sip_tdocumento AS t ON t.id=p.tdocumento_id
-        LEFT JOIN sip_ubicacionpre AS u ON u.id=a.ubicacionpre_id
-        LEFT JOIN sip_departamento AS dep on dep.id=u.departamento_id
-        LEFT JOIN sip_municipio AS mun on mun.id=u.municipio_id
+        LEFT JOIN msip_tdocumento AS t ON t.id=p.tdocumento_id
+        LEFT JOIN msip_ubicacionpre AS u ON u.id=a.ubicacionpre_id
+        LEFT JOIN msip_departamento AS dep on dep.id=u.departamento_id
+        LEFT JOIN msip_municipio AS mun on mun.id=u.municipio_id
       ;
       SQL
 
 
       wherebe = "TRUE" 
       if oficina_ids && oficina_ids.count > 0
-        obof = Sip::Oficina.where(id: oficina_ids)
-        lof = obof.pluck(:nombre).map {|o| "'#{Sip::SqlHelper.escapar(o)}'"}
+        obof = Msip::Oficina.where(id: oficina_ids)
+        lof = obof.pluck(:nombre).map {|o| "'#{Msip::SqlHelper.escapar(o)}'"}
         wherebe << " AND be.actividad_oficina IN (#{lof.join(',')})"
       end
       if pf_ids && pf_ids.count > 0
@@ -102,10 +102,10 @@ module Cor1440Gen
           WHERE proyectofinanciero_id IN (#{pf_ids.map(&:to_i).join(',')}))"
       end
       if fechaini
-        wherebe << " AND be.actividad_fecha >= '#{Sip::SqlHelper.escapar(fechaini)}'"
+        wherebe << " AND be.actividad_fecha >= '#{Msip::SqlHelper.escapar(fechaini)}'"
       end
       if fechafin
-        wherebe << " AND be.actividad_fecha <= '#{Sip::SqlHelper.escapar(fechafin)}'"
+        wherebe << " AND be.actividad_fecha <= '#{Msip::SqlHelper.escapar(fechafin)}'"
       end
       if actividad_ids.count > 0
         wherebe << " AND be.actividad_id IN (#{actividad_ids.join(',')})"
@@ -192,7 +192,7 @@ module Cor1440Gen
           r = "0"
         else
           bids = self[m[1]+"_ids"].join(',')
-          r="<a href='#{Rails.application.routes.url_helpers.sip_path +
+          r="<a href='#{Rails.application.routes.url_helpers.msip_path +
           'actividades?filtro[busid]=' + bids}'"\
           " target='_blank'>"\
           "#{self[m[1]]}"\

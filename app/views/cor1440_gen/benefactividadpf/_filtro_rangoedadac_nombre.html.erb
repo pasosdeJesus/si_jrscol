@@ -4,7 +4,7 @@
   include_blank: true,
   label_method: lambda { |k| k.nombre},
   value_method: lambda { |k| k.nombre},
-  selected: Sip::ModeloHelper.poromision(params, :busrangoedadac_nombre),
+  selected: Msip::ModeloHelper.poromision(params, :busrangoedadac_nombre),
   input_html: {
     class: 'chosen-select',
     'data-enviarautomatico' => ''

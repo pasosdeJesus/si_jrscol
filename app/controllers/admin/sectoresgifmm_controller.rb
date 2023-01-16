@@ -1,5 +1,5 @@
 module Admin
-  class SectoresgifmmController < Sip::Admin::BasicasController
+  class SectoresgifmmController < Msip::Admin::BasicasController
     before_action :set_sectorgifmm, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Sectorgifmm

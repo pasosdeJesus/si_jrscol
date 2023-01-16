@@ -1,5 +1,5 @@
 module Admin
-  class MiembrosfamiliarController < Sip::Admin::BasicasController
+  class MiembrosfamiliarController < Msip::Admin::BasicasController
     before_action :set_miembrofamiliar, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Miembrofamiliar

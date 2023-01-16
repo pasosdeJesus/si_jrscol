@@ -1,5 +1,5 @@
 module Admin
-  class CausasagresionController < Sip::Admin::BasicasController
+  class CausasagresionController < Msip::Admin::BasicasController
     before_action :set_causaagresion, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Causaagresion

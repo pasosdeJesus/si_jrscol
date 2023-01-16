@@ -1,7 +1,7 @@
 require_dependency "sivel2_sjr/concerns/controllers/mindicadorespf_controller"
 
 module Cor1440Gen
-  class MindicadorespfController < Sip::ModelosController
+  class MindicadorespfController < Msip::ModelosController
 
     include Sivel2Sjr::Concerns::Controllers::MindicadorespfController
 
@@ -61,11 +61,11 @@ module Cor1440Gen
       datosint << {valor: contactos.count, rutaevidencia: '#'}
       datosint << {valor: familiares.count, rutaevidencia: '#'}
       if contactos.count > 0 then
-        datosint[0][:rutaevidencia] = sip.personas_path + 
+        datosint[0][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + contactos.join(',')
       end
       if familiares.count > 0
-        datosint[1][:rutaevidencia] = sip.personas_path + 
+        datosint[1][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + familiares.join(',')
       end
 
@@ -125,11 +125,11 @@ module Cor1440Gen
       datosint << {valor: contactos_conres.count, rutaevidencia: '#'}
       datosint << {valor: familiares_conres.count, rutaevidencia: '#'}
       if contactos_conres.count > 0 then
-        datosint[0][:rutaevidencia] = sip.personas_path + '?filtro[busid]=' + 
+        datosint[0][:rutaevidencia] = msip.personas_path + '?filtro[busid]=' + 
           contactos_conres.join(',')
       end
       if familiares_conres.count > 0
-        datosint[1][:rutaevidencia] =  sip.personas_path + '?filtro[busid]=' + 
+        datosint[1][:rutaevidencia] =  msip.personas_path + '?filtro[busid]=' + 
           familiares_conres.join(',')
       end
       
@@ -172,7 +172,7 @@ module Cor1440Gen
 
       datosint << {valor: directos1.count, rutaevidencia: '#'}
       if directos1.count > 0
-        datosint[datosint.count-1][:rutaevidencia] = sip.personas_path + 
+        datosint[datosint.count-1][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + directos1.join(',')
       end
 
@@ -185,7 +185,7 @@ module Cor1440Gen
 
       datosint << {valor: directos2.count, rutaevidencia: '#'}
       if directos2.count > 0
-        datosint[datosint.count-1][:rutaevidencia] = sip.personas_path + 
+        datosint[datosint.count-1][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + directos2.join(',')
       end
 
@@ -197,7 +197,7 @@ module Cor1440Gen
       menores = []
       mayores = []
       grupo3.each do |f|
-        per = Sip::Persona.find(f)
+        per = Msip::Persona.find(f)
         hoy = Date.today.to_s.split('-')
         edad_ben = Sivel2Gen::RangoedadHelper.
           edad_de_fechanac_fecha(per.anionac, per.mesnac, per.dianac, 
@@ -218,12 +218,12 @@ module Cor1440Gen
 
       datosint << {valor: directos3.count, rutaevidencia: '#'}
       if directos3.count > 0
-        datosint[datosint.count-1][:rutaevidencia] = sip.personas_path + 
+        datosint[datosint.count-1][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + directos3.join(',')
       end
       datosint << {valor: indirectos3.count, rutaevidencia: '#'}
       if indirectos3.count > 0
-        datosint[datosint.count-1][:rutaevidencia] = sip.personas_path + 
+        datosint[datosint.count-1][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + indirectos3.join(',')
       end
 
@@ -246,12 +246,12 @@ module Cor1440Gen
       resind = directos.count + indirectos.count
       datosint << {valor: directos.count, rutaevidencia: '#'}
       if directos.count > 0
-        datosint[datosint.count-1][:rutaevidencia] = sip.personas_path + 
+        datosint[datosint.count-1][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + directos.join(',')
       end
       datosint << {valor: indirectos.count, rutaevidencia: '#'}
       if indirectos.count > 0
-        datosint[datosint.count-1][:rutaevidencia] = sip.personas_path + 
+        datosint[datosint.count-1][:rutaevidencia] = msip.personas_path + 
           '?filtro[busid]=' + indirectos.join(',')
       end
 
@@ -266,8 +266,8 @@ module Cor1440Gen
       def calcula_maternidad(idacs, idmat)
         return Sivel2Gen::Victima.
           joins('JOIN sivel2_sjr_victimasjr ON sivel2_gen_victima.id=sivel2_sjr_victimasjr.id_victima').
-          joins('JOIN sip_persona ON sip_persona.id=sivel2_gen_victima.id_persona').
-          joins('JOIN cor1440_gen_asistencia ON cor1440_gen_asistencia.persona_id=sip_persona.id').
+          joins('JOIN msip_persona ON msip_persona.id=sivel2_gen_victima.id_persona').
+          joins('JOIN cor1440_gen_asistencia ON cor1440_gen_asistencia.persona_id=msip_persona.id').
           where('cor1440_gen_asistencia.actividad.id': idacs).
           where('sivel2_sjr_victimasjr.id_maternidad':  idmat).
           pluck('id_persona').uniq
@@ -310,15 +310,15 @@ module Cor1440Gen
       datosint << {valor: gest_total, rutaevidencia: '#'}
       datosint << {valor: bebes_total, rutaevidencia: '#'}
       if lactantes.count > 0
-        datosint[0][:rutaevidencia]= sip.personas_path + '?filtro[busid]=' + 
+        datosint[0][:rutaevidencia]= msip.personas_path + '?filtro[busid]=' + 
           lactantes.join(',')
       end
       if gest.count > 0
-        datosint[1][:rutaevidencia]= sip.personas_path + '?filtro[busid]=' + 
+        datosint[1][:rutaevidencia]= msip.personas_path + '?filtro[busid]=' + 
           gest.join(',')
       end
       if bebes_presentes.count > 0
-        datosint[2][:rutaevidencia]= sip.personas_path + '?filtro[busid]=' + 
+        datosint[2][:rutaevidencia]= msip.personas_path + '?filtro[busid]=' + 
           bebes_presentes.join(',')
       end
       return {resind: resind, datosint: datosint}

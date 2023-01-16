@@ -46,7 +46,7 @@
          <td>
            <%= ga4.where(id: acid).
              pluck('cor1440_gen_asistencia.persona_id').
-             map { |idp| Sip::Persona.find(idp).presenta_nombre }.
+             map { |idp| Msip::Persona.find(idp).presenta_nombre }.
              join(". ") %>
          </td>
        </tr>

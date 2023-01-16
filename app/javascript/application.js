@@ -93,7 +93,7 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
       r.prop('disabled', true)
     })
 
-  sip_prepara_eventos_comunes(root)
+  msip_prepara_eventos_comunes(root)
   heb412_gen_prepara_eventos_comunes(root)
   mr519_gen_prepara_eventos_comunes(root)
   sivel2_gen_prepara_eventos_comunes(root,'antecedentes/causas')
@@ -102,7 +102,7 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
     {'sin_eventos_recalcular_poblacion': 1})
   sal7711_gen_prepara_eventos_comunes(root)
   sivel2_sjr_prepara_eventos_unicos(root)
-  sip_registra_cambios_para_bitacora(root)
+  msip_registra_cambios_para_bitacora(root)
 
   window.AutocompletaAjaxRapidobenefcaso.iniciar()
 
@@ -117,7 +117,7 @@ document.addEventListener('turbo:load', (e) => {
   
   console.log('Escuchador turbo:load')
 
-  sip_ejecutarAlCargarPagina(window)
+  msip_ejecutarAlCargarPagina(window)
 })
 
 document.addEventListener('turbo:frame-load', (e) => {

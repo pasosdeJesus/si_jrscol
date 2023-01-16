@@ -50,7 +50,7 @@ window.jrs_revisa_y_agrega_paramscv = (elema, evento, veccv, datos) => {
   idf = document.querySelector('form').getAttribute('id')
   listaidsrempl = ['errores']
   document.getElementById("errores").innerText=''
-  sip_enviarautomatico_formulario_y_repinta_retrollamada3(idf, listaidsrempl,
+  msip_enviarautomatico_formulario_y_repinta_retrollamada3(idf, listaidsrempl,
     jrs_pre_agrega_paramscv, [elema, veccv, datos], 'POST')
 }
 

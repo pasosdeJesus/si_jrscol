@@ -41,7 +41,7 @@ module Cor1440Gen
 
     def index
       contar_beneficiarios
-      index_sip(Cor1440Gen::Benefactividadpf.all)
+      index_msip(Cor1440Gen::Benefactividadpf.all)
     end
 
     def index_reordenar(c)
@@ -68,9 +68,9 @@ module Cor1440Gen
       if !params[:filtro] || !params[:filtro]['fechaini'] || 
           params[:filtro]['fechaini'] != ""
         if !params[:filtro] || !params[:filtro]['fechaini']
-          @contarb_fechaini = Sip::FormatoFechaHelper.inicio_semestre_ant
+          @contarb_fechaini = Msip::FormatoFechaHelper.inicio_semestre_ant
         else
-          @contarb_fechaini = Sip::FormatoFechaHelper.fecha_local_estandar(
+          @contarb_fechaini = Msip::FormatoFechaHelper.fecha_local_estandar(
             params[:filtro]['fechaini'])
         end
       end
@@ -79,9 +79,9 @@ module Cor1440Gen
       if !params[:filtro] || !params[:filtro]['fechafin'] || 
           params[:filtro]['fechafin'] != ""
         if !params[:filtro] || !params[:filtro]['fechafin']
-          @contarb_fechafin = Sip::FormatoFechaHelper.fin_semestre_ant
+          @contarb_fechafin = Msip::FormatoFechaHelper.fin_semestre_ant
         else
-          @contarb_fechafin = Sip::FormatoFechaHelper.fecha_local_estandar(
+          @contarb_fechafin = Msip::FormatoFechaHelper.fecha_local_estandar(
             params[:filtro]['fechafin'])
         end
       end
@@ -138,7 +138,7 @@ module Cor1440Gen
         params['filtro']['proyectofinanciero_id'].
         select {|i| i != ''}.map(&:to_i)
         nof = idof == [] ? '' : 
-          Sip::Oficina.where(id: idof).pluck(:nombre).join('; ')
+          Msip::Oficina.where(id: idof).pluck(:nombre).join('; ')
         npf = idpf == [] ? '' :
           Cor1440Gen::Proyectofinanciero.where(id:idpf).
           pluck(:nombre).join('; ')

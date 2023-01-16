@@ -18,7 +18,7 @@ class DetallefinancieroTest < ActiveSupport::TestCase
     area = Cor1440Gen::Proyecto.create!(PRUEBA_AREA)
     assert(area.valid?)
 
-    upre = Sip::Ubicacionpre.create!(PRUEBA_UBICACIONPRE)
+    upre = Msip::Ubicacionpre.create!(PRUEBA_UBICACIONPRE)
     assert(upre.valid?)
 
     actividad = Cor1440Gen::Actividad.new(PRUEBA_ACTIVIDAD)

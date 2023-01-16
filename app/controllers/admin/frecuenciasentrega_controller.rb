@@ -1,5 +1,5 @@
 module Admin
-  class FrecuenciasentregaController < Sip::Admin::BasicasController
+  class FrecuenciasentregaController < Msip::Admin::BasicasController
     before_action :set_frecuenciaentrega, 
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource  class: ::Frecuenciaentrega
