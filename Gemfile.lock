@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/cor1440_gen.git
-  revision: 78aae86fb691057405d30fac15309fb800b9a3fb
+  revision: 130b9be11b46cf4c67b94714d844e4604324b3bd
   branch: msip
   specs:
     cor1440_gen (2.1a1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sivel2_gen.git
-  revision: 98c43f27fd17bf929333e8d449eb976a9e75a103
+  revision: 6fc6d267caae905f41a62efd9a53b24b9b37bbfe
   branch: msip
   specs:
     sivel2_gen (2.1.0.beta1)
@@ -95,7 +95,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 5a50abbbfb9c88e7a1cbe6f7ea0f0f116eb9a0ae
+  revision: 95b70d07336a4823cd49efff1f412ec92823bb4b
   branch: main
   specs:
     msip (2.2.0.alfa3)
@@ -269,7 +269,7 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.8.0)
+    mail (2.8.0.1)
       mini_mime (>= 0.1.1)
       net-imap
       net-pop
@@ -294,7 +294,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.13.10)
+    nokogiri (1.14.0)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     odf-report (0.7.3)

@@ -27,12 +27,25 @@ class RenombraJrscolMsip < ActiveRecord::Migration[7.0]
     ["sip_ubicacionpre_tsitio_id_idx", "msip_ubicacionpre_tsitio_id_idx"],
   ]
 
-  def change
+  def up
     TAB.each do |nomini, nomfin|
       rename_table(nomini, nomfin)
     end
     IND.each do |nomini, nomfin|
-      renombrar_índice_pg(nomini, nomfin)
+      if existe_índice_pg?(nomini)
+        renombrar_índice_pg(nomini, nomfin)
+      end
+    end
+  end
+
+  def down
+    IND.reverse.each do |nomini, nomfin|
+      if existe_índice_pg?(nomfin)
+        renombrar_índice_pg(nomfin, nomini)
+      end
+    end
+    TAB.reverse.each do |nomini, nomfin|
+      rename_table(nomfin, nomini)
     end
   end
 
