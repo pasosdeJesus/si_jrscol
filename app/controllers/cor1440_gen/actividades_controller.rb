@@ -273,7 +273,7 @@ module Cor1440Gen
        'Cor1440Gen::ActividadProyectofinanciero',
        'Cor1440Gen::ActividadRangoedadac',
        'Cor1440Gen::ActividadRespuestafor',
-       'Cor1440Gen::ActividadSipAnexo',
+       'Cor1440Gen::ActividadAnexo',
        'Cor1440Gen::ActividadUsuario',
        'Cor1440Gen::Asistencia'
       ].each do |relac|

@@ -6,7 +6,7 @@
     </tr>
   </thead>
   <tbody id="victima">
-    <% anexosids = Cor1440Gen::ActividadSipAnexo.where(actividad_id: @registro.id).pluck(:anexo_id) %>
+    <% anexosids = Cor1440Gen::ActividadAnexo.where(actividad_id: @registro.id).pluck(:anexo_id) %>
     <% anexos = Msip::Anexo.find(anexosids)%>
     <% anexos.each do |anexo| %>
       <tr>
