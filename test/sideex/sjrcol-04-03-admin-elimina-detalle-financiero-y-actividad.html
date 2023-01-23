@@ -21,6 +21,8 @@
 </tr>
 <tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td[16]/input</option><option>//td[16]/input</option></datalist></td><td>37,23</td>
 </tr>
+<tr><td>assertText</td><td>id=numregistros<datalist><option>id=numregistros</option><option>css=#numregistros</option><option>//span[@id='numregistros']</option><option>//div[@id='div_contenido']/form/div/div[2]/span</option><option>//div[2]/span</option></datalist></td><td>1</td>
+</tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
@@ -111,9 +113,7 @@
 <tr><td rowspan="1" colspan="3">actividad-elimina-persona-caso-integrante</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownActividades<datalist><option>id=navbarDropdownActividades</option><option>link=Actividades</option><option>css=#navbarDropdownActividades</option><option>//a[contains(text(),'Actividades')]</option><option>//a[@id='navbarDropdownActividades']</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/a</option><option>xpath=(//a[contains(@href, '#')])[3]</option><option>//li[3]/a</option></datalist></td><td>63,23</td>
-</tr>
-<tr><td>clickAt</td><td>link=Beneficiarios<datalist><option>link=Beneficiarios</option><option>//a[contains(text(),'Beneficiarios')]</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/div/a[9]</option><option>xpath=(//a[contains(@href, '/personas')])[2]</option><option>//a[9]</option></datalist></td><td>133,19</td>
+<tr><td>clickAt</td><td>id=navbarDropdownBeneficiarios<datalist><option>id=navbarDropdownBeneficiarios</option><option>link=Beneficiarios</option><option>css=#navbarDropdownBeneficiarios</option><option>xpath=(//a[contains(text(),'Beneficiarios')])[2]</option><option>//a[@id='navbarDropdownBeneficiarios']</option><option>//div[@id='navbarSupportedContent']/ul/li[4]/a</option><option>xpath=(//a[contains(@href, '#')])[4]</option><option>//li[4]/a</option></datalist></td><td>69,10</td>
 </tr>
 <tr><td>clickAt</td><td>link=Lista<datalist><option>link=Lista</option><option>css=ul.dropdown-menu.dropdown-menu-light.show &gt; li &gt; a.dropdown-item</option><option>xpath=(//a[contains(text(),'Lista')])[3]</option><option>//div[@id='navbarSupportedContent']/ul/li[4]/ul/li/a</option><option>xpath=(//a[contains(@href, '/personas')])[2]</option><option>//li[4]/ul/li/a</option></datalist></td><td>52,18</td>
 </tr>
@@ -137,9 +137,9 @@
 <tr><td rowspan="1" colspan="3">actividad-elimina-persona-asistente</td></tr>
 </thead>
 <tbody>
-<tr><td>clickAt</td><td>id=navbarDropdownActividades<datalist><option>id=navbarDropdownActividades</option><option>link=Actividades</option><option>css=#navbarDropdownActividades</option><option>//a[contains(text(),'Actividades')]</option><option>//a[@id='navbarDropdownActividades']</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/a</option><option>xpath=(//a[contains(@href, '#')])[3]</option><option>//li[3]/a</option></datalist></td><td>63,23</td>
+<tr><td>clickAt</td><td>id=navbarDropdownBeneficiarios<datalist><option>id=navbarDropdownBeneficiarios</option><option>link=Beneficiarios</option><option>css=#navbarDropdownBeneficiarios</option><option>xpath=(//a[contains(text(),'Beneficiarios')])[2]</option><option>//a[@id='navbarDropdownBeneficiarios']</option><option>//div[@id='navbarSupportedContent']/ul/li[4]/a</option><option>xpath=(//a[contains(@href, '#')])[4]</option><option>//li[4]/a</option></datalist></td><td>69,10</td>
 </tr>
-<tr><td>clickAt</td><td>link=Beneficiarios<datalist><option>link=Beneficiarios</option><option>//a[contains(text(),'Beneficiarios')]</option><option>//div[@id='navbarSupportedContent']/ul/li[3]/div/a[9]</option><option>xpath=(//a[contains(@href, '/personas')])[2]</option><option>//a[9]</option></datalist></td><td>133,19</td>
+<tr><td>clickAt</td><td>link=Lista<datalist><option>link=Lista</option><option>css=ul.dropdown-menu.dropdown-menu-light.show &gt; li &gt; a.dropdown-item</option><option>xpath=(//a[contains(text(),'Lista')])[3]</option><option>//div[@id='navbarSupportedContent']/ul/li[4]/ul/li/a</option><option>xpath=(//a[contains(@href, '/personas')])[2]</option><option>//li[4]/ul/li/a</option></datalist></td><td>43,24</td>
 </tr>
 <tr><td>clickAt</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>27,8</td>
 </tr>
@@ -148,6 +148,12 @@
 <tr><td>type</td><td>id=filtro_busnumerodocumento<datalist><option>id=filtro_busnumerodocumento</option><option>name=filtro[busnumerodocumento]</option><option>css=#filtro_busnumerodocumento</option><option>//input[@id='filtro_busnumerodocumento']</option><option>//td[5]/div/input</option></datalist></td><td>754654</td>
 </tr>
 <tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[12]/input</option></datalist></td><td>21,20</td>
+</tr>
+<tr><td>sendKeys</td><td>id=filtro_busnombres<datalist><option>id=filtro_busnombres</option><option>name=filtro[busnombres]</option><option>css=#filtro_busnombres</option><option>//input[@id='filtro_busnombres']</option><option>//div[@id='div_contenido']/form/table/thead/tr[2]/td[2]/div/input</option><option>//td[2]/div/input</option></datalist></td><td>PQPQ</td>
+</tr>
+<tr><td>clickAt</td><td>name=filtrar<datalist><option>name=filtrar</option><option>css=input[name="filtrar"]</option><option>//input[@name='filtrar']</option><option>//td[12]/input</option></datalist></td><td>21,20</td>
+</tr>
+<tr><td>assertText</td><td>id=numregistros<datalist><option>id=numregistros</option><option>css=#numregistros</option><option>//span[@id='numregistros']</option><option>//div[@id='div_contenido']/form/div/div[2]/span</option><option>//div[2]/span</option></datalist></td><td>1</td>
 </tr>
 <tr><td>chooseOkOnNextConfirmation</td><td><datalist><option></option></datalist></td><td></td>
 </tr>
