@@ -128,7 +128,6 @@ module Cor1440Gen
 
     def index_plantillas
       l = index_plantillas_heb412
-      l << ['Beneficiarios por Actividad de Marco Lógico (Excel)', 50]
       return l
     end
 
@@ -275,7 +274,8 @@ module Cor1440Gen
        'Cor1440Gen::ActividadRespuestafor',
        'Cor1440Gen::ActividadAnexo',
        'Cor1440Gen::ActividadUsuario',
-       'Cor1440Gen::Asistencia'
+       'Cor1440Gen::Asistencia',
+       'Detallefinanciero'
       ].each do |relac|
         r = relac.constantize.where(actividad_id: @registro.id)
         r.delete_all if r.count > 0
