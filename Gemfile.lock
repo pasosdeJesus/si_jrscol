@@ -57,26 +57,6 @@ GIT
       rails
 
 GIT
-  remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 0705d5258c4ea443d231db1e53aec9fc3ddc75bc
-  branch: main
-  specs:
-    msip (2.2.0.alfa3)
-      cancancan (~> 3)
-      devise (~> 4)
-      devise-i18n (~> 1)
-      kt-paperclip (~> 7)
-      pg (~> 1)
-      rails (~> 7.0)
-      rails-i18n (~> 7)
-      sassc-rails (~> 2)
-      simple_form (~> 5)
-      sprockets-rails (~> 3)
-      stimulus-rails (~> 1)
-      twitter_cldr (~> 6)
-      will_paginate (~> 3)
-
-GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
   revision: 0bbb1823e312b788bcb08247127d2cd29bd60242
   branch: main
@@ -112,6 +92,24 @@ GIT
     sivel2_sjr (2.2a1)
       rails
       sivel2_gen
+
+PATH
+  remote: ../msip
+  specs:
+    msip (2.2.0.alfa3)
+      cancancan (~> 3)
+      devise (~> 4)
+      devise-i18n (~> 1)
+      kt-paperclip (~> 7)
+      pg (~> 1)
+      rails (~> 7.0)
+      rails-i18n (~> 7)
+      sassc-rails (~> 2)
+      simple_form (~> 5)
+      sprockets-rails (~> 3)
+      stimulus-rails (~> 1)
+      twitter_cldr (~> 6)
+      will_paginate (~> 3)
 
 GEM
   remote: https://rubygems.org/

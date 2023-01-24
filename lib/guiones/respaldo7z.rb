@@ -12,17 +12,17 @@ if !ENV['HEB412_RUTA']
 end
 nube=ENV['HEB412_RUTA']
 
-if !ENV['SIP_RUTA_ANEXOS']
-  puts "Falta variable de entorno SIP_RUTA_ANEXOS"
+if !ENV['MSIP_RUTA_ANEXOS']
+  puts "Falta variable de entorno MSIP_RUTA_ANEXOS"
   exit 1
 end
-anexos=ENV['SIP_RUTA_ANEXOS']
+anexos=ENV['MSIP_RUTA_ANEXOS']
 
-if !ENV['SIP_RUTA_VOLCADOS']
-  puts "Falta variable de entorno SIP_RUTA_VOLCADOS"
+if !ENV['MSIP_RUTA_VOLCADOS']
+  puts "Falta variable de entorno MSIP_RUTA_VOLCADOS"
   exit 1
 end
-volcados=ENV['SIP_RUTA_VOLCADOS']
+volcados=ENV['MSIP_RUTA_VOLCADOS']
 
 
 # https://stackoverflow.com/questions/690151/getting-output-of-system-calls-in-ruby

@@ -62,7 +62,7 @@ export default class extends Controller {
         "el número de caso de manera automática")
       return;
     }
-    window.SipGuardarFormularioYRepintar(
+    window.MsipGuardarFormularioYRepintar(
       ['errores'], this.actualizaListado, 
       {actividad_id: actividad_id, caso_id: caso_id},
       this.manejaError, e

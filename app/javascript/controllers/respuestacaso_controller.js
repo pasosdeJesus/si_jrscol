@@ -52,7 +52,7 @@ export default class extends Controller {
       e.target.getAttribute('data-parametros')
     )
     let urlActividad = this.armarUrlActividad1(parametrosActividad)
-    window.SipGuardarFormularioYRepintar(
+    window.MsipGuardarFormularioYRepintar(
       ['errores'], this.crearActividad, {urlActividad: urlActividad}) 
   }
 
@@ -65,7 +65,7 @@ export default class extends Controller {
 
 
   modalAlgunos(e) {
-    window.SipGuardarFormularioYRepintar(
+    window.MsipGuardarFormularioYRepintar(
       ['errores', 'modal-respuesta-algunos'], 
       this.abrirModal, {})
   }
