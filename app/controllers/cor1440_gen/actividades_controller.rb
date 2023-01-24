@@ -49,7 +49,7 @@ module Cor1440Gen
 
     def self.filtramas(par, ac, current_usuario)
       @busactividadtipo = param_escapa(par, 'busactividadtipo')
-      if @busactividadtipo != '' then
+      if @busactividadtipo != "" then
         ac = ac.joins(:actividad_actividadtipo).where(
           "cor1440_gen_actividad_actividadtipo.actividadtipo_id = ?",
           @busactividadtipo.to_i
@@ -334,7 +334,7 @@ module Cor1440Gen
     def filtra_contarb_actividad_por_parametros(contarb_actividad)
       @contarb_oficinaid = nil
       if params && params[:filtro] && params[:filtro][:oficina_id] && 
-          params[:filtro][:oficina_id] != ''
+          params[:filtro][:oficina_id] != ""
         @contarb_oficinaid = params[:filtro][:oficina_id].to_i
         contarb_actividad.where('cor1440_gen_actividad.oficina_id=?',
                                 @contarb_oficinaid)
@@ -357,7 +357,7 @@ module Cor1440Gen
         params[:actividad][:asistencia_attributes].each do |l, v|
           if Cor1440Gen::Asistencia.where(id: v[:id].to_i).count == 0 ||
               !v[:persona_attributes] || 
-              !v[:persona_attributes][:id] || v[:persona_attributes][:id] == '' ||
+              !v[:persona_attributes][:id] || v[:persona_attributes][:id] == "" ||
               Msip::Persona.where(id: v[:persona_attributes][:id].to_i).count == 0
             next
           end
@@ -507,7 +507,7 @@ module Cor1440Gen
         # Tras arreglar proyecto financiero que no tenía actividad de marco
         # lógico y que no esté en base suele no almacenar la actividad 
         # así que la agregamos
-        ar = @pf_respaldo.values.flatten.select {|x| x != ''}.
+        ar = @pf_respaldo.values.flatten.select {|x| x != ""}.
           map(&:to_i).uniq.sort
         ag = @registro.actividadpf_ids.uniq.sort
         if ar != ag 
