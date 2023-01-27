@@ -7059,11 +7059,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.id_persona = contacto.id) AND (vcontacto.id_caso = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 101)
-          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
-  ORDER BY conscaso.fecha, conscaso.caso_id
+  WHERE (true = false)
   WITH NO DATA;
 
 
@@ -11917,6 +11913,13 @@ CREATE INDEX cor1440_gen_actividad_proyectofinanci_proyectofinanciero_id_idx ON 
 --
 
 CREATE INDEX cor1440_gen_actividad_proyectofinanciero_actividad_id_idx ON public.cor1440_gen_actividad_proyectofinanciero USING btree (actividad_id);
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero_unico; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX cor1440_gen_actividad_proyectofinanciero_unico ON public.cor1440_gen_actividad_proyectofinanciero USING btree (actividad_id, proyectofinanciero_id);
 
 
 --
@@ -16810,6 +16813,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221211141209'),
 ('20221212021533'),
 ('20230113133200'),
-('20230127041839');
+('20230127041839'),
+('20230127123623');
 
 
