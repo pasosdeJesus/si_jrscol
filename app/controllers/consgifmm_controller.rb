@@ -157,25 +157,67 @@ class ConsgifmmController < Heb412Gen::ModelosController
       hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
       hoja.add_row []
       l = [
-        'Actividad',
-        'Fecha',
-        'Objetivo',
+        'Oficina',
+        'Id Actividad',
         'Convenio Financiado', 
-        'Actividad de marco lógico',
         'Socio Principal', 
-        'Tipo implementaciones',
+        'Tipo de implementación',
         'Socio implementador',
         'Departamento', 
         'Municipio', 
         'Mes',
-        'Estado',
-        'Parte RMRP',
         'Sector GIFMM',
         'Indicador GIFMM',
+        'Código del indicador',
+        'Actividad de marco lógico',
+        'Nombre de la actividad',
+        'Descripción de la actividad',
+        'Actividad del RMRP',
+        'Actividad para caminantes',
+        'Actividad en apoyo en ETPV',
+        'Tipo de apoyo al ETPV',
+        'Tipo',
+        'Cantidad',
+        'Modalidad',
+        'Monto en USD',
+        'Mecanismo de entregando',
+        'Cantidad de output: # beneficiarios indirectos',
+        'Total beneficiarios alcanzados en el mes',
+        'Beneficiarios nuevos en el mes',
         'Beneficiarios',
-        'Beneficiarios nuevos', 
+        'Con vocación de permanencias',
+        'En tránsitos',
+        'Comunidad de acogidas',
+        'Pendulares',
+        'Colombianos retornados',
+        'Niñas y adolescentes <17',
+        'Mujeres adultas >= 18',
+        'Niños y adolescentes <17',
+        'Hombres adultos >= 18',
+        'Otros no binarios <17',
+        'Otros no binarios >= 18',
+        'LGBTI+',
+        'Con discapacidades',
+        'Afrodescendientes',
+        'Indígenas',
+        'Otra comunidad étnica',
+        '*Sin sexo <= 17'
+        '*Niñas y adolescentes <17',
+        '*Niños y adolescentes <17',
+        '*Sin sexo >= 18'
+        '*Mujeres adultas >= 18',
+        '*Sin sexo y sin edad',
+        '*Hombres adultos >= 18',
       ]
       numfilas = l.length
+      lini = numfilas
+      col = ""
+      loop do
+        letrafin= ((lini - 1) % 26) + 65
+        col = letrafin.char + col
+        lini = (lini - 1) / 26
+        break if lini == 0
+      end
 
       hoja.merge_cells('A1:Q1')
 
