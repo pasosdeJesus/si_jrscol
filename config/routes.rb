@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       get 'sign_out' => 'devise/sessions#destroy'
       get 'salir' => 'devise/sessions#destroy',
         as: :terminar_sesion
-
       post 'usuarios/iniciar_sesion', to: 'devise/sessions#create'
       get 'usuarios/iniciar_sesion', to: 'devise/sessions#new',
         as: :iniciar_sesion
