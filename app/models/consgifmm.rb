@@ -157,11 +157,15 @@ class Consgifmm < ActiveRecord::Base
         joins(
           'JOIN cor1440_gen_actividad_actividadpf '\
           'ON cor1440_gen_actividad_actividadpf.actividad_id=cor1440_gen_asistencia.actividad_id'\
-          ' AND cor1440_gen_actividad_actividadpf.actividadpf_id='+self.actividadpf_id.to_s).
-          where( # actividadpf lleva implicito proyectopf
-                'cor1440_gen_actividad.fecha < ? ', 
-                self.fecha.at_beginning_of_month).
-                where('msip_persona.id = ?', pid.to_i)
+          ' AND cor1440_gen_actividad_actividadpf.actividadpf_id='+self.actividadpf_id.to_s
+        ).where(
+          'cor1440_gen_actividad.fecha < ? ', 
+          self.fecha.at_beginning_of_month
+        ).where('msip_persona.id = ?', pid.to_i).
+        where(
+          'cor1440_gen_actividad.fecha >= ? ',
+          self.fecha.at_beginning_of_year
+        ) # Definicion de nuevo aumentada
 
       # Definicion de nuevo si usaran detalle financiero
       #c = ::Detallefinanciero.joins(:actividad).joins(:persona).where(
@@ -461,9 +465,6 @@ class Consgifmm < ActiveRecord::Base
     when :actividad_id
       self.actividad_id
 
-    when :actividad_nombre
-      self.actividad.nombre
-
     when :actividad_observaciones
       self.actividad.observaciones
 
@@ -483,9 +484,6 @@ class Consgifmm < ActiveRecord::Base
     when :mes
       actividad.fecha ? 
         Msip::FormatoFechaHelper::MESES[actividad.fecha.month] : ''
-
-    when :objetivo
-      actividad.objetivo ? actividad.objetivo : ''
 
     when :sector_gifmm
       sector_gifmm
@@ -587,7 +585,9 @@ class Consgifmm < ActiveRecord::Base
       cor1440_gen_proyectofinanciero.nombre AS conveniofinanciado_nombre,
       cor1440_gen_actividadpf.titulo AS actividadmarcologico_nombre,
       depgifmm.nombre AS departamento_gifmm,
-      mungifmm.nombre AS municipio_gifmm
+      mungifmm.nombre AS municipio_gifmm,
+      (SELECT nombre FROM msip_oficina WHERE id=cor1440_gen_actividad.oficina_id LIMIT 1) AS oficina,
+      cor1440_gen_actividad.nombre AS actividad_nombre
       FROM cor1440_gen_actividad
       JOIN cor1440_gen_actividad_actividadpf ON
         cor1440_gen_actividad.id=cor1440_gen_actividad_actividadpf.actividad_id
