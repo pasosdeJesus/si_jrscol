@@ -754,6 +754,7 @@ class Ability < Sivel2Sjr::Ability
       campos: [
           'actividad_id',
           'actividad_nombre',
+          'actividad_objetivo',
           'actividad_observaciones',
           'actividad_responsable',
           'actividad_resultado',
@@ -802,7 +803,6 @@ class Ability < Sivel2Sjr::Ability
           'indicador_gifmm',
           'mes',
           'municipio_gifmm',
-          'objetivo',
           'oficina',
           'parte_rmrp',
           'sector_gifmm',

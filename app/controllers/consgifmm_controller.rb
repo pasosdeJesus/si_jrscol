@@ -171,7 +171,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
         'Código del indicador',
         'Actividad de marco lógico',
         'Nombre de la actividad',
-        'Descripción de la actividad',
+        'Descripción de la actividad (Objetivo)',
         'Actividad del RMRP',
         'Actividad para caminantes',
         'Actividad en apoyo en ETPV',
@@ -179,12 +179,11 @@ class ConsgifmmController < Heb412Gen::ModelosController
         'Tipo',
         'Cantidad',
         'Modalidad',
-        'Monto en USD',
-        'Mecanismo de entregando',
+        'Monto en USD (OJO COP)',
+        'Mecanismo de entrega',
         'Cantidad de output: # beneficiarios indirectos',
         'Total beneficiarios alcanzados en el mes',
         'Beneficiarios nuevos en el mes',
-        'Beneficiarios',
         'Con vocación de permanencias',
         'En tránsitos',
         'Comunidad de acogidas',
@@ -201,16 +200,15 @@ class ConsgifmmController < Heb412Gen::ModelosController
         'Afrodescendientes',
         'Indígenas',
         'Otra comunidad étnica',
-        '*Sin sexo <= 17'
-        '*Niñas y adolescentes <17',
-        '*Niños y adolescentes <17',
-        '*Sin sexo >= 18'
-        '*Mujeres adultas >= 18',
-        '*Sin sexo y sin edad',
-        '*Hombres adultos >= 18',
+        '*Nuevos Sin sexo <= 17 o sin rango de edad',
+        '*Nuevas Niñas y adolescentes <17',
+        '*Nuevas Niños y adolescentes <17',
+        '*Nuevos Sin sexo >= 18 o sin rango de edad',
+        '*Nuevas Mujeres adultas >= 18',
+        '*Nuevos Hombres adultos >= 18',
       ]
       numfilas = l.length
-      colfin Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+      colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
 
       hoja.merge_cells("A1:#{colfin}1")
 
@@ -218,24 +216,55 @@ class ConsgifmmController < Heb412Gen::ModelosController
       
       registros.each do |reg|
         l = [
-          reg['oficina'].to_s,
-          reg['actividad_id'].to_s,
-          reg['fecha'].to_s,
-          reg['actividad_objetivo'],
+          reg.oficina.to_s,
+          reg.actividad_id,
           reg['conveniofinanciado_nombre'],
-          reg['actividadmarcologico_nombre'],
           reg.socio_principal,
           reg.presenta('tipo_implementacion'),
           reg.presenta('socio_implementador'),
           reg['departamento_gifmm'],
           reg['municipio_gifmm'],
           reg.presenta('mes'),
-          reg.presenta('estado'),
-          reg.presenta('parte_rmrp'),
           reg.sector_gifmm,
           reg.indicador_gifmm,
+          '', # código del indicador
+          reg['actividadmarcologico_nombre'],
+          reg['actividad_nombre'].to_s,
+          reg['actividad_objetivo'].to_s,
+          reg.presenta('parte_rmrp'),
+          '', #'Actividad para caminantes',
+          '', #'Actividad en apoyo en ETPV',
+          '', #'Tipo de apoyo al ETPV',
+          '', #'Tipo',
+          reg.detalleah_cantidad,
+          reg.detalleah_modalidad,
+          reg.detalleah_monto_por_persona,
+          reg.detalleah_mecanismo_entrega,
+          '', #'Cantidad de output: # beneficiarios indirectos'
           reg.beneficiarios_ids.split(",").count,
-          reg.beneficiarios_nuevos_mes_ids.split(",").count
+          reg.beneficiarios_nuevos_mes_ids.split(",").count,
+          reg.beneficiarios_nuevos_vocacion_permanencia_ids.split(",").count,
+          reg.beneficiarios_nuevos_en_transito_ids.split(",").count,
+          reg.beneficiarios_nuevos_comunidades_de_acogida_ids.split(",").count,
+          reg.beneficiarios_nuevos_pendulares_ids.split(",").count,
+          reg.beneficiarios_nuevos_colombianos_retornados_ids.split(",").count,
+          reg.beneficiarias_nuevas_ninas_adolescentes_y_se_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
+          reg.beneficiarias_nuevas_mujeres_adultas_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count,
+          reg.beneficiarios_nuevos_ninos_adolescentes_y_se_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
+          reg.beneficiarios_nuevos_hombres_adultos_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count/2,
+          0, # 'Otros no binarios <17',
+          0, # 'Otros no binarios >= 18',
+          reg.beneficiarios_nuevos_lgbti_ids.split(",").count,
+          reg.beneficiarios_nuevos_con_discapacidad_ids.split(",").count,
+          reg.beneficiarios_nuevos_afrodescendientes_ids.split(",").count,
+          reg.beneficiarios_nuevos_indigenas_ids.split(",").count,
+          reg.beneficiarios_nuevos_otra_etnia_ids.split(",").count,
+          reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count,
+          reg.beneficiarias_nuevas_ninas_adolescentes_y_se_ids.split(",").count,
+          reg.beneficiarios_nuevos_ninos_adolescentes_y_se_ids.split(",").count,
+          reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count,
+          reg.beneficiarias_nuevas_mujeres_adultas_ids.split(",").count,
+          reg.beneficiarios_nuevos_hombres_adultos_ids.split(",").count,
         ]
         hoja.add_row l, style: estilo_base
       end
