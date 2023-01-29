@@ -248,10 +248,14 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.beneficiarios_nuevos_comunidades_de_acogida_ids.split(",").count,
           reg.beneficiarios_nuevos_pendulares_ids.split(",").count,
           reg.beneficiarios_nuevos_colombianos_retornados_ids.split(",").count,
-          reg.beneficiarias_nuevas_ninas_adolescentes_y_se_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
-          reg.beneficiarias_nuevas_mujeres_adultas_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count,
-          reg.beneficiarios_nuevos_ninos_adolescentes_y_se_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
-          reg.beneficiarios_nuevos_hombres_adultos_ids.split(",").count + reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count/2,
+          reg.beneficiarias_nuevas_ninas_adolescentes_y_se_ids.split(",").count + 
+            reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
+          reg.beneficiarias_nuevas_mujeres_adultas_ids.split(",").count + 
+            reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count,
+          reg.beneficiarios_nuevos_ninos_adolescentes_y_se_ids.split(",").count + 
+            reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
+          reg.beneficiarios_nuevos_hombres_adultos_ids.split(",").count + 
+            reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count/2,
           0, # 'Otros no binarios <17',
           0, # 'Otros no binarios >= 18',
           reg.beneficiarios_nuevos_lgbti_ids.split(",").count,
