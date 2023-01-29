@@ -210,21 +210,15 @@ class ConsgifmmController < Heb412Gen::ModelosController
         '*Hombres adultos >= 18',
       ]
       numfilas = l.length
-      lini = numfilas
-      col = ""
-      loop do
-        letrafin= ((lini - 1) % 26) + 65
-        col = letrafin.char + col
-        lini = (lini - 1) / 26
-        break if lini == 0
-      end
+      colfin Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
 
-      hoja.merge_cells('A1:Q1')
+      hoja.merge_cells("A1:#{colfin}1")
 
       hoja.add_row l, style: [estilo_encabezado] * numfilas
       
       registros.each do |reg|
         l = [
+          reg['oficina'].to_s,
           reg['actividad_id'].to_s,
           reg['fecha'].to_s,
           reg['actividad_objetivo'],
