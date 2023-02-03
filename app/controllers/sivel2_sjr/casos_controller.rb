@@ -335,6 +335,20 @@ module Sivel2Sjr
         end
         @caso.current_usuario = current_usuario
         @caso.assign_attributes(caso_params)
+        # Si se agrega y elimina una migración, con AJAX se agrega
+        # pero queda en base y la validación "piensa" que la migración
+        # está activa y la valida.
+        # Para evitar algunas validaciones en registros que se eliminarán
+        # agregamos el atributo virtual _destroy a migración y aquí
+        # lo establecemos porque assgin_atributes no lo estableció
+        # Ver https://gitlab.com/pasosdeJesus/si_jrscol/-/issues/799
+        caso_params["migracion_attributes"].each do |l, v|
+          if v["_destroy"].to_i == 1  && 
+              @caso.migracion.select{|c| c.id = l}.count == 1 then
+            c = @caso.migracion.select{|c| c.id = l}[0]
+            c._destroy = 1
+          end
+        end
         @casovalido &= @caso.valid?
         begin
           @caso.save(validate: false)

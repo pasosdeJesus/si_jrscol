@@ -44,11 +44,11 @@ class Sivel2Gen::Caso < ActiveRecord::Base
         errors.add(:migracion, 
                    "Longitud del número ppt no puede exceder 32 caracteres")
       end
-      if m.statusmigratorio_id.nil?
+      if !m._destroy && m.statusmigratorio_id.nil?
         errors.add(:migracion, 
                    "En migración debe especificar estatus migratorio")
       end
-      if m.perfilmigracion_id.nil?
+      if !m._destroy && m.perfilmigracion_id.nil?
         errors.add(:migracion, 
                    "En migración debe especificar perfil de migración")
       end

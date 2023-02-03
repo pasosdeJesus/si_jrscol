@@ -14,6 +14,10 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
 
   attr_accessor :tiempoenpais
 
+  # Agregada para evitar validaciones en migraciones eliminadas. 
+  # Ver https://gitlab.com/pasosdeJesus/si_jrscol/-/issues/799
+  attr_accessor :_destroy
+
   has_and_belongs_to_many :agresionmigracion, 
     class_name: 'Agresionmigracion',
     foreign_key: :migracion_id, 
@@ -100,5 +104,16 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
   end
 
 
+  # Agregada para evitar validaciones en migraciones eliminadas. 
+  # Ver https://gitlab.com/pasosdeJesus/si_jrscol/-/issues/799
+  def _destroy
+    @destroy
+  end
+
+  # Agregada para evitar validaciones en migraciones eliminadas. 
+  # Ver https://gitlab.com/pasosdeJesus/si_jrscol/-/issues/799
+  def _destroy=(val)
+    @destroy = val
+  end
 
 end
