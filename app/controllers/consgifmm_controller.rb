@@ -179,7 +179,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
         'Tipo',
         'Cantidad',
         'Modalidad',
-        'Monto en USD (OJO COP)',
+        'Monto en USD',
         'Mecanismo de entrega',
         'Cantidad de output: # beneficiarios indirectos',
         'Total beneficiarios alcanzados en el mes',
@@ -238,37 +238,37 @@ class ConsgifmmController < Heb412Gen::ModelosController
           '', #'Tipo',
           reg.detalleah_cantidad,
           reg.detalleah_modalidad,
-          reg.detalleah_monto_por_persona,
+          '', # Por ahora en blanco pues no definieron lo de la tabla con tasa de cambio reg.detalleah_monto_por_persona,
           reg.detalleah_mecanismo_entrega,
           '', #'Cantidad de output: # beneficiarios indirectos'
           reg.beneficiarios_ids.split(",").count,
           reg.beneficiarios_nuevos_mes_ids.split(",").count,
-          reg.beneficiarios_nuevos_vocacion_permanencia_ids.split(",").count,
-          reg.beneficiarios_nuevos_en_transito_ids.split(",").count,
-          reg.beneficiarios_nuevos_comunidades_de_acogida_ids.split(",").count,
-          reg.beneficiarios_nuevos_pendulares_ids.split(",").count,
-          reg.beneficiarios_nuevos_colombianos_retornados_ids.split(",").count,
-          reg.beneficiarias_nuevas_ninas_adolescentes_y_se_ids.split(",").count + 
-            reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
-          reg.beneficiarias_nuevas_mujeres_adultas_ids.split(",").count + 
-            reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count,
-          reg.beneficiarios_nuevos_ninos_adolescentes_y_se_ids.split(",").count + 
-            reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count/2,
-          reg.beneficiarios_nuevos_hombres_adultos_ids.split(",").count + 
-            reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count/2,
+          reg.beneficiarios_vocacion_permanencia_ids.split(",").count,
+          reg.beneficiarios_en_transito_ids.split(",").count,
+          reg.beneficiarios_comunidades_de_acogida_ids.split(",").count,
+          reg.beneficiarios_pendulares_ids.split(",").count,
+          reg.beneficiarios_colombianos_retornados_ids.split(",").count,
+          reg.beneficiarias_ninas_adolescentes_y_se_ids.split(",").count + 
+            reg.beneficiarios_sinsexo_menores_y_se_ids.split(",").count/2,
+          reg.beneficiarias_mujeres_adultas_ids.split(",").count + 
+            reg.beneficiarios_sinsexo_adultos_ids.split(",").count,
+          reg.beneficiarios_ninos_adolescentes_y_se_ids.split(",").count + 
+            reg.beneficiarios_sinsexo_menores_y_se_ids.split(",").count/2,
+          reg.beneficiarios_hombres_adultos_ids.split(",").count + 
+            reg.beneficiarios_sinsexo_adultos_ids.split(",").count/2,
           0, # 'Otros no binarios <17',
           0, # 'Otros no binarios >= 18',
-          reg.beneficiarios_nuevos_lgbti_ids.split(",").count,
-          reg.beneficiarios_nuevos_con_discapacidad_ids.split(",").count,
-          reg.beneficiarios_nuevos_afrodescendientes_ids.split(",").count,
-          reg.beneficiarios_nuevos_indigenas_ids.split(",").count,
-          reg.beneficiarios_nuevos_otra_etnia_ids.split(",").count,
-          reg.beneficiarios_nuevos_sinsexo_menores_y_se_ids.split(",").count,
-          reg.beneficiarias_nuevas_ninas_adolescentes_y_se_ids.split(",").count,
-          reg.beneficiarios_nuevos_ninos_adolescentes_y_se_ids.split(",").count,
-          reg.beneficiarios_nuevos_sinsexo_adultos_ids.split(",").count,
-          reg.beneficiarias_nuevas_mujeres_adultas_ids.split(",").count,
-          reg.beneficiarios_nuevos_hombres_adultos_ids.split(",").count,
+          reg.beneficiarios_lgbti_ids.split(",").count,
+          reg.beneficiarios_con_discapacidad_ids.split(",").count,
+          reg.beneficiarios_afrodescendientes_ids.split(",").count,
+          reg.beneficiarios_indigenas_ids.split(",").count,
+          reg.beneficiarios_otra_etnia_ids.split(",").count,
+          reg.beneficiarios_sinsexo_menores_y_se_ids.split(",").count,
+          reg.beneficiarias_ninas_adolescentes_y_se_ids.split(",").count,
+          reg.beneficiarios_ninos_adolescentes_y_se_ids.split(",").count,
+          reg.beneficiarios_sinsexo_adultos_ids.split(",").count,
+          reg.beneficiarias_mujeres_adultas_ids.split(",").count,
+          reg.beneficiarios_hombres_adultos_ids.split(",").count,
         ]
         hoja.add_row l, style: estilo_base
       end

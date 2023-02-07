@@ -130,6 +130,8 @@ class Consgifmm < ActiveRecord::Base
     ids
   end
 
+  ## AUXILIARES
+  #############
 
   # Auxiliar que retorna listado de identificaciones de personas del
   # listado de asistentes que cumplan una condición
@@ -148,6 +150,157 @@ class Consgifmm < ActiveRecord::Base
     r = self.persona_ids.sort.uniq
     r.join(',')
   end
+
+  # Auxiliar que retorna listado de identificaciones de entre
+  # los beneficiarios que cumplan una condición sobre
+  # la persona (recibida como bloque)
+  def beneficiarios_condicion_ids
+    idn = beneficiarios_ids.split(',')
+    idv = idn.select {|ip|
+      p = Msip::Persona.find(ip)
+      yield(p)
+    }
+    idv.sort.join(',')
+  end
+
+  # Retorna ids de beneficiarios del sexo dado
+  # y una edad entre edadini o edadinf (pueden ser nil para indicar no limite).
+  # Si con_edad es false ademas retorna aquellos cuya edad
+  # sea desconocida
+  def beneficiarios_condicion_sexo_edad_ids(sexo, edadini, edadfin,
+                                                  con_edad = true)
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      e = Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
+          p.anionac, p.mesnac, p.dianac,
+          finmes.year, finmes.month, finmes.day)
+      p.sexo == sexo && 
+        (!con_edad || p.anionac) &&
+        (edadini.nil? || e >= edadini) &&
+        (edadfin.nil? || e <= edadfin)
+    }
+  end
+
+
+  # Retorna ids de beneficiarios nuevos del sexo dado
+  # y una edad entre edadini o edadinf (pueden ser nil para indicar no limite).
+  # Si con_edad es false ademas retorna aquellos cuya edad
+  # sea desconocida
+  def beneficiarios_nuevos_condicion_sexo_edad_ids(sexo, edadini, edadfin,
+                                                  con_edad = true)
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      e = Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
+          p.anionac, p.mesnac, p.dianac,
+          finmes.year, finmes.month, finmes.day)
+      p.sexo == sexo && 
+        (!con_edad || p.anionac) &&
+        (edadini.nil? || e >= edadini) &&
+        (edadfin.nil? || e <= edadfin)
+    }
+  end
+
+
+  ## CUENTAS BENEFICIARIOS
+  #########################
+
+  def beneficiarios_afrodescendientes_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e == 'AFRODESCENDIENTE' || 
+        e == 'NEGRO'
+    }
+  end
+
+
+  def beneficiarios_colombianos_retornados_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 16
+    }
+  end
+
+  def beneficiarios_comunidades_de_acogida_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 13
+    }
+  end
+
+  def beneficiarios_con_discapacidad_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      p.victima.any? { |v| 
+        (v.victimasjr.fechadesagregacion.nil? ||
+         v.victimasjr.fechadesagregacion <= finmes) &&
+        v.victimasjr.discapacidad &&
+        v.victimasjr.discapacidad.nombre != 'NINGUNA'
+      }
+    }
+  end
+
+  def beneficiarios_en_transito_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 11
+    }
+  end
+
+  def beneficiarios_hombres_adultos_ids
+    beneficiarios_condicion_sexo_edad_ids('M', 18, nil)
+  end
+
+  def beneficiarios_indigenas_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e != 'AFRODESCENDIENTE' &&
+        e != 'NEGRO' &&
+        e != 'ROM' &&
+        e != 'MESTIZO' &&
+        e != 'SIN INFORMACIÓN' &&
+        e != ''
+    }
+  end
+
+
+  def beneficiarios_lgbti_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      p.victima.any? { |v| 
+        (v.victimasjr.fechadesagregacion.nil? ||
+         v.victimasjr.fechadesagregacion <= finmes) &&
+        v.orientacionsexual != 'H'
+      }
+    }
+  end
+
+  def beneficiarias_mujeres_adultas_ids
+    beneficiarios_condicion_sexo_edad_ids('F', 18, nil)
+  end
+
+  def beneficiarias_ninas_adolescentes_y_se_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      p.sexo == 'F' &&
+      (p.anionac.nil? ||
+        Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
+          p.anionac, p.mesnac, p.dianac,
+          finmes.year, finmes.month, finmes.day) < 18
+      )
+    }
+  end
+
+  def beneficiarios_ninos_adolescentes_y_se_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      p.sexo == 'M' &&
+      (p.anionac.nil? ||
+        Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
+          p.anionac, p.mesnac, p.dianac,
+          finmes.year, finmes.month, finmes.day) < 18
+      )
+    }
+  end
+
 
 
   def beneficiarios_nuevos_mes_ids
@@ -194,59 +347,21 @@ class Consgifmm < ActiveRecord::Base
     idv.sort.join(',')
   end
 
-
   def beneficiarios_nuevos_colombianos_retornados_ids
-    finmes = actividad.fecha.end_of_month
-    idcol = 170 # Colombia
     return beneficiarios_nuevos_condicion_ids {|p|
-      (p.nacionalde == idcol || p.id_pais == idcol) &&
-        p.victima.any? { |v|
-        (v.victimasjr.fechadesagregacion.nil? ||
-         v.victimasjr.fechadesagregacion <= finmes) &&
-        v.caso.migracion.count > 0 &&
-        v.persona &&
-        (v.persona.nacionalde == idcol || v.persona.id_pais == idcol)
-      }
+      p.ultimoperfilorgsocial_id == 16
     }
   end
-
 
   def beneficiarios_nuevos_comunidades_de_acogida_ids
-    finmes = actividad.fecha.end_of_month
     return beneficiarios_nuevos_condicion_ids {|p|
-      p.asistencia.any? {|as|
-        as.actividad.fecha <= finmes &&
-          as.perfilorgsocial && 
-          as.perfilorgsocial.nombre == 'COMUNIDAD DE ACOGIDA'
-      }
+      p.ultimoperfilorgsocial_id == 13
     }
   end
-
 
   def beneficiarios_nuevos_en_transito_ids
-    finmes = actividad.fecha.end_of_month
     return beneficiarios_nuevos_condicion_ids {|p|
-      GifmmHelper::perfilmigracion_de_beneficiario(p.id, finmes) == 
-        'EN TRÁNSITO'
-    }
-  end
-
-
-  # Retorna ids de beneficiarios nuevos del sexo dado
-  # y una edad entre edadini o edadinf (pueden ser nil para indicar no limite).
-  # Si con_edad es false ademas retorna aquellos cuya edad
-  # sea desconocida
-  def beneficiarios_nuevos_condicion_sexo_edad_ids(sexo, edadini, edadfin,
-                                                  con_edad = true)
-    finmes = actividad.fecha.end_of_month
-    return beneficiarios_nuevos_condicion_ids {|p|
-      e = Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
-          p.anionac, p.mesnac, p.dianac,
-          finmes.year, finmes.month, finmes.day)
-      p.sexo == sexo && 
-        (!con_edad || p.anionac) &&
-        (edadini.nil? || e >= edadini) &&
-        (edadfin.nil? || e <= edadfin)
+      p.ultimoperfilorgsocial_id == 11
     }
   end
 
@@ -272,10 +387,6 @@ class Consgifmm < ActiveRecord::Base
 
   def beneficiarias_nuevas_mujeres_60_o_mas_ids
     beneficiarios_nuevos_condicion_sexo_edad_ids('F', 60, nil)
-  end
-
-  def beneficiarios_nuevos_ninos_adolescentes_y_se_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('M', nil, 17, false)
   end
 
   def beneficiarios_nuevos_hombres_adultos_ids
@@ -355,17 +466,6 @@ class Consgifmm < ActiveRecord::Base
     }
   end
 
-  def beneficiarios_nuevos_otra_etnia_ids
-    finmes = actividad.fecha.end_of_month
-    return beneficiarios_nuevos_condicion_ids {|p|
-      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
-      e == 'ROM' ||
-         e == 'MESTIZO' ||
-         e == 'SIN INFORMACIÓN' ||
-         e == ''
-    }
-  end
-
   def beneficiarias_nuevas_ninas_adolescentes_y_se_ids
     finmes = actividad.fecha.end_of_month
     return beneficiarios_nuevos_condicion_ids {|p|
@@ -378,24 +478,72 @@ class Consgifmm < ActiveRecord::Base
     }
   end
 
+  def beneficiarios_nuevos_ninos_adolescentes_y_se_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.sexo == 'M' &&
+      (p.anionac.nil? ||
+        Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
+          p.anionac, p.mesnac, p.dianac,
+          finmes.year, finmes.month, finmes.day) < 18
+      )
+    }
+  end
+
+  def beneficiarios_nuevos_otra_etnia_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e == 'ROM' ||
+         e == 'MESTIZO' ||
+         e == 'SIN INFORMACIÓN' ||
+         e == ''
+    }
+  end
+
 
   def beneficiarios_nuevos_pendulares_ids
-    finmes = actividad.fecha.end_of_month
     return beneficiarios_nuevos_condicion_ids {|p|
-      GifmmHelper::perfilmigracion_de_beneficiario(p.id, finmes) == 
-        'PENDULAR'
+      p.ultimoperfilorgsocial_id == 12
     }
   end
-
 
   def beneficiarios_nuevos_vocacion_permanencia_ids
-    finmes = actividad.fecha.end_of_month
     return beneficiarios_nuevos_condicion_ids {|p|
-      GifmmHelper::perfilmigracion_de_beneficiario(p.id, finmes) == 
-        'CON VOCACIÓN DE PERMANENCIA'
+      p.ultimoperfilorgsocial_id == 10
     }
   end
 
+  def beneficiarios_otra_etnia_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e == 'ROM' ||
+         e == 'MESTIZO' ||
+         e == 'SIN INFORMACIÓN' ||
+         e == ''
+    }
+  end
+
+  def beneficiarios_pendulares_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 12
+    }
+  end
+
+  def beneficiarios_sinsexo_adultos_ids
+    beneficiarios_condicion_sexo_edad_ids('S', 60, nil)
+  end
+
+  def beneficiarios_sinsexo_menores_y_se_ids
+    beneficiarios_condicion_sexo_edad_ids('S', nil, 17, false)
+  end
+
+  def beneficiarios_vocacion_permanencia_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 10
+    }
+  end
 
   def sector_gifmm
     idig = self.busca_indicador_gifmm

@@ -6,7 +6,7 @@ module GifmmHelper
   # perfil migratorio (i.e nombre de la tabla pefilmigracion) más 
   # reciente hasta esa fecha.
   # Si no encuentra perfil migratorio retorna ''
-  def self.perfilmigracion_de_beneficiario(idp, fecha)
+  def self.ya_no_usar_perfilmigracion_de_beneficiario(idp, fecha)
     p = Msip::Persona.find(idp)
     mc = p.caso.joins(
       'JOIN sivel2_sjr_casosjr ON ' +
