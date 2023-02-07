@@ -202,7 +202,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
         'Otra comunidad étnica',
         '*Nuevos Sin sexo <= 17 o sin rango de edad',
         '*Nuevas Niñas y adolescentes <17',
-        '*Nuevas Niños y adolescentes <17',
+        '*Nuevos Niños y adolescentes <17',
         '*Nuevos Sin sexo >= 18 o sin rango de edad',
         '*Nuevas Mujeres adultas >= 18',
         '*Nuevos Hombres adultos >= 18',
