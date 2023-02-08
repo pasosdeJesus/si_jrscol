@@ -268,7 +268,8 @@ class Consgifmm < ActiveRecord::Base
       p.victima.any? { |v| 
         (v.victimasjr.fechadesagregacion.nil? ||
          v.victimasjr.fechadesagregacion <= finmes) &&
-        v.orientacionsexual != 'H'
+        v.orientacionsexual != 'H' &&
+        v.orientacionsexual != 'S'
       }
     }
   end
@@ -427,7 +428,8 @@ class Consgifmm < ActiveRecord::Base
       p.victima.any? { |v| 
         (v.victimasjr.fechadesagregacion.nil? ||
          v.victimasjr.fechadesagregacion <= finmes) &&
-        v.orientacionsexual != 'H'
+        v.orientacionsexual != 'H' && 
+        v.orientacionsexual != 'S'
       }
     }
   end
