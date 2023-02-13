@@ -246,11 +246,11 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
           fecharec, oficina, nusuario, fecha, expulsion, llegada,
           ultimaatencion_fecha,
           memo, to_tsvector('spanish', unaccent(caso_id || ' ' || contacto || 
-            ' ' || replace(cast(fecharec AS varchar), '-', ' ') || 
+            ' ' || replace(fecharec::text, '-', ' ') || 
             ' ' || oficina || ' ' || nusuario || ' ' || 
-            replace(cast(fecha AS varchar), '-', ' ') || ' ' ||
-            expulsion  || ' ' || llegada || ' ' || 
-            replace(cast(ultimaatencion_fecha AS varchar), '-', ' ')
+            replace(fecha::text, '-', ' ') || ' ' ||
+            COALESCE(expulsion, '')  || ' ' || COALESCE(llegada, '') || ' ' || 
+            replace(COALESCE(ultimaatencion_fecha::text, ''), '-', ' ')
             || ' ' || memo )) as q
         FROM public.sivel2_gen_conscaso1"
       );

@@ -6631,7 +6631,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_conscaso AS
     sivel2_gen_conscaso1.llegada,
     sivel2_gen_conscaso1.ultimaatencion_fecha,
     sivel2_gen_conscaso1.memo,
-    to_tsvector('spanish'::regconfig, public.unaccent(((((((((((((((((((sivel2_gen_conscaso1.caso_id || ' '::text) || sivel2_gen_conscaso1.contacto) || ' '::text) || replace(((sivel2_gen_conscaso1.fecharec)::character varying)::text, '-'::text, ' '::text)) || ' '::text) || (sivel2_gen_conscaso1.oficina)::text) || ' '::text) || (sivel2_gen_conscaso1.nusuario)::text) || ' '::text) || replace(((sivel2_gen_conscaso1.fecha)::character varying)::text, '-'::text, ' '::text)) || ' '::text) || sivel2_gen_conscaso1.expulsion) || ' '::text) || sivel2_gen_conscaso1.llegada) || ' '::text) || replace(((sivel2_gen_conscaso1.ultimaatencion_fecha)::character varying)::text, '-'::text, ' '::text)) || ' '::text) || sivel2_gen_conscaso1.memo))) AS q
+    to_tsvector('spanish'::regconfig, public.unaccent(((((((((((((((((((sivel2_gen_conscaso1.caso_id || ' '::text) || sivel2_gen_conscaso1.contacto) || ' '::text) || replace((sivel2_gen_conscaso1.fecharec)::text, '-'::text, ' '::text)) || ' '::text) || (sivel2_gen_conscaso1.oficina)::text) || ' '::text) || (sivel2_gen_conscaso1.nusuario)::text) || ' '::text) || replace((sivel2_gen_conscaso1.fecha)::text, '-'::text, ' '::text)) || ' '::text) || COALESCE(sivel2_gen_conscaso1.expulsion, ''::text)) || ' '::text) || COALESCE(sivel2_gen_conscaso1.llegada, ''::text)) || ' '::text) || replace(COALESCE((sivel2_gen_conscaso1.ultimaatencion_fecha)::text, ''::text), '-'::text, ' '::text)) || ' '::text) || sivel2_gen_conscaso1.memo))) AS q
    FROM public.sivel2_gen_conscaso1
   WITH NO DATA;
 
@@ -16821,6 +16821,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230127041839'),
 ('20230127123623'),
 ('20230129103236'),
-('20230131094311');
+('20230131094311'),
+('20230207195955'),
+('20230213001339');
 
 
