@@ -490,7 +490,6 @@ module Cor1440Gen
 
 
     def update
-
       update_cor1440_gen
 
       if @registro.valid?
