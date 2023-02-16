@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: f0305cb22575157db60b981ead97e77377be7850
+  revision: 4d4927219c4ec49637d0892310a813c209639cf2
   branch: main
   specs:
     mr519_gen (2.2.0.beta1)
@@ -106,7 +106,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: a369ba308e89b88869ed2c9348551555cb63da15
+  revision: 4dcec66bf74347481e47217baa9e4cdaccd0e63b
   branch: main
   specs:
     sivel2_sjr (2.2a1)

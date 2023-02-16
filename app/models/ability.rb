@@ -7,6 +7,7 @@ class Ability < Sivel2Sjr::Ability
   ROLANALI  = 5
   ROLSIST   = 6
   ROLANALIPRENSA  = 7
+  ROLOFICIALPF = 8
 
   ROLES = [
     ["Administrador", ROLADMIN],
@@ -15,26 +16,24 @@ class Ability < Sivel2Sjr::Ability
     ["Coordinador oficina", ROLCOOR],
     ["Analista", ROLANALI],
     ["Sistematizador", ROLSIST],
-    ["Analista de Prensa", ROLANALIPRENSA]
+    ["Analista de Prensa", ROLANALIPRENSA],
+    ["Oficial de Proyectos", ROLOFICIALPF]
   ]
 
   ROLES_CA = [
     'Realizar conteos de casos. ' +
     'Admministrar casos de todas las oficinas. ' +
     'Administrar actividades de todas las oficinas. ' +
-    'Administrar artículos de prensa. ' +
     'Administrar usuarios. ' +
     'Administrar documentos en nube. ' +
     'Administrar tablas básicas. ', #ROLADMIN
 
     'Realizar conteos de casos. ' +
-    'Buscar casos y ver casos con etiqueta de compartidos. ' +
-    'Buscar y ver artículos de prensa.' , # ROLINV
+    'Buscar casos y ver casos con etiqueta de compartidos. ', # ROLINV
 
     'Realizar conteos de casos. ' +
     'Admministrar casos de todas las oficinas. ' +
     'Administrar actividades de todas las oficinas. ' +
-    'Administrar artículos de prensa. ' +
     'Administrar usuarios. ' +
     'Administrar documentos en nube. ' +
     'Administrar tablas básicas. ', #ROLDIR
@@ -42,27 +41,26 @@ class Ability < Sivel2Sjr::Ability
     'Realizar conteos de casos. ' +
     'Ver casos de todas las oficinas, crear casos, editar los de su oficina y poner etiquetas de compartir. ' +
     'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
-    'Administrar artículos de prensa. ' +
     'Ver documentos en nube. ', # ROLCOOR
 
     'Realizar conteos de casos. ' +
     'Ver casos de todas las oficinas, crear casos y editar los de su oficina. ' +
     'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
-    'Administrar artículos de prensa. ' +
     'Ver documentos en nube. ', # ROLANALI
 
     'Realizar conteos de casos. ' +
     'Ver casos de todas las oficinas, crear casos y editar sólo sus casos. ' +
     'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
-    'Buscar y ver artículos de prensa' +
     'Ver documentos en nube. ', # ROLSIST
 
     'Realizar conteos de casos. ' +
     'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
-    'Administrar artículos de prensa. ' +
-    'Ver documentos en nube. '#ROLANALIPRENSA
+    'Ver documentos en nube. ', #ROLANALIPRENSA
 
-
+    'Editar casos de todas las oficinas. ' +
+    'Editar actividades de todas las oficinas y editar cualquier proyecto. ' +
+    'Editar cualquier beneficiario. ' +
+    'Ver documentos en nube. ', # ROLOFICIALPF
   ]
 
   BASICAS_PROPIAS =  [
@@ -100,7 +98,6 @@ class Ability < Sivel2Sjr::Ability
   def tablasbasicas
     Msip::Ability::BASICAS_PROPIAS +
       Cor1440Gen::Ability::BASICAS_PROPIAS +
-      Sal7711Gen::Ability::BASICAS_PROPIAS +
       Sivel2Gen::Ability::BASICAS_PROPIAS +
       Sivel2Sjr::Ability::BASICAS_PROPIAS +
       BASICAS_PROPIAS - [
@@ -855,7 +852,6 @@ class Ability < Sivel2Sjr::Ability
     if !usuario || usuario.fechadeshabilitacion
       return
     end
-    can :read, Sal7711Gen::Categoriaprensa
 
     can :descarga_anexo, Msip::Anexo
     can :contar, Msip::Ubicacion
@@ -876,8 +872,6 @@ class Ability < Sivel2Sjr::Ability
     can :nuevo, Sivel2Sjr::Respuesta
 
     if !usuario.nil? && !usuario.rol.nil? then
-      can :read, Sal7711Gen::Articulo
-
       can :read, Msip::Persona
       can :read, Msip::Tdocumento
 
@@ -903,8 +897,6 @@ class Ability < Sivel2Sjr::Ability
 
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
-
-        can :manage, Sal7711Gen::Articulo
 
       when Ability::ROLSIST
 
@@ -946,8 +938,6 @@ class Ability < Sivel2Sjr::Ability
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
-        can :manage, Sal7711Gen::Articulo
-
         can :read, Msip::Oficina
         can [:read, :index], Msip::Orgsocial
         can :manage, Msip::Persona
@@ -975,8 +965,6 @@ class Ability < Sivel2Sjr::Ability
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
 
-        can :manage, Sal7711Gen::Articulo
-
         can :read, Msip::Oficina
         can [:new, :create, :read, :index, :edit, :update], Msip::Orgsocial
         can :manage, Msip::Persona
@@ -987,6 +975,32 @@ class Ability < Sivel2Sjr::Ability
         can [:new, :solicitar], Sivel2Gen::Caso
         can [:update, :create, :destroy, :poneretcomp], 
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
+
+        can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Consgifmm
+
+      when Ability::ROLOFICIALPF
+        can :manage, Cor1440Gen::Actividad
+        can :manage, Cor1440Gen::Actividadpf
+        can :read, Cor1440Gen::Benefactividadpf
+        can :manage, Cor1440Gen::Mindicadorpf
+        can :manage, Cor1440Gen::Proyectofinanciero
+
+        can :manage, Heb412Gen::Doc
+        can :manage, Heb412Gen::Plantilladoc
+        can :manage, Heb412Gen::Plantillahcm
+        can :manage, Heb412Gen::Plantillahcr
+
+        can :manage, Mr519Gen::Formulario
+        can :manage, Mr519Gen::Encuestausuario
+
+        can :manage, Msip::Orgsocial
+        can :manage, Msip::Sectororgsocial
+        can :manage, Msip::Persona
+        can :manage, Msip::Ubicacionpre
+
+        can :manage, Sivel2Gen::Caso
+        can :manage, Sivel2Gen::Acto
 
         can :read, Sivel2Sjr::Consactividadcaso
         can :read, ::Consgifmm
@@ -1010,8 +1024,6 @@ class Ability < Sivel2Sjr::Ability
 
         can :manage, Mr519Gen::Formulario
         can :manage, Mr519Gen::Encuestausuario
-
-        can :manage, Sal7711Gen::Articulo
 
         can :manage, Msip::Orgsocial
         can :manage, Msip::Sectororgsocial
