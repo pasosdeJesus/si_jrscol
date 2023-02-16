@@ -342,11 +342,13 @@ module Sivel2Sjr
         # agregamos el atributo virtual _destroy a migración y aquí
         # lo establecemos porque assgin_atributes no lo estableció
         # Ver https://gitlab.com/pasosdeJesus/si_jrscol/-/issues/799
-        caso_params["migracion_attributes"].each do |l, v|
-          if v["_destroy"].to_i == 1  && 
-              @caso.migracion.select{|c| c.id = l}.count == 1 then
-            c = @caso.migracion.select{|c| c.id = l}[0]
-            c._destroy = 1
+        if caso_params.keys.include?("migracion_attributes")
+          caso_params["migracion_attributes"].each do |l, v|
+            if v["_destroy"].to_i == 1  && 
+                @caso.migracion.select{|c| c.id = l}.count == 1 then
+              c = @caso.migracion.select{|c| c.id = l}[0]
+              c._destroy = 1
+            end
           end
         end
         @casovalido &= @caso.valid?
