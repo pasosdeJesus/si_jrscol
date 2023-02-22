@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: f7ca8afa408a1bdbb2e9ac96646433a6fe4dc52d
+  revision: 0d9f9ca1166622347907d92fcb1b1fba1a6def22
   branch: main
   specs:
     mr519_gen (2.2.0.beta1)
@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 797e041b9c973e02b7bc75c312d11b47ba566a7e
+  revision: 1c1f6684733a8093ee5c20c75c5b8f52fc28cd2d
   branch: main
   specs:
     msip (2.2.0.beta1)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 6d07568e36a51e72be178338cf13efb3ebfe252b
+  revision: 639be30fb037d1fa384c7a14805c62b1594261d6
   branch: main
   specs:
     sivel2_gen (2.2.0.beta1)
@@ -236,8 +236,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-i18n (1.10.3)
-      devise (>= 4.8.0)
+    devise-i18n (1.11.0)
+      devise (>= 4.9.0)
     docile (1.4.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
