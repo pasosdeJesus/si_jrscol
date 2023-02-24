@@ -52,16 +52,7 @@
       </div> <!-- accordion -->
     </div> <!-- form-inputs -->
 
-    <div class="form-actions">
-      <input class='bitacora_cambio' id='caso_bitacora_cambio' name='caso[bitacora_cambio]' type='hidden'>
-      <%= f.button :submit, 'Validar y Guardar', {
-        class: 'btn btn-primary',
-        onclick: 'window.sivel2_detenerEnviarCada60()'
-      } %>
-    <%= link_to t('.cancel', default: t("helpers.links.cancel")),
-      casos_path, class: 'btn' 
-    %>
-    </div> <!-- form-action -->
+    <%= render partial: 'form_actions', locals: {f: f} %>
 
   <% end %> <!-- simple_form_for @caso -->
   </article>

@@ -1,0 +1,14 @@
+<div class="form-actions">
+  <%= f.input :created_at, as: :hidden %>
+  <%= f.input :updated_at, as: :hidden %>
+  <input class='bitacora_cambio' 
+         id='caso_bitacora_cambio' 
+         name='caso[bitacora_cambio]' 
+         type='hidden'>
+  <%= f.button :submit, 'Validar y Guardar', {
+    class: 'btn btn-primary',
+    onclick: 'window.sivel2_detenerEnviarCada60()',
+    'data-turbo' => false } %>
+
+  <%= render partial: 'form_btncancelar' %>
+</div> <!-- form-action -->

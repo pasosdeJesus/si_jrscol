@@ -76,15 +76,9 @@
       </div> <!-- tab-content -->
     </div> <!-- form-inputs -->
 
-    <div class="form-actions">
-      <input class='bitacora_cambio' id='caso_bitacora_cambio' name='caso[bitacora_cambio]' type='hidden'>
-      <%= f.button :submit, 'Validar y Guardar', {
-        class: 'btn btn-primary',
-        onclick: 'window.sivel2_detenerEnviarCada60()',
-        'data-turbo' => false
-      } %>
-    <%= render partial: 'form_btncancelar' %>
-    </div> <!-- form-action -->
+
+    <%= render partial: 'form_actions', locals: {f: f} %>
+
   <% end %> <!-- simple_form_for @caso -->
   </article>
 <% end %> <!-- else -->

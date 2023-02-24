@@ -400,49 +400,53 @@ module Sivel2Sjr
     def update
       # Procesar ubicacionespre de migración
       (caso_params[:migracion_attributes] || []).each do |clave, mp|
-        mi = Sivel2Sjr::Migracion.find(mp[:id].to_i)
-        mi.salidaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
-          mp[:salida_pais_id], mp[:salida_departamento_id],
-          mp[:salida_municipio_id], mp[:salida_clase_id],
-          mp[:salida_lugar], mp[:salida_sitio], mp[:salida_tsitio_id],
-          mp[:salida_latitud], mp[:salida_longitud]
-        )
-        mi.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
-          mp[:llegada_pais_id], mp[:llegada_departamento_id],
-          mp[:llegada_municipio_id], mp[:llegada_clase_id],
-          mp[:llegada_lugar], mp[:llegada_sitio], mp[:llegada_tsitio_id],
-          mp[:llegada_latitud], mp[:llegada_longitud]
-        )
-        mi.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
-          mp[:destino_pais_id], mp[:destino_departamento_id],
-          mp[:destino_municipio_id], mp[:destino_clase_id],
-          mp[:destino_lugar], mp[:destino_sitio], mp[:destino_tsitio_id],
-          mp[:destino_latitud], mp[:destino_longitud]
-        )
-        mi.save!(validate: false)
+        if (Sivel2Sjr::Migracion.where(mp[:id].to_i).count == 1) 
+            mi = Sivel2Sjr::Migracion.find(mp[:id].to_i)
+            mi.salidaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
+              mp[:salida_pais_id], mp[:salida_departamento_id],
+              mp[:salida_municipio_id], mp[:salida_clase_id],
+              mp[:salida_lugar], mp[:salida_sitio], mp[:salida_tsitio_id],
+              mp[:salida_latitud], mp[:salida_longitud]
+            )
+            mi.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
+              mp[:llegada_pais_id], mp[:llegada_departamento_id],
+              mp[:llegada_municipio_id], mp[:llegada_clase_id],
+              mp[:llegada_lugar], mp[:llegada_sitio], mp[:llegada_tsitio_id],
+              mp[:llegada_latitud], mp[:llegada_longitud]
+            )
+            mi.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
+              mp[:destino_pais_id], mp[:destino_departamento_id],
+              mp[:destino_municipio_id], mp[:destino_clase_id],
+              mp[:destino_lugar], mp[:destino_sitio], mp[:destino_tsitio_id],
+              mp[:destino_latitud], mp[:destino_longitud]
+            )
+            mi.save!(validate: false)
+        end
       end
 
       (caso_params[:desplazamiento_attributes] || []).each do |clave, dp|
-        de = Sivel2Sjr::Desplazamiento.find(dp[:id].to_i)
-        de.expulsionubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
-          dp[:expulsion_pais_id], dp[:expulsion_departamento_id],
-          dp[:expulsion_municipio_id], dp[:expulsion_clase_id],
-          dp[:expulsion_lugar], dp[:expulsion_sitio], dp[:expulsion_tsitio_id],
-          dp[:expulsion_latitud], dp[:expulsion_longitud]
-        )
-        de.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
-          dp[:llegada_pais_id], dp[:llegada_departamento_id],
-          dp[:llegada_municipio_id], dp[:llegada_clase_id],
-          dp[:llegada_lugar], dp[:llegada_sitio], dp[:llegada_tsitio_id],
-          dp[:llegada_latitud], dp[:llegada_longitud]
-        )
-        de.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
-          dp[:destino_pais_id], dp[:destino_departamento_id],
-          dp[:destino_municipio_id], dp[:destino_clase_id],
-          dp[:destino_lugar], dp[:destino_sitio], dp[:destino_tsitio_id],
-          dp[:destino_latitud], dp[:destino_longitud]
-        )
-        de.save!(validate: false)
+        if (Sivel2Sjr::Migracion.where(mp[:id].to_i).count == 1) 
+          de = Sivel2Sjr::Desplazamiento.find(dp[:id].to_i)
+          de.expulsionubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
+            dp[:expulsion_pais_id], dp[:expulsion_departamento_id],
+            dp[:expulsion_municipio_id], dp[:expulsion_clase_id],
+            dp[:expulsion_lugar], dp[:expulsion_sitio], dp[:expulsion_tsitio_id],
+            dp[:expulsion_latitud], dp[:expulsion_longitud]
+          )
+          de.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
+            dp[:llegada_pais_id], dp[:llegada_departamento_id],
+            dp[:llegada_municipio_id], dp[:llegada_clase_id],
+            dp[:llegada_lugar], dp[:llegada_sitio], dp[:llegada_tsitio_id],
+            dp[:llegada_latitud], dp[:llegada_longitud]
+          )
+          de.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
+            dp[:destino_pais_id], dp[:destino_departamento_id],
+            dp[:destino_municipio_id], dp[:destino_clase_id],
+            dp[:destino_lugar], dp[:destino_sitio], dp[:destino_tsitio_id],
+            dp[:destino_latitud], dp[:destino_longitud]
+          )
+          de.save!(validate: false)
+        end
       end
 
       if !@caso.casosjr.asesor.nil? && @caso.casosjr.asesor != params[:caso][:casosjr_attributes][:asesor].to_i

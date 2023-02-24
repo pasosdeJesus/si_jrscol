@@ -51,9 +51,22 @@ export default class extends Controller {
     let parametrosActividad = JSON.parse(
       e.target.getAttribute('data-parametros')
     )
-    let urlActividad = this.armarUrlActividad1(parametrosActividad)
-    window.MsipGuardarFormularioYRepintar(
-      ['errores'], this.crearActividad, {urlActividad: urlActividad}) 
+    let urlActividad = this.armarUrlActividad1(parametrosActividad);
+    // Si las fechas de creación y actualización son la misma debe ser
+    // un caso nuevo que requiere validarse y guardarse así no tenga ediciones
+    let created_at = document.querySelector('input#caso_created_at').value;
+    let updated_at = document.querySelector('input#caso_updated_at').value;
+    let c = new Date(created_at);
+    let u = new Date(updated_at);
+    let diffechas = Math.abs(c-u);
+    let cambios = MsipCalcularCambiosParaBitacora()
+    delete cambios['nsegresp_proyectofinanciero_id']
+    if ( Object.keys(cambios).length > 0 || diffechas < 1000) {
+      window.MsipGuardarFormularioYRepintar(
+        ['errores'], this.crearActividad, {urlActividad: urlActividad}) 
+    } else {
+      this.crearActividad({urlActividad: urlActividad}) 
+    }
   }
 
 
