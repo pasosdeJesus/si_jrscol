@@ -46,22 +46,33 @@ export default class extends Controller {
     return urlActividad
   }
 
+  requiereGuardar() {
+    // Si las fechas de creación y actualización son la misma debe ser
+    // un caso nuevo que requiere validarse y guardarse así no tenga ediciones
+    let created_at = document.querySelector('input#caso_created_at').value
+    let updated_at = document.querySelector('input#caso_updated_at').value
+    let c = new Date(created_at)
+    let u = new Date(updated_at)
+    let diffechas = Math.abs(c-u)
+    // Si el caso inicialmente no es válido debe validarse y guardarse
+    let inicialmente_valido = document.querySelector(
+      'input#caso_bitacora_inicialmente_valido').value
+    // Si tiene cambios (excepto en controles para crear actividad)
+    // debe validarse y guardarse
+    let cambios = MsipCalcularCambiosParaBitacora()
+    delete cambios['nsegresp_proyectofinanciero_id']
+
+    return ( Object.keys(cambios).length > 0 || diffechas < 1000 ||
+      inicialmente_valido != 'true');
+  }
 
   todos(e) {
     let parametrosActividad = JSON.parse(
       e.target.getAttribute('data-parametros')
     )
     let urlActividad = this.armarUrlActividad1(parametrosActividad);
-    // Si las fechas de creación y actualización son la misma debe ser
-    // un caso nuevo que requiere validarse y guardarse así no tenga ediciones
-    let created_at = document.querySelector('input#caso_created_at').value;
-    let updated_at = document.querySelector('input#caso_updated_at').value;
-    let c = new Date(created_at);
-    let u = new Date(updated_at);
-    let diffechas = Math.abs(c-u);
-    let cambios = MsipCalcularCambiosParaBitacora()
-    delete cambios['nsegresp_proyectofinanciero_id']
-    if ( Object.keys(cambios).length > 0 || diffechas < 1000) {
+  
+    if (this.requiereGuardar()) {
       window.MsipGuardarFormularioYRepintar(
         ['errores'], this.crearActividad, {urlActividad: urlActividad}) 
     } else {
@@ -78,9 +89,13 @@ export default class extends Controller {
 
 
   modalAlgunos(e) {
-    window.MsipGuardarFormularioYRepintar(
-      ['errores', 'modal-respuesta-algunos'], 
-      this.abrirModal, {})
+    if (this.requiereGuardar()) {
+      window.MsipGuardarFormularioYRepintar(
+        ['errores', 'modal-respuesta-algunos'], 
+        this.abrirModal, {})
+    } else {
+      this.abrirModal({}) 
+    }
   }
 
 
