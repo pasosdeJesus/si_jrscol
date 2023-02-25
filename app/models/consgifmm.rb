@@ -204,6 +204,96 @@ class Consgifmm < ActiveRecord::Base
   ## CUENTAS BENEFICIARIOS
   #########################
 
+  def beneficiarias_mujeres_0_5_ids
+    beneficiarios_condicion_sexo_edad_ids('F', 0, 5)
+  end
+
+  def beneficiarias_mujeres_6_12_ids
+    beneficiarios_condicion_sexo_edad_ids('F', 6, 12)
+  end
+
+  def beneficiarias_mujeres_13_17_ids
+    beneficiarios_condicion_sexo_edad_ids('F', 13, 17)
+  end
+
+  def beneficiarias_mujeres_18_25_ids
+    beneficiarios_condicion_sexo_edad_ids('F', 18, 25)
+  end
+
+  def beneficiarias_mujeres_26_59_ids
+    beneficiarios_condicion_sexo_edad_ids('F', 26, 59)
+  end
+
+  def beneficiarias_mujeres_60_o_mas_ids
+    beneficiarios_condicion_sexo_edad_ids('F', 60, nil)
+  end
+
+  def beneficiarias_mujeres_sinedad_ids
+    return beneficiarios_condicion_ids {|p|
+      p.sexo == 'F' && !p.anionac
+    }
+  end
+
+  def beneficiarios_hombres_0_5_ids
+    beneficiarios_condicion_sexo_edad_ids('M', 0, 5)
+  end
+
+  def beneficiarios_hombres_6_12_ids
+    beneficiarios_condicion_sexo_edad_ids('M', 6, 12)
+  end
+
+  def beneficiarios_hombres_13_17_ids
+    beneficiarios_condicion_sexo_edad_ids('M', 13, 17)
+  end
+
+  def beneficiarios_hombres_18_25_ids
+    beneficiarios_condicion_sexo_edad_ids('M', 18, 25)
+  end
+
+  def beneficiarios_hombres_26_59_ids
+    beneficiarios_condicion_sexo_edad_ids('M', 26, 59)
+  end
+
+  def beneficiarios_hombres_60_o_mas_ids
+    beneficiarios_condicion_sexo_edad_ids('M', 60, nil)
+  end
+
+  def beneficiarios_hombres_sinedad_ids
+    return beneficiarios_condicion_ids {|p|
+      p.sexo == 'M' && !p.anionac
+    }
+  end
+
+  def beneficiarios_sinsexo_0_5_ids
+    beneficiarios_condicion_sexo_edad_ids('S', 0, 5)
+  end
+
+  def beneficiarios_sinsexo_6_12_ids
+    beneficiarios_condicion_sexo_edad_ids('S', 6, 12)
+  end
+
+  def beneficiarios_sinsexo_13_17_ids
+    beneficiarios_condicion_sexo_edad_ids('S', 13, 17)
+  end
+
+  def beneficiarios_sinsexo_18_25_ids
+    beneficiarios_condicion_sexo_edad_ids('S', 18, 25)
+  end
+
+  def beneficiarios_sinsexo_26_59_ids
+    beneficiarios_condicion_sexo_edad_ids('S', 26, 59)
+  end
+
+  def beneficiarios_sinsexo_60_o_mas_ids
+    beneficiarios_condicion_sexo_edad_ids('S', 60, nil)
+  end
+
+  def beneficiarios_sinsexo_sinedad_ids
+    return beneficiarios_condicion_ids {|p|
+      p.sexo == 'S' && !p.anionac
+    }
+  end
+
   def beneficiarios_afrodescendientes_ids
     finmes = actividad.fecha.end_of_month
     return beneficiarios_condicion_ids {|p|
