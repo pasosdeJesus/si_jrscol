@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 57821f408f136b42544c0202e17241b02063c051
+  revision: dd68c16267c2c84c1635711747c5c20240105a98
   branch: main
   specs:
     msip (2.2.0.beta1)
@@ -221,7 +221,7 @@ GEM
     coffee-script-source (1.12.2)
     color (1.8)
     colorize (0.8.1)
-    concurrent-ruby (1.2.0)
+    concurrent-ruby (1.2.2)
     crass (1.0.6)
     cuprite (0.14.3)
       capybara (~> 3.0)
@@ -358,7 +358,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0)
       zeitwerk (~> 2.5)
-    raindrops (0.20.0)
+    raindrops (0.20.1)
     rake (13.0.6)
     redcarpet (3.6.0)
     regexp_parser (2.7.0)
