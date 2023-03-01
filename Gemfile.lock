@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: dd68c16267c2c84c1635711747c5c20240105a98
+  revision: 418dc6b97035451467d1f75e9d80935bda53f870
   branch: main
   specs:
     msip (2.2.0.beta1)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 6e679f1eb5e85b3e1ee16bb17cec0525be3e48b7
+  revision: da7d2985f6cf6f77d6124d4cc073aa0c4c3bee27
   branch: main
   specs:
     sivel2_gen (2.2.0.beta1)
@@ -304,7 +304,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-    pg (1.4.5)
+    pg (1.4.6)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
@@ -314,7 +314,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (5.0.1)
-    puma (6.1.0)
+    puma (6.1.1)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.2)
