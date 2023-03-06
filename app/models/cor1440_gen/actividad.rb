@@ -92,6 +92,8 @@ module Cor1440Gen
       end 
     end
 
+    # Validación de perfile poblacional en asistente
+
     # FILTROS
    
     scope :filtro_oficina, lambda { |ids|

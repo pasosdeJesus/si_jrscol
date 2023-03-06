@@ -1,5 +1,7 @@
 
 es:
+  perfilorgsocial: Perfil poblacional
+  Persona: Persona
   attributes:
     fechacreacion: Creación
     fechadeshabilitacion: Deshabilitación 
@@ -81,6 +83,7 @@ es:
         nombre: 'Nombre (*)'
         fecha_localizada: 'Fecha (*)'
         lugar: Lugar
+        perfilorgsocial: Perfil poblacional
         poblacion_mujeres_r: Población Mujeres
         poblacion_hombres_r: Población Hombres
         poblacion_sinsexo: Población sin especificar sexo
@@ -96,6 +99,9 @@ es:
       "cor1440_gen/actividadtipo":
         Actividadtipo: Tipo de actividad del marco lógico
         Actividadtipos: Tipos de actividad del marco lógico
+      "cor1440_gen/asistencia":
+        perfilorgsocial: Perfil poblacional
+        perfilorgsocial_id: Perfil poblacional
       "cor1440_gen/benefactividadpf":
         Benefactividadpf: Beneficiarios por actividad de marco lógico
         "actividad_actividadesml": Actividades de marco lógico
