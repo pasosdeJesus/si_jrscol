@@ -113,7 +113,7 @@
           %>
         <% end %>
 
-        <% if can? :manage, ::Usuario %>
+        <% if can? :new, ::Usuario %>
           <%= opcion_menu "Usuarios", main_app.usuarios_path, desplegable: true %>
         <% end %>
         <% if can? :manage, Mr519Gen::Formulario %>

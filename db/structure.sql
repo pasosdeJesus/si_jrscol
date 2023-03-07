@@ -324,7 +324,15 @@ CREATE FUNCTION public.msip_persona_buscable_trigger() RETURNS trigger
 
 CREATE FUNCTION public.municipioubicacion(integer) RETURNS character varying
     LANGUAGE sql
-    AS $_$ SELECT (SELECT nombre FROM public.msip_pais WHERE id=ubicacion.pais_id LIMIT 1) || COALESCE((SELECT '/' || nombre FROM public.msip_departamento WHERE msip_departamento.id = ubicacion.departamento_id),'') || COALESCE((SELECT '/' || nombre FROM public.msip_municipio WHERE msip_municipio.id = ubicacion.municipio_id),'') FROM public.msip_ubicacionpre AS ubicacion WHERE ubicacion.id=$1; $_$;
+    AS $_$
+        SELECT (SELECT nombre FROM public.msip_pais WHERE id=ubicacion.pais_id) 
+            || COALESCE((SELECT '/' || nombre FROM public.msip_departamento 
+            WHERE msip_departamento.id = ubicacion.departamento_id),'') 
+            || COALESCE((SELECT '/' || nombre FROM public.msip_municipio 
+            WHERE msip_municipio.id = ubicacion.municipio_id),'') 
+            FROM public.msip_ubicacionpre AS ubicacion 
+            WHERE ubicacion.id=$1;
+      $_$;
 
 
 --
@@ -1008,6 +1016,8 @@ CREATE TABLE public.msip_clase (
     svgcdy integer,
     svgcdancho integer,
     svgcdalto integer,
+    svgrotx double precision,
+    svgroty double precision,
     CONSTRAINT clase_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -1050,6 +1060,8 @@ CREATE TABLE public.msip_departamento (
     svgcdy integer,
     svgcdancho integer,
     svgcdalto integer,
+    svgrotx double precision,
+    svgroty double precision,
     CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -1091,6 +1103,8 @@ CREATE TABLE public.msip_municipio (
     svgcdy integer,
     svgcdancho integer,
     svgcdalto integer,
+    svgrotx double precision,
+    svgroty double precision,
     CONSTRAINT municipio_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -1246,7 +1260,9 @@ CREATE TABLE public.msip_pais (
     svgcdx integer,
     svgcdy integer,
     svgcdancho integer,
-    svgcdalto integer
+    svgcdalto integer,
+    svgrotx double precision,
+    svgroty double precision
 );
 
 
@@ -3400,7 +3416,7 @@ CREATE VIEW public.cvp1 AS
    FROM public.sivel2_sjr_casosjr casosjr,
     public.sivel2_sjr_respuesta respuesta,
     public.sivel2_sjr_derecho_respuesta derecho_respuesta
-  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id) AND (casosjr.oficina_id = 5));
+  WHERE ((respuesta.id_caso = casosjr.id_caso) AND (derecho_respuesta.id_respuesta = respuesta.id));
 
 
 --
@@ -7158,7 +7174,11 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.id_persona = contacto.id) AND (vcontacto.id_caso = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.id_etnia = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (true = false)
+  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
+           FROM public.sivel2_gen_conscaso
+          WHERE (sivel2_gen_conscaso.caso_id = 142)
+          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
+  ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
 
 
@@ -16918,6 +16938,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230131094311'),
 ('20230207195955'),
 ('20230213001339'),
-('20230225022307');
+('20230225022307'),
+('20230301145222'),
+('20230301212546');
 
 

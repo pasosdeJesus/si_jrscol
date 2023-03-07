@@ -8,6 +8,7 @@ class Ability < Sivel2Sjr::Ability
   ROLSIST   = 6
   ROLANALIPRENSA  = 7
   ROLOFICIALPF = 8
+  ROLGESTIONHUMANA = 9
 
   ROLES = [
     ["Administrador", ROLADMIN],
@@ -17,7 +18,8 @@ class Ability < Sivel2Sjr::Ability
     ["Analista", ROLANALI],
     ["Sistematizador", ROLSIST],
     ["Analista de Prensa", ROLANALIPRENSA],
-    ["Oficial de Proyectos", ROLOFICIALPF]
+    ["Oficial de Proyectos", ROLOFICIALPF],
+    ["Gestión Humana", ROLGESTIONHUMANA]
   ]
 
   ROLES_CA = [
@@ -61,6 +63,10 @@ class Ability < Sivel2Sjr::Ability
     'Editar actividades de todas las oficinas y editar cualquier proyecto. ' +
     'Editar cualquier beneficiario. ' +
     'Ver documentos en nube. ', # ROLOFICIALPF
+    'Administrar usuarios. ' +
+    'Ver todas las actividades y proyectos. ' +
+    'Ver beneficiarios. ' +
+    'Ver documentos en nube. ', # ROLGESTIONHUMANA
   ]
 
   BASICAS_PROPIAS =  [
@@ -857,6 +863,8 @@ class Ability < Sivel2Sjr::Ability
     can :contar, Msip::Ubicacion
     can :nuevo, Msip::Ubicacion
 
+    can :contar, Cor1440Gen::Actividad
+    can :contar_beneficiarios, Cor1440Gen::Actividad
     can :contar, Sivel2Gen::Caso
     can :buscar, Sivel2Gen::Caso
     can :busca, Sivel2Gen::Caso
@@ -1005,6 +1013,35 @@ class Ability < Sivel2Sjr::Ability
         can :read, Sivel2Sjr::Consactividadcaso
         can :read, ::Consgifmm
 
+      when Ability::ROLGESTIONHUMANA
+        can :read, Cor1440Gen::Actividad
+        can :read, Cor1440Gen::Actividadpf
+        can :read, Cor1440Gen::Benefactividadpf
+        can :read, Cor1440Gen::Mindicadorpf
+        can :read, Cor1440Gen::Proyectofinanciero
+
+        can :read, Heb412Gen::Doc
+        can :read, Heb412Gen::Plantilladoc
+        can :read, Heb412Gen::Plantillahcm
+        can :read, Heb412Gen::Plantillahcr
+
+        can :read, Mr519Gen::Formulario
+        can :read, Mr519Gen::Encuestausuario
+
+        can :read, Msip::Orgsocial
+        can :read, Msip::Sectororgsocial
+        can :read, Msip::Persona
+        can :read, Msip::Ubicacionpre
+
+        can :read, Sivel2Gen::Caso
+        can :read, Sivel2Gen::Acto
+
+        can :read, Sivel2Sjr::Consactividadcaso
+        can :read, ::Consgifmm
+
+        can [:create, :read, :write, :update], Usuario
+        cannot :crearadmin, Usuario
+
       when Ability::ROLADMIN, Ability::ROLDIR
         can :manage, Cor1440Gen::Actividad
         can :manage, Cor1440Gen::Actividadpf
@@ -1037,6 +1074,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, ::Consgifmm
 
         can :manage, Usuario
+
         can :manage, :tablasbasicas
         tablasbasicas.each do |t|
           c = Ability.tb_clase(t)

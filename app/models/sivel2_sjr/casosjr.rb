@@ -57,7 +57,8 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
         current_usuario.rol != Ability::ROLSIST &&
         current_usuario.rol != Ability::ROLCOOR &&
         current_usuario.rol != Ability::ROLANALI &&
-        current_usuario.rol != Ability::ROLOFICIALPF) 
+        current_usuario.rol != Ability::ROLOFICIALPF &&
+        current_usuario.rol != Ability::ROLGESTIONHUMANA) 
       errors.add(:id, "Rol de usuario no apropiado para editar")
     end
     if (defined?(current_usuario) &&
