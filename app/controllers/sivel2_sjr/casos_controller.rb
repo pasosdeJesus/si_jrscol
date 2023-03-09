@@ -400,7 +400,7 @@ module Sivel2Sjr
     def update
       # Procesar ubicacionespre de migración
       (caso_params[:migracion_attributes] || []).each do |clave, mp|
-        if (Sivel2Sjr::Migracion.where(mp[:id].to_i).count == 1) 
+        if (Sivel2Sjr::Migracion.where(id: mp[:id].to_i).count == 1) 
             mi = Sivel2Sjr::Migracion.find(mp[:id].to_i)
             mi.salidaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
               mp[:salida_pais_id], mp[:salida_departamento_id],
