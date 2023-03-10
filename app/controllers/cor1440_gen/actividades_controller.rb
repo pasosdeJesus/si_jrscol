@@ -251,6 +251,12 @@ module Cor1440Gen
       true
     end
 
+
+    def nueva_asistencia_completa_asistencia
+      @asistencia.perfilorgsocial_id=10; 
+    end
+
+
     # GET /actividades/1/edit
     def edit
       edit_cor1440_gen

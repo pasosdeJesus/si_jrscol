@@ -92,7 +92,28 @@ module Cor1440Gen
       end 
     end
 
-    # Validación de perfile poblacional en asistente
+    # Validación de perfil poblacional en asistente
+    # no siempre detecta problema
+    validate :valida_asistentes_con_perfil
+    def valida_asistentes_con_perfil
+      docerr = []
+      if controlador && controlador.params && controlador.params[:actividad] &&
+          controlador.params[:actividad][:asistencia_attributes]
+        controlador.params[:actividad][:asistencia_attributes].each do |l, v|
+          if v[:perfilorgsocial_id].to_i == 0 && v['_destroy'] == 'false'
+            docerr <<  v[:persona_attributes][:numerodocumento]
+          end
+        end
+      end
+      if docerr.count > 0
+        errors.add(
+          :actividad_asistencia_attributes, 
+          "Falta perfil poblacional en asistente(s) con identificacion(es) " +
+          docerr.join(", ") + "."
+        )
+      end
+    end
+ 
 
     # FILTROS
    
