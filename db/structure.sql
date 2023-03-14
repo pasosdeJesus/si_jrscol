@@ -5066,10 +5066,10 @@ CREATE TABLE public.msip_grupo (
 
 
 --
--- Name: msip_grupo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: mgrupo_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.msip_grupo_id_seq
+CREATE SEQUENCE public.mgrupo_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -5078,10 +5078,10 @@ CREATE SEQUENCE public.msip_grupo_id_seq
 
 
 --
--- Name: msip_grupo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: mgrupo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.msip_grupo_id_seq OWNED BY public.msip_grupo.id;
+ALTER SEQUENCE public.mgrupo_id_seq OWNED BY public.msip_grupo.id;
 
 
 --
@@ -9636,7 +9636,7 @@ ALTER TABLE ONLY public.msip_etiqueta_persona ALTER COLUMN id SET DEFAULT nextva
 -- Name: msip_grupo id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.msip_grupo ALTER COLUMN id SET DEFAULT nextval('public.msip_grupo_id_seq'::regclass);
+ALTER TABLE ONLY public.msip_grupo ALTER COLUMN id SET DEFAULT nextval('public.mgrupo_id_seq'::regclass);
 
 
 --

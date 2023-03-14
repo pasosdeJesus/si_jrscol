@@ -266,7 +266,7 @@ module Cor1440Gen
 
 
     # Responde a DELETE
-    def destroy_si_jrscol
+    def destroy
       Detallefinanciero.where(actividad_id: @registro.id).
         where(proyectofinanciero_id: nil).delete_all
       ['Cor1440Gen::ActividadareasActividad',
@@ -302,11 +302,6 @@ module Cor1440Gen
 
       destroy_gen
     end
-
-    def destroy
-      destroy_si_jrscol
-    end
-
 
     def filtra_contar_control_acceso
       @contar_pfid = 10  # Plan Estrategico 1

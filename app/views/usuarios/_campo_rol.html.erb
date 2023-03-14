@@ -1,0 +1,10 @@
+<% excluidos = [0] %>
+<% if !can?(:crearadmin, Usuario) %>
+  <% excluidos += [Ability::ROLADMIN, Ability::ROLDIR] %>
+<% end %>
+<% coleccion = Ability::ROLES.select { |v| !excluidos.include?(v.last) } %>
+
+<%= f.input :rol,
+  collection: coleccion,
+  label: t("Rol"),
+  include_blank: false %>

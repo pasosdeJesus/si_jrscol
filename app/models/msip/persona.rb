@@ -104,7 +104,6 @@ module Msip
 
 
     after_create :arreglar_sindocumento
-
     def arreglar_sindocumento
       if self.tdocumento_id == 11
         self.numerodocumento = Msip::PersonasController.
