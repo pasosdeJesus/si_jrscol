@@ -28,3 +28,7 @@
   justify-content: space-around;
   align-items: center;
 }
+
+footer {
+  font-size: 0.8rem;
+}
