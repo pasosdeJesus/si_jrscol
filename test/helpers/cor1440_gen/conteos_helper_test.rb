@@ -73,7 +73,9 @@ module Cor1440Gen
       asistencia = Asistencia.create(
         actividad_id: actividad.id,
         persona_id: persona.id,
+        perfilorgsocial_id: 1
       )
+      debugger
       assert_predicate asistencia, :valid?
       assert_equal([2], asistencia.actividad.rangoedadac_ids) # 6 a 12
 
