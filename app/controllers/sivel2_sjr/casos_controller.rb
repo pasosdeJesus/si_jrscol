@@ -425,7 +425,7 @@ module Sivel2Sjr
       end
 
       (caso_params[:desplazamiento_attributes] || []).each do |clave, dp|
-        if (Sivel2Sjr::Migracion.where(mp[:id].to_i).count == 1) 
+        if (Sivel2Sjr::Migracion.where(id: dp[:id].to_i).count == 1) 
           de = Sivel2Sjr::Desplazamiento.find(dp[:id].to_i)
           de.expulsionubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
             dp[:expulsion_pais_id], dp[:expulsion_departamento_id],
