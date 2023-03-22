@@ -40,6 +40,22 @@ INSERT INTO public.msip_oficina (id, nombre, fechacreacion, fechadeshabilitacion
 INSERT INTO public.msip_oficina (id, nombre, fechacreacion, fechadeshabilitacion, created_at, updated_at, observaciones, pais_id, departamento_id, municipio_id, clase_id) VALUES (2, 'VALLE', '2013-05-13', NULL, NULL, '2019-11-27 23:00:00.649667', '', 170, 47, 86, 11771);
 
 
+
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (13, 'COMUNIDAD DE ACOGIDA', 'Usado en reporte GIFMM', '2020-09-10', NULL, '2020-09-10 00:00:00', '2020-09-10 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (1, 'SIN INFORMACIÓN', NULL, '2009-09-11', '2022-11-22', '2018-07-24 00:00:00', '2018-07-24 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (2, 'FUNCIONARIO/A O CONTRATISTA DE LA ORGANIZACIÓN', NULL, '2009-09-11', '2022-11-22', '2018-07-24 00:00:00', '2018-07-24 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (3, 'DIRECTIVO/A DE LA ORGANIZACIÓN', NULL, '2009-09-11', '2022-11-22', '2018-07-24 00:00:00', '2018-07-24 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (4, 'FAMILIAR DE DEFENSOR/A O DE LÍDER SOCIAL', NULL, '2009-09-11', '2022-11-22', '2018-07-24 00:00:00', '2018-07-24 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (5, 'MIEMBRO DE LA ORGANIZACIÓN', NULL, '2009-09-11', '2022-11-22', '2018-07-24 00:00:00', '2018-07-24 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (10, 'MIGRANTE CON VOCACIÓN DE PERMANENCIA', 'Corresponde a un perfil de migración y es usado en reporte GIFMM', '2020-09-10', NULL, '2020-09-10 00:00:00', '2020-09-10 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (11, 'MIGRANTE EN TRÁNSITO', 'Corresponde a un perfil de migración y es usado en reporte GIFMM', '2020-09-10', NULL, '2020-09-10 00:00:00', '2020-09-10 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (12, 'MIGRANTE PENDULAR', 'Corresponde a un perfil de migración y es usado en reporte GIFMM', '2020-09-10', NULL, '2020-09-10 00:00:00', '2020-09-10 00:00:00');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (14, 'VÍCTIMA', NULL, '2022-11-22', NULL, '2022-11-25 12:20:10.570493', '2022-11-25 12:20:10.570493');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (15, 'VÍCTIMA DE DOBLE AFECTACIÓN', NULL, '2022-11-22', NULL, '2022-11-25 12:20:10.570493', '2022-11-25 12:20:10.570493');
+INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (16, 'COLOMBIANO RETORNADO', NULL, '2022-11-22', NULL, '2022-11-25 12:20:10.570493', '2022-11-25 12:20:10.570493');
+
+
+
 INSERT INTO public.sivel2_sjr_regimensalud (id, nombre, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (0, 'SIN INFORMACIÓN', '2013-05-16', NULL, NULL, NULL);
 INSERT INTO public.sivel2_sjr_regimensalud (id, nombre, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (1, 'SUBSIDIADO', '2013-05-16', NULL, NULL, NULL);
 INSERT INTO public.sivel2_sjr_regimensalud (id, nombre, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (2, 'CONTRIBUTIVO', '2013-05-16', NULL, NULL, NULL);
