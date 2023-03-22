@@ -187,6 +187,9 @@ class ConsgifmmController < Heb412Gen::ModelosController
         'Comunidad de acogidas',
         'Pendulares',
         'Colombianos/as retornados/as',
+        'Víctimas',
+        'Víctimas doble afectación',
+        'Sin Perfil Poblacional',
         '0 a 5',
         '6 a 12',
         '13 a 17',
@@ -218,10 +221,10 @@ class ConsgifmmController < Heb412Gen::ModelosController
 
       hoja.merge_cells("A1:#{colfin}1")
 
-      l2 = ([''] * 30) + ['Mujeres'] + ([''] * 5) + ['Hombres'] + ([''] * 5)
+      l2 = ([''] * 33) + ['Mujeres'] + ([''] * 5) + ['Hombres'] + ([''] * 5)
       hoja.add_row l2, style: [estilo_encabezado] * numfilas
-      hoja.merge_cells("AE6:AJ6")
-      hoja.merge_cells("AK6:AP6")
+      hoja.merge_cells("AH6:AM6")
+      hoja.merge_cells("AN6:AS6")
 
       hoja.add_row l, style: [estilo_encabezado] * numfilas
       
@@ -257,6 +260,9 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.beneficiarios_comunidades_de_acogida_ids.split(",").count,
           reg.beneficiarios_pendulares_ids.split(",").count,
           reg.beneficiarios_colombianos_retornados_ids.split(",").count,
+          reg.beneficiarios_victimas_ids.split(",").count,
+          reg.beneficiarios_victimasdobleafectacion_ids.split(",").count,
+          reg.beneficiarios_sinperfilpoblacional_ids.split(",").count,
           reg.beneficiarias_mujeres_0_5_ids.split(",").count,
           reg.beneficiarias_mujeres_6_12_ids.split(",").count,
           reg.beneficiarias_mujeres_13_17_ids.split(",").count,

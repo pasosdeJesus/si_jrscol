@@ -86,23 +86,6 @@ module Msip
       joins(:etiqueta_persona).where("msip_etiqueta_persona.etiqueta_id" => e)
     }
 
-    scope :filtro_nombres, lambda { |n|
-      if n.match("^ *\"(.*)\" *$")
-        where("unaccent(nombres) ILIKE unaccent(?)", $1)
-      else
-        where("unaccent(nombres) ILIKE '%' || unaccent(?) || '%'", n)
-      end
-    }
-
-    scope :filtro_apellidos, lambda { |a|
-      if a.match("^ *\"(.*)\" *$")
-        where("unaccent(apellidos) ILIKE unaccent(?)", $1)
-      else
-        where("unaccent(apellidos) ILIKE '%' || unaccent(?) || '%'", a)
-      end
-    }
-
-
     after_create :arreglar_sindocumento
     def arreglar_sindocumento
       if self.tdocumento_id == 11

@@ -600,6 +600,25 @@ class Consgifmm < ActiveRecord::Base
     }
   end
 
+  def beneficiarios_nuevos_sinperfilpoblacional_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id.nil?
+    }
+  end
+
+
+  def beneficiarios_nuevos_victimas_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 14
+    }
+  end
+
+  def beneficiarios_nuevos_victimasdobleafectacion_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 15
+    }
+  end
+
   def beneficiarios_nuevos_vocacion_permanencia_ids
     return beneficiarios_nuevos_condicion_ids {|p|
       p.ultimoperfilorgsocial_id == 10
@@ -623,6 +642,12 @@ class Consgifmm < ActiveRecord::Base
     }
   end
 
+  def beneficiarios_sinperfilpoblacional_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id.nil?
+    }
+  end
+
   def beneficiarios_sinsexo_adultos_ids
     beneficiarios_condicion_sexo_edad_ids('S', 60, nil)
   end
@@ -630,6 +655,19 @@ class Consgifmm < ActiveRecord::Base
   def beneficiarios_sinsexo_menores_y_se_ids
     beneficiarios_condicion_sexo_edad_ids('S', nil, 17, false)
   end
+
+  def beneficiarios_victimas_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 14
+    }
+  end
+
+  def beneficiarios_victimasdobleafectacion_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 15
+    }
+  end
+
 
   def beneficiarios_vocacion_permanencia_ids
     return beneficiarios_condicion_ids {|p|
