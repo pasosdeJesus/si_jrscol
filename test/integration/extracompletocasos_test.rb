@@ -46,7 +46,11 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
     get sivel2_gen.casos_path
     assert_response :success
     caso = Sivel2Gen::Caso.create! PRUEBA_CASO1
-    persona = Msip::Persona.create! PRUEBA_PERSONA.merge(numerodocumento: 4)
+    numdoc=1
+    while Msip::Persona.where(numerodocumento: numdoc).count > 0 do
+      numdoc +=1
+    end
+    persona = Msip::Persona.create! PRUEBA_PERSONA.merge(numerodocumento: numdoc)
     Sivel2Gen::Victima.create!(
       id_caso: caso.id, id_persona: persona.id)
     casosjr = Sivel2Sjr::Casosjr.create PRUEBA_CASOSJR
