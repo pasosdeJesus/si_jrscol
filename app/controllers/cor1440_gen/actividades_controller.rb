@@ -465,7 +465,7 @@ module Cor1440Gen
           asistencia = Cor1440Gen::Asistencia.create(
             actividad_id: act.id,
             persona_id: v.victima.id_persona,
-            perfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id
+            perfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id || 10
           )
           if !asistencia.save
             resp_error 'No pudo crear asistencia' 
