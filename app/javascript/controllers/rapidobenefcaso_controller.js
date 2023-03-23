@@ -62,11 +62,24 @@ export default class extends Controller {
         "el número de caso de manera automática")
       return;
     }
-    window.MsipGuardarFormularioYRepintar(
-      ['errores'], this.actualizaListado, 
-      {actividad_id: actividad_id, caso_id: caso_id},
-      this.manejaError, e
-    )
+
+    let created_at = document.querySelector('input#actividad_created_at').value;
+    let updated_at = document.querySelector('input#actividad_updated_at').value;
+    let c = new Date(created_at);
+    let u = new Date(updated_at);
+    let diffechas = Math.abs(c-u);
+    let cambios = MsipCalcularCambiosParaBitacora()
+    delete cambios['actividad[rapidobenefcaso_id]']
+    if ( Object.keys(cambios).length > 0 || diffechas < 1000) {
+      window.MsipGuardarFormularioYRepintar(
+        ['errores'], this.actualizaListado, 
+        {actividad_id: actividad_id, caso_id: caso_id},
+        this.manejaError, e
+      )
+    } else {
+      this.actualizaListado({actividad_id: actividad_id, caso_id: caso_id})
+    }
+
   }
 
 }

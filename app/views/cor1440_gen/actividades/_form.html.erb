@@ -128,6 +128,16 @@
 
   <%= render partial: 'campo_anexos', locals: {f: f} %>
   <div class="form-actions">
+    <%= f.input :created_at, as: :hidden %>
+    <%= f.input :updated_at, as: :hidden %>
+    <input id='caso_bitacora_inicialmente_valido'
+           name='caso[bitacora_inicialmente_valido]'
+           value='<%= f.object.valid? %>'
+           type='hidden'>
+    <input class='bitacora_cambio' 
+           id='actividad_bitacora_cambio' 
+           name='actividad[bitacora_cambio]' 
+           type='hidden'>
     <% idact = @actividad.id.to_s %>
     <%= f.button :submit, :class => 'btn btn-primary', 'data-turbo' => false %>
     <%= render partial: 'form_btncancelar' %>
