@@ -10,6 +10,8 @@ module Sivel2Sjr
       only: [:show, :edit, :update, :destroy, :solicitar],
       exclude: [:poblacion_sexo_rangoedadac, :personas_casos]
     load_and_authorize_resource class: Sivel2Gen::Caso
+    
+    helper Msip::UbicacionHelper
 
     def vistas_manejadas
       ['Caso']
@@ -88,7 +90,7 @@ module Sivel2Sjr
       'fecharec'
     end
 
-    def asegura_camposdinamicos(registro, current_usuario_id)
+    def self.asegura_camposdinamicos(registro, current_usuario_id)
     end
 
 
@@ -136,6 +138,23 @@ module Sivel2Sjr
         format.html { render inline: resj }
       end
 
+    end
+
+
+    # GET /casos/1
+    # GET /casos/1.json
+    def show
+      # En models/ability.rb agregar
+      # can :read, Sivel2Gen::Caso,  etiqueta: { id: usuario.etiqueta.map(&:id) } 
+      if current_usuario.rol == Ability::ROLINV
+        ace = @caso.caso_etiqueta.map { |ce| ce.id_etiqueta }
+        aeu = current_usuario.etiqueta_usuario.map { |eu| eu.etiqueta_id }
+        ie = ace & aeu
+        if (ie.size == 0)
+          raise CanCan::AccessDenied.new("Invitado no autorizado!", :read, Caso)
+        end
+      end
+      show_sivel2_gen
     end
 
     def new
@@ -194,6 +213,32 @@ module Sivel2Sjr
       return conscaso
     end
 
+    def cortamemo
+      200
+    end
+
+    def inicializa_index
+      @plantillas = Heb412Gen::Plantillahcm.
+        where(vista: 'Caso').select('nombremenu, id').map { 
+          |c| [c.nombremenu, c.id] 
+        }
+      if defined?(::Ability::ROLINV) && 
+          current_usuario.rol == ::Ability::ROLINV
+        m = current_usuario.etiqueta.map(&:id)
+        if m == []
+          @conscaso = @conscaso.where(FALSE)
+        else
+          @conscaso = @conscaso.
+            where("caso_id IN (SELECT id_caso FROM 
+                        public.sivel2_gen_caso_etiqueta WHERE
+                        sivel2_gen_caso_etiqueta.id_etiqueta IN 
+                          (#{m.join(',')}))")
+        end
+      end
+    end
+
+
+
     # Tipo de reporte Resolución 1612
     def filtro_particular(conscaso, params_filtro)
       if (params_filtro['dispresenta'] == 'tabla1612') 
@@ -212,6 +257,35 @@ module Sivel2Sjr
       end
       return conscaso
     end
+
+
+    # GET /casos/1/edit
+    def edit
+      @caso = @registro = Sivel2Gen::Caso.find(params[:id])
+      authorize! :edit, @registro
+      self.class.asegura_camposdinamicos(
+        @registro, current_usuario.id)
+      @registro.save!(validate: false)
+
+      if Cor1440Gen::Proyectofinanciero.where(id: 10).count == 1 then
+        idseg = Cor1440Gen::Actividadpf.where(
+          proyectofinanciero_id: 10,
+          titulo: 'SEGUIMIENTO A CASO')
+        if idseg.count == 1
+          idseg = idseg.take.id
+        else
+          flash[:error] = 'No se identifico actividad de convenio SEGUIMIENTO A CASO'
+          idseg = -1
+        end   
+        @actividadpf_seguimiento_id = idseg
+      end
+      if session[:capturacaso_acordeon]
+        render 'editv', layout: 'application'
+      else
+        render 'edit', layout: 'application'
+      end
+    end
+
 
     def validar_params
       # No se pone en persona para no afectar listado de asistencia
@@ -546,6 +620,11 @@ module Sivel2Sjr
       sivel2_sjr_destroy
     end
 
+
+    def otros_params_casosjr
+      []
+    end
+
     def otros_params_respuesta
       [
         :accionjuridica_respuesta_attributes => [
@@ -575,6 +654,10 @@ module Sivel2Sjr
           :_destroy
         ]
       ] ]
+    end
+
+    def otros_params_persona
+      []
     end
 
     def otros_params
@@ -797,6 +880,118 @@ module Sivel2Sjr
       end
     end
 
+    # API, retorna población por sexo y rango de edad (sin modificar
+    # base de datos)
+    def poblacion_sexo_rangoedadac
+      caso_id = params[:id_caso].to_i
+      fecha = Msip::FormatoFechaHelper.fecha_local_estandar(
+        params[:fecha])
+      if !fecha
+        render json: "No se pudo convertir fecha #{params[:fecha]}",
+          status: :unprocessable_entity 
+        return
+      end
+      fecha = Date.strptime(fecha, '%Y-%m-%d')
+
+      anio = fecha.year
+      mes = fecha.month
+      dia = fecha.day
+      casosjr = Sivel2Sjr::Casosjr.where(id_caso: caso_id)
+      if casosjr.count == 0
+        render json: "No se encontró caso #{caso_id}",
+          status: :unprocessable_entity 
+        return
+      end
+      rangoedad = {'S' => {}, 'M' => {}, 'F' => {}}
+      totsexo = {}
+      Sivel2Sjr::RangoedadHelper.poblacion_por_sexo_rango(
+        casosjr.take.id_caso, fecha.year, fecha.month, fecha.day,
+        'Cor1440Gen::Rangoedadac', rangoedad, totsexo)
+      render json: rangoedad, status: :ok
+    end
+
+
+    def busca
+      if !params[:term]
+        respond_to do |format|
+          format.html { render inline: 'Falta variable term' }
+          format.json { render inline: 'Falta variable term' }
+        end
+      else
+        #debugger
+        term = Sivel2Gen::Caso.connection.quote_string(params[:term])
+        consNom = term.downcase.strip #sin_tildes
+        consNom.gsub!(/ +/, ":* & ")
+        if consNom.length > 0
+          consNom += ":*"
+        end
+        where = " to_tsvector('spanish', id_caso " +
+          " || ' ' || unaccent(persona.nombres) " +
+          " || ' ' || unaccent(persona.apellidos) " +
+          " || ' ' || COALESCE(msip_tdocumento.sigla, '') " +
+          " || ' ' || COALESCE(persona.numerodocumento::TEXT, '')) @@ " +
+          "to_tsquery('spanish', '#{consNom}')";
+
+        partes = [
+          'id_caso::TEXT',
+          'nombres',
+          'apellidos',
+          'COALESCE(msip_tdocumento.sigla, \'\')',
+          'COALESCE(numerodocumento::TEXT, \'\')'
+        ]
+        s = "";
+        l = " id_caso ";
+        seps = "";
+        sepl = " || ';' || ";
+        partes.each do |p|
+          s += seps + p;
+          l += sepl + "char_length(#{p})";
+          seps = " || ' ' || ";
+        end
+        qstring = "SELECT TRIM(#{s}) AS value, #{l} AS id 
+                FROM public.msip_persona AS persona
+                JOIN sivel2_sjr_casosjr AS casosjr ON 
+                  persona.id=casosjr.contacto_id
+                LEFT JOIN msip_tdocumento ON
+                  persona.tdocumento_id=msip_tdocumento.id
+                WHERE #{where} ORDER BY 1";
+
+                #byebug
+                r = ActiveRecord::Base.connection.select_all qstring
+                respond_to do |format|
+                  format.json { render :json, inline: r.to_json }
+                  format.html { 
+                    render :json, inline: 'No responde con parametro term' 
+                  }
+                end
+      end
+
+      return
+      # autocomplete de jquery requiere label, val
+      #              consc = ActiveRecord::Base.send(:sanitize_sql_array, ["
+      #                SELECT label, value FROM (
+      #                  SELECT label, value, to_tsvector('spanish', unaccent(label)) AS i
+      #                  FROM (SELECT id_caso || ' ' || nombres || ' ' || 
+      #                    apellidos || ' ' || numerodocumento as label, 
+      #                    id_caso as value FROM sivel2_sjr_casosjr JOIN msip_persona ON 
+      #                      msip_persona.id=sivel2_sjr_casosjr.contacto_id) AS s) as ss 
+      #                WHERE i @@ to_tsquery('spanish', ?) ORDER BY 1;",
+      #                consNom
+      #              ])
+      #              r = ActiveRecord::Base.connection.select_all consc
+      #              respond_to do |format|
+      #                format.json { render :json, inline: r.to_json }
+      #              end
+      #            end
+    end
+
+
+    # GET casos/mapaosm
+    def mapaosm
+      @fechadesde = Msip::FormatoFechaHelper.inicio_semestre(Date.today - 182)
+      @fechahasta = Msip::FormatoFechaHelper.fin_semestre(Date.today - 182)
+      render 'sivel2_gen/casos/mapaosm', layout: 'application'
+    end
 
     def set_caso
       if Sivel2Gen::Caso.where(id: params[:id].to_i).count == 0
