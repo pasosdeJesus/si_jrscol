@@ -169,7 +169,7 @@ module Cor1440Gen
               actividad_id: @registro.id,
               externo: false,
               orgsocial_id: nil,
-              perfilorgsocial_id: nil
+              perfilorgsocial_id: 10 # Migrante con vocación de permanencia
             )
           end
         end
@@ -186,7 +186,7 @@ module Cor1440Gen
             actividad_id: @registro.id,
             externo: false,
             orgsocial_id: nil,
-            perfilorgsocial_id: nil
+            perfilorgsocial_id: 10 # Migrante con vocación de permanencia
           )
         end
       end
