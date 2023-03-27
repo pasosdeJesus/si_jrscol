@@ -926,6 +926,7 @@ module Sivel2Sjr
           consNom += ":*"
         end
         where = " to_tsvector('spanish', id_caso " +
+          " || ' ' || persona.id " +
           " || ' ' || unaccent(persona.nombres) " +
           " || ' ' || unaccent(persona.apellidos) " +
           " || ' ' || COALESCE(msip_tdocumento.sigla, '') " +
@@ -934,6 +935,7 @@ module Sivel2Sjr
 
         partes = [
           'id_caso::TEXT',
+          'persona.id::TEXT',
           'nombres',
           'apellidos',
           'COALESCE(msip_tdocumento.sigla, \'\')',
@@ -948,22 +950,22 @@ module Sivel2Sjr
           l += sepl + "char_length(#{p})";
           seps = " || ' ' || ";
         end
-        qstring = "SELECT TRIM(#{s}) AS value, #{l} AS id 
-                FROM public.msip_persona AS persona
-                JOIN sivel2_sjr_casosjr AS casosjr ON 
-                  persona.id=casosjr.contacto_id
-                LEFT JOIN msip_tdocumento ON
-                  persona.tdocumento_id=msip_tdocumento.id
-                WHERE #{where} ORDER BY 1";
+        qstring = "SELECT TRIM(#{s}) AS value, #{l} AS id "\
+          "FROM public.msip_persona AS persona "\
+          "JOIN sivel2_gen_victima AS victima ON "\
+          "persona.id=victima.id_persona "\
+          "LEFT JOIN msip_tdocumento ON "\
+          "persona.tdocumento_id=msip_tdocumento.id "\
+          "WHERE #{where} ORDER BY 1 LIMIT 10";
 
-                #byebug
-                r = ActiveRecord::Base.connection.select_all qstring
-                respond_to do |format|
-                  format.json { render :json, inline: r.to_json }
-                  format.html { 
-                    render :json, inline: 'No responde con parametro term' 
-                  }
-                end
+        #byebug
+        r = ActiveRecord::Base.connection.select_all qstring
+        respond_to do |format|
+          format.json { render :json, inline: r.to_json }
+          format.html { 
+            render :json, inline: 'No responde con parametro term' 
+          }
+        end
       end
 
       return
