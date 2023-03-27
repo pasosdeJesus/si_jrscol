@@ -10,7 +10,7 @@ include:
 
 
 
-image: "ruby:3.1.2"
+image: "ruby:3.2.1"
 
 services:
   - name: vtamara/postgis-es_co:13.3-1
@@ -25,6 +25,7 @@ variables:
   POSTGRES_PASSWORD: ""
   POSTGRES_DB: sijrscol_pru
   POSTGRES_HOST_AUTH_METHOD: trust
+  RAILS_ENV: test
   NOKOGIRI_USE_SYSTEM_LIBRARIES: "true"
   SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
   DAST_WEBSITE: http://colombiajrs.info:5100
@@ -71,8 +72,8 @@ test:
     - bin/rails msip:stimulus_motores
     - bin/rails assets:precompile
   script:
-    - (. .env && CONFIG_HOSTS=www.example.com bin/rails test)
-    - ./cc-test-reporter after-build -t simplecov --exit-code $?
-
-
+    - bin/regresion.sh
+    - exit_code=$?
+  after_script:
+    - ./cc-test-reporter after-build -t simplecov --exit-code $exit_code || true
 
