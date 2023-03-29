@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 8ac04827a6af2bf7c107bc2b45c6a860efece503
+  revision: d0a80446e5a8f363ad392a3003bc628b93bb39a2
   branch: main
   specs:
     cor1440_gen (2.2.0.beta1)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: b84b7575310f98ea059e266d4ddc641c64f1f8ab
+  revision: 62c5c8f94e9edf167d27c3ee940361c0a644e320
   branch: main
   specs:
     heb412_gen (2.2.0.beta1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: a7e30dd67c8266d6659a53e72f77be0406a75f43
+  revision: e239bb3b56f1a253f478945b36c33f4227eacd21
   branch: main
   specs:
     mr519_gen (2.2.0.beta1)
@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: d7e22be85070be9c8bfb862c6ae676cbc5c8cf5d
+  revision: 935d77c33151469ec917d2c3b31021667d8f7912
   branch: main
   specs:
     msip (2.2.0.beta1)
@@ -78,7 +78,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: c7c4a61ff211b3114dd75745ce8f1fd3890b6c49
+  revision: de0d78ec6be8c9fb2241c762e23062744646cae4
   branch: main
   specs:
     sal7711_gen (2.2.0.beta1)
@@ -87,7 +87,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: d9016e174119f0adbeb3e51a692b1c1fdc98649b
+  revision: e8fd7db7c5850e9b38d3a7de8b602cb023a5fe38
   branch: main
   specs:
     sal7711_web (2.2.0.beta1)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 1ed05dab6847552740978b18eea4d920f1d9d836
+  revision: 4ec5023d3249dfe70bf83d6d05643fefa323fad1
   branch: main
   specs:
     sivel2_gen (2.2.0.beta1)
@@ -106,7 +106,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: 86db239aa10fb72ca5096ca01e3db16465032250
+  revision: e6de0e92daf4c7d3ff099d3f3e21ff7f1d3e4612
   branch: main
   specs:
     sivel2_sjr (2.2.0.beta1)
@@ -227,7 +227,7 @@ GEM
       capybara (~> 3.0)
       ferrum (~> 0.13.0)
     date (3.3.3)
-    debug (1.7.1)
+    debug (1.7.2)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     devise (4.9.0)
@@ -314,7 +314,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (5.0.1)
-    puma (6.1.1)
+    puma (6.2.0)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.4)
@@ -382,7 +382,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.8.3)
+    selenium-webdriver (4.8.5)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)

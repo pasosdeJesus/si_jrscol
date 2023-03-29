@@ -6,7 +6,7 @@ class ConvsexoMho < ActiveRecord::Migration[7.0]
       UPDATE msip_persona SET sexo='M' WHERE sexo='F';
       UPDATE msip_persona SET sexo='O' WHERE sexo='S';
       ALTER TABLE msip_persona ADD CONSTRAINT persona_sexo_check
-        CHECK (sexo = 'M' OR sexo = 'H' OR sexo = 'O');
+        CHECK ('MHO' LIKE '%' || sexo || '%');
     SQL
   end
 
@@ -17,7 +17,7 @@ class ConvsexoMho < ActiveRecord::Migration[7.0]
       UPDATE msip_persona SET sexo='M' WHERE sexo='H';
       UPDATE msip_persona SET sexo='S' WHERE sexo='O';
       ALTER TABLE msip_persona ADD CONSTRAINT persona_sexo_check
-        CHECK (sexo = 'F' OR sexo = 'M' OR sexo = 'S');
+        CHECK ('FMS' LIKE '%' || sexo || '%');
     SQL
   end
 end
