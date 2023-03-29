@@ -174,7 +174,7 @@ module Sivel2Sjr
         per = Msip::Persona.new
         per.nombres = 'N'
         per.apellidos = 'N'
-        per.sexo = 'S'
+        per.sexo = Msip::Persona.convencion_sexo[:sexo_sininformacion]
         per.tdocumento_id = 11
         per.save!(validate: false)
       end
