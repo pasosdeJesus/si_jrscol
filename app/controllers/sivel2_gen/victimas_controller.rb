@@ -1,7 +1,9 @@
-require 'date'
+require 'sivel2_gen/concerns/controllers/victimas_controller'
 
-module Sivel2Sjr
+module Sivel2Gen
   class VictimasController < ApplicationController
+    include Sivel2Gen::Concerns::Controllers::VictimasController
+
     load_and_authorize_resource class: Sivel2Gen::Victima
 
     # Crea un nuevo registro para el caso que recibe por parametro 

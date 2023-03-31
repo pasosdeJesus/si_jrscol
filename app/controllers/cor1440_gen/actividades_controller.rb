@@ -251,11 +251,14 @@ module Cor1440Gen
       true
     end
 
+    def nueva_asistencia_completa_persona
+      @persona.ultimoperfilorgsocial_id = 10; 
+      @persona.ultimoestatusmigratorio_id = 8; 
+    end
 
     def nueva_asistencia_completa_asistencia
       @asistencia.perfilorgsocial_id=10; 
     end
-
 
     # GET /actividades/1/edit
     def edit

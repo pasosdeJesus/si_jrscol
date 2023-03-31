@@ -45,6 +45,9 @@ module Sivel2Sjrcol
     # msip
     config.x.formato_fecha = ENV.fetch('FORMATO_FECHA', 'yyyy-mm-dd')
 
+    config.x.msip_docid_obligatorio = true
+
+
     # heb412
     config.x.heb412_ruta = Pathname(
       ENV.fetch('HEB412_RUTA', Rails.root.join('public', 'heb412').to_s)
