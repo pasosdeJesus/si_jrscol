@@ -11,12 +11,12 @@ module Sivel2Gen
     def validar_sin_derechovulnerado
       casos = ini_filtro
       casos = casos.joins('JOIN sivel2_sjr_respuesta ON
-              sivel2_sjr_respuesta.id_caso=sivel2_sjr_casosjr.id_caso')
+              sivel2_sjr_respuesta.caso_id=sivel2_sjr_casosjr.caso_id')
       validacion_estandar(
         casos, 
         'Casos con respuesta pero sin derecho vulnerado',
         'sivel2_sjr_respuesta.id NOT IN 
-               (SELECT id_respuesta FROM public.sivel2_sjr_derecho_respuesta)'
+               (SELECT respuesta_id FROM public.sivel2_sjr_derecho_respuesta)'
       )
     end
 
@@ -30,7 +30,7 @@ module Sivel2Gen
         'Código', 'Fecha de Desp. Emb.', 
         'Asesor']
       where = 'sivel2_gen_caso.id NOT IN 
-           (SELECT id_caso FROM public.sivel2_sjr_casosjr) '
+           (SELECT caso_id FROM public.sivel2_sjr_casosjr) '
       titulo = 'Casos parcialmente eliminados'
       res = casos.where(where).select(atr)
       puts "validacion_estandar: res.to_sql=", res.to_sql
@@ -47,16 +47,16 @@ module Sivel2Gen
     def valida_sinayudasjr
       casos = ini_filtro
       casos = casos.joins('JOIN sivel2_sjr_respuesta ON
-              sivel2_sjr_respuesta.id_caso=sivel2_sjr_casosjr.id_caso')
+              sivel2_sjr_respuesta.caso_id=sivel2_sjr_casosjr.caso_id')
       validacion_estandar(
         casos, 
         'Casos con respuesta/seguimiento pero sin respuesta del SJR',
         'sivel2_sjr_respuesta.id NOT IN 
-           (SELECT id_respuesta FROM public.sivel2_sjr_ayudasjr_respuesta)
+           (SELECT respuesta_id FROM public.sivel2_sjr_ayudasjr_respuesta)
          AND sivel2_sjr_respuesta.id NOT IN 
-           (SELECT id_respuesta FROM public.sivel2_sjr_aslegal_respuesta)
+           (SELECT respuesta_id FROM public.sivel2_sjr_aslegal_respuesta)
          AND sivel2_sjr_respuesta.id NOT IN 
-           (SELECT id_respuesta FROM public.sivel2_sjr_motivosjr_respuesta)
+           (SELECT respuesta_id FROM public.sivel2_sjr_motivosjr_respuesta)
         '
       )
     end
@@ -70,7 +70,7 @@ module Sivel2Gen
         order(:id).
         select([:id, :nombres, :apellidos, 
                 '(SELECT sigla FROM msip_tdocumento WHERE msip_tdocumento.id=tdocumento_id LIMIT 1)', :numerodocumento,
-                "array_to_string(array(SELECT DISTINCT id_caso FROM sivel2_gen_victima WHERE id_persona=msip_persona.id), ';') AS casos",
+                "array_to_string(array(SELECT DISTINCT caso_id FROM sivel2_gen_victima WHERE persona_id=msip_persona.id), ';') AS casos",
                 "array_to_string(array(SELECT DISTINCT actividad_id FROM cor1440_gen_asistencia WHERE persona_id=msip_persona.id), ';') AS actividades"
         ])
 

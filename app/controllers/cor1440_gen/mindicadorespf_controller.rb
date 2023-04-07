@@ -265,12 +265,12 @@ module Cor1440Gen
     # y actividades de PRM 2020',
       def calcula_maternidad(idacs, idmat)
         return Sivel2Gen::Victima.
-          joins('JOIN sivel2_sjr_victimasjr ON sivel2_gen_victima.id=sivel2_sjr_victimasjr.id_victima').
-          joins('JOIN msip_persona ON msip_persona.id=sivel2_gen_victima.id_persona').
+          joins('JOIN sivel2_sjr_victimasjr ON sivel2_gen_victima.id=sivel2_sjr_victimasjr.victima_id').
+          joins('JOIN msip_persona ON msip_persona.id=sivel2_gen_victima.persona_id').
           joins('JOIN cor1440_gen_asistencia ON cor1440_gen_asistencia.persona_id=msip_persona.id').
           where('cor1440_gen_asistencia.actividad.id': idacs).
-          where('sivel2_sjr_victimasjr.id_maternidad':  idmat).
-          pluck('id_persona').uniq
+          where('sivel2_sjr_victimasjr.maternidad_id':  idmat).
+          pluck('persona_id').uniq
       end
 
       def calcula_bebes(idacs, ffin)
@@ -281,9 +281,9 @@ module Cor1440Gen
           mes_ac = act.fecha.month
           dia_ac = act.fecha.day
           act.asistencia.each do |asis|
-            v = Sivel2Gen::Victima.where(id_persona: asis.persona_id)
+            v = Sivel2Gen::Victima.where(persona_id: asis.persona_id)
             v.each do |victima|
-              if v.caso.casosjr.contacto_id != victima.id_persona # Beneficiario
+              if v.caso.casosjr.contacto_id != victima.persona_id # Beneficiario
                 per = victima.persona
                 edad_ben = Sivel2Gen::RangoedadHelper.
                   edad_de_fechanac_fecha(per.anionac, per.mesnac, per.dianac, 

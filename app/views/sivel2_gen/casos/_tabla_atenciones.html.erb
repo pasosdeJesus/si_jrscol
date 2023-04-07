@@ -5,8 +5,8 @@
     'ON cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id'
   ).where(
     'cor1440_gen_asistencia.persona_id IN '\
-    '(SELECT id_persona FROM sivel2_gen_victima WHERE '\
-      '  sivel2_gen_victima.id_caso=?)', 
+    '(SELECT persona_id FROM sivel2_gen_victima WHERE '\
+      '  sivel2_gen_victima.caso_id=?)', 
      @caso.id
   ) 
 %>

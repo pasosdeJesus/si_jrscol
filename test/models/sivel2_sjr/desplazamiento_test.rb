@@ -15,14 +15,14 @@ module Sivel2Sjr
       apellidos: "Perez",
       sexo: 'M',
       anionac: 1980,
-      id_pais: 170,
+      pais_id: 170,
       tdocumento_id: 1,
       numerodocumento: 4,
       created_at: "2021-04-14",
     }
 
     PRUEBA_CASOSJR = {
-      id_caso: 0, # por llenar
+      caso_id: 0, # por llenar
       contacto_id: 0, # por llenar
       fecharec: "2021-04-14",
       asesor: 1,
@@ -44,7 +44,7 @@ module Sivel2Sjr
     }
  
     PRUEBA_DESPLAZAMIENTO= {
-      id_caso: 0, # por llenar
+      caso_id: 0, # por llenar
       fechaexpulsion: "2021-04-12",
       fechallegada: "2021-04-13",
       created_at: "2014-12-02",
@@ -58,12 +58,12 @@ module Sivel2Sjr
       #puts persona.errors.full_messages.join('. ')
       assert persona.valid?
       victima= Sivel2Gen::Victima.create({
-        id_caso: caso.id,
-        id_persona: persona.id
+        caso_id: caso.id,
+        persona_id: persona.id
       })
       assert victima.valid?
       casosjr = Sivel2Sjr::Casosjr.create(PRUEBA_CASOSJR.merge(
-        {id_caso: caso.id, contacto_id: persona.id}))
+        {caso_id: caso.id, contacto_id: persona.id}))
       assert casosjr.valid?
       u1 = Msip::Ubicacionpre.create(PRUEBA_UBICACIONPRE1)
       assert u1.valid?
@@ -71,7 +71,7 @@ module Sivel2Sjr
       assert u2.valid?
 
       desplazamiento = Desplazamiento.create(PRUEBA_DESPLAZAMIENTO.merge({ 
-        id_caso: caso.id, 
+        caso_id: caso.id, 
         expulsionubicacionpre_id: u1.id, 
         llegadaubicacionpre_id: u2.id, 
       }))

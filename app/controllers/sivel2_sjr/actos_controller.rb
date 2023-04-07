@@ -6,9 +6,9 @@ module Sivel2Sjr
     # Crea nuevos actos procesando parámetros
     def agregar
       des_id = params[:desplazamiento]
-      presponsable = "caso_acto_id_presponsable_#{des_id}"
-      categoria = "caso_acto_id_categoria_#{des_id}"
-      persona = "caso_acto_id_persona_#{des_id}"
+      presponsable = "caso_acto_presponsable_id_#{des_id}"
+      categoria = "caso_acto_categoria_id_#{des_id}"
+      persona = "caso_acto_persona_id_#{des_id}"
       fecha = "caso_acto_fecha_#{des_id}"
       desplazamiento = "caso_acto_id_desplazamiento_#{des_id}"
       if params[:caso][:id].nil?
@@ -47,9 +47,9 @@ module Sivel2Sjr
               @caso.current_usuario = current_usuario
               authorize! :update, @caso
               acto = Sivel2Gen::Acto.new(
-                id_presponsable: presp,
-                id_categoria: cat,
-                id_persona: vic,
+                presponsable_id: presp,
+                categoria_id: cat,
+                persona_id: vic,
               )
               acto.caso = @caso
               acto.save
@@ -97,10 +97,10 @@ module Sivel2Sjr
       end
     end
     def eliminar
-      acto = Sivel2Gen::Acto.where(id: params[:id_acto].to_i).take
+      acto = Sivel2Gen::Acto.where(id: params[:acto_id].to_i).take
       #authorize! :destroy, @acto
       authorize! :destroy, Sivel2Gen::Acto
-      params[:desplazamiento_id] = Sivel2Sjr::Actosjr.where(id_acto: acto.id)[0].desplazamiento_id.to_s
+      params[:desplazamiento_id] = Sivel2Sjr::Actosjr.where(acto_id: acto.id)[0].desplazamiento_id.to_s
       @params = params
       if acto && acto.actosjr
         @caso = acto.caso

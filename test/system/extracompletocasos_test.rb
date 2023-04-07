@@ -23,7 +23,7 @@ class ExtracompletocasosTest < ApplicationSystemTestCase
     #visit '/casos/nuevo'
     #@numcaso=find_field('Código').value
 
-    #cs = Sivel2Sjr::Casosjr.where(id_caso: @numcaso).take
+    #cs = Sivel2Sjr::Casosjr.where(caso_id: @numcaso).take
     #p = cs.contacto
     #p.nombres = 'Juan'
     #p.apellidos = 'Perez'

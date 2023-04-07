@@ -31,7 +31,7 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
     apellidos: "Perez",
     sexo: 'M',
     anionac: 1980,
-    id_pais: 170,
+    pais_id: 170,
     tdocumento_id: 1,
     numerodocumento: 2,
     created_at: "2021-04-14",
@@ -52,9 +52,9 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
     end
     persona = Msip::Persona.create! PRUEBA_PERSONA.merge(numerodocumento: numdoc)
     Sivel2Gen::Victima.create!(
-      id_caso: caso.id, id_persona: persona.id)
+      caso_id: caso.id, persona_id: persona.id)
     casosjr = Sivel2Sjr::Casosjr.create PRUEBA_CASOSJR
-    casosjr.id_caso=caso.id
+    casosjr.caso_id=caso.id
     casosjr.contacto_id=persona.id
     casosjr.asesor=@current_usuario.id
     casosjr.save!

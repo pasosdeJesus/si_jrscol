@@ -16,7 +16,7 @@ module UnificarHelper
       Sivel2Gen::Caso.connection.execute(
         "DELETE FROM sivel2_sjr_categoria_desplazamiento
            WHERE desplazamiento_id IN (SELECT id FROM sivel2_sjr_desplazamiento
-              WHERE id_caso=#{c.id});"
+              WHERE caso_id=#{c.id});"
       )
       ['sivel2_sjr_ayudasjr_respuesta', 
        'sivel2_sjr_ayudaestado_respuesta',
@@ -26,42 +26,42 @@ module UnificarHelper
        'sivel2_sjr_progestado_respuesta'
       ].each do |trr|
         ord = "DELETE FROM #{trr}
-           WHERE id_respuesta IN (SELECT id FROM sivel2_sjr_respuesta 
-             WHERE id_caso=#{c.id});"
+           WHERE respuesta_id IN (SELECT id FROM sivel2_sjr_respuesta 
+             WHERE caso_id=#{c.id});"
              #puts "OJO ord='#{ord}'"
         Sivel2Gen::Caso.connection.execute(ord)
       end
       Sivel2Gen::Caso.connection.execute(
         "DELETE FROM sivel2_sjr_accionjuridica_respuesta 
            WHERE respuesta_id IN (SELECT id FROM sivel2_sjr_respuesta 
-             WHERE id_caso=#{c.id});"
+             WHERE caso_id=#{c.id});"
       )
 
       Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_actosjr
-        WHERE id_acto IN (SELECT id FROM sivel2_gen_acto
-          WHERE id_caso=#{c.id});")
+        WHERE acto_id IN (SELECT id FROM sivel2_gen_acto
+          WHERE caso_id=#{c.id});")
 
       Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_desplazamiento
-        WHERE id_caso=#{c.id};")
+        WHERE caso_id=#{c.id};")
       Sivel2Gen::Caso.connection.execute("UPDATE sivel2_gen_caso
         SET ubicacion_id=NULL
           WHERE id=#{c.id};")
       Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
-        SET id_llegada=NULL WHERE id_caso=#{c.id};")
+        SET llegada_id=NULL WHERE caso_id=#{c.id};")
       Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
-        SET id_salida=NULL WHERE id_caso=#{c.id};")
+        SET salida_id=NULL WHERE caso_id=#{c.id};")
       Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
-        SET id_llegadam=NULL WHERE id_caso=#{c.id};")
+        SET llegada_idm=NULL WHERE caso_id=#{c.id};")
       Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
-        SET id_salidam=NULL WHERE id_caso=#{c.id};")
+        SET salida_idm=NULL WHERE caso_id=#{c.id};")
       Sivel2Gen::Caso.connection.execute("DELETE FROM msip_ubicacion
-        WHERE id_caso=#{c.id};")
+        WHERE caso_id=#{c.id};")
       Sivel2Gen::Caso.connection.execute(
         "DELETE FROM sivel2_sjr_actividad_casosjr
         WHERE casosjr_id=#{c.id}")
       Sivel2Gen::Caso.connection.execute(
         "DELETE FROM sivel2_sjr_respuesta 
-        WHERE id_caso=#{c.id}")
+        WHERE caso_id=#{c.id}")
       cs = c.casosjr
       if cs
         cs.destroy
@@ -74,7 +74,7 @@ module UnificarHelper
     end
 
 #    Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_gen_acto
-#      WHERE id_caso=#{c.id};")
+#      WHERE caso_id=#{c.id};")
 #    Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_gen_caso
 #      WHERE id=#{c.id};")
 #    Sivel2Gen::Caso.connection.execute('COMMIT;')
@@ -137,9 +137,9 @@ module UnificarHelper
     else
       vpos = caso.victima_ids.select{
         |vid| 
-        idp = Sivel2Gen::Victima.find(vid).id_persona
-        Sivel2Gen::Victima.where('id_caso<>?', caso.id).
-          where('id_persona<>?', idp).count == 0
+        idp = Sivel2Gen::Victima.find(vid).persona_id
+        Sivel2Gen::Victima.where('caso_id<>?', caso.id).
+          where('persona_id<>?', idp).count == 0
       }
       if vpos.count == 0
         puts "Todas las víctimas están en otros casos es mejor eliminarlo"
@@ -149,7 +149,7 @@ module UnificarHelper
       else
         puts "Completando"
         cs = Sivel2Sjr::Casosjr.create(
-          id_caso: caso.id,
+          caso_id: caso.id,
           contacto_id: vpos[0],
           asesor: us.id,
           oficina: 1 # SIN INFORMACION
@@ -162,7 +162,7 @@ module UnificarHelper
   module_function :arreglar_un_caso_medio_borrado
 
   def consulta_casos_por_arreglar
-    Sivel2Gen::Caso.where('id NOT IN (SELECT id_caso FROM sivel2_sjr_casosjr)')
+    Sivel2Gen::Caso.where('id NOT IN (SELECT caso_id FROM sivel2_sjr_casosjr)')
   end
   module_function :consulta_casos_por_arreglar
 
@@ -197,7 +197,7 @@ module UnificarHelper
       id NOT IN (SELECT persona_id FROM cor1440_gen_asistencia) AND
       id NOT IN (SELECT persona_id FROM cor1440_gen_caracterizacionpersona) AND
       id NOT IN (SELECT persona_id FROM msip_orgsocial_persona) AND
-      id NOT IN (SELECT id_persona FROM sivel2_gen_victima) AND
+      id NOT IN (SELECT persona_id FROM sivel2_gen_victima) AND
       (trim(nombres) IN ('','N','NN')) AND
       (trim(apellidos) in ('','N','NN')) AND
       id NOT IN (SELECT  persona1 FROM msip_persona_trelacion) AND
@@ -344,9 +344,9 @@ module UnificarHelper
     end
 
     ep = Sivel2Gen::CasoEtiqueta.new(
-      id_caso: c1.id,
-      id_etiqueta: eunif.id,
-      id_usuario: current_usuario.id,
+      caso_id: c1.id,
+      etiqueta_id: eunif.id,
+      usuario_id: current_usuario.id,
       fecha: Date.today(),
       observaciones: ""
     )
@@ -411,8 +411,8 @@ module UnificarHelper
     p1 = Msip::Persona.find([p1_id.to_i, p2_id.to_i].min)
     p2 = Msip::Persona.find([p1_id.to_i, p2_id.to_i].max)
 
-    cp1 = Sivel2Gen::Victima.where(id_persona: p1.id).pluck(:id_caso)
-    cp2 = Sivel2Gen::Victima.where(id_persona: p2.id).pluck(:id_caso)
+    cp1 = Sivel2Gen::Victima.where(persona_id: p1.id).pluck(:caso_id)
+    cp2 = Sivel2Gen::Victima.where(persona_id: p2.id).pluck(:caso_id)
     cc = cp1 & cp2
     if cc.count == 1
       menserr += "El caso #{cc.first} tiene ambos beneficiarios como víctimas; por previción antes debe eliminar alguna de esas víctimas de ese caso.\n"
@@ -448,8 +448,8 @@ module UnificarHelper
     )
     [ :anionac, :mesnac, :dianac,
       :numerodocumento, :tdocumento_id,
-      :id_departamento, :id_municipio,
-      :id_clase, :nacionalde, :id_pais
+      :departamento_id, :municipio_id,
+      :clase_id, :nacionalde, :pais_id
     ].each do |c|
       if !p1[c] && p2[c]
         p1[c] = p2[c]
@@ -460,8 +460,8 @@ module UnificarHelper
     ep.save
 
     loop do
-      cc1 = Sivel2Sjr::Casosjr.where(contacto_id: p1.id).pluck(:id_caso)
-      cc2 = Sivel2Sjr::Casosjr.where(contacto_id: p2.id).pluck(:id_caso)
+      cc1 = Sivel2Sjr::Casosjr.where(contacto_id: p1.id).pluck(:caso_id)
+      cc2 = Sivel2Sjr::Casosjr.where(contacto_id: p2.id).pluck(:caso_id)
       if cc1.count > 0 and cc2.count > 0
         cr = unificar_dos_casos(cc1[0], cc2[0], current_usuario, menserr)
         if !cr.nil?
@@ -476,15 +476,15 @@ module UnificarHelper
 
     cp2.each do |cid|
       Sivel2Gen::Victima.where(
-        id_caso: cid, id_persona: p2.id
+        caso_id: cid, persona_id: p2.id
       ).each do |vic|
-        if Sivel2Gen::Victima.where(id_caso: cid, id_persona: p1.id).count == 0
+        if Sivel2Gen::Victima.where(caso_id: cid, persona_id: p1.id).count == 0
           nv = vic.dup
-          nv.id_persona = p1.id
+          nv.persona_id = p1.id
           nv.save
           nvs = vic.victimasjr.dup
           if nvs
-            nvs.id_victima = nv.id
+            nvs.victima_id = nv.id
             nvs.save
           end
           ep.observaciones << "Creada víctma en caso #{cid}\n"
@@ -505,13 +505,13 @@ module UnificarHelper
           ep.observaciones << "Cambiado contacto en caso #{cid}\n"
         end
         ep.save
-        Sivel2Gen::Acto.where(id_caso: cid, id_persona: p1.id).each do |ac|
-          ac.id_persona = p1.id
+        Sivel2Gen::Acto.where(caso_id: cid, persona_id: p1.id).each do |ac|
+          ac.persona_id = p1.id
           ac.save!
           ep.observaciones << "Cambiado acto en caso #{cid}\n"
         end
         ep.save
-        ep.observaciones << "Elimina beneficiario #{vic.id_persona} del caso #{cid}\n"
+        ep.observaciones << "Elimina beneficiario #{vic.persona_id} del caso #{cid}\n"
         vic.destroy
         ep.observaciones = ep.observaciones[0..4998]
         ep.save
@@ -588,10 +588,10 @@ module UnificarHelper
         "* Mes nac.: #{p2.mesnac.to_s}\n"\
         "* Dia nac.: #{p2.dianac.to_s}\n"\
         "* Sexo nac.: #{p2.sexo.to_s}\n"\
-        "* Pais nac.: #{p2.id_pais ? p2.pais.nombre : ''}\n"\
-        "* Departamento nac.: #{p2.id_departamento ? p2.departamento.nombre : ''}\n"\
-        "* Muncipio nac.: #{p2.id_municipio ? p2.municipio.nombre : ''}\n"\
-        "* Centro poblado nac.: #{p2.id_clase ? p2.clase.nombre : ''}\n"\
+        "* Pais nac.: #{p2.pais_id ? p2.pais.nombre : ''}\n"\
+        "* Departamento nac.: #{p2.departamento_id ? p2.departamento.nombre : ''}\n"\
+        "* Muncipio nac.: #{p2.municipio_id ? p2.municipio.nombre : ''}\n"\
+        "* Centro poblado nac.: #{p2.clase_id ? p2.clase.nombre : ''}\n"\
         "* Nacional de: #{p2.nacionalde ? p2.nacional.nombre : ''}\n"\
         "* Fecha creación: #{p2.created_at.to_s}\n"\
         "* Fecha actualización: #{p2.updated_at.to_s}.\n"

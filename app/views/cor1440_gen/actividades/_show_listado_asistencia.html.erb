@@ -51,12 +51,12 @@ Población beneficiaria: <%= personas.uniq.count  %>
           <%= asistencia.perfilorgsocial.nombre if asistencia.perfilorgsocial %>
         </td>
         <td>
-          <% vics = Sivel2Gen::Victima.where(id_persona: asistencia.persona.id) %>
+          <% vics = Sivel2Gen::Victima.where(persona_id: asistencia.persona.id) %>
           <% if vics.empty? %>
             <%= "Sin caso asociado" %>
           <% else %>
             <% vics.each do |vic| %>
-              <% nc = vic.id_caso.to_s %>
+              <% nc = vic.caso_id.to_s %>
               <% if vic.victimasjr.fechadesagregacion %> 
                 <% if vic.victimasjr.fechadesagregacion < @registro.fecha %>
                   <% nc += "-(Desagregado antes de act.)" %>

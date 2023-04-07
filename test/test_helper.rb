@@ -111,7 +111,7 @@ PRUEBA_LUGARPRELIMINAR = {
   nombreusuario: "sivel2",
   organizacion: "organizacion ejemplo",
   ubicacionpre_id: nil,
-  id_persona: 1,
+  persona_id: 1,
   parentezco: "AB",
   grabacion: false,
   telefono: "35468489",
@@ -219,11 +219,11 @@ PRUEBA_TIPOORGSOCIAL = {
 }
 
 PRUEBA_UBICACION = {
-  id_tsitio: 1,
-  id_pais: 862, # VENEZUELA
-  id_departamento: 1, # DISTRITO CAPITAL
-  id_municipio: 25, # BOLIVARIANO LIBERTADOR
-  id_clase: 217, # CARACAS
+  tsitio_id: 1,
+  pais_id: 862, # VENEZUELA
+  departamento_id: 1, # DISTRITO CAPITAL
+  municipio_id: 25, # BOLIVARIANO LIBERTADOR
+  clase_id: 217, # CARACAS
   created_at: "2014-11-06",
 }
 
@@ -385,16 +385,16 @@ PRUEBA_USUARIO_SIST = {
 
 PRUEBA_VICTIMA = {
   hijos: 0,
-  id_profesion: 1,
-  id_rangoedad: 1,
-  id_filiacion: 1,
-  id_sectorsocial: 1,
-  id_organizacion: 1,
-  id_vinculoestado: 1,
+  profesion_id: 1,
+  rangoedad_id: 1,
+  filiacion_id: 1,
+  sectorsocial_id: 1,
+  organizacion_id: 1,
+  vinculoestado_id: 1,
   organizacionarmada: 1,
   anotaciones: 'a',
-  id_etnia: 1,
-  id_iglesia: 1,
+  etnia_id: 1,
+  iglesia_id: 1,
   orientacionsexual: 'H'
 }
 

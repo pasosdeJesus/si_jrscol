@@ -174,12 +174,12 @@ module Cor1440Gen
           end
         end
       elsif params['caso_id'] && 
-          Sivel2Sjr::Casosjr.where(id_caso: params['caso_id'].to_i).
+          Sivel2Sjr::Casosjr.where(caso_id: params['caso_id'].to_i).
           count == 1
-        personas = Sivel2Gen::Victima.where(id_caso: params['caso_id'].to_i).
+        personas = Sivel2Gen::Victima.where(caso_id: params['caso_id'].to_i).
           joins(:victimasjr).
           where('sivel2_sjr_victimasjr.fechadesagregacion IS NULL').
-          pluck(:id_persona)
+          pluck(:persona_id)
         personas.each do |p|
           Cor1440Gen::Asistencia.create!(
             persona_id: p,
@@ -464,19 +464,19 @@ module Cor1440Gen
       vics.each do |v|
         if Cor1440Gen::Asistencia.where(
             actividad_id: act.id,
-            persona_id: v.victima.id_persona).count == 0
+            persona_id: v.victima.persona_id).count == 0
           asistencia = Cor1440Gen::Asistencia.create(
             actividad_id: act.id,
-            persona_id: v.victima.id_persona,
+            persona_id: v.victima.persona_id,
             perfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id || 10
           )
           if !asistencia.save
             resp_error 'No pudo crear asistencia' 
             return
           end
-          res << v.victima.id_persona
+          res << v.victima.persona_id
         else
-          yaestaban << v.victima.id_persona
+          yaestaban << v.victima.persona_id
         end
       end
       respond_to do |format|
@@ -516,7 +516,7 @@ module Cor1440Gen
 
     def otros_impedimentos_para_borrar_persona_ex_asistente(a)
       # Si la persona está en un caso no se puede eliminar
-      if Sivel2Gen::Victima.where(id_persona: a.persona_id).count > 0
+      if Sivel2Gen::Victima.where(persona_id: a.persona_id).count > 0
         return true
       end
       return false

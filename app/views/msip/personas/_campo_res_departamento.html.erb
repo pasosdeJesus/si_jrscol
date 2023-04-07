@@ -1,5 +1,5 @@
 <%= d.association :res_departamento,
-  collection: Msip::Departamento.habilitados.where(id_pais: 170),
+  collection: Msip::Departamento.habilitados.where(pais_id: 170),
   label_method: :nombre,
   value_method: :id 
 %>

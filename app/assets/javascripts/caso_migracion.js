@@ -1,7 +1,7 @@
 
 // En migracion actualiza tras cambiar salida
 $(document).on('focusin', 
-  'select[id^=caso_casosjr_attributes_][id$=id_salidam]', 
+  'select[id^=caso_casosjr_attributes_][id$=salida_idm]', 
   function (e) {
     actualiza_ubicaciones($(this))
   }
@@ -9,7 +9,7 @@ $(document).on('focusin',
 
 // En migracion, lista de sitios de llegada se cálcula
 $(document).on('focusin', 
-  'select[id^=caso_casosjr_attributes_][id$=id_llegadam]', 
+  'select[id^=caso_casosjr_attributes_][id$=llegada_idm]', 
   function (e) {
     actualiza_ubicaciones($(this))
   }
@@ -142,9 +142,9 @@ $(document).on('change',
   }
 )
 
-$(document).on('change', '#persona_id_pais',
+$(document).on('change', '#persona_pais_id',
   function (evento) {
-    pais = $('#persona_id_pais').val()
+    pais = $('#persona_pais_id').val()
     if (!$('#persona_nacionalde').val()){
       $('#persona_nacionalde').val(pais)
     }

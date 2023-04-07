@@ -37,17 +37,17 @@ class Sivel2Sjr::ConteosController < ApplicationController
     #    por información por desplegar
 
     # Para la vista cons1 emplear que1, tablas1 y where1
-    que1 = 'respuesta.id AS id_respuesta, ' +
-      'derecho_respuesta.id_derecho AS id_derecho'
+    que1 = 'respuesta.id AS respuesta_id, ' +
+      'derecho_respuesta.derecho_id AS derecho_id'
     tablas1 = 'public.sivel2_sjr_casosjr AS casosjr, ' +
       'public.sivel2_sjr_respuesta AS respuesta, ' +
       'public.sivel2_sjr_derecho_respuesta AS derecho_respuesta'
     where1 = ''
 
     # where1 = consulta_and(where1, 'caso.id', GLOBALS['idbus'], '<>')
-    where1 = consulta_and_sinap(where1, "respuesta.id_caso", "casosjr.id_caso")
+    where1 = consulta_and_sinap(where1, "respuesta.caso_id", "casosjr.caso_id")
     where1 = consulta_and_sinap( 
-      where1, "derecho_respuesta.id_respuesta", "respuesta.id"
+      where1, "derecho_respuesta.respuesta_id", "respuesta.id"
     )
 
     if (pFaini != '') 
@@ -64,7 +64,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
       where1 = consulta_and(where1, "casosjr.oficina_id", pOficina)
     end
     if (pDerecho != '') 
-      where1 = consulta_and(where1, "derecho_respuesta.id_derecho", 
+      where1 = consulta_and(where1, "derecho_respuesta.derecho_id", 
                             pDerecho)
     end
 
@@ -83,7 +83,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     # Paso 2
     # Otra consulta
-    q2="CREATE VIEW #{cons2} AS SELECT id_respuesta, derecho_id as id_derecho, id_#{pContar}
+    q2="CREATE VIEW #{cons2} AS SELECT respuesta_id, derecho_id as derecho_id, id_#{pContar}
         FROM public.sivel2_sjr_#{pContar}_respuesta AS ar, 
           public.sivel2_sjr_#{pContar}_derecho AS ad 
         WHERE 
@@ -96,8 +96,8 @@ class Sivel2Sjr::ConteosController < ApplicationController
     where3 = ''
 
     tablas3 = "public.sivel2_sjr_derecho AS derecho, public.cvp1 LEFT OUTER JOIN public.cvp2 ON 
-    (cvp1.id_respuesta=cvp2.id_respuesta AND cvp1.id_derecho=cvp2.id_derecho)"
-    where3 = consulta_and_sinap(where3, "cvp1.id_derecho", "derecho.id")
+    (cvp1.respuesta_id=cvp2.respuesta_id AND cvp1.derecho_id=cvp2.derecho_id)"
+    where3 = consulta_and_sinap(where3, "cvp1.derecho_id", "derecho.id")
     que3 << ["derecho.nombre AS derecho", "Derecho"]
     que3 << ["(SELECT nombre FROM public.sivel2_sjr_#{pContar} WHERE id=id_#{pContar}) AS atendido", 
       @pque[pContar] ]
@@ -126,7 +126,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
     q3 = "SELECT derecho, atendido, (CASE WHEN atendido IS NULL THEN 0 
             ELSE reportados END) AS atendidos, reportados 
           FROM (SELECT #{qc}
-            COUNT(cvp1.id_respuesta) AS reportados
+            COUNT(cvp1.respuesta_id) AS reportados
             FROM #{tablas3}
             #{twhere3}
             #{gb}) AS s
@@ -165,12 +165,12 @@ class Sivel2Sjr::ConteosController < ApplicationController
   def personas_vista_geo(que3, tablas3, where3)
     ActiveRecord::Base.connection.execute(
       "CREATE OR REPLACE VIEW  ultimodesplazamiento AS 
-    (SELECT sivel2_sjr_desplazamiento.id, s.id_caso, s.fechaexpulsion, 
+    (SELECT sivel2_sjr_desplazamiento.id, s.caso_id, s.fechaexpulsion, 
       sivel2_sjr_desplazamiento.expulsionubicacionpre_id 
       FROM public.sivel2_sjr_desplazamiento, 
-      (SELECT  id_caso, MAX(sivel2_sjr_desplazamiento.fechaexpulsion) 
+      (SELECT  caso_id, MAX(sivel2_sjr_desplazamiento.fechaexpulsion) 
        AS fechaexpulsion FROM public.sivel2_sjr_desplazamiento  GROUP BY 1) 
-       AS s WHERE sivel2_sjr_desplazamiento.id_caso=s.id_caso and 
+       AS s WHERE sivel2_sjr_desplazamiento.caso_id=s.caso_id and 
       sivel2_sjr_desplazamiento.fechaexpulsion=s.fechaexpulsion);")
 
 
@@ -188,7 +188,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
     ubicacion.clase_id, clase.nombre AS clase_nombre, 
     ultimodesplazamiento.fechaexpulsion FROM
     #{personas_cons1} LEFT JOIN public.ultimodesplazamiento ON
-    (#{personas_cons1}.id_caso = ultimodesplazamiento.id_caso)
+    (#{personas_cons1}.caso_id = ultimodesplazamiento.caso_id)
     LEFT JOIN msip_ubicacionpre AS ubicacion ON 
       (ultimodesplazamiento.expulsionubicacionpre_id = ubicacion.id) 
     LEFT JOIN msip_departamento AS departamento ON 
@@ -207,7 +207,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
       coleccion: Sivel2Sjr::Regimensalud.all.order(:nombre),
       metodo_etiqueta: :nombre,
       metodo_id: :id,
-      campocons: 'victimasjr.id_regimensalud'
+      campocons: 'victimasjr.regimensalud_id'
     }
     return f.sort.to_h
   end
@@ -221,10 +221,10 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     where = ''
     where = consulta_and_sinap(
-      where, 'casosjr.id_caso', 'desplazamiento.id_caso'
+      where, 'casosjr.caso_id', 'desplazamiento.caso_id'
     )
     where = consulta_and_sinap(
-      where, 'desplazamiento.id_caso', 'victima.id_caso'
+      where, 'desplazamiento.caso_id', 'victima.caso_id'
     )
 
     if (pFaini != '') 
@@ -254,9 +254,9 @@ class Sivel2Sjr::ConteosController < ApplicationController
           WHERE id=ubicacion.departamento_id) AS departamento, 
         (SELECT nombre FROM public.msip_municipio
           WHERE id=ubicacion.municipio_id) AS municipio, 
-        CASE WHEN (casosjr.contacto_id = victima.id_persona) THEN 1 ELSE 0 END
+        CASE WHEN (casosjr.contacto_id = victima.persona_id) THEN 1 ELSE 0 END
           AS contacto,
-        CASE WHEN (casosjr.contacto_id<>victima.id_persona) THEN 1 ELSE 0 END
+        CASE WHEN (casosjr.contacto_id<>victima.persona_id) THEN 1 ELSE 0 END
           AS beneficiario, 
         1 as npersona
         FROM public.sivel2_sjr_desplazamiento AS desplazamiento, 
@@ -291,9 +291,9 @@ class Sivel2Sjr::ConteosController < ApplicationController
           WHERE id=departamento_id) AS departamento, 
         (SELECT nombre FROM public.msip_municipio 
         WHERE id=ubicacion.municipio_id) AS municipio, 
-        CASE WHEN (casosjr.contacto_id = victima.id_persona) THEN 1 ELSE 0 END
+        CASE WHEN (casosjr.contacto_id = victima.persona_id) THEN 1 ELSE 0 END
           AS contacto,
-        CASE WHEN (casosjr.contacto_id<>victima.id_persona) THEN 1 ELSE 0 END
+        CASE WHEN (casosjr.contacto_id<>victima.persona_id) THEN 1 ELSE 0 END
           AS beneficiario, 
         1 as npersona
       FROM public.sivel2_sjr_desplazamiento AS desplazamiento, 
@@ -331,7 +331,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
     pOficina = escapar_param(params, [:filtro, 'oficina_id'])
 
     where = ''
-    where = consulta_and_sinap(where, 'casosjr.id_caso', 'd1.id_caso')
+    where = consulta_and_sinap(where, 'casosjr.caso_id', 'd1.caso_id')
 
     if (pFaini != '') 
       pfechaini = DateTime.strptime(pFaini, '%Y-%m-%d')
@@ -378,14 +378,14 @@ class Sivel2Sjr::ConteosController < ApplicationController
       (SELECT municipioubicacion(d1.expulsionubicacionpre_id) || ' - ' 
         || municipioubicacion(d1.llegadaubicacionpre_id) || ' - '
         || municipioubicacion(d2.llegadaubicacionpre_id) AS ruta, 
-        count(d1.id_caso) AS cuenta
+        count(d1.caso_id) AS cuenta
       FROM sivel2_sjr_casosjr AS casosjr,
         sivel2_sjr_desplazamiento AS d1, 
         msip_ubicacionpre AS l1, 
         sivel2_sjr_desplazamiento as d2,
         msip_ubicacionpre AS e2, msip_ubicacionpre AS l2
       WHERE #{where}
-      AND d1.id_caso=d2.id_caso
+      AND d1.caso_id=d2.caso_id
       AND d1.fechaexpulsion < d2.fechaexpulsion
       AND d1.llegadaubicacionpre_id = l1.id
       AND d2.llegadaubicacionpre_id = l2.id
@@ -422,11 +422,11 @@ class Sivel2Sjr::ConteosController < ApplicationController
         cord = "5 DESC, 1"
     end
     where = consulta_and_sinap(
-      '', 'victima.id_caso', 'desplazamiento.id_caso'
+      '', 'victima.caso_id', 'desplazamiento.caso_id'
     )
-    where = consulta_and_sinap(where, 'victima.id_persona', 'persona.id')
-    where = consulta_and_sinap(where, 'victima.id_rangoedad', 'rangoedad.id')
-    where = consulta_and_sinap(where, 'casosjr.id_caso', 'desplazamiento.id_caso')
+    where = consulta_and_sinap(where, 'victima.persona_id', 'persona.id')
+    where = consulta_and_sinap(where, 'victima.rangoedad_id', 'rangoedad.id')
+    where = consulta_and_sinap(where, 'casosjr.caso_id', 'desplazamiento.caso_id')
 
     if (pFaini != '') 
       pfechaini = DateTime.strptime(pFaini, '%Y-%m-%d')
@@ -449,13 +449,13 @@ class Sivel2Sjr::ConteosController < ApplicationController
     end
 
     if (pRangoedadId != '')
-      where = consulta_and(where, 'victima.id_rangoedad', pRangoedadId.to_i)
+      where = consulta_and(where, 'victima.rangoedad_id', pRangoedadId.to_i)
     end
 
 
 
     @cuerpotabla = ActiveRecord::Base.connection.select_all(
-      "SELECT victima.id_caso, persona.id AS persona, 
+      "SELECT victima.caso_id, persona.id AS persona, 
         persona.sexo, rangoedad.nombre as rangoedad,
         COUNT(desplazamiento.id) as cuenta
       FROM sivel2_gen_victima AS victima, 
@@ -510,7 +510,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
         FROM public.sivel2_sjr_accionjuridica AS a 
         JOIN public.sivel2_sjr_accionjuridica_respuesta AS ar ON a.id=ar.accionjuridica_id 
         JOIN public.sivel2_sjr_respuesta AS r ON ar.respuesta_id=r.id 
-        JOIN public.sivel2_sjr_casosjr AS casosjr ON r.id_caso=casosjr.id_caso
+        JOIN public.sivel2_sjr_casosjr AS casosjr ON r.caso_id=casosjr.caso_id
       WHERE #{where}
       GROUP BY 1, 2 ORDER BY 1,2;
       "

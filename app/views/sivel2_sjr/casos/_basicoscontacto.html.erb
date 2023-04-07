@@ -68,8 +68,8 @@
 </a>
 <div class="collapse multi-collapse campos_persona" id="datosbasicos">
 <%= f.simple_fields_for :victima, Sivel2Gen::Victima.
-  where(id_caso: @caso.id).
-  where(id_persona: @caso.casosjr.contacto.id) do |fvictima| %>
+  where(caso_id: @caso.id).
+  where(persona_id: @caso.casosjr.contacto.id) do |fvictima| %>
   <%= fvictima.simple_fields_for :persona do |fpersona| %>
     <div class='campos-persona-con-victima-id'>
       <%= fvictima.input :id, as: :hidden %> 

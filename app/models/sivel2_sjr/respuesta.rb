@@ -8,9 +8,9 @@ module Sivel2Sjr
     #        reject_if: :all_blank, update_only: true
     has_and_belongs_to_many :ayudaestado, 
       class_name: 'Sivel2Sjr::Ayudaestado', 
-      foreign_key: 'id_respuesta', 
+      foreign_key: 'respuesta_id', 
       validate: true,
-      association_foreign_key: 'id_ayudaestado',
+      association_foreign_key: 'ayudaestado_id',
       join_table: 'sivel2_sjr_ayudaestado_respuesta'  
 
     has_many :accionjuridica_respuesta, 
@@ -26,30 +26,30 @@ module Sivel2Sjr
     #        update_only: true
     has_and_belongs_to_many :derecho, 
       class_name: "Sivel2Sjr::Derecho", 
-      foreign_key: "id_respuesta", 
+      foreign_key: "respuesta_id", 
       validate: true,
-      association_foreign_key: 'id_derecho',
+      association_foreign_key: 'derecho_id',
       join_table: 'sivel2_sjr_derecho_respuesta'
 
     #accepts_nested_attributes_for :motivosjr_respuesta, 
     #        reject_if: :all_blank, update_only: true
     has_and_belongs_to_many :motivosjr, 
       class_name: 'Sivel2Sjr::Motivosjr', 
-      foreign_key: 'id_respuesta', 
-      association_foreign_key: 'id_motivosjr',
+      foreign_key: 'respuesta_id', 
+      association_foreign_key: 'motivosjr_id',
       join_table: 'sivel2_sjr_motivosjr_respuesta'
 
     #accepts_nested_attributes_for :progestado_respuesta, 
     #        reject_if: :all_blank, update_only: true
     has_and_belongs_to_many :progestado, 
       class_name: 'Sivel2Sjr::Progestado', 
-      foreign_key: 'id_respuesta', 
+      foreign_key: 'respuesta_id', 
       validate: true,
-      association_foreign_key: 'id_progestado',
+      association_foreign_key: 'progestado_id',
       join_table: 'sivel2_sjr_progestado_respuesta'
 
     validates :fechaatencion, uniqueness: {
-      scope: :id_caso,
+      scope: :caso_id,
       message: 'En un caso no puede repetirse fecha de atención'
     }
   end

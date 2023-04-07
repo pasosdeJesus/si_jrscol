@@ -116,11 +116,11 @@
           <td><%= Sivel2Sjr::Desplazamiento.human_attribute_name(
             :inclusion) %></td>
           <%= f.collection_radio_buttons(
-              :id_inclusion,
+              :inclusion_id,
               Sivel2Sjr::Inclusion.all.habilitados.reorder(:pospres),
               :id, :nombre,
-              { checked: f.object.id_inclusion ?
-                f.object.id_inclusion : 3 }) do |b| %>
+              { checked: f.object.inclusion_id ?
+                f.object.inclusion_id : 3 }) do |b| %>
               <td>
                 <%= b.label(class: "mr-4") {b.radio_button} %>
               </td>

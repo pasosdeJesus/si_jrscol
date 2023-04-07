@@ -7,13 +7,13 @@
     </tr>
   </thead>
   <tbody id="victima">
-    <% anexosids = Sivel2Gen::Caso.find(@registro.id).anexo_caso.pluck(:id_anexo) %>
+    <% anexosids = Sivel2Gen::Caso.find(@registro.id).anexo_caso.pluck(:anexo_id) %>
     <% anexos = Msip::Anexo.find(anexosids)%>
     <% anexos.each do |anexo| %>
       <tr>
         <td>
-          <%= Sivel2Gen::AnexoCaso.where(id_anexo: anexo.id)[0].fecha if 
-          Sivel2Gen::AnexoCaso.where(id_anexo: anexo.id)[0] %>
+          <%= Sivel2Gen::AnexoCaso.where(anexo_id: anexo.id)[0].fecha if 
+          Sivel2Gen::AnexoCaso.where(anexo_id: anexo.id)[0] %>
         </td>
         <td>
           <%= anexo.descripcion if anexo.descripcion %>

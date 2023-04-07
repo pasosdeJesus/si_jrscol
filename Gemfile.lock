@@ -25,10 +25,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 61c866dabc9a645d120fb8149c631513f6176be1
-  branch: main
+  revision: c4575806725953c0d64591ba448d4d71b9b2824a
+  branch: conv2
   specs:
-    cor1440_gen (2.2.0.beta1)
+    cor1440_gen (2.2.0.beta2)
       devise
       heb412_gen
       kt-paperclip
@@ -38,10 +38,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 62c5c8f94e9edf167d27c3ee940361c0a644e320
-  branch: main
+  revision: 4face5f255e8cad917567cd2b1ae67f256958fe4
+  branch: conv2
   specs:
-    heb412_gen (2.2.0.beta1)
+    heb412_gen (2.2.0.beta2)
       mr519_gen
       msip
       redcarpet
@@ -49,19 +49,19 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 4addd31d8762753879f16a9ca4c66a4e3f0da2ea
-  branch: main
+  revision: 081cddb10db3dfbb404483e3d3a86db26ef25141
+  branch: conv2
   specs:
-    mr519_gen (2.2.0.beta1)
+    mr519_gen (2.2.0.beta2)
       msip
       rails
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 08de0765fec0beb2fae0437937475a36447e0517
-  branch: main
+  revision: c8b9c00366680f18a164d7136f3d89954b30f9dc
+  branch: conv2
   specs:
-    msip (2.2.0.beta1)
+    msip (2.2.0.beta2)
       cancancan (~> 3)
       devise (~> 4)
       devise-i18n (~> 1)
@@ -78,38 +78,36 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: de0d78ec6be8c9fb2241c762e23062744646cae4
-  branch: main
+  revision: ba2512ec6fd6cfca9870c132e694a4af9e8f246c
+  branch: conv2
   specs:
-    sal7711_gen (2.2.0.beta1)
+    sal7711_gen (2.2.0.beta2)
       msip
       rails
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: e8fd7db7c5850e9b38d3a7de8b602cb023a5fe38
-  branch: main
+  revision: 1d63e59c7cfeb614fc3725a3db822b1ffa90b21b
+  branch: conv2
   specs:
-    sal7711_web (2.2.0.beta1)
+    sal7711_web (2.2.0.beta2)
       rails
       sal7711_gen
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: b23eed53909beb32b20f1c1e06bfeb938726aebf
-  branch: main
+  revision: 50f52b129febabafcbaf99b625caf882fe5a7c75
+  branch: conv2
   specs:
-    sivel2_gen (2.2.0.beta1)
+    sivel2_gen (2.2.0.beta2)
       color
       devise
       rails
 
-GIT
-  remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: ca44da83211e135a3253b29793c86583143628f9
-  branch: main
+PATH
+  remote: ../sivel2_sjr
   specs:
-    sivel2_sjr (2.2.0.beta1)
+    sivel2_sjr (2.2.0.beta2)
       rails
       sivel2_gen
 
@@ -181,7 +179,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    addressable (2.8.1)
+    addressable (2.8.3)
       public_suffix (>= 2.0.2, < 6.0)
     andand (1.3.3)
     babel-source (5.8.35)
@@ -195,7 +193,7 @@ GEM
     builder (3.2.4)
     camertron-eprun (1.1.1)
     cancancan (3.5.0)
-    capybara (3.38.0)
+    capybara (3.39.0)
       addressable
       matrix
       mini_mime (>= 0.1.3)
@@ -230,7 +228,7 @@ GEM
     debug (1.7.2)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
-    devise (4.9.0)
+    devise (4.9.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -266,7 +264,7 @@ GEM
       railties (>= 6.0.0)
     kgio (2.11.4)
     libxml-ruby (4.0.0)
-    loofah (2.19.1)
+    loofah (2.20.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.8.1)
@@ -293,7 +291,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.14.2)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -314,7 +312,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (5.0.1)
-    puma (6.2.0)
+    puma (6.2.1)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.4)

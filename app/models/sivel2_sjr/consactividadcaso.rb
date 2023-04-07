@@ -178,9 +178,9 @@ class Sivel2Sjr::Consactividadcaso < ActiveRecord::Base
         INNER JOIN msip_oficina AS oficinaac 
           ON oficinaac.id=actividad.oficina_id
         INNER JOIN sivel2_gen_victima AS victima 
-          ON victima.id_persona=persona.id
-        INNER JOIN sivel2_gen_caso AS caso ON victima.id_caso=caso.id
-        INNER JOIN sivel2_sjr_casosjr AS casosjr ON caso.id=casosjr.id_caso
+          ON victima.persona_id=persona.id
+        INNER JOIN sivel2_gen_caso AS caso ON victima.caso_id=caso.id
+        INNER JOIN sivel2_sjr_casosjr AS casosjr ON caso.id=casosjr.caso_id
     "
   end
 

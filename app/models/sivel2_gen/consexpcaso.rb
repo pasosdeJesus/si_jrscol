@@ -6,8 +6,8 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
   def self.edad_familiar(tiempo, numfamiliar)
     "(SELECT #{tiempo} 
            FROM public.msip_persona AS persona, 
-           public.sivel2_gen_victima AS victima WHERE persona.id=victima.id_persona 
-         AND victima.id_caso=caso.id LIMIT 1 OFFSET #{numfamiliar})"
+           public.sivel2_gen_victima AS victima WHERE persona.id=victima.persona_id 
+         AND victima.caso_id=caso.id LIMIT 1 OFFSET #{numfamiliar})"
   end
 
   def self.consulta_consexpcaso
@@ -99,155 +99,155 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
 
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='M' 
-          AND id_rangoedad='7') AS beneficiarios_0_5_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          AND rangoedad_id='7') AS beneficiarios_0_5_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='M' 
-          AND id_rangoedad='8') AS beneficiarios_6_12_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          AND rangoedad_id='8') AS beneficiarios_6_12_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='M' 
-          AND id_rangoedad='9') AS beneficiarios_13_17_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          AND rangoedad_id='9') AS beneficiarios_13_17_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='M' 
-          AND id_rangoedad='10') AS beneficiarios_18_26_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          AND rangoedad_id='10') AS beneficiarios_18_26_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='M' 
-          AND id_rangoedad='11') AS beneficiarios_27_59_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          AND rangoedad_id='11') AS beneficiarios_27_59_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='M' 
-          AND id_rangoedad='12') AS beneficiarios_60m_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          AND rangoedad_id='12') AS beneficiarios_60m_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='M' 
-          AND id_rangoedad='6') AS beneficiarios_se_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          AND rangoedad_id='6') AS beneficiarios_se_fecha_salida,
 
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='F' 
-          AND id_rangoedad='7') AS beneficiarias_0_5_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          AND rangoedad_id='7') AS beneficiarias_0_5_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='F' 
-          AND id_rangoedad='8') AS beneficiarias_6_12_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          AND rangoedad_id='8') AS beneficiarias_6_12_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='F' 
-          AND id_rangoedad='9') AS beneficiarias_13_17_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          AND rangoedad_id='9') AS beneficiarias_13_17_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='F' 
-          AND id_rangoedad='10') AS beneficiarias_18_26_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          AND rangoedad_id='10') AS beneficiarias_18_26_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='F' 
-          AND id_rangoedad='11') AS beneficiarias_27_59_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          AND rangoedad_id='11') AS beneficiarias_27_59_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='F' 
-          AND id_rangoedad='12') AS beneficiarias_60m_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          AND rangoedad_id='12') AS beneficiarias_60m_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='F' 
-          AND id_rangoedad='6') AS beneficiarias_se_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          AND rangoedad_id='6') AS beneficiarias_se_fecha_salida,
 
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='S' 
-          AND id_rangoedad='7') AS beneficiarios_ss_0_5_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          AND rangoedad_id='7') AS beneficiarios_ss_0_5_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='S' 
-          AND id_rangoedad='8') AS beneficiarios_ss_6_12_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          AND rangoedad_id='8') AS beneficiarios_ss_6_12_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='S' 
-          AND id_rangoedad='9') AS beneficiarios_ss_13_17_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          AND rangoedad_id='9') AS beneficiarios_ss_13_17_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='S' 
-          AND id_rangoedad='10') AS beneficiarios_ss_18_26_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          AND rangoedad_id='10') AS beneficiarios_ss_18_26_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='S' 
-          AND id_rangoedad='11') AS beneficiarios_ss_27_59_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          AND rangoedad_id='11') AS beneficiarios_ss_27_59_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='S' 
-          AND id_rangoedad='12') AS beneficiarios_ss_60m_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          AND rangoedad_id='12') AS beneficiarios_ss_60m_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.id_persona
-          WHERE victima.id_caso=caso.id AND msip_persona.sexo='S' 
-          AND id_rangoedad='6') AS beneficiarios_ss_se_fecha_salida,
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          AND rangoedad_id='6') AS beneficiarios_ss_se_fecha_salida,
 
-        ARRAY_TO_STRING(ARRAY(SELECT supracategoria.id_tviolencia || ':' || 
+        ARRAY_TO_STRING(ARRAY(SELECT supracategoria.tviolencia_id || ':' || 
             categoria.supracategoria_id || ':' || categoria.id || ' ' ||
             categoria.nombre FROM public.sivel2_gen_categoria AS categoria, 
             public.sivel2_gen_supracategoria AS supracategoria,
             public.sivel2_gen_acto AS acto
-            WHERE categoria.id=acto.id_categoria
+            WHERE categoria.id=acto.categoria_id
             AND supracategoria.id=categoria.supracategoria_id
-            AND acto.id_caso=caso.id), ', ')
+            AND acto.caso_id=caso.id), ', ')
           AS tipificacion,
         ARRAY_TO_STRING(ARRAY(SELECT nombres || ' ' || apellidos 
           FROM public.msip_persona AS persona, 
-          public.sivel2_gen_victima AS victima WHERE persona.id=victima.id_persona 
-          AND victima.id_caso=caso.id), ', ')
+          public.sivel2_gen_victima AS victima WHERE persona.id=victima.persona_id 
+          AND victima.caso_id=caso.id), ', ')
         AS victimas,
         ARRAY_TO_STRING(ARRAY(SELECT departamento.nombre ||  ' / ' 
           || municipio.nombre 
           FROM public.msip_ubicacion AS ubicacion 
           LEFT JOIN public.msip_departamento AS departamento 
-            ON (ubicacion.id_departamento = departamento.id)
+            ON (ubicacion.departamento_id = departamento.id)
           LEFT JOIN public.msip_municipio AS municipio 
-            ON (ubicacion.id_municipio=municipio.id)
-          WHERE ubicacion.id_caso=caso.id), ', ')
+            ON (ubicacion.municipio_id=municipio.id)
+          WHERE ubicacion.caso_id=caso.id), ', ')
         AS ubicaciones, 
         ARRAY_TO_STRING(ARRAY(SELECT nombre 
           FROM public.sivel2_gen_presponsable AS presponsable, 
           public.sivel2_gen_caso_presponsable AS caso_presponsable
-          WHERE presponsable.id=caso_presponsable.id_presponsable
-          AND caso_presponsable.id_caso=caso.id), ', ')
+          WHERE presponsable.id=caso_presponsable.presponsable_id
+          AND caso_presponsable.caso_id=caso.id), ', ')
         AS presponsables, 
         casosjr.memo1612 as memo1612,
         ultimaatencion.actividad_id AS ultimaatencion_actividad_id
         FROM public.sivel2_gen_conscaso AS conscaso
-        JOIN public.sivel2_sjr_casosjr AS casosjr ON casosjr.id_caso=conscaso.caso_id
-        JOIN public.sivel2_gen_caso AS caso ON casosjr.id_caso = caso.id 
+        JOIN public.sivel2_sjr_casosjr AS casosjr ON casosjr.caso_id=conscaso.caso_id
+        JOIN public.sivel2_gen_caso AS caso ON casosjr.caso_id = caso.id 
         JOIN public.msip_oficina AS oficina ON oficina.id=casosjr.oficina_id
         JOIN public.usuario ON usuario.id = casosjr.asesor
         JOIN public.msip_persona as contacto ON contacto.id=casosjr.contacto_id
         LEFT JOIN public.msip_tdocumento AS tdocumento ON 
             tdocumento.id=contacto.tdocumento_id
         JOIN public.sivel2_gen_victima AS vcontacto ON 
-            vcontacto.id_persona = contacto.id AND vcontacto.id_caso = caso.id
+            vcontacto.persona_id = contacto.id AND vcontacto.caso_id = caso.id
         LEFT JOIN public.sivel2_gen_etnia AS etnia ON
-            vcontacto.id_etnia=etnia.id
+            vcontacto.etnia_id=etnia.id
         LEFT JOIN public.sivel2_sjr_ultimaatencion AS ultimaatencion ON
             ultimaatencion.caso_id = caso.id
       "
@@ -303,8 +303,8 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
             p.anionac, p.mesnac, p.dianac,
             '#{anio.to_i}', '#{mes.to_i}', '#{dia.to_i}') AS edad 
           FROM public.sivel2_gen_victima AS v
-          JOIN public.msip_persona AS p ON p.id=v.id_persona
-          WHERE v.id_caso='#{caso_id.to_i}' AND 
+          JOIN public.msip_persona AS p ON p.id=v.persona_id
+          WHERE v.caso_id='#{caso_id.to_i}' AND 
            p.sexo='#{sexo[0]}') AS sub
         WHERE TRUE=TRUE 
         #{cond_edad}")
@@ -336,8 +336,8 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
   def presenta(atr)
     casosjr = Sivel2Sjr::Casosjr.find(caso_id)
     contacto =  Msip::Persona.find(casosjr.contacto_id)
-    victimac = Sivel2Gen::Victima.where(id_persona: contacto.id)[0]
-    victimasjrc = Sivel2Sjr::Victimasjr.where(id_victima: victimac.id)[0]
+    victimac = Sivel2Gen::Victima.where(persona_id: contacto.id)[0]
+    victimasjrc = Sivel2Sjr::Victimasjr.where(victima_id: victimac.id)[0]
 
     ## 3 primeras ubicaciones
     cubidob = ['pais', 'departamento', 'municipio', 'clase', 'tsitio']
@@ -365,7 +365,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     cprdob = ['presponsable']
     cprsim = ['bloque', 'frente', 'brigada', 'batallon', 'division', 'otro']
     cpr = /presponsable(.*)$/.match(atr.to_s)
-    presponsables = Sivel2Gen::CasoPresponsable.where(id_caso: caso_id)
+    presponsables = Sivel2Gen::CasoPresponsable.where(caso_id: caso_id)
     if cpr
       numero = cpr[1].split("_")[0]
       campo = cpr[1].split("_")[1]
@@ -392,14 +392,14 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
 
     ## 5 primeros actos
     cacto = /acto(.*)$/.match(atr.to_s)
-    actos = Sivel2Gen::Acto.where(id_caso: caso_id)
+    actos = Sivel2Gen::Acto.where(caso_id: caso_id)
     if cacto
       numero = cacto[1].split("_")[0]
       campo = cacto[1].split("_")[1]
       if !actos.empty?
         acto = actos[numero.to_i-1]
         if acto
-          actosjr = Sivel2Sjr::Actosjr.where(id_acto: acto.id)[0]
+          actosjr = Sivel2Sjr::Actosjr.where(acto_id: acto.id)[0]
           case campo
           when 'presponsable', 'categoria'
             return acto.send(campo) ? acto.send(campo).nombre : ''
@@ -433,7 +433,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     cprdob = ['presponsable']
     cprsim = ['bloque', 'frente', 'brigada', 'batallon', 'division', 'otro']
     cpr = /presponsable(.*)$/.match(atr.to_s)
-    presponsables = Sivel2Gen::CasoPresponsable.where(id_caso: caso_id)
+    presponsables = Sivel2Gen::CasoPresponsable.where(caso_id: caso_id)
     if cpr
       numero = cpr[1].split("_")[0]
       campo = cpr[1].split("_")[1]
@@ -464,7 +464,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     desplaza_multi = ::Ability::CAMPOS_DESPLAZA_MULTI
     desplaza_bool = ::Ability::CAMPOS_DESPLAZA_BOOL
     desplaza_espe = ::Ability::CAMPOS_DESPLAZA_ESPECIALES
-    desplazamiento = Sivel2Sjr::Desplazamiento.where(id_caso: caso_id)[0]
+    desplazamiento = Sivel2Sjr::Desplazamiento.where(caso_id: caso_id)[0]
     if desplaza_simples.include? atr.to_s
       if desplazamiento
         if atr.to_s == 'declaro'
@@ -546,12 +546,12 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     if m
       numero = m[1].split("_")[0]
       campo = m[1].split("_")[1]
-      victimasf = Sivel2Gen::Victima.where(id_caso: caso_id).where.not(id_persona: contacto.id).order(:id)
+      victimasf = Sivel2Gen::Victima.where(caso_id: caso_id).where.not(persona_id: contacto.id).order(:id)
       if !victimasf.empty?
         victimaf = victimasf[numero.to_i-1]
         if !victimaf.nil?
-          personaf = Msip::Persona.find(victimaf.id_persona)
-          victimasjrf = Sivel2Sjr::Victimasjr.where(id_victima: victimaf.id)[0]
+          personaf = Msip::Persona.find(victimaf.persona_id)
+          victimasjrf = Sivel2Sjr::Victimasjr.where(victima_id: victimaf.id)[0]
           if cpersonasimple.include? campo
             return personaf.send(campo) ? personaf.send(campo) : ''
           end
@@ -585,7 +585,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
           if especiales.include? campo
             case campo.to_s
             when 'actividadoficio'
-              aof = Sivel2Gen::Actividadoficio.find(victimasjrf.id_actividadoficio)
+              aof = Sivel2Gen::Actividadoficio.find(victimasjrf.actividadoficio_id)
               return aof ? aof.nombre : ''
             when 'numeroanexos'
               return Sivel2Gen::AnexoVictima.where(victima_id: victimaf.id).
@@ -608,7 +608,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
 
     ## 5 Etiquetas
     ceti = /etiqueta(.*)$/.match(atr.to_s)
-    etiquetas = Sivel2Gen::CasoEtiqueta.where(id_caso: caso_id)
+    etiquetas = Sivel2Gen::CasoEtiqueta.where(caso_id: caso_id)
     if ceti
       numero = ceti[1].split("_")[0]
       campo = ceti[1].split("_")[1]
@@ -738,20 +738,20 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
         select{|m| m != ''}.uniq.join('. ')
 
     when 'actividades_perfiles'
-      bids = casosjr.beneficiarios_activos.pluck(:id_persona).uniq
+      bids = casosjr.beneficiarios_activos.pluck(:persona_id).uniq
       Cor1440Gen::Asistencia.where(persona_id: bids).
         joins(:perfilorgsocial).pluck('msip_perfilorgsocial.nombre').
         uniq.join('. ')
 
     when 'actividades_a_humanitaria_tipos_de_ayuda'
-      bids = casosjr.beneficiarios_activos.pluck(:id_persona).uniq
+      bids = casosjr.beneficiarios_activos.pluck(:persona_id).uniq
       dfs = Detallefinanciero.joins(:persona).where(
         'msip_persona.id IN (?)', bids)
       us = dfs.joins(:unidadayuda).pluck('unidadayuda.nombre').uniq
       us.join('. ')
 
     when 'actividades_a_humanitaria_valor_de_ayuda'
-      bids = casosjr.beneficiarios_activos.pluck(:id_persona).uniq
+      bids = casosjr.beneficiarios_activos.pluck(:persona_id).uniq
       dfs = Detallefinanciero.joins(:persona).where(
         'msip_persona.id IN (?)', bids)
       suma = 0
@@ -764,14 +764,14 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       suma
 
     when 'actividades_a_humanitaria_modalidades_entrega'
-      bids = casosjr.beneficiarios_activos.pluck(:id_persona).uniq
+      bids = casosjr.beneficiarios_activos.pluck(:persona_id).uniq
       dfs = Detallefinanciero.joins(:persona).where(
         'msip_persona.id IN (?)', bids)
       us = dfs.joins(:modalidadentrega).pluck('modalidadentrega.nombre').uniq
       us.join('. ')
 
     when 'actividades_a_humanitarias_convenios_financiados'
-      bids = casosjr.beneficiarios_activos.pluck(:id_persona).uniq
+      bids = casosjr.beneficiarios_activos.pluck(:persona_id).uniq
       dfs = Detallefinanciero.joins(:persona).where(
         'msip_persona.id IN (?)', bids)
       us = dfs.joins(:proyectofinanciero).
@@ -983,7 +983,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     when 'contacto_profesion'
       victimac.profesion ? victimac.profesion.nombre : ''
     when 'contacto_actividadoficio'
-      Sivel2Gen::Actividadoficio.find(victimasjrc.id_actividadoficio).nombre
+      Sivel2Gen::Actividadoficio.find(victimasjrc.actividadoficio_id).nombre
     when 'contacto_filiacion'
       victimac.filiacion ? victimac.filiacion.nombre : ''
     when 'contacto_organizacion'
@@ -999,12 +999,12 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     when 'memo'
       caso.memo ? caso.memo : ''
     when 'numeroanexos'
-      Sivel2Gen::AnexoCaso.where(id_caso: caso_id).count
+      Sivel2Gen::AnexoCaso.where(caso_id: caso_id).count
     when 'numero_beneficiarios'
       caso.victimasjr.where(fechadesagregacion: nil).count
     when 'numero_madres_gestantes'
       caso.victimasjr.where(fechadesagregacion: nil).
-        where(id_maternidad: 1).count
+        where(maternidad_id: 1).count
     when 'ultimaatencion_as_humanitaria'
       resp_ultimaatencion(11,110)
     when 'ultimaatencion_ac_juridica'

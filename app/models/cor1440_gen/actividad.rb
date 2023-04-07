@@ -133,10 +133,10 @@ module Cor1440Gen
 
     def casos_asociados
       lp = self.asistencia.pluck(:persona_id) 
-      lv = Sivel2Gen::Victima.where(id_persona: lp).joins(:victimasjr).
+      lv = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
         where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
               self.fecha)
-      lc = lv.pluck(:id_caso)
+      lc = lv.pluck(:caso_id)
       if lc.empty?
         return ""
       else
@@ -147,7 +147,7 @@ module Cor1440Gen
     def cuenta_victimas_condicion
       cuenta = 0
       lp = self.asistencia.pluck(:persona_id) 
-      victimas = Sivel2Gen::Victima.where(id_persona: lp).joins(:victimasjr).
+      victimas = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
         where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
               self.fecha)
       victimas.each do |v|
@@ -163,12 +163,12 @@ module Cor1440Gen
     def personas_victimas_condicion
       ids = []
       lp = self.asistencia.pluck(:persona_id) 
-      victimas = Sivel2Gen::Victima.where(id_persona: lp).joins(:victimasjr).
+      victimas = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
         where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
               self.fecha)
       victimas.each do |v|
         if (yield(v))
-          ids << v.id_persona
+          ids << v.persona_id
         end
       end
       ids
@@ -204,10 +204,10 @@ module Cor1440Gen
 
     def poblacion_nuevos_ids
       idp += personas_asistentes_condicion {|a| 
-        Sivel2Gen::Victima.where(id_persona: a.persona_id).joins(:victimasjr).
+        Sivel2Gen::Victima.where(persona_id: a.persona_id).joins(:victimasjr).
           where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
                 self.fecha).count > 0 &&
-          Sivel2Gen::Victima.where(id_persona: a.persona_id).take.caso.fecha.
+          Sivel2Gen::Victima.where(persona_id: a.persona_id).take.caso.fecha.
             at_beginning_of_month >= self.fecha.at_beginning_of_month
       }
       idp.uniq!
@@ -223,14 +223,14 @@ module Cor1440Gen
       idcol = 170 # Colombia
 
       idp += personas_asistentes_condicion {|a| 
-        Sivel2Gen::Victima.where(id_persona: a.persona_id).joins(:victimasjr).
+        Sivel2Gen::Victima.where(persona_id: a.persona_id).joins(:victimasjr).
           where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
                 self.fecha).count > 0 &&
-               Sivel2Gen::Victima.where(id_persona: a.persona_id).
+               Sivel2Gen::Victima.where(persona_id: a.persona_id).
                joins(:victimasjr).
                where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
                      self.fecha).take.caso.migracion.count > 0 &&
-                    (a.persona.nacionalde == idcol || a.persona.id_pais == idcol)
+                    (a.persona.nacionalde == idcol || a.persona.pais_id == idcol)
       }
       idp.uniq!
       idp.join(",")
@@ -468,21 +468,21 @@ module Cor1440Gen
 
       when 'num_con_discapacidad'
         cuenta_victimas_condicion { |v|
-          vs = Sivel2Sjr::Victimasjr.where(id_victima: v.id)
+          vs = Sivel2Sjr::Victimasjr.where(victima_id: v.id)
           vs.count > 0 && vs.take.discapacidad &&
             vs.take.discapacidad && vs.take.discapacidad.nombre != 'NINGUNA'
         }
 
       when 'num_con_discapacidad_ids'
         idp = personas_victimas_condicion { |v|
-          vs = Sivel2Sjr::Victimasjr.where(id_victima: v.id)
+          vs = Sivel2Sjr::Victimasjr.where(victima_id: v.id)
           vs.count > 0 && vs.take.discapacidad &&
             vs.take.discapacidad && vs.take.discapacidad.nombre != 'NINGUNA'
         }
         idp += personas_asistentes_condicion {|a|
-          if Sivel2Gen::Victima.where(id_persona: a.persona_id).count > 0
-            v = Sivel2Gen::Victima.where(id_persona: a.persona_id).take
-            vs = Sivel2Sjr::Victimasjr.where(id_victima: v.id)
+          if Sivel2Gen::Victima.where(persona_id: a.persona_id).count > 0
+            v = Sivel2Gen::Victima.where(persona_id: a.persona_id).take
+            vs = Sivel2Sjr::Victimasjr.where(victima_id: v.id)
             vs.count > 0 && vs.take.discapacidad &&
               vs.take.discapacidad && vs.take.discapacidad.nombre != 'NINGUNA'
           else

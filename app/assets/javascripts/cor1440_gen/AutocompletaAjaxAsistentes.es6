@@ -19,7 +19,7 @@ export default class Cor1440GenAutocompletaAjaxAsistentes {
         return
     }
 
-    let d = '&id_persona=' + idPersona
+    let d = '&persona_id=' + idPersona
     d += '&ac_asistente_persona=true'
     const a = root.puntomontaje + 'personas/datos'
 

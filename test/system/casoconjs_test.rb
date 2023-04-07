@@ -243,16 +243,16 @@ class CasoconjsTest < ApplicationSystemTestCase
 
     # Refugio
     click_on "Refugio"
-    if (!find(:css, '#caso_casosjr_attributes_id_salida').visible?)
+    if (!find(:css, '#caso_casosjr_attributes_salida_id').visible?)
       click_on "Refugio"
     end
     expect(page).to have_field('Fecha de Salida', with: '2014-08-03')
     within ("div#refugio") do 
-      find('#caso_casosjr_attributes_id_salida').click
+      find('#caso_casosjr_attributes_salida_id').click
       #page.save_screenshot('tmp/s-ref0.png')
       select('VENEZUELA / ARAGUA', from: 'Sitio de Salida') 
       fill_in "Fecha de Llegada", with: '2014-08-04'
-      find('#caso_casosjr_attributes_id_llegada').click
+      find('#caso_casosjr_attributes_llegada_id').click
       select('COLOMBIA / BOYACÁ', from: 'Sitio de Llegada') 
       select('R2000 RAZA', from: 'Causa del Refugio') 
       fill_in "Observaciones", with: 'Observaciones refugio'
@@ -345,8 +345,8 @@ class CasoconjsTest < ApplicationSystemTestCase
     #page.save_screenshot('tmp/s-a2.png')
     expect(find('#antecedentes')).to have_field( 'Categoria')
     within ("#antecedentes") do 
-      find_field('caso_acto_id_presponsable').click
-      select('AUC', from: 'caso_acto_id_presponsable') 
+      find_field('caso_acto_presponsable_id').click
+      select('AUC', from: 'caso_acto_presponsable_id') 
       select('A23 HERIDO', from: 'Categoria') 
       find_field('Víctima').click
       select('Nombres Solicitante Apellidos Solicitante', from: 'Víctima') 

@@ -123,7 +123,7 @@ class Consgifmm < ActiveRecord::Base
     self.actividad.casosjr.each do |c|
       c.caso.victima.each do |v|
         if (yield(v))
-          ids << v.id_persona
+          ids << v.persona_id
         end
       end
     end
@@ -880,11 +880,11 @@ class Consgifmm < ActiveRecord::Base
       LEFT JOIN msip_departamento ON
         msip_ubicacionpre.departamento_id=msip_departamento.id
       LEFT JOIN depgifmm ON
-        msip_departamento.id_deplocal=depgifmm.id
+        msip_departamento.deplocal_cod=depgifmm.id
       LEFT JOIN msip_municipio ON
         msip_ubicacionpre.municipio_id=msip_municipio.id
       LEFT JOIN mungifmm ON
-        (msip_departamento.id_deplocal*1000+msip_municipio.id_munlocal)=
+        (msip_departamento.deplocal_cod*1000+msip_municipio.munlocal_cod)=
           mungifmm.id
       WHERE cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL
       AND (detallefinanciero.proyectofinanciero_id IS NULL OR

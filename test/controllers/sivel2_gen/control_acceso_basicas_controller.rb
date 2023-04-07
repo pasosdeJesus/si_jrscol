@@ -56,7 +56,7 @@ module Sivel2Gen
         when "intervalo"
           registro = modelo.create!(MODELO_PARAMS.merge({rango: "SIN INFORMACIÓN"}))
         when "supracategoria"
-          registro = modelo.create!(MODELO_PARAMS.merge({id: 1360, id_tviolencia: "D"}))
+          registro = modelo.create!(MODELO_PARAMS.merge({id: 1360, tviolencia_id: "D"}))
         else
           registro = modelo.create!(MODELO_PARAMS)
         end

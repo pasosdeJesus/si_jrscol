@@ -24,7 +24,7 @@
           <div class="collapse multi-collapse campos_persona" id="basicosfamiliar-<%=fp.object.id%>">
             <div class='campos-persona-con-victima-id'>
               <%= f.input :id, as: :hidden %> 
-              <%= fvictimasjr.input :id_victima, as: :hidden %> 
+              <%= fvictimasjr.input :victima_id, as: :hidden %> 
               <%= fvictimasjr.input :id, as: :hidden %> 
               <%= render partial: 'msip/personas/persona_campos', 
                 locals: {f: fp, fvictima: f, fvictimasjr: fvictimasjr} %>

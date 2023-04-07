@@ -16,14 +16,14 @@ module Sivel2Sjr
       apellidos: "Perez",
       sexo: 'M',
       anionac: 1980,
-      id_pais: 170,
+      pais_id: 170,
       tdocumento_id: 3,
       numerodocumento: 1,
       created_at: "2021-04-14",
     }
 
     PRUEBA_CASOSJR = {
-      id_caso: 0, # por llenar
+      caso_id: 0, # por llenar
       contacto_id: 0, # por llenar
       fecharec: "2021-04-14",
       asesor: 1,
@@ -69,12 +69,12 @@ module Sivel2Sjr
       persona= Msip::Persona.create(PRUEBA_PERSONA)
       assert persona.valid?
       victima= Sivel2Gen::Victima.create({
-        id_caso: caso.id,
-        id_persona: persona.id
+        caso_id: caso.id,
+        persona_id: persona.id
       })
       assert victima.valid?
       casosjr = Sivel2Sjr::Casosjr.create(PRUEBA_CASOSJR.merge(
-        {id_caso: caso.id, contacto_id: persona.id}))
+        {caso_id: caso.id, contacto_id: persona.id}))
       assert casosjr.valid?
       u1 = Msip::Ubicacionpre.create(PRUEBA_UBICACIONPRE1)
       assert u1.valid?

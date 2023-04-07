@@ -127,14 +127,14 @@ $(document).on('change', 'input[id^=caso_migracion_attributes_][id$=_fechallegad
   jqthis.parent().parent().find('input[name=subclasificacion]').val(ue + " - " + ul)
 
 # En desplazamientos al cambiar sitio de salida o llegada se recalcula clasificación y subclasificación de desplazamiento
-$(document).on('change', 'select[id^=caso_desplazamiento_attributes_][id$=id_expulsion]', (e) ->
+$(document).on('change', 'select[id^=caso_desplazamiento_attributes_][id$=expulsion_id]', (e) ->
   ide=$(this).attr('id')
   idl=ide.replace('expulsion', 'llegada') 
   llena_clasifdesp(ide, idl, $(this))
 )
 
 # En desplazamientos, lista de sitios de llegada se cálcula
-$(document).on('change', 'select[id^=caso_desplazamiento_attributes_][id$=id_llegada]', (e) ->
+$(document).on('change', 'select[id^=caso_desplazamiento_attributes_][id$=llegada_id]', (e) ->
   idl=$(this).attr('id')
   ide=idl.replace('llegada', 'expulsion') 
   llena_clasifdesp(ide, idl, $(this))
@@ -145,7 +145,7 @@ $(document).on('change', 'select[id^=caso_desplazamiento_attributes_][id$=id_lle
 $(document).on('click', 'a.fichacambia[href^="#desplazamiento"]', (e) ->
   # e.preventDefault() No prevenir para que opere normal el cambio de
   # pestaña que implementa sivel2_sjr
-  $('select[id^=caso_desplazamiento_attributes_][id$=id_expulsion]').
+  $('select[id^=caso_desplazamiento_attributes_][id$=expulsion_id]').
     each((i, e) -> 
       ide=$(e).attr('id')
       idl=ide.replace('expulsion', 'llegada') 

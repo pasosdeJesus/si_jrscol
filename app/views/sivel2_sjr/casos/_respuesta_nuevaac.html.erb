@@ -66,7 +66,7 @@
         <% elem2 = elem1 %>
         <% if @registro && @registro.victima %>
           <% elem2 = elem1 + @registro.victima.
-            pluck(:id_persona).map { |idp| "persona-#{idp}"} %>
+            pluck(:persona_id).map { |idp| "persona-#{idp}"} %>
         <% end %>
         <% lfun2 = "jrs_revisa_y_agrega_paramscv(this,  event, [" +
           elem2.map {|cv| "'#{cv}'"}.join(", ") + "], " +

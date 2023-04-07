@@ -10,10 +10,10 @@ module GifmmHelper
     p = Msip::Persona.find(idp)
     mc = p.caso.joins(
       'JOIN sivel2_sjr_casosjr ON ' +
-      'sivel2_gen_caso.id=sivel2_sjr_casosjr.id_caso').
+      'sivel2_gen_caso.id=sivel2_sjr_casosjr.caso_id').
       where('sivel2_sjr_casosjr.fecharec <= ?', fecha).
       order('sivel2_sjr_casosjr.fecharec DESC').find { |c| 
-      v = c.victima.where(id_persona: idp).take
+      v = c.victima.where(persona_id: idp).take
       (v.victimasjr && (v.victimasjr.fechadesagregacion.nil? || 
        v.victimasjr.fechadesagregacion > fecha)) &&
       c.migracion.count > 0 &&
@@ -53,13 +53,13 @@ module GifmmHelper
   def self.etnia_de_beneficiario(p, fecha)
     r = ''
     ce = p.caso.order('fecha DESC').find { |c|
-      v = c.victima.where(id_persona: p.id).take
+      v = c.victima.where(persona_id: p.id).take
       (v.victimasjr.fechadesagregacion.nil? || 
        v.victimasjr.fechadesagregacion > fecha) &&
       v.etnia
     }
     if ce
-      r = ce.victima.where(id_persona: p.id).take.etnia.nombre
+      r = ce.victima.where(persona_id: p.id).take.etnia.nombre
     end
     r
   end

@@ -73,9 +73,9 @@ module Cor1440Gen
         b.persona_actividad_perfil,
         COALESCE(mun.nombre, '') || ' / ' || COALESCE(dep.nombre, '') AS actividad_municipio,
         a.id AS actividad_id,
-        ARRAY_TO_STRING(ARRAY(SELECT DISTINCT id_caso
+        ARRAY_TO_STRING(ARRAY(SELECT DISTINCT caso_id
           FROM sivel2_gen_victima
-          WHERE id_persona=p.id), ',') AS persona_caso_ids,
+          WHERE persona_id=p.id), ',') AS persona_caso_ids,
         p.id AS persona_id
         FROM cor1440_gen_benefext AS b 
         JOIN cor1440_gen_actividad AS a ON a.id=b.actividad_id

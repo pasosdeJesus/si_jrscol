@@ -15,14 +15,14 @@ class AsesorhistoricoTest < ActiveSupport::TestCase
       apellidos: "Perez",
       sexo: 'M',
       anionac: 1980,
-      id_pais: 170,
+      pais_id: 170,
       tdocumento_id: 1,
       numerodocumento: 4,
       created_at: "2021-04-14",
     }
 
     PRUEBA_CASOSJR = {
-      id_caso: 0, # por llenar
+      caso_id: 0, # por llenar
       contacto_id: 0, # por llenar
       fecharec: "2021-04-14",
       asesor: 1,
@@ -45,15 +45,15 @@ class AsesorhistoricoTest < ActiveSupport::TestCase
     #puts persona.errors.full_messages.join('. ')
     assert persona.valid?
     victima= Sivel2Gen::Victima.create({
-      id_caso: caso.id,
-      id_persona: persona.id
+      caso_id: caso.id,
+      persona_id: persona.id
     })
     assert victima.valid?
     casosjr = Sivel2Sjr::Casosjr.create(PRUEBA_CASOSJR.merge(
-      {id_caso: caso.id, contacto_id: persona.id}))
+      {caso_id: caso.id, contacto_id: persona.id}))
     assert casosjr.valid?
     asesorhistorico = ::Asesorhistorico.new(PRUEBA_ASESORHISTORICO)
-    asesorhistorico.casosjr_id=casosjr.id_caso
+    asesorhistorico.casosjr_id=casosjr.caso_id
     assert asesorhistorico.valid?
     asesorhistorico.destroy
   end
