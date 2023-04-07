@@ -89,7 +89,7 @@ module Sivel2Sjr
           fechacreacion: Date.today()
         )
         pr.save!
-        params[:id_nuevopr] = pr.id
+        params[:nuevopr_id] = pr.id
       end
       @params = params
       respond_to do |format|

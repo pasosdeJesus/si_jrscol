@@ -3,14 +3,14 @@ module PlantillaHelper
   # Inserta n columnas antes de la columna col
   # moviendo las que estaban entre la columna col y col_final
   # a col+n hasta col_final+n
-  def self.inserta_n_columnas(n, col, col_final, id_plantilla)
+  def self.inserta_n_columnas(n, col, col_final, plantilla_id)
     i = col_final
     imasn = sigcolp(col_final, n)
     loop do
       ActiveRecord::Base.connection.execute(
         "UPDATE public.heb412_gen_campoplantillahcm "\
         "SET columna='#{imasn}' "\
-        "WHERE columna='#{i}' AND plantillahcm_id= #{id_plantilla}"
+        "WHERE columna='#{i}' AND plantillahcm_id= #{plantilla_id}"
       )
       if i == col 
         break
@@ -22,8 +22,8 @@ module PlantillaHelper
 
   # Elimina n columnas entre col y col+n-1
   # Mueve las que están en col+n y col_final a col y col_final-n
-  def self.elimina_n_columnas(n, col, col_final, id_plantilla)
-    #puts "OJO elimina_n_columnas(n=#{n}, col=#{col}, col_final=#{col_final}, id_plantilla=#{id_plantilla}"
+  def self.elimina_n_columnas(n, col, col_final, plantilla_id)
+    #puts "OJO elimina_n_columnas(n=#{n}, col=#{col}, col_final=#{col_final}, plantilla_id=#{plantilla_id}"
     i = col
     imasn = sigcolp(col, n)
     if colmayor(imasn, col_final)
@@ -34,7 +34,7 @@ module PlantillaHelper
       ActiveRecord::Base.connection.execute(
         "UPDATE public.heb412_gen_campoplantillahcm "\
         "SET columna='#{i}' "\
-        "WHERE columna='#{imasn}' AND plantillahcm_id= #{id_plantilla}"
+        "WHERE columna='#{imasn}' AND plantillahcm_id= #{plantilla_id}"
       )
       if imasn == col_final
         break
@@ -47,7 +47,7 @@ module PlantillaHelper
 
   ## Para correr un bloque de columnas a la derecha se requeire
   ## la columna mayor y la columna menor límites del bloque
-  def self.corre_columnas_a_derecha(col_mayor, col_menor, id_plantilla)
+  def self.corre_columnas_a_derecha(col_mayor, col_menor, plantilla_id)
     columnas = []
     col = col_mayor
     while col!=col_menor do
@@ -56,11 +56,11 @@ module PlantillaHelper
     end 
     columnas.each do |co|
       ActiveRecord::Base.connection.execute(
-        "UPDATE public.heb412_gen_campoplantillahcm SET columna='#{sigcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= #{id_plantilla}")
+        "UPDATE public.heb412_gen_campoplantillahcm SET columna='#{sigcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= #{plantilla_id}")
     end 
   end
 
-  def self.corre_columnas_a_izquierda(col_menor, col_mayor, id_plantilla)
+  def self.corre_columnas_a_izquierda(col_menor, col_mayor, plantilla_id)
     columnas = []
     col = col_menor
     while col!=col_mayor do
@@ -69,7 +69,7 @@ module PlantillaHelper
     end 
     columnas.each do |co|
       ActiveRecord::Base.connection.execute(
-        "UPDATE public.heb412_gen_campoplantillahcm SET columna='#{prevcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= #{id_plantilla}")
+        "UPDATE public.heb412_gen_campoplantillahcm SET columna='#{prevcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= #{plantilla_id}")
     end 
   end
 

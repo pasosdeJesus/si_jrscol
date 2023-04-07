@@ -421,8 +421,8 @@ module UnificarHelper
     end
 
 
-    ap1 = Cor1440Gen::Asistencia.where(persona_id: p1.id).pluck(&:id_actividad)
-    ap2 = Cor1440Gen::Asistencia.where(persona_id: p2.id).pluck(&:id_actividad)
+    ap1 = Cor1440Gen::Asistencia.where(persona_id: p1.id).pluck(&:actividad_id)
+    ap2 = Cor1440Gen::Asistencia.where(persona_id: p2.id).pluck(&:actividad_id)
     ac = ap1 & ap2
     if ac.count == 1
       menserr += "La actividad #{ac.first} tiene ambos beneficiarios como asistentes; por previción antes debe eliminar alguno de esos asistentes de esa actividad.\n"

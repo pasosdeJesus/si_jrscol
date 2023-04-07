@@ -23,8 +23,8 @@ module Sivel2Gen
           end
           return
         end
-        @victima.id_caso = params[:caso_id]
-        @victima.id_persona = @persona.id
+        @victima.caso_id = params[:caso_id]
+        @victima.persona_id = @persona.id
         @victima.victimasjr = @victimasjr
         if @victima.save(validate: false)
           respond_to do |format|

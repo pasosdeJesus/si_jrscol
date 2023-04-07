@@ -83,11 +83,11 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     # Paso 2
     # Otra consulta
-    q2="CREATE VIEW #{cons2} AS SELECT respuesta_id, derecho_id as derecho_id, id_#{pContar}
+    q2="CREATE VIEW #{cons2} AS SELECT respuesta_id, derecho_id as derecho_id, #{pContar}_id
         FROM public.sivel2_sjr_#{pContar}_respuesta AS ar, 
           public.sivel2_sjr_#{pContar}_derecho AS ad 
         WHERE 
-          ar.id_#{pContar}=ad.#{pContar}_id "
+          ar.#{pContar}_id=ad.#{pContar}_id "
     puts "q2 es #{q2}"
     ActiveRecord::Base.connection.execute q2
 
@@ -99,7 +99,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
     (cvp1.respuesta_id=cvp2.respuesta_id AND cvp1.derecho_id=cvp2.derecho_id)"
     where3 = consulta_and_sinap(where3, "cvp1.derecho_id", "derecho.id")
     que3 << ["derecho.nombre AS derecho", "Derecho"]
-    que3 << ["(SELECT nombre FROM public.sivel2_sjr_#{pContar} WHERE id=id_#{pContar}) AS atendido", 
+    que3 << ["(SELECT nombre FROM public.sivel2_sjr_#{pContar} WHERE id=#{pContar}_id) AS atendido", 
       @pque[pContar] ]
 
     #puts que3
