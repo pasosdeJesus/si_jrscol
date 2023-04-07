@@ -104,8 +104,10 @@ GIT
       devise
       rails
 
-PATH
-  remote: ../sivel2_sjr
+GIT
+  remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
+  revision: 50b7645b96655f73556d81acd84a5ef96ea148bf
+  branch: conv2
   specs:
     sivel2_sjr (2.2.0.beta2)
       rails

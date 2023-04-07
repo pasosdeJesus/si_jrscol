@@ -11,23 +11,23 @@ module Msip
       foreign_key: "llegadaubicacionpre_id", validate: true, 
       dependent: :destroy
 
-    attr_accessor :pais_id
+#    attr_accessor :pais_id
 
-    def pais_id
-      self.pais_id
-    end
+#    def pais_id
+#      self.pais_id
+#    end
 
-    def departamento_id
-      self.departamento_id
-    end
+#    def departamento_id
+#      self.departamento_id
+#    end
 
-    def municipio_id
-      self.municipio_id
-    end
+#    def municipio_id
+#      self.municipio_id
+#    end
 
-    def clase_id
-      self.clase_id
-    end
+#    def clase_id
+#      self.clase_id
+#    end
 
   end
 end

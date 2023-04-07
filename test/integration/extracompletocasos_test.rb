@@ -26,22 +26,6 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
     created_at: '2021-06-05',
   }
 
-  PRUEBA_PERSONA = {
-    nombres: "Juan",
-    apellidos: "Perez",
-    sexo: 'M',
-    anionac: 1980,
-    pais_id: 170,
-    tdocumento_id: 1,
-    numerodocumento: 2,
-    created_at: "2021-04-14",
-  }
-
-  PRUEBA_CASOSJR = {
-    fecharec: '2021-06-05',
-  }
-
-
   test "extracompleto sin job" do
     get sivel2_gen.casos_path
     assert_response :success
