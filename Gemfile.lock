@@ -25,8 +25,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 2a069da871ead3a031082732c58703f90e0ca7af
-  branch: conv2
+  revision: d900a52f69d87684a0bad1948b69f5812a7e7fa7
+  branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
       devise
@@ -38,8 +38,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 4face5f255e8cad917567cd2b1ae67f256958fe4
-  branch: conv2
+  revision: fb3b8c2f810a93bd17655d1db04946cb8e8a55dd
+  branch: main
   specs:
     heb412_gen (2.2.0.beta2)
       mr519_gen
@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 081cddb10db3dfbb404483e3d3a86db26ef25141
-  branch: conv2
+  revision: 3ebb0575f23781bb53f1942b2ef70f7ff4719365
+  branch: main
   specs:
     mr519_gen (2.2.0.beta2)
       msip
@@ -58,8 +58,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 50a990e10869299e6898fffe761191ec397ca0b4
-  branch: conv2
+  revision: fe87198e3c81056cda121f744f5f96694fda2e3f
+  branch: main
   specs:
     msip (2.2.0.beta2)
       cancancan (~> 3)
@@ -78,8 +78,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: ba2512ec6fd6cfca9870c132e694a4af9e8f246c
-  branch: conv2
+  revision: bc12cff0052c10183438ca7dca83e4a198750fef
+  branch: main
   specs:
     sal7711_gen (2.2.0.beta2)
       msip
@@ -87,8 +87,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: 1d63e59c7cfeb614fc3725a3db822b1ffa90b21b
-  branch: conv2
+  revision: e2b32cbf544adee9fc90c4fcea73c28d3164eb65
+  branch: main
   specs:
     sal7711_web (2.2.0.beta2)
       rails
@@ -96,8 +96,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 50f52b129febabafcbaf99b625caf882fe5a7c75
-  branch: conv2
+  revision: c116df66d46937370cf72b0d931f368c3c9f743a
+  branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
       color
@@ -106,8 +106,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: 50b7645b96655f73556d81acd84a5ef96ea148bf
-  branch: conv2
+  revision: 3d0ae79b2c8e6e9c4ab0aec52335196e1f28479b
+  branch: main
   specs:
     sivel2_sjr (2.2.0.beta2)
       rails
