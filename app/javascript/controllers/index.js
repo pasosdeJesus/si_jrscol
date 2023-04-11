@@ -13,6 +13,9 @@ application.register("msip--cancelar-vacio-es-eliminar", Msip__CancelarVacioEsEl
 import Msip__SindocautController from "./msip/sindocaut_controller"
 application.register("msip--sindocaut", Msip__SindocautController)
 
+import PersonaHuellaController from "./persona_huella_controller"
+application.register("persona-huella", PersonaHuellaController)
+
 import PersonaPptController from "./persona_ppt_controller"
 application.register("persona-ppt", PersonaPptController)
 

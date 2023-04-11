@@ -47,6 +47,8 @@ module Sivel2Sjrcol
 
     config.x.msip_docid_obligatorio = true
 
+    config.x.cor1440_gen_lectorhuella = true
+
 
     # heb412
     config.x.heb412_ruta = Pathname(

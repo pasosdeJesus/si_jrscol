@@ -45,6 +45,8 @@ module Msip
     validates :apellidos, presence: true, allow_blank: false,
       length: { maximum: 100}
 
+    validates :huella, length: {maximum: 256}
+
     validates :tdocumento, presence: true, allow_blank: false
     validates :numerodocumento, presence: true, allow_blank: false, 
       uniqueness: { scope: :tdocumento,
