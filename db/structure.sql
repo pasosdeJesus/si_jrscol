@@ -2066,6 +2066,7 @@ CREATE TABLE public.msip_persona (
     ultimoperfilorgsocial_id integer,
     ultimoestatusmigratorio_id integer,
     ppt character varying(32),
+    huella character varying(1024),
     CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
     CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
     CONSTRAINT persona_sexo_check CHECK (('MHO'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
@@ -16917,6 +16918,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230406023817'),
 ('20230406092509'),
 ('20230407010923'),
-('20230407011451');
+('20230407011451'),
+('20230408143528');
 
 
