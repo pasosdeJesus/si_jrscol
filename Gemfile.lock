@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 449d3104c47be66aad84886ce59473a121969929
+  revision: 623ad7a6bd2d74bd653535e3ca3251ac07483f72
   branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: fb3b8c2f810a93bd17655d1db04946cb8e8a55dd
+  revision: 8e8892a34187f8db09044d2d692b473fbd9c8cf6
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 3ebb0575f23781bb53f1942b2ef70f7ff4719365
+  revision: 72b3b17094f6ffef42d76d6b50c02a553ee04cb8
   branch: main
   specs:
     mr519_gen (2.2.0.beta2)
@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: fe87198e3c81056cda121f744f5f96694fda2e3f
+  revision: ddf576d6fc9288c5900325d0ff9d19933e14ce8c
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -78,7 +78,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: bc12cff0052c10183438ca7dca83e4a198750fef
+  revision: c16b9f2bc51fd7686343e44b350485e2cd50a99f
   branch: main
   specs:
     sal7711_gen (2.2.0.beta2)
@@ -87,7 +87,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: e2b32cbf544adee9fc90c4fcea73c28d3164eb65
+  revision: 986bf974dd3a2714016edabc1757eea87e1d5b35
   branch: main
   specs:
     sal7711_web (2.2.0.beta2)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: c116df66d46937370cf72b0d931f368c3c9f743a
+  revision: 8ffd6b837e39450bf8c6c884b38a80eb93b1a466
   branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
@@ -204,7 +204,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    caxlsx (3.3.0)
+    caxlsx (3.4.0)
       htmlentities (~> 4.3, >= 4.3.4)
       marcel (~> 1.0)
       nokogiri (~> 1.10, >= 1.10.4)
@@ -294,7 +294,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
-    nokogiri (1.14.2)
+    nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     odf-report (0.7.3)
@@ -314,7 +314,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (5.0.1)
-    puma (6.2.1)
+    puma (6.2.2)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.4)
@@ -361,7 +361,7 @@ GEM
     raindrops (0.20.1)
     rake (13.0.6)
     redcarpet (3.6.0)
-    regexp_parser (2.7.0)
+    regexp_parser (2.8.0)
     reline (0.3.3)
       io-console (~> 0.5)
     responders (3.1.0)
@@ -500,4 +500,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.4.11
+   2.4.12
