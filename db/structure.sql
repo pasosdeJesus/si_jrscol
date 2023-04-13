@@ -6843,59 +6843,59 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_0_5_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'H'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_0_5_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_6_12_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'H'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_6_12_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_13_17_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'H'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_13_17_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_18_26_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'H'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_18_26_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_27_59_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'H'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_27_59_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_60m_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'H'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_60m_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_se_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'H'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_se_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'F'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarias_0_5_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarias_0_5_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'F'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarias_6_12_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarias_6_12_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'F'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarias_13_17_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarias_13_17_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'F'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarias_18_26_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarias_18_26_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'F'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarias_27_59_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarias_27_59_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'F'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarias_60m_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarias_60m_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'F'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarias_se_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'M'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarias_se_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
@@ -6924,6 +6924,34 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
           WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'S'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_ss_se_fecha_salida,
+    ( SELECT count(*) AS count
+           FROM (public.sivel2_gen_victima victima
+             JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_os_0_5_fecha_salida,
+    ( SELECT count(*) AS count
+           FROM (public.sivel2_gen_victima victima
+             JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_os_6_12_fecha_salida,
+    ( SELECT count(*) AS count
+           FROM (public.sivel2_gen_victima victima
+             JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_os_13_17_fecha_salida,
+    ( SELECT count(*) AS count
+           FROM (public.sivel2_gen_victima victima
+             JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_os_18_26_fecha_salida,
+    ( SELECT count(*) AS count
+           FROM (public.sivel2_gen_victima victima
+             JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_os_27_59_fecha_salida,
+    ( SELECT count(*) AS count
+           FROM (public.sivel2_gen_victima victima
+             JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_os_60m_fecha_salida,
+    ( SELECT count(*) AS count
+           FROM (public.sivel2_gen_victima victima
+             JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_os_se_fecha_salida,
     array_to_string(ARRAY( SELECT (((((((supracategoria.tviolencia_id)::text || ':'::text) || categoria.supracategoria_id) || ':'::text) || categoria.id) || ' '::text) || (categoria.nombre)::text)
            FROM public.sivel2_gen_categoria categoria,
             public.sivel2_gen_supracategoria supracategoria,
@@ -16646,6 +16674,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230408143528'),
 ('20230418155831'),
 ('20230418194845'),
-('20230419174417');
+('20230419174417'),
+('20230424110835'),
+('20230424175427'),
+('20230424182752');
 
 

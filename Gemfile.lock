@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: f1d46023e0c28440b62bdae3e690ac61ca6b9ce5
+  revision: a88dc54a43545cc2242a1a79d2b5be2637415bac
   branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 5249d1100a2832c0351d5ad6a82a7193258a401a
+  revision: 89e25cf36edde558a982849a6ff87ee510ff10b3
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: e8b3e64445d047a8c8470156d239011bb310f651
+  revision: dc219cc315057122dd8a1d480eabcd3f4c377e1c
   branch: main
   specs:
     mr519_gen (2.2.0.beta2)
@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 89ca2e8dbb2e8fddf287d8c58d4d96374c521f41
+  revision: dea7b590b01568aa133546f29940db5fb574a2b8
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -78,7 +78,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: bc0da89738d96a0b0a1f9dc523d9554f046a0840
+  revision: 3a2bece7d3928762e1b9923c950ee1fb79604e6b
   branch: main
   specs:
     sal7711_gen (2.2.0.beta2)
@@ -87,7 +87,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: 9b4afe31d5901748e9e7e023d60e791206bdb81b
+  revision: 16fdb8c15a0bd34a9c0391a4f34a19ea0dfdd7ba
   branch: main
   specs:
     sal7711_web (2.2.0.beta2)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: b62b872c244c2052f4fb3cf865cc05b4278147a8
+  revision: 24f282f9a8b02ab06bcdd66f776468c58e4b36bd
   branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
@@ -254,7 +254,7 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     htmlentities (4.3.4)
-    i18n (1.12.0)
+    i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
     irb (1.6.4)
@@ -304,7 +304,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-    pg (1.5.1)
+    pg (1.5.3)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
@@ -317,7 +317,7 @@ GEM
     puma (6.2.2)
       nio4r (~> 2.0)
     racc (1.6.2)
-    rack (2.2.6.4)
+    rack (2.2.7)
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (7.0.4.3)
@@ -438,7 +438,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   x86_64-openbsd
