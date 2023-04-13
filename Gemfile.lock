@@ -25,11 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-<<<<<<< HEAD
   revision: fbffa58574b1b1522d1f219413e1bf4e80673e88
-=======
-  revision: f1d46023e0c28440b62bdae3e690ac61ca6b9ce5
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
@@ -42,11 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-<<<<<<< HEAD
   revision: 34edd70dcddb486c4a4db33adeda1f180f5c9378
-=======
-  revision: 5249d1100a2832c0351d5ad6a82a7193258a401a
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -65,11 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-<<<<<<< HEAD
   revision: f9e2d3dd9300505067cf74d78a5d290c606218ec
-=======
-  revision: e8b3e64445d047a8c8470156d239011bb310f651
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     mr519_gen (2.2.0.beta2)
@@ -78,11 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-<<<<<<< HEAD
   revision: a32b1535c83c0cadea22e4c817e68b83a3a5d443
-=======
-  revision: 89ca2e8dbb2e8fddf287d8c58d4d96374c521f41
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -102,11 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-<<<<<<< HEAD
   revision: 7b4725b631b270933d451e6eaf1717fafbd05354
-=======
-  revision: bc0da89738d96a0b0a1f9dc523d9554f046a0840
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     sal7711_gen (2.2.0.beta2)
@@ -115,11 +95,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-<<<<<<< HEAD
   revision: 872519e7f11975973bf274a8941730e58586dd89
-=======
-  revision: 9b4afe31d5901748e9e7e023d60e791206bdb81b
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     sal7711_web (2.2.0.beta2)
@@ -128,11 +104,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-<<<<<<< HEAD
   revision: c32d16d62118c1ec8531f17e84dfcb1db5e0c4a1
-=======
-  revision: b62b872c244c2052f4fb3cf865cc05b4278147a8
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
@@ -142,11 +114,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-<<<<<<< HEAD
   revision: 83092b14d66205059c9ad23e96394d797a30da3d
-=======
-  revision: 539f65151252594457df6111b5b1f8aee3b34194
->>>>>>> 90b6848f (Actualiza)
   branch: main
   specs:
     sivel2_sjr (2.2.0.beta2)
@@ -344,11 +312,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-<<<<<<< HEAD
     pg (1.5.3)
-=======
-    pg (1.5.1)
->>>>>>> 90b6848f (Actualiza)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
@@ -426,11 +390,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-<<<<<<< HEAD
     selenium-webdriver (4.9.1)
-=======
-    selenium-webdriver (4.9.0)
->>>>>>> 90b6848f (Actualiza)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
