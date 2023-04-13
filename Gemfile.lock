@@ -48,6 +48,14 @@ GIT
       rspreadsheet
 
 GIT
+  remote: https://gitlab.com/pasosdeJesus/jos19.git
+  revision: 0454567b5816776ee6fe91e2bf1ac83d0c9657b1
+  branch: main
+  specs:
+    jos19 (2.2.0.beta2)
+      rails (>= 7.0.4)
+
+GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
   revision: dc219cc315057122dd8a1d480eabcd3f4c377e1c
   branch: main
@@ -462,6 +470,7 @@ DEPENDENCIES
   dotenv-rails
   heb412_gen!
   jbuilder
+  jos19!
   jsbundling-rails
   kt-paperclip!
   libxml-ruby
@@ -500,4 +509,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.4.12
+   2.4.13
