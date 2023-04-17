@@ -802,13 +802,15 @@ class Consgifmm < ActiveRecord::Base
   }
 
   scope :filtro_conveniofinanciado_nombre, lambda { |c|
-    where(proyectofinanciero_id: c)
-      #"proyectofinanciado_idunaccent(conveniofinanciado_nombre) ILIKE '%' || unaccent(?) || '%'", c)
+    if !c.nil? && c != [""]
+      where('proyectofinanciero_id IN (?)', c.map(&:to_i))
+    end
   }
 
   scope :filtro_actividadmarcologico_nombre, lambda { |a|
-    where(actividadpf_id: a)
-      #"unaccent(actividadmarcologico_nombre) ILIKE '%' || unaccent(?) || '%'", a)
+    if !a.nil? && a != [""]
+      where('actividadpf_id IN (?)', a.map(&:to_i))
+    end
   }
 
   scope :filtro_departamento_gifmm, lambda { |d|
