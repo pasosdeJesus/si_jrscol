@@ -1,18 +1,28 @@
 <% col = Cor1440Gen::Actividadpf.all %>
-<% if params && params[:filtro] && params[:filtro][:busconveniofinanciado_nombre] %>
+<% if params && params[:filtro] &&
+    params[:filtro][:busconveniofinanciado_nombre] %>
   <% col = col.where(
-    proyectofinanciero_id: params[:filtro][:busconveniofinanciado_nombre].to_i) %>
+    'cor1440_gen_actividadpf.proyectofinanciero_id IN (?)',
+    params[:filtro][:busconveniofinanciado_nombre].map(&:to_i)) %>
 <% end %>
-<% col = col.joins(:resultadopf).joins(:objetivopf).order(['cor1440_gen_objetivopf.numero', 'cor1440_gen_resultadopf.numero', 'nombrecorto', 'titulo']) %>
+<% col = col.joins(:resultadopf).joins(:objetivopf).order(
+  ['cor1440_gen_objetivopf.numero', 'cor1440_gen_resultadopf.numero',
+   'nombrecorto', 'titulo'])
+ %>
+<% sel = [] %>
+<% if params && params[:filtro][:busactividadmarcologico_nombre] %>
+  <% sel = params[:filtro][:busactividadmarcologico_nombre] %>
+<% end %>
 <%= f.input :busactividadmarcologico_nombre,
   collection: col.order(:titulo),
   include_blank: true,
   label_method: :presenta_nombre,
   value_method: :id,
   label: false,
-  selected: Msip::ModeloHelper.poromision(params, :busactividadmarcologico_nombre),
+  selected: sel,
   input_html: {
     class: 'chosen-select',
+    multiple: true,
     'data-enviarautomatico' => ''
   },
   wrapper_html: {
