@@ -60,6 +60,11 @@ module Cor1440Gen
         params[:filtro][:proyectofinanciero_id].select{|i| i != ""}.map(&:to_i) :
         []
 
+      @contarb_actividadpfid= params[:filtro] &&
+        params[:filtro][:actividadpf_id] ?
+        params[:filtro][:actividadpf_id].select{|i| i != ""}.map(&:to_i) :
+        []
+
       @contarb_oficinaid = params[:filtro] && 
         params[:filtro][:oficina_id] && params[:filtro][:oficina_id] != "" ?  
         params[:filtro][:oficina_id].select{|i| i != ''}.map(&:to_i) : []
@@ -94,7 +99,8 @@ module Cor1440Gen
 
 
       Cor1440Gen::Benefactividadpf.crea_consulta(
-        nil, @contarb_pfid, @contarb_oficinaid, @contarb_fechaini, 
+        nil, @contarb_pfid, @contarb_actividadpfid, 
+        @contarb_oficinaid, @contarb_fechaini, 
         @contarb_fechafin, @contarb_actividad_ids
       )
     end

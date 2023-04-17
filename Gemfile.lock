@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 449d3104c47be66aad84886ce59473a121969929
+  revision: 36d55ca55f13ad148a8c2d7d0a8502c0391166c5
   branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
@@ -361,7 +361,7 @@ GEM
     raindrops (0.20.1)
     rake (13.0.6)
     redcarpet (3.6.0)
-    regexp_parser (2.7.0)
+    regexp_parser (2.8.0)
     reline (0.3.3)
       io-console (~> 0.5)
     responders (3.1.0)
