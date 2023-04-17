@@ -26,8 +26,8 @@ module Cor1440Gen
     # @params fechaini Fecha inicial en formato estándar o nil
     # @params fechafin Fecha final en formato estándar o nil
     #
-    def self.crea_consulta(ordenar_por = nil, pf_ids, oficina_ids,
-                           fechaini, fechafin, actividad_ids)
+    def self.crea_consulta(ordenar_por = nil, pf_ids, actividadpf_ids,
+                           oficina_ids, fechaini, fechafin, actividad_ids)
       if ARGV.include?("db:migrate")
         return
       end
@@ -101,6 +101,12 @@ module Cor1440Gen
         (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero
           WHERE proyectofinanciero_id IN (#{pf_ids.map(&:to_i).join(',')}))"
       end
+      if actividadpf_ids && actividadpf_ids.count > 0
+        wherebe << " AND be.actividad_id IN 
+        (SELECT actividad_id FROM cor1440_gen_actividad_actividadpf
+          WHERE actividadpf_id IN (#{actividadpf_ids.map(&:to_i).join(',')}))"
+      end
+
       if fechaini
         wherebe << " AND be.actividad_fecha >= '#{Msip::SqlHelper.escapar(fechaini)}'"
       end

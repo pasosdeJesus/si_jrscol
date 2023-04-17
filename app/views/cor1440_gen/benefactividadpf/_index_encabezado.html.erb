@@ -29,10 +29,10 @@
   </div> <!-- row -->
 
   <div class="row filtro-fila">
-    <div class="offset-sm-2 col-sm-4">
+    <div class="offset-sm-2 col-sm-3">
       <%= render partial: 'contar_filtro_2_1', locals: {f: f} %>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       <%= f.input :proyectofinanciero_id,
         collection: @contarb_pf,
         label_method: :nombre,
@@ -44,10 +44,14 @@
         selected: @contarb_pfid,
         input_html: { 
           class: 'chosen-select',
-          multiple: true
-        }
-      %>
+          multiple: true,
+          'data-enviarautomatico' => ''
+        } %>
     </div>
+    <div class="col-sm-3" id="frame-filtro-actividadpf">
+      <%= render partial: 'filtro_actividadpf', locals: {f: f} %>
+    </div>
+
   </div> <!-- row -->
 
   <div class="row filtro-fila">
