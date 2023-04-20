@@ -83,7 +83,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     # Paso 2
     # Otra consulta
-    q2="CREATE VIEW #{cons2} AS SELECT respuesta_id, derecho_id as derecho_id, #{pContar}_id
+    q2="CREATE VIEW #{cons2} AS SELECT respuesta_id, derecho_id as derecho_id, ar.#{pContar}_id
         FROM public.sivel2_sjr_#{pContar}_respuesta AS ar, 
           public.sivel2_sjr_#{pContar}_derecho AS ad 
         WHERE 
