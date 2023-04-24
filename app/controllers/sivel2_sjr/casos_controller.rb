@@ -902,7 +902,11 @@ module Sivel2Sjr
           status: :unprocessable_entity 
         return
       end
-      rangoedad = {'S' => {}, 'M' => {}, 'F' => {}}
+      rangoedad = {
+        Msip::Persona::convencion_sexo[:sexo_sininformacion] => {}, 
+        Msip::Persona::convencion_sexo[:sexo_masculino] => {}, 
+        Msip::Persona::convencion_sexo[:sexo_femenino] => {}, 
+      }
       totsexo = {}
       Sivel2Sjr::RangoedadHelper.poblacion_por_sexo_rango(
         casosjr.take.caso_id, fecha.year, fecha.month, fecha.day,

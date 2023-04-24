@@ -18,7 +18,7 @@ module Msip
 #      anionac: 1974,
 #      mesnac: 1,
 #      dianac: 1,
-#      sexo: 'F',
+#      sexo: Msip::Persona:convencion_sexo[:sexo_femenino],
 #      pais_id: 170,
 #      departamento_id: 17,
 #      municipio_id: 1152,
@@ -31,7 +31,7 @@ module Msip
     PRUEBA_PERSONA_SINDOC = {
       nombres: 'Nombres',
       apellidos: 'Apellidos',
-      sexo: 'F',
+      sexo: Msip::Persona::convencion_sexo[:sexo_femenino],
       numerodocumento: ''
     }
 
