@@ -83,6 +83,298 @@ class Consgifmm < ActiveRecord::Base
   end
 
 
+<<<<<<< HEAD
+=======
+  # Auxiliar que retorna listado de identificaciones de entre
+  # los beneficiarios nuevos que cumplan una condición sobre
+  # la persona (recibida como bloque)
+  def beneficiarios_nuevos_condicion_ids
+    idn = beneficiarios_nuevos_mes_ids.split(',')
+    idv = idn.select {|ip|
+      p = Msip::Persona.find(ip)
+      yield(p)
+    }
+    idv.sort.join(',')
+  end
+
+  def beneficiarios_nuevos_colombianos_retornados_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 16
+    }
+  end
+
+  def beneficiarios_nuevos_comunidades_de_acogida_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 13
+    }
+  end
+
+  def beneficiarios_nuevos_en_transito_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 11
+    }
+  end
+
+  def beneficiarias_nuevas_mujeres_adultas_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 18, nil)
+  end
+
+  def beneficiarias_nuevas_mujeres_0_5_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 0, 5)
+  end
+
+  def beneficiarias_nuevas_mujeres_6_12_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 6, 12)
+  end
+
+  def beneficiarias_nuevas_mujeres_13_17_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 13, 17)
+  end
+
+  def beneficiarias_nuevas_mujeres_18_59_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 18, 59)
+  end
+
+  def beneficiarias_nuevas_mujeres_60_o_mas_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 60, nil)
+  end
+
+  def beneficiarios_nuevos_hombres_adultos_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 18, nil)
+  end
+
+  def beneficiarios_nuevos_hombres_0_5_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 0, 5)
+  end
+
+  def beneficiarios_nuevos_hombres_6_12_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 6, 12)
+  end
+
+  def beneficiarios_nuevos_hombres_13_17_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 13, 17)
+  end
+
+  def beneficiarios_nuevos_hombres_18_59_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 18, 59)
+  end
+
+  def beneficiarios_nuevos_hombres_60_o_mas_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 60, nil)
+  end
+
+  def beneficiarios_nuevos_sinsexo_adultos_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 60, nil)
+  end
+
+  def beneficiarios_nuevos_sinsexo_menores_y_se_ids
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], nil, 17, false)
+  end
+
+  def beneficiarios_nuevos_lgbti_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.victima.any? { |v| 
+        (v.victimasjr.fechadesagregacion.nil? ||
+         v.victimasjr.fechadesagregacion <= finmes) &&
+        v.orientacionsexual != 'H' && 
+        v.orientacionsexual != "S"
+      }
+    }
+  end
+
+  def beneficiarios_nuevos_con_discapacidad_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.victima.any? { |v| 
+        (v.victimasjr.fechadesagregacion.nil? ||
+         v.victimasjr.fechadesagregacion <= finmes) &&
+        v.victimasjr.discapacidad &&
+        v.victimasjr.discapacidad.nombre != 'NINGUNA'
+      }
+    }
+  end
+
+  def beneficiarios_nuevos_afrodescendientes_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e == 'AFRODESCENDIENTE' || 
+        e == 'NEGRO'
+    }
+  end
+
+  def beneficiarios_nuevos_indigenas_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e != 'AFRODESCENDIENTE' &&
+        e != 'NEGRO' &&
+        e != 'ROM' &&
+        e != 'MESTIZO' &&
+        e != 'SIN INFORMACIÓN' &&
+        e != ''
+    }
+  end
+
+  def beneficiarias_nuevas_ninas_adolescentes_y_se_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_femenino] &&
+      (p.anionac.nil? ||
+        Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
+          p.anionac, p.mesnac, p.dianac,
+          finmes.year, finmes.month, finmes.day) < 18
+      )
+    }
+  end
+
+  def beneficiarios_nuevos_ninos_adolescentes_y_se_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_masculino] &&
+      (p.anionac.nil? ||
+        Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
+          p.anionac, p.mesnac, p.dianac,
+          finmes.year, finmes.month, finmes.day) < 18
+      )
+    }
+  end
+
+  def beneficiarios_nuevos_otra_etnia_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_nuevos_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e == 'ROM' ||
+         e == 'MESTIZO' ||
+         e == 'SIN INFORMACIÓN' ||
+         e == ''
+    }
+  end
+
+
+  def beneficiarios_nuevos_pendulares_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 12
+    }
+  end
+
+  def beneficiarios_nuevos_sinperfilpoblacional_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id.nil?
+    }
+  end
+
+
+  def beneficiarios_nuevos_victimas_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 14
+    }
+  end
+
+  def beneficiarios_nuevos_victimasdobleafectacion_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 15
+    }
+  end
+
+  def beneficiarios_nuevos_vocacion_permanencia_ids
+    return beneficiarios_nuevos_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 10
+    }
+  end
+
+  def beneficiarios_otra_etnia_ids
+    finmes = actividad.fecha.end_of_month
+    return beneficiarios_condicion_ids {|p|
+      e = GifmmHelper::etnia_de_beneficiario(p, finmes)
+      e == 'ROM' ||
+         e == 'MESTIZO' ||
+         e == 'SIN INFORMACIÓN' ||
+         e == ''
+    }
+  end
+
+  def beneficiarios_pendulares_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 12
+    }
+  end
+
+  def beneficiarios_sinperfilpoblacional_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id.nil?
+    }
+  end
+
+  def beneficiarios_sinsexo_adultos_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 60, nil)
+  end
+
+  def beneficiarios_sinsexo_menores_y_se_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], nil, 17, false)
+  end
+
+  def beneficiarios_victimas_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 14
+    }
+  end
+
+  def beneficiarios_victimasdobleafectacion_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 15
+    }
+  end
+
+
+  def beneficiarios_vocacion_permanencia_ids
+    return beneficiarios_condicion_ids {|p|
+      p.ultimoperfilorgsocial_id == 10
+    }
+  end
+
+  def sector_gifmm
+    idig = self.busca_indicador_gifmm
+    if idig != nil
+      ::Indicadorgifmm.find(idig).sectorgifmm.nombre
+    else
+      ''
+    end
+  end
+
+  def socio_principal
+    sp = ''
+    if proyectofinanciero && proyectofinanciero.financiador &&
+        proyectofinanciero.financiador.count > 0
+      if proyectofinanciero.financiador[0].nombregifmm &&
+          proyectofinanciero.financiador[0].nombregifmm.strip != ''
+        sp = proyectofinanciero.financiador[0].nombregifmm
+      else
+        sp = proyectofinanciero.financiador[0].nombre
+      end
+    end
+    sp
+  end
+
+
+>>>>>>> 221aab55 (Modificados informes de casos y GIFMM para agregar otro sexo)
   def presenta(atr)
     puts "** ::Consgiffm.rb atr=#{atr.to_s.parameterize}"
 
