@@ -53,6 +53,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
             AS familiar#{num}_edad_ultimaatencion,
           "
         end
+        convsexo = Msip::Persona::convencion_sexo
         c+= "(SELECT nombre FROM public.sivel2_gen_rangoedad 
           WHERE fechadeshabilitacion IS NULL 
           AND limiteinferior<=
@@ -100,110 +101,147 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='7') AS beneficiarios_0_5_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='8') AS beneficiarios_6_12_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='9') AS beneficiarios_13_17_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='10') AS beneficiarios_18_26_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='11') AS beneficiarios_27_59_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='12') AS beneficiarios_60m_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='M' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='6') AS beneficiarios_se_fecha_salida,
 
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_femenino]}'
           AND rangoedad_id='7') AS beneficiarias_0_5_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_femenino]}'
           AND rangoedad_id='8') AS beneficiarias_6_12_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_femenino]}'
           AND rangoedad_id='9') AS beneficiarias_13_17_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_femenino]}'
           AND rangoedad_id='10') AS beneficiarias_18_26_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_femenino]}'
           AND rangoedad_id='11') AS beneficiarias_27_59_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_femenino]}'
           AND rangoedad_id='12') AS beneficiarias_60m_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='F' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_femenino]}'
           AND rangoedad_id='6') AS beneficiarias_se_fecha_salida,
 
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_sininformacion]}'
           AND rangoedad_id='7') AS beneficiarios_ss_0_5_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_sininformacion]}'
           AND rangoedad_id='8') AS beneficiarios_ss_6_12_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_sininformacion]}'
           AND rangoedad_id='9') AS beneficiarios_ss_13_17_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_sininformacion]}'
           AND rangoedad_id='10') AS beneficiarios_ss_18_26_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_sininformacion]}'
           AND rangoedad_id='11') AS beneficiarios_ss_27_59_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_sininformacion]}'
           AND rangoedad_id='12') AS beneficiarios_ss_60m_fecha_salida,
         (SELECT COUNT(*) FROM 
           public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
             msip_persona.id=victima.persona_id
-          WHERE victima.caso_id=caso.id AND msip_persona.sexo='S' 
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_sininformacion]}'
           AND rangoedad_id='6') AS beneficiarios_ss_se_fecha_salida,
+
+        (SELECT COUNT(*) FROM 
+          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_intersexual]}'
+          AND rangoedad_id='7') AS beneficiarios_os_0_5_fecha_salida,
+        (SELECT COUNT(*) FROM 
+          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_intersexual]}'
+          AND rangoedad_id='8') AS beneficiarios_os_6_12_fecha_salida,
+        (SELECT COUNT(*) FROM 
+          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_intersexual]}'
+          AND rangoedad_id='9') AS beneficiarios_os_13_17_fecha_salida,
+        (SELECT COUNT(*) FROM 
+          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_intersexual]}'
+          AND rangoedad_id='10') AS beneficiarios_os_18_26_fecha_salida,
+        (SELECT COUNT(*) FROM 
+          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_intersexual]}'
+          AND rangoedad_id='11') AS beneficiarios_os_27_59_fecha_salida,
+        (SELECT COUNT(*) FROM 
+          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_intersexual]}'
+          AND rangoedad_id='12') AS beneficiarios_os_60m_fecha_salida,
+        (SELECT COUNT(*) FROM 
+          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
+            msip_persona.id=victima.persona_id
+          WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_intersexual]}'
+          AND rangoedad_id='6') AS beneficiarios_os_se_fecha_salida,
+
 
         ARRAY_TO_STRING(ARRAY(SELECT supracategoria.tviolencia_id || ':' || 
             categoria.supracategoria_id || ':' || categoria.id || ' ' ||
@@ -726,6 +764,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       end
     end
     caso = Sivel2Gen::Caso.find(caso_id)
+    convsexo = Msip::Persona::convencion_sexo
     case atr.to_s
     when 'actividades_departamentos'
       lai = casosjr.actividades_con_caso_ids
@@ -820,87 +859,116 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     when 'beneficiarios_0_5_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'M', 0, 5)
+       convsexo[:sexo_masculino], 0, 5)
     when 'beneficiarios_6_12_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'M', 6, 12)
+       convsexo[:sexo_masculino], 6, 12)
     when 'beneficiarios_13_17_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'M', 13, 17)
+       convsexo[:sexo_masculino], 13, 17)
     when 'beneficiarios_18_26_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'M', 18, 26)
+       convsexo[:sexo_masculino], 18, 26)
     when 'beneficiarios_27_59_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'M', 27, 59)
+       convsexo[:sexo_masculino], 27, 59)
     when 'beneficiarios_60m_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'M', 60, nil)
+       convsexo[:sexo_masculino], 60, nil)
     when 'beneficiarios_se_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'M', nil, nil)
+       convsexo[:sexo_masculino], nil, nil)
     when 'beneficiarias_0_5_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'F', 0, 5)
+       convsexo[:sexo_femenino], 0, 5)
     when 'beneficiarias_6_12_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'F', 6, 12)
+       convsexo[:sexo_femenino], 6, 12)
     when 'beneficiarias_13_17_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'F', 13, 17)
+       convsexo[:sexo_femenino], 13, 17)
     when 'beneficiarias_18_26_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'F', 18, 26)
+       convsexo[:sexo_femenino], 18, 26)
     when 'beneficiarias_27_59_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'F', 27, 59)
+       convsexo[:sexo_femenino], 27, 59)
     when 'beneficiarias_60m_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'F', 60, nil)
+       convsexo[:sexo_femenino], 60, nil)
     when 'beneficiarias_se_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'F', nil, nil)
+       convsexo[:sexo_femenino], nil, nil)
     when 'beneficiarios_ss_0_5_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'S', 0, 5)
+       convsexo[:sexo_sininformacion], 0, 5)
     when 'beneficiarios_ss_6_12_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'S', 6, 12)
+       convsexo[:sexo_sininformacion], 6, 12)
     when 'beneficiarios_ss_13_17_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'S', 13, 17)
+       convsexo[:sexo_sininformacion], 13, 17)
     when 'beneficiarios_ss_18_26_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'S', 18, 26)
+       convsexo[:sexo_sininformacion], 18, 26)
     when 'beneficiarios_ss_27_59_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'S', 27, 59)
+       convsexo[:sexo_sininformacion], 27, 59)
     when 'beneficiarios_ss_60m_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'S', 60, nil)
+       convsexo[:sexo_sininformacion], 60, nil)
     when 'beneficiarios_ss_se_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       'S', nil, nil)
+       convsexo[:sexo_sininformacion], nil, nil)
+    when 'beneficiarios_os_0_5_fecha_recepcion'
+      self.class.poblacion_a_fecha(
+        caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
+       convsexo[:sexo_intersexual], 0, 5)
+    when 'beneficiarios_os_6_12_fecha_recepcion'
+      self.class.poblacion_a_fecha(
+        caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
+       convsexo[:sexo_intersexual], 6, 12)
+    when 'beneficiarios_os_13_17_fecha_recepcion'
+      self.class.poblacion_a_fecha(
+        caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
+       convsexo[:sexo_intersexual], 13, 17)
+    when 'beneficiarios_os_18_26_fecha_recepcion'
+      self.class.poblacion_a_fecha(
+        caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
+       convsexo[:sexo_intersexual], 18, 26)
+    when 'beneficiarios_os_27_59_fecha_recepcion'
+      self.class.poblacion_a_fecha(
+        caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
+       convsexo[:sexo_intersexual], 27, 59)
+    when 'beneficiarios_os_60m_fecha_recepcion'
+      self.class.poblacion_a_fecha(
+        caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
+       convsexo[:sexo_intersexual], 60, nil)
+    when 'beneficiarios_os_se_fecha_recepcion'
+      self.class.poblacion_a_fecha(
+        caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
+       convsexo[:sexo_intersexual], nil, nil)
+
 
 
       ## CONTACTO
@@ -1022,67 +1090,89 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       resp_ultimaatencion(13,130)
     when 'ultimaatencion_beneficiarios_0_5'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'M', 0, 5)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_masculino], 0, 5)
     when 'ultimaatencion_beneficiarios_6_12'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'M', 6, 12)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_masculino], 6, 12)
     when 'ultimaatencion_beneficiarios_13_17'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'M', 13, 17)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_masculino], 13, 17)
     when 'ultimaatencion_beneficiarios_18_26'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'M', 18, 26)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_masculino], 18, 26)
     when 'ultimaatencion_beneficiarios_27_59'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'M', 27, 59)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_masculino], 27, 59)
     when 'ultimaatencion_beneficiarios_60m'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'M', 60, nil)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_masculino], 60, nil)
     when 'ultimaatencion_beneficiarios_se'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'M', nil, nil)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_masculino], nil, nil)
     when 'ultimaatencion_beneficiarias_0_5'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'F', 0, 5)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_femenino], 0, 5)
     when 'ultimaatencion_beneficiarias_6_12'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'F', 6, 12)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_femenino], 6, 12)
     when 'ultimaatencion_beneficiarias_13_17'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'F', 13, 17)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_femenino], 13, 17)
     when 'ultimaatencion_beneficiarias_18_26'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'F', 18, 26)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_femenino], 18, 26)
     when 'ultimaatencion_beneficiarias_27_59'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'F', 27, 59)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_femenino], 27, 59)
     when 'ultimaatencion_beneficiarias_60m'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'F', 60, nil)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_femenino], 60, nil)
     when 'ultimaatencion_beneficiarias_se'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'F', nil, nil)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_femenino], nil, nil)
     when 'ultimaatencion_beneficiarios_ss_0_5'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'S', 0, 5)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_sininformacion], 0, 5)
     when 'ultimaatencion_beneficiarios_ss_6_12'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'S', 6, 12)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_sininformacion], 6, 12)
     when 'ultimaatencion_beneficiarios_ss_13_17'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'S', 13, 17)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_sininformacion], 13, 17)
     when 'ultimaatencion_beneficiarios_ss_18_26'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'S', 18, 26)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_sininformacion], 18, 26)
     when 'ultimaatencion_beneficiarios_ss_27_59'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'S', 27, 59)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_sininformacion], 27, 59)
     when 'ultimaatencion_beneficiarios_ss_60m'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'S', 60, nil)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_sininformacion], 60, nil)
     when 'ultimaatencion_beneficiarios_ss_se'
       self.class.poblacion_ultimaatencion(
-        caso_id, ultimaatencion_actividad_id, 'S', nil, nil)
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_sininformacion], nil, nil)
+    when 'ultimaatencion_beneficiarios_os_0_5'
+      self.class.poblacion_ultimaatencion(
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_intersexual], 0, 5)
+    when 'ultimaatencion_beneficiarios_os_6_12'
+      self.class.poblacion_ultimaatencion(
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_intersexual], 6, 12)
+    when 'ultimaatencion_beneficiarios_os_13_17'
+      self.class.poblacion_ultimaatencion(
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_intersexual], 13, 17)
+    when 'ultimaatencion_beneficiarios_os_18_26'
+      self.class.poblacion_ultimaatencion(
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_intersexual], 18, 26)
+    when 'ultimaatencion_beneficiarios_os_27_59'
+      self.class.poblacion_ultimaatencion(
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_intersexual], 27, 59)
+    when 'ultimaatencion_beneficiarios_os_60m'
+      self.class.poblacion_ultimaatencion(
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_intersexual], 60, nil)
+    when 'ultimaatencion_beneficiarios_os_se'
+      self.class.poblacion_ultimaatencion(
+        caso_id, ultimaatencion_actividad_id, convsexo[:sexo_intersexual], nil, nil)
+
 
     when 'ultimaatencion_derechosvul'
       resp_ultimaatencion(10,100)

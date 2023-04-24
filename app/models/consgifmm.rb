@@ -205,92 +205,148 @@ class Consgifmm < ActiveRecord::Base
   #########################
 
   def beneficiarias_mujeres_0_5_ids
-    beneficiarios_condicion_sexo_edad_ids('F', 0, 5)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 0, 5)
   end
 
   def beneficiarias_mujeres_6_12_ids
-    beneficiarios_condicion_sexo_edad_ids('F', 6, 12)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 6, 12)
   end
 
   def beneficiarias_mujeres_13_17_ids
-    beneficiarios_condicion_sexo_edad_ids('F', 13, 17)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 13, 17)
   end
 
   def beneficiarias_mujeres_18_25_ids
-    beneficiarios_condicion_sexo_edad_ids('F', 18, 25)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 18, 25)
   end
 
   def beneficiarias_mujeres_26_59_ids
-    beneficiarios_condicion_sexo_edad_ids('F', 26, 59)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 26, 59)
   end
 
   def beneficiarias_mujeres_60_o_mas_ids
-    beneficiarios_condicion_sexo_edad_ids('F', 60, nil)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 60, nil)
   end
 
   def beneficiarias_mujeres_sinedad_ids
     return beneficiarios_condicion_ids {|p|
-      p.sexo == 'F' && !p.anionac
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_femenino] && !p.anionac
     }
   end
 
   def beneficiarios_hombres_0_5_ids
-    beneficiarios_condicion_sexo_edad_ids('M', 0, 5)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 0, 5)
   end
 
   def beneficiarios_hombres_6_12_ids
-    beneficiarios_condicion_sexo_edad_ids('M', 6, 12)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 6, 12)
   end
 
   def beneficiarios_hombres_13_17_ids
-    beneficiarios_condicion_sexo_edad_ids('M', 13, 17)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 13, 17)
   end
 
   def beneficiarios_hombres_18_25_ids
-    beneficiarios_condicion_sexo_edad_ids('M', 18, 25)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 18, 25)
   end
 
   def beneficiarios_hombres_26_59_ids
-    beneficiarios_condicion_sexo_edad_ids('M', 26, 59)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 26, 59)
   end
 
   def beneficiarios_hombres_60_o_mas_ids
-    beneficiarios_condicion_sexo_edad_ids('M', 60, nil)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 60, nil)
   end
 
   def beneficiarios_hombres_sinedad_ids
     return beneficiarios_condicion_ids {|p|
-      p.sexo == 'M' && !p.anionac
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_masculino] && !p.anionac
+    }
+  end
+
+  def beneficiarios_otrosexo_0_5_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 0, 5)
+  end
+
+  def beneficiarios_otrosexo_6_12_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 6, 12)
+  end
+
+  def beneficiarios_otrosexo_13_17_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 13, 17)
+  end
+
+  def beneficiarios_otrosexo_18_25_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 18, 25)
+  end
+
+  def beneficiarios_otrosexo_26_59_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 26, 59)
+  end
+
+  def beneficiarios_otrosexo_60_o_mas_ids
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 60, nil)
+  end
+
+  def beneficiarios_otrosexo_sinedad_ids
+    return beneficiarios_condicion_ids {|p|
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_sininformacion] && 
+        !p.anionac
     }
   end
 
   def beneficiarios_sinsexo_0_5_ids
-    beneficiarios_condicion_sexo_edad_ids('S', 0, 5)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 0, 5)
   end
 
   def beneficiarios_sinsexo_6_12_ids
-    beneficiarios_condicion_sexo_edad_ids('S', 6, 12)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 6, 12)
   end
 
   def beneficiarios_sinsexo_13_17_ids
-    beneficiarios_condicion_sexo_edad_ids('S', 13, 17)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 13, 17)
   end
 
   def beneficiarios_sinsexo_18_25_ids
-    beneficiarios_condicion_sexo_edad_ids('S', 18, 25)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 18, 25)
   end
 
   def beneficiarios_sinsexo_26_59_ids
-    beneficiarios_condicion_sexo_edad_ids('S', 26, 59)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 26, 59)
   end
 
   def beneficiarios_sinsexo_60_o_mas_ids
-    beneficiarios_condicion_sexo_edad_ids('S', 60, nil)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 60, nil)
   end
 
   def beneficiarios_sinsexo_sinedad_ids
     return beneficiarios_condicion_ids {|p|
-      p.sexo == 'S' && !p.anionac
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_sininformacion] && 
+        !p.anionac
     }
   end
 
@@ -335,7 +391,8 @@ class Consgifmm < ActiveRecord::Base
   end
 
   def beneficiarios_hombres_adultos_ids
-    beneficiarios_condicion_sexo_edad_ids('M', 18, nil)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 18, nil)
   end
 
   def beneficiarios_indigenas_ids
@@ -359,19 +416,20 @@ class Consgifmm < ActiveRecord::Base
         (v.victimasjr.fechadesagregacion.nil? ||
          v.victimasjr.fechadesagregacion <= finmes) &&
         v.orientacionsexual != 'H' &&
-        v.orientacionsexual != 'S'
+        v.orientacionsexual != "S"
       }
     }
   end
 
   def beneficiarias_mujeres_adultas_ids
-    beneficiarios_condicion_sexo_edad_ids('F', 18, nil)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 18, nil)
   end
 
   def beneficiarias_ninas_adolescentes_y_se_ids
     finmes = actividad.fecha.end_of_month
     return beneficiarios_condicion_ids {|p|
-      p.sexo == 'F' &&
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_femenino] &&
       (p.anionac.nil? ||
         Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
           p.anionac, p.mesnac, p.dianac,
@@ -383,7 +441,7 @@ class Consgifmm < ActiveRecord::Base
   def beneficiarios_ninos_adolescentes_y_se_ids
     finmes = actividad.fecha.end_of_month
     return beneficiarios_condicion_ids {|p|
-      p.sexo == 'M' &&
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_masculino] &&
       (p.anionac.nil? ||
         Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
           p.anionac, p.mesnac, p.dianac,
@@ -457,59 +515,73 @@ class Consgifmm < ActiveRecord::Base
   end
 
   def beneficiarias_nuevas_mujeres_adultas_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('F', 18, nil)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 18, nil)
   end
 
   def beneficiarias_nuevas_mujeres_0_5_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('F', 0, 5)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 0, 5)
   end
 
   def beneficiarias_nuevas_mujeres_6_12_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('F', 6, 12)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 6, 12)
   end
 
   def beneficiarias_nuevas_mujeres_13_17_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('F', 13, 17)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 13, 17)
   end
 
   def beneficiarias_nuevas_mujeres_18_59_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('F', 18, 59)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 18, 59)
   end
 
   def beneficiarias_nuevas_mujeres_60_o_mas_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('F', 60, nil)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_femenino], 60, nil)
   end
 
   def beneficiarios_nuevos_hombres_adultos_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('M', 18, nil)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 18, nil)
   end
 
   def beneficiarios_nuevos_hombres_0_5_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('M', 0, 5)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 0, 5)
   end
 
   def beneficiarios_nuevos_hombres_6_12_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('M', 6, 12)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 6, 12)
   end
 
   def beneficiarios_nuevos_hombres_13_17_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('M', 13, 17)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 13, 17)
   end
 
   def beneficiarios_nuevos_hombres_18_59_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('M', 18, 59)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 18, 59)
   end
 
   def beneficiarios_nuevos_hombres_60_o_mas_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('M', 60, nil)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_masculino], 60, nil)
   end
 
   def beneficiarios_nuevos_sinsexo_adultos_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('S', 60, nil)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 60, nil)
   end
 
   def beneficiarios_nuevos_sinsexo_menores_y_se_ids
-    beneficiarios_nuevos_condicion_sexo_edad_ids('S', nil, 17, false)
+    beneficiarios_nuevos_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], nil, 17, false)
   end
 
   def beneficiarios_nuevos_lgbti_ids
@@ -519,7 +591,7 @@ class Consgifmm < ActiveRecord::Base
         (v.victimasjr.fechadesagregacion.nil? ||
          v.victimasjr.fechadesagregacion <= finmes) &&
         v.orientacionsexual != 'H' && 
-        v.orientacionsexual != 'S'
+        v.orientacionsexual != "S"
       }
     }
   end
@@ -561,7 +633,7 @@ class Consgifmm < ActiveRecord::Base
   def beneficiarias_nuevas_ninas_adolescentes_y_se_ids
     finmes = actividad.fecha.end_of_month
     return beneficiarios_nuevos_condicion_ids {|p|
-      p.sexo == 'F' &&
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_femenino] &&
       (p.anionac.nil? ||
         Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
           p.anionac, p.mesnac, p.dianac,
@@ -573,7 +645,7 @@ class Consgifmm < ActiveRecord::Base
   def beneficiarios_nuevos_ninos_adolescentes_y_se_ids
     finmes = actividad.fecha.end_of_month
     return beneficiarios_nuevos_condicion_ids {|p|
-      p.sexo == 'M' &&
+      p.sexo == Msip::Persona::convencion_sexo[:sexo_masculino] &&
       (p.anionac.nil? ||
         Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
           p.anionac, p.mesnac, p.dianac,
@@ -649,11 +721,13 @@ class Consgifmm < ActiveRecord::Base
   end
 
   def beneficiarios_sinsexo_adultos_ids
-    beneficiarios_condicion_sexo_edad_ids('S', 60, nil)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], 60, nil)
   end
 
   def beneficiarios_sinsexo_menores_y_se_ids
-    beneficiarios_condicion_sexo_edad_ids('S', nil, 17, false)
+    beneficiarios_condicion_sexo_edad_ids(
+      Msip::Persona::convencion_sexo[:sexo_sininformacion], nil, 17, false)
   end
 
   def beneficiarios_victimas_ids

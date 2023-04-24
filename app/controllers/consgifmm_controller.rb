@@ -202,6 +202,12 @@ class ConsgifmmController < Heb412Gen::ModelosController
         '18 a 25',
         '26 a 59',
         '60 o más',
+        '0 a 5',
+        '6 a 12',
+        '13 a 17',
+        '18 a 25',
+        '26 a 59',
+        '60 o más',
         'Con discapacidad',
         'Afrodescendientes',
         'Indígenas',
@@ -214,17 +220,20 @@ class ConsgifmmController < Heb412Gen::ModelosController
         '*Sin sexo 60 o más',
         '*Mujeres sin edad',
         '*Hombres sin edad',
-        '*Sin sexo y sin edad'
+        '*Sin sexo y sin edad',
+        '*Otro sexo y sin edad'
       ]
       numfilas = l.length
       colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
 
       hoja.merge_cells("A1:#{colfin}1")
 
-      l2 = ([''] * 33) + ['Mujeres'] + ([''] * 5) + ['Hombres'] + ([''] * 5)
+      l2 = ([''] * 33) + ['Mujeres'] + ([''] * 5) + ['Hombres'] + ([''] * 5) +
+        ['Otro sexo'] + ([''] * 5)
       hoja.add_row l2, style: [estilo_encabezado] * numfilas
       hoja.merge_cells("AH6:AM6")
       hoja.merge_cells("AN6:AS6")
+      hoja.merge_cells("AT6:AY6")
 
       hoja.add_row l, style: [estilo_encabezado] * numfilas
       
@@ -275,6 +284,12 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.beneficiarios_hombres_18_25_ids.split(",").count,
           reg.beneficiarios_hombres_26_59_ids.split(",").count,
           reg.beneficiarios_hombres_60_o_mas_ids.split(",").count,
+          reg.beneficiarios_otrosexo_0_5_ids.split(",").count,
+          reg.beneficiarios_otrosexo_6_12_ids.split(",").count,
+          reg.beneficiarios_otrosexo_13_17_ids.split(",").count,
+          reg.beneficiarios_otrosexo_18_25_ids.split(",").count,
+          reg.beneficiarios_otrosexo_26_59_ids.split(",").count,
+          reg.beneficiarios_otrosexo_60_o_mas_ids.split(",").count,
           reg.beneficiarios_con_discapacidad_ids.split(",").count,
           reg.beneficiarios_afrodescendientes_ids.split(",").count,
           reg.beneficiarios_indigenas_ids.split(",").count,
@@ -288,6 +303,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.beneficiarias_mujeres_sinedad_ids.split(",").count,
           reg.beneficiarios_hombres_sinedad_ids.split(",").count,
           reg.beneficiarios_sinsexo_sinedad_ids.split(",").count,
+          reg.beneficiarios_otrosexo_sinedad_ids.split(",").count,
         ]
         hoja.add_row l, style: estilo_base
       end

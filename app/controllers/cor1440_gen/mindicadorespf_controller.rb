@@ -52,9 +52,12 @@ module Cor1440Gen
         joins(:actividadpf).
         where('cor1440_gen_actividadpf.id = 125').
         pluck(:id).uniq
-      hombrescasos = calcula_benef_por_sexo(lac, 'M', ffin, false)
-      mujerescasos = calcula_benef_por_sexo(lac, 'F', ffin, false)
-      sinsexocasos = calcula_benef_por_sexo(lac, 'S', ffin, false)
+      hombrescasos = calcula_benef_por_sexo(
+        lac, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      mujerescasos = calcula_benef_por_sexo(
+        lac, Msip::Persona::convencion_sexo[:sexo_femenino], ffin, false)
+      sinsexocasos = calcula_benef_por_sexo(
+        lac, Msip::Persona::convencion_sexo[:sexo_sininformacion], ffin, false)
       contactos = hombrescasos[0] + mujerescasos[0] + sinsexocasos[0]
       familiares = hombrescasos[1] + mujerescasos[1] + sinsexocasos[1]
       resind = contactos.count + familiares.count
@@ -83,9 +86,12 @@ module Cor1440Gen
         joins(:actividadpf).
         where('cor1440_gen_actividadpf.id = 125').
         pluck(:id).uniq
-      hombrescasos = calcula_benef_por_sexo(lac, 'M', ffin, false)
-      mujerescasos = calcula_benef_por_sexo(lac, 'F', ffin, false)
-      sinsexocasos = calcula_benef_por_sexo(lac, 'S', ffin, false)
+      hombrescasos = calcula_benef_por_sexo(
+        lac, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      mujerescasos = calcula_benef_por_sexo(
+        lac, Msip::Persona::convencion_sexo[:sexo_femenino], ffin, false)
+      sinsexocasos = calcula_benef_por_sexo(
+        lac, Msip::Persona::convencion_sexo[:sexo_sininformacion], ffin, false)
       contactos = hombrescasos[0] + mujerescasos[0] + sinsexocasos[0]
       familiares = hombrescasos[1] + mujerescasos[1] + sinsexocasos[1]
       universo_conaj = contactos.count + familiares.count
@@ -111,9 +117,12 @@ module Cor1440Gen
               '(mr519_gen_valorcampo.valor = \'2\' OR ' + # POSITIVA
               'mr519_gen_valorcampo.valor = \'3\'))'). # NEGATIVA
         pluck(:'cor1440_gen_actividad_respuestafor.actividad_id').uniq
-      hombrescasos_conr = calcula_benef_por_sexo(resp_ids, 'M', ffin, false)
-      mujerescasos_conr = calcula_benef_por_sexo(resp_ids, 'F', ffin, false)
-      sinsexocasos_conr = calcula_benef_por_sexo(resp_ids, 'S', ffin, false)
+      hombrescasos_conr = calcula_benef_por_sexo(
+        resp_ids, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      mujerescasos_conr = calcula_benef_por_sexo(
+        resp_ids, Msip::Persona::convencion_sexo[:sexo_femenino], ffin, false)
+      sinsexocasos_conr = calcula_benef_por_sexo(
+        resp_ids, Msip::Persona::convencion_sexo[:sexo_sininformacion], ffin, false)
       contactos_conres = hombrescasos_conr[0] + mujerescasos_conr[0] + 
         sinsexocasos_conr[0]
       familiares_conres = hombrescasos_conr[1] + mujerescasos_conr[1] + 
@@ -163,9 +172,12 @@ module Cor1440Gen
       lac3 = calcula_listado_ac(actpf3, fini, ffin)
       lac4 = calcula_listado_ac(actpf4, fini, ffin)
 
-      hombres1 = calcula_benef_por_sexo(lac1, 'M', ffin, false)
-      mujeres1 = calcula_benef_por_sexo(lac1, 'F', ffin, false)
-      sinsexo1 = calcula_benef_por_sexo(lac1, 'S', ffin, false)
+      hombres1 = calcula_benef_por_sexo(
+        lac1, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      mujeres1 = calcula_benef_por_sexo(
+        lac1, Msip::Persona::convencion_sexo[:sexo_femenino], ffin, false)
+      sinsexo1 = calcula_benef_por_sexo(
+        lac1, Msip::Persona::convencion_sexo[:sexo_sininformacion], ffin, false)
       directos1 = hombres1[0] + mujeres1[0] + sinsexo1[0] + hombres1[1] + 
         mujeres1[1] + sinsexo1[1]
       indirectos1 = []
@@ -176,9 +188,12 @@ module Cor1440Gen
           '?filtro[busid]=' + directos1.join(',')
       end
 
-      hombres2 = calcula_benef_por_sexo(lac2, 'M', ffin, false)
-      mujeres2 = calcula_benef_por_sexo(lac2, 'F', ffin, false)
-      sinsexo2 = calcula_benef_por_sexo(lac2, 'S', ffin, false)
+      hombres2 = calcula_benef_por_sexo(
+        lac2, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      mujeres2 = calcula_benef_por_sexo(
+        lac2, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      sinsexo2 = calcula_benef_por_sexo(
+        lac2, Msip::Persona::convencion_sexo[:sexo_sininformacion], ffin, false)
       directos2 = hombres2[0] + mujeres2[0] + sinsexo2[0] + hombres2[1] + 
         mujeres2[1] + sinsexo2[1]
       indirectos2 = []
@@ -189,9 +204,12 @@ module Cor1440Gen
           '?filtro[busid]=' + directos2.join(',')
       end
 
-      hombres3 = calcula_benef_por_sexo(lac3, 'M', ffin, false)
-      mujeres3 = calcula_benef_por_sexo(lac3, 'F', ffin, false)
-      sinsexo3 = calcula_benef_por_sexo(lac3, 'S', ffin, false)
+      hombres3 = calcula_benef_por_sexo(
+        lac3, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      mujeres3 = calcula_benef_por_sexo(
+        lac3, Msip::Persona::convencion_sexo[:sexo_femenino], ffin, false)
+      sinsexo3 = calcula_benef_por_sexo(
+        lac3, Msip::Persona::convencion_sexo[:sexo_sininformacion], ffin, false)
       grupo3 = hombres3[0] + mujeres3[0] + sinsexo3[0] +
         hombres3[1] + mujeres3[1] + sinsexo3[1]
       menores = []
@@ -227,9 +245,12 @@ module Cor1440Gen
           '?filtro[busid]=' + indirectos3.join(',')
       end
 
-      hombres4 = calcula_benef_por_sexo(lac4, 'M', ffin, false)
-      mujeres4 = calcula_benef_por_sexo(lac4, 'F', ffin, false)
-      sinsexo4 = calcula_benef_por_sexo(lac4, 'S', ffin, false)
+      hombres4 = calcula_benef_por_sexo(
+        lac4, Msip::Persona::convencion_sexo[:sexo_masculino], ffin, false)
+      mujeres4 = calcula_benef_por_sexo(
+        lac4, Msip::Persona::convencion_sexo[:sexo_femenino], ffin, false)
+      sinsexo4 = calcula_benef_por_sexo(
+        lac4, Msip::Persona::convencion_sexo[:sexo_sininformacion], ffin, false)
       directos4 = hombres4[0] + mujeres4[0] + sinsexo4[0]
       datosint << {valor: directos4.count, rutaevidencia: '#'}
       # Sin evidencia para no sugerir que quien murió fue el contacto

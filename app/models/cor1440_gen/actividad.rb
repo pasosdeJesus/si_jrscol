@@ -309,15 +309,15 @@ module Cor1440Gen
     end
 
     def poblacion_mujeres_r_g_ids(num)
-      poblacion_r_g('F', num)
+      poblacion_r_g(Msip::Persona:convencion_sexo[:sexo_femenino], num)
     end
 
     def poblacion_hombres_r_g_ids(num)
-      poblacion_r_g('M', num)
+      poblacion_r_g(Msip::Persona:convencion_sexo[:sexo_masculino], num)
     end
 
     def poblacion_sinsexo_g_ids(num)
-      poblacion_r_g('S', num)
+      poblacion_r_g(Msip::Persona:convencion_sexo[:sexo_sininformacion], num)
     end
 
 
