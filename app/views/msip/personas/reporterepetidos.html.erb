@@ -137,7 +137,7 @@
 
 <h2>Unificar dos beneficiarios por números de identificación</h2>
 
-<%= simple_form_for Msip::Unificar.new, 
+<%= simple_form_for Msip::Unificarpersonas.new, 
   :url => main_app.beneficiarios_unificar_path,
   :html => { :class => 'form-horizontal' } do |f| 
 %>
@@ -157,7 +157,7 @@
             maxlength: 10, 
             size: 10,
             label: false,
-            placeholder: 'Id. del segundo beneficarioFinal'
+            placeholder: 'Id. del segundo beneficario'
           %>
         </div>
         <div class="offset-md-1 col-md-3">

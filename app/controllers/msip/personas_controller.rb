@@ -295,7 +295,8 @@ module Msip
       if params && params[:reporterepetido] && 
           params[:reporterepetido][:deduplicables_autom] == '1'
         arr = ActiveRecord::Base.connection.select_all(
-          UnificarHelper.consulta_casos_por_arreglar.select(['id']).to_sql
+          Jos19::UnificarHelper.consulta_casos_por_arreglar.select(
+            ['id']).to_sql
         )
         @validaciones << {
           titulo: 'Casos parcialmente eliminados por arreglar (completar o eliminar)',
@@ -305,7 +306,8 @@ module Msip
 
 
         arr = ActiveRecord::Base.connection.select_all(
-          UnificarHelper.consulta_casos_en_blanco.select(['caso_id']).to_sql
+          Jos19::UnificarHelper.consulta_casos_en_blanco.select(
+            ['caso_id']).to_sql
         )
         @validaciones << {
           titulo: 'Casos en blanco por eliminar automaticamente',
@@ -314,7 +316,8 @@ module Msip
         }
 
         arr = ActiveRecord::Base.connection.select_all(
-          UnificarHelper.consulta_personas_en_blanco_por_eliminar.select(['id']).to_sql
+          Jos19::UnificarHelper.consulta_personas_en_blanco_por_eliminar.
+          select(['id']).to_sql
         )
         @validaciones << {
           titulo: 'Personas en blanco por eliminar automaticamente',
@@ -322,7 +325,7 @@ module Msip
           cuerpo: arr 
         }
 
-        pares = UnificarHelper.consulta_duplicados_autom
+        pares = Jos19::UnificarHelper.consulta_duplicados_autom
         vc = {
           titulo: 'Beneficarios por intentar deduplicar automaticamente',
           encabezado: [
@@ -358,9 +361,11 @@ module Msip
     def deduplicar
       if ENV.fetch('DEPURA_MIN', -1).to_i == -1 || 
           ENV.fetch('DEPURA_MAX', -1).to_i == -1
-        @res_preparar_automaticamente = UnificarHelper::preparar_automaticamente
+        @res_preparar_automaticamente = 
+          Jos19::UnificarHelper::preparar_automaticamente
       end
-      @res_deduplicar = UnificarHelper::deduplicar_automaticamente(current_usuario)
+      @res_deduplicar = Jos19::UnificarHelper::deduplicar_automaticamente(
+        current_usuario)
       Msip::Persona.connection.execute <<-SQL
         REFRESH MATERIALIZED VIEW sivel2_gen_conscaso;
       SQL
@@ -369,9 +374,9 @@ module Msip
 
 
     def unificar
-      if params[:unificar]
-        id1 = params[:unificar][:id1].to_i
-        id2 = params[:unificar][:id2].to_i
+      if params[:unificarpersonas]
+        id1 = params[:unificarpersonas][:id1].to_i
+        id2 = params[:unificarpersonas][:id2].to_i
       elsif params[:id1] && params[:id2]
         id1 = params[:id1].to_i
         id2 = params[:id2].to_i
@@ -381,8 +386,10 @@ module Msip
         return
       end
 
-      m, p1 = UnificarHelper.unificar_dos_beneficiarios(
-        id1, id2, current_usuario)
+      r = Jos19::UnificarHelper.unificar_dos_beneficiarios(
+        id1.dup, id2.dup, current_usuario.dup)
+      m = r[0]
+      p = r[1]
       if (m != "")
         flash[:error] = m
         redirect_to Rails.configuration.relative_url_root

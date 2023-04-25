@@ -2040,7 +2040,7 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                           WHERE (aapf.actividad_id = be.actividad_id)))
                   ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_fecha >= '2022-07-01'::date) AND (be.actividad_fecha <= '2022-12-31'::date))
+  WHERE (true AND (be.actividad_id = ANY (ARRAY[43391, 43393, 43388, 43389, 43390])))
   WITH NO DATA;
 
 

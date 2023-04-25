@@ -47,11 +47,11 @@ def run
   end
   arreglar_poblacion
   eliminar_generados
-  m = UnificarHelper.eliminar_casos_en_blanco
+  m = Jos19::UnificarHelper.eliminar_casos_en_blanco
   puts m;
-  m = UnificarHelper.eliminar_personas_en_blanco
+  m = Jos19::UnificarHelper.eliminar_personas_en_blanco
   puts m;
-  m = UnificarHelper.arreglar_casos_medio_borrados
+  m = Jos19::UnificarHelper.arreglar_casos_medio_borrados
   puts m;
   Msip::Persona.connection.execute <<-SQL
     REFRESH MATERIALIZED VIEW sivel2_gen_conscaso;

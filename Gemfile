@@ -116,6 +116,10 @@ gem 'sivel2_sjr',
   git: 'https://gitlab.com/pasosdeJesus/sivel2_sjr.git', branch: 'main'
   #path: '../sivel2_sjr'
 
+gem 'jos19',
+  git: 'https://gitlab.com/pasosdeJesus/jos19.git', branch: 'main'
+  #path: '../jos19'
+
   gem 'debug' # Depurar
 group :development, :test do
 

@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: cceb8cb59402533c0d6b5b2d9f402efe4b2b6c7d
+  revision: 5249d1100a2832c0351d5ad6a82a7193258a401a
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -48,8 +48,16 @@ GIT
       rspreadsheet
 
 GIT
+  remote: https://gitlab.com/pasosdeJesus/jos19.git
+  revision: a0c3b1430fbda949789cd1e428002d64e1548d3b
+  branch: main
+  specs:
+    jos19 (2.2.0.beta2)
+      rails (>= 7.0.4)
+
+GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: e91b8ffbee087014b0a2b8d0f424808d2e191407
+  revision: e8b3e64445d047a8c8470156d239011bb310f651
   branch: main
   specs:
     mr519_gen (2.2.0.beta2)
@@ -58,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 89ca2e8dbb2e8fddf287d8c58d4d96374c521f41
+  revision: de27390327ad41f172725f8094b87ff0e4887468
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -304,7 +312,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-    pg (1.5.0)
+    pg (1.5.1)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
@@ -317,7 +325,7 @@ GEM
     puma (6.2.2)
       nio4r (~> 2.0)
     racc (1.6.2)
-    rack (2.2.6.4)
+    rack (2.2.7)
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (7.0.4.3)
@@ -462,6 +470,7 @@ DEPENDENCIES
   dotenv-rails
   heb412_gen!
   jbuilder
+  jos19!
   jsbundling-rails
   kt-paperclip!
   libxml-ruby
