@@ -133,10 +133,14 @@ module Cor1440Gen
 
     def casos_asociados
       lp = self.asistencia.pluck(:persona_id) 
-      lv = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
-        where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
-              self.fecha)
-      lc = lv.pluck(:caso_id)
+      if lp.count == 0
+        lc = []
+      else
+        lv = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
+          where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+                self.fecha)
+        lc = lv.pluck(:caso_id)
+      end
       if lc.empty?
         return ""
       else
@@ -309,15 +313,15 @@ module Cor1440Gen
     end
 
     def poblacion_mujeres_r_g_ids(num)
-      poblacion_r_g(Msip::Persona:convencion_sexo[:sexo_femenino], num)
+      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_femenino], num)
     end
 
     def poblacion_hombres_r_g_ids(num)
-      poblacion_r_g(Msip::Persona:convencion_sexo[:sexo_masculino], num)
+      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_masculino], num)
     end
 
     def poblacion_sinsexo_g_ids(num)
-      poblacion_r_g(Msip::Persona:convencion_sexo[:sexo_sininformacion], num)
+      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_sininformacion], num)
     end
 
 
