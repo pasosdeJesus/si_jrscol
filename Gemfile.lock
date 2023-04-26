@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: de27390327ad41f172725f8094b87ff0e4887468
+  revision: e6bd731480ca60c7cf06e5423c529a7835023d1c
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -262,7 +262,7 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     htmlentities (4.3.4)
-    i18n (1.12.0)
+    i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
     irb (1.6.4)
@@ -312,7 +312,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-    pg (1.5.1)
+    pg (1.5.2)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
