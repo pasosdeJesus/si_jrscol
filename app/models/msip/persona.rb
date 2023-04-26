@@ -23,18 +23,6 @@ module Msip
       association_foreign_key: 'detallefinanciero_id',
       join_table: 'detallefinanciero_persona'
 
-    has_many :etiqueta_persona,  
-      foreign_key: 'persona_id',
-      validate: true,
-      dependent: :destroy,
-      class_name: 'Msip::EtiquetaPersona'
-    has_many :etiqueta, 
-      through: :etiqueta_persona, 
-      class_name: 'Msip::Etiqueta'
-    accepts_nested_attributes_for :etiqueta_persona, 
-      allow_destroy: true, 
-      reject_if: :all_blank
-
     has_one :datosbio, class_name: 'Msip::Datosbio', 
       foreign_key: 'persona_id', dependent: :delete
     accepts_nested_attributes_for :datosbio, reject_if: :all_blank
@@ -83,10 +71,6 @@ module Msip
     def apellidos=(valc)
       self[:apellidos] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  */, '').sub(/  *$/, '')
     end
-
-    scope :filtro_etiqueta_ids, lambda {|e|
-      joins(:etiqueta_persona).where("msip_etiqueta_persona.etiqueta_id" => e)
-    }
 
     after_create :arreglar_sindocumento
     def arreglar_sindocumento
