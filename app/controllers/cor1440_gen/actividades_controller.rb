@@ -13,6 +13,7 @@ module Cor1440Gen
 
     Cor1440Gen.actividadg1 = "Funcionarias del SJR"
     Cor1440Gen.actividadg3 = "Funcionarios del SJR"
+    Cor1440Gen.actividadg6 = "Externos otro sexo"
 
     def self.posibles_nuevaresp
       return {
@@ -97,6 +98,7 @@ module Cor1440Gen
         :poblacion_mujeres_r,
         :poblacion_hombres_r,
         :poblacion_sinsexo,
+        :poblacion_intersexuales,
         :anexos
       ]
     end

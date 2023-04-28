@@ -4,6 +4,7 @@
       <th><%= Cor1440Gen.actividadg2 %></th>
       <th><%= Cor1440Gen.actividadg4 %></th>
       <th><%= Cor1440Gen.actividadg5 %></th>
+      <th><%= Cor1440Gen.actividadg6 %></th>
       <th>Total</th></tr>
   </thead>
   <tbody id="actividad_rangoedadac">
@@ -25,7 +26,11 @@
           <%= rs %>
         </td>
         <td>
-          <b> <%= rfr + rmr + rs %> </b>
+          <% ri=  rango.i? ? rango.i : 0 %>
+          <%= rs %>
+        </td>
+        <td>
+          <b> <%= rfr + rmr + rs + ri%> </b>
         </td>
       </tr>
     <% end %>
@@ -40,8 +45,11 @@
       <td id="tactividads">
         <b> <%= sr = @registro.actividad_rangoedadac.sum(:s) %> </b>
       </td>
+      <td id="tactividads">
+        <b> <%= si = @registro.actividad_rangoedadac.sum(:i) %> </b>
+      </td>
       <td id="tactividadtot">
-        <b> <%= fr + mr + sr %> </b>
+        <b> <%= fr + mr + sr + si %> </b>
       </td>
     </tr>
   </tbody>
