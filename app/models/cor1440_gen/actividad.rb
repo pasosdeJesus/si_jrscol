@@ -712,6 +712,11 @@ module Cor1440Gen
           "#{p1} pero se esperaban al menos #{p2}"
         end
 
+      when /^poblacion_intersexuales_g[0-9]*$/
+        g = atr[19..-1].to_i
+        poblacion_gen_infijo('intersexuales_g', g)
+
+
       when 'poblacion_sinsexo'
         poblacion_gen_infijo('sinsexo')
 

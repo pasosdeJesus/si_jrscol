@@ -26,11 +26,19 @@
           <%= rs %>
         </td>
         <td>
+<<<<<<< HEAD
           <% ri = rango.i? ? rango.i : 0 %>
           <%= ri %>
         </td>
         <td>
           <b> <%= rfr + rmr + rs + ri %> </b>
+=======
+          <% ri=  rango.i? ? rango.i : 0 %>
+          <%= rs %>
+        </td>
+        <td>
+          <b> <%= rfr + rmr + rs + ri%> </b>
+>>>>>>> dfa7def9 (Arregla tablas de población internas, en resumen de actividad y en listado de actividades. Avanza #615)
         </td>
       </tr>
     <% end %>
@@ -45,7 +53,11 @@
       <td id="tactividads">
         <b> <%= sr = @registro.actividad_rangoedadac.sum(:s) %> </b>
       </td>
+<<<<<<< HEAD
       <td id="tactividadi">
+=======
+      <td id="tactividads">
+>>>>>>> dfa7def9 (Arregla tablas de población internas, en resumen de actividad y en listado de actividades. Avanza #615)
         <b> <%= si = @registro.actividad_rangoedadac.sum(:i) %> </b>
       </td>
       <td id="tactividadtot">
