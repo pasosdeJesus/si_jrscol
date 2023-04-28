@@ -320,6 +320,11 @@ module Cor1440Gen
       poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_masculino], num)
     end
 
+    def poblacion_intersexuales_g_ids(num)
+      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_intersexual], num)
+    end
+
+
     def poblacion_sinsexo_g_ids(num)
       poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_sininformacion], num)
     end
@@ -388,6 +393,22 @@ module Cor1440Gen
         poblacion_hombres_r_g_ids(7).split(",")
       l.join(",")
     end
+
+    def poblacion_intersexuales_adultos_ids
+      l = poblacion_intersexuales_g_ids(4).split(",") +
+        poblacion_intersexuales_g_ids(5).split(",") +
+        poblacion_intersexuales_g_ids(6).split(",")
+      l.join(",")
+    end
+
+    def poblacion_intersexuales_menores_ids
+      l = poblacion_intersexuales_g_ids(1).split(",") +
+        poblacion_intersexuales_g_ids(2).split(",") +
+        poblacion_intersexuales_g_ids(3).split(",") +
+        poblacion_intersexuales_g_ids(7).split(",")
+      l.join(",")
+    end
+
 
     def poblacion_sinsexo_adultos_ids
       l = poblacion_sinsexo_g_ids(4).split(",") +
@@ -632,6 +653,34 @@ module Cor1440Gen
 
       when 'poblacion_niños_adolescentes_y_se_ids'
         poblacion_ninos_adolescentes_y_se_ids.split(",").count
+
+      when 'poblacion_intersexuales'
+        poblacion_gen_infijo('intersexuales')
+
+      when 'poblacion_intersexuales_adultos'
+        p1 = poblacion_intersexuales_g_solore(4) +
+          poblacion_intersexuales_g_solore(5) + poblacion_intersexuales_g_solore(6)
+        p2 = poblacion_intersexuales_adultos_ids.split(",").count
+        if p1 >= p2
+          p1.to_s
+        else
+          "#{p1} pero se esperaban al menos #{p2}"
+        end
+
+      when 'poblacion_intersexuales_menores'
+        p1 = poblacion_intersexuales_g_solore(1) +
+          poblacion_intersexuales_g_solore(2) + poblacion_intersexuales_g_solore(3) +
+          poblacion_intersexuales_g_solore(7)
+        p2 = poblacion_intersexuales_menores_ids.split(",").count
+        if p1 >= p2
+          p1.to_s
+        else
+          "#{p1} pero se esperaban al menos #{p2}"
+        end
+
+      when /^poblacion_intersexuales_g[0-9]*$/
+        g = atr[19..-1].to_i
+        poblacion_gen_infijo('intersexuales_g', g)
 
 
       when 'poblacion_sinsexo'
