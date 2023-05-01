@@ -11,7 +11,8 @@ module Msip
     def atributos_comunes
       a = atributos_show_msip - [
         :mesnac, 
-        :dianac
+        :dianac,
+        :familiares
       ] + [ 
         :ultimoperfilorgsocial_id,
         :ultimoestatusmigratorio_id,
