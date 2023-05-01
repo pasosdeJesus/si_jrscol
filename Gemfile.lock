@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 0454567b5816776ee6fe91e2bf1ac83d0c9657b1
+  revision: 1ebfaf60c67d8b51cc7716167ae06c91fd081bdd
   branch: main
   specs:
     jos19 (2.2.0.beta2)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: dea7b590b01568aa133546f29940db5fb574a2b8
+  revision: 268429573c801e6c07f652fcdac3caaab3fddb9b
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -273,7 +273,7 @@ GEM
     jsbundling-rails (1.1.1)
       railties (>= 6.0.0)
     kgio (2.11.4)
-    libxml-ruby (4.0.0)
+    libxml-ruby (4.1.0)
     loofah (2.20.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -289,7 +289,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2023.0218.1)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
+    mini_portile2 (2.8.2)
     minitest (5.18.0)
     msgpack (1.7.0)
     net-imap (0.3.4)
@@ -312,7 +312,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-    pg (1.5.2)
+    pg (1.5.3)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)

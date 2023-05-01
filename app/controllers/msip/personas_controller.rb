@@ -1,5 +1,4 @@
-require 'sivel2_gen/concerns/controllers/personas_controller'
-require 'cor1440_gen/concerns/controllers/personas_controller'
+require 'jos19/concerns/controllers/personas_controller'
 
 module Msip
   class PersonasController < Heb412Gen::ModelosController
@@ -7,9 +6,7 @@ module Msip
     before_action :set_persona, only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource class: Msip::Persona
 
-    include Sivel2Gen::Concerns::Controllers::PersonasController
-    include Cor1440Gen::Concerns::Controllers::PersonasController
-
+    include Jos19::Concerns::Controllers::PersonasController
 
     def atributos_comunes
       a = atributos_show_msip - [
@@ -75,10 +72,6 @@ module Msip
       return a
     end
 
-
-    def vistas_manejadas
-      ['Persona']
-    end
 
     # Busca y lista persona(s)
 
@@ -358,46 +351,271 @@ module Msip
       render :reporterepetidos, layout: 'application'
     end
 
-    def deduplicar
-      if ENV.fetch('DEPURA_MIN', -1).to_i == -1 || 
-          ENV.fetch('DEPURA_MAX', -1).to_i == -1
-        @res_preparar_automaticamente = 
-          Jos19::UnificarHelper::preparar_automaticamente
+    # Unificar dos casos, eliminando el de código mayor y dejando
+    # su información como etiqueta en el primero
+    # @return caso_id donde unifica si lo logra o nil
+    def unificar_dos_casos(c1_id, c2_id, current_usuario, menserror)
+      tmenserror = ''
+      if !c1_id || c1_id.to_i <= 0 ||
+          Sivel2Gen::Caso.where(id: c1_id.to_i).count == 0
+        tmenserror << "Primera identificación de caso no válida '#{c1_id.to_s}'.\n"
       end
-      @res_deduplicar = Jos19::UnificarHelper::deduplicar_automaticamente(
-        current_usuario)
-      Msip::Persona.connection.execute <<-SQL
-        REFRESH MATERIALIZED VIEW sivel2_gen_conscaso;
-      SQL
-      render :deduplicar, layout: 'application'
+      if !c2_id || c2_id.to_i <= 0 ||
+          Sivel2Gen::Caso.where(id: c2_id.to_i).count == 0
+        tmenserror << "Segunda identificación de caso no válida '#{c2_id.to_s}'.\n"
+      end
+      if c1_id.to_i == c2_id.to_i
+        tmenserror << "Primera y segunda identificación son iguales, no unificando.\n"
+      end
+
+      if tmenserror != ""
+        menserror << tmenserror
+        return nil
+      end
+
+      c1 = Sivel2Gen::Caso.find([c1_id.to_i, c2_id.to_i].min)
+      c2 = Sivel2Gen::Caso.find([c1_id.to_i, c2_id.to_i].max)
+
+      eunif = Msip::Etiqueta.where(
+        nombre: Rails.configuration.x.jos19_etiquetaunificadas).take
+        if !eunif
+          tmenserror << "No se encontró etiqueta "\
+            "#{Rails.configuration.x.jos19_etiquetaunificadas}.\n"
+        end
+
+        if tmenserror != ""
+          menserror << tmenserror
+          return nil
+        end
+
+        ep = Sivel2Gen::CasoEtiqueta.new(
+          caso_id: c1.id,
+          etiqueta_id: eunif.id,
+          usuario_id: current_usuario.id,
+          fecha: Date.today(),
+          observaciones: ""
+        )
+
+        Sivel2Sjr::ActividadCasosjr.where(casosjr_id: c2.id).each do |ac|
+          ac.casosjr_id = c1.id
+          ac.save
+          ep.observaciones << "Cambiado caso beneficiario en actividad #{ac.id}\n"
+        end
+
+        ep.observaciones = ep.observaciones[0..9999]
+        ep.save
+        cc = Sivel2Sjr::CasosController.new
+        c2rep = Jos19::UnificarHelper.reporte_md_contenido_objeto("Caso #{c1.id}", cc.lista_params, c1, 0)
+        c2id = c2.id
+        if eliminar_caso(c2, tmenserror)
+          ep.observaciones << "Se unificó y eliminó el registro de caso #{c2id}\n" +
+            ep.observaciones << c2rep
+        else
+          ep.observaciones << "No se logró eliminar el caso #{c2id}, pero si se unficó en el #{c1.id}\n" +
+            tmenserror << "No se logró eliminar el caso #{c2id}\n"
+        end
+        ep.observaciones = ep.observaciones[0..9999]
+        begin
+          ep.save!
+        rescue Exception => e
+          puts e.to_s
+          debugger
+        end
+
+
+        if tmenserror != ""
+          menserror << tmenserror
+          return nil
+        end
+
+        return c1.id
     end
 
-
-    def unificar
-      if params[:unificarpersonas]
-        id1 = params[:unificarpersonas][:id1].to_i
-        id2 = params[:unificarpersonas][:id2].to_i
-      elsif params[:id1] && params[:id2]
-        id1 = params[:id1].to_i
-        id2 = params[:id2].to_i
-      else
-        flash[:error] = 'Faltaron identificaciones de personas a unificar'
-        redirect_to Rails.configuration.relative_url_root
-        return
+    # @param p1 Primera persona
+    # @param p2 Segunda persona
+    # @param ep Etiqueta para la persona que queda que se construye
+    def unificar_dos_personas_en_casos(
+      p1, p2, current_usuario, cadpersona, ep, menserror
+    )
+      debugger
+      loop do
+        cc1 = Sivel2Sjr::Casosjr.where(contacto_id: p1.id).pluck(:caso_id)
+        cc2 = Sivel2Sjr::Casosjr.where(contacto_id: p2.id).pluck(:caso_id)
+        if cc1.count > 0 and cc2.count > 0
+          cr = unificar_dos_casos(cc1[0], cc2[0], current_usuario, menserror)
+          if !cr.nil?
+            ep.observaciones << "Unificados casos #{cc1[0]} y #{cc2[0]} en #{cr}\n"
+          else
+            menserror << "Primer #{cadpersona} (#{p1.id} "\
+              "#{p1.nombres.to_s} #{p1.apellidos.to_s}) es contacto "\
+              "en caso #{cc1[0]} y segundo beneficiario (#{p2.id} "\
+              "#{p2.nombres} #{p2.apellidos}) es contacto en caso "\
+              "#{cc2[0]}. Se intentó sin éxito la unificación de "\
+              "los dos casos.\n"
+            return [menserror, nil]
+          end
+        end
+        break if cc1.count == 0 || cc2.count == 0;
       end
 
-      r = Jos19::UnificarHelper.unificar_dos_beneficiarios(
-        id1.dup, id2.dup, current_usuario.dup)
-      m = r[0]
-      p = r[1]
-      if (m != "")
-        flash[:error] = m
-        redirect_to Rails.configuration.relative_url_root
-        return
+      cp2  = Sivel2Gen::Victima.where(persona_id: p2.id).pluck(:caso_id)
+      cp2.each do |cid|
+        Sivel2Gen::Victima.where(
+          caso_id: cid, persona_id: p2.id
+        ).each do |vic|
+          if Sivel2Gen::Victima.where(caso_id: cid, persona_id: p1.id).count == 0
+            nv = vic.dup
+            nv.persona_id = p1.id
+            nv.save
+            nvs = vic.victimasjr.dup
+            if nvs
+              nvs.victima_id = nv.id
+              nvs.save
+            end
+            ep.observaciones << "Creada víctma en caso #{cid}\n"
+          end
+          ep.save
+          csjr = vic.caso.casosjr
+          if csjr.contacto_id == p2.id
+            Sivel2Sjr::Casosjr.connection.execute <<-SQL
+                   UPDATE sivel2_sjr_casosjr SET
+                     contacto_id=#{p1.id}
+                     WHERE contacto_id=#{p2.id}
+            SQL
+            #          csjr.contacto_id = p1.id
+            #          if !csjr.save
+            #            puts csjr.errors
+            #            debugger
+            #          end
+            ep.observaciones << "Cambiado contacto en caso #{cid}\n"
+          end
+          ep.save
+          Sivel2Gen::Acto.where(
+            caso_id: cid, persona_id: p2.id
+          ).each do |ac|
+            ac.persona_id = p1.id
+            ac.save!
+            ep.observaciones << "Cambiado acto en caso #{cid}\n"
+          end
+          ep.save
+          ep.observaciones << "Elimina #{cadpersona} "\
+            "#{vic.persona_id} del caso #{cid}\n"
+          vic.destroy
+          ep.observaciones = ep.observaciones[0..4998]
+          ep.save
+        end
       end
-      redirect_to msip.persona_path(p1)
+
+      Cor1440Gen::Caracterizacionpersona.where(persona_id: p2.id).each do |cp|
+        cp.persona_id = p1.id
+        cp.save
+        ep.observaciones << "Cambiada caracterizacíon #{cp.id}\n"
+      end
+      # cor1440_gen_beneficiariopf no tiene id
+      lpf = Cor1440Gen::Beneficiariopf.where(persona_id: p2.id).
+        pluck(:proyectofinanciero_id)
+      lpf.each do |pfid|
+        if Cor1440Gen::Beneficiariopf.where(persona_id: p1.id, 
+            proyectofinanciero_id: pfid).count == 0
+          Cor1440Gen::Beneficiariopf.connection.execute <<-SQL
+                 INSERT INTO cor1440_gen_beneficiariopf 
+                   (persona_id, proyectofinanciero_id) 
+                   VALUES (#{p1.id}, #{pfid});
+          SQL
+          ep.observaciones << "Cambiado beneficiario en convenio financiado #{pfid}\n"
+        end
+        Cor1440Gen::Beneficiariopf.connection.execute <<-SQL
+               DELETE FROM cor1440_gen_beneficiariopf WHERE 
+                 persona_id=#{p2.id} AND
+                 proyectofinanciero_id=#{pfid};
+        SQL
+      end
+      ::Detallefinanciero.joins(:persona).where(
+        'msip_persona.id' => p2.id
+      ).each do |bp|
+        bp.persona_id = p1.id
+        bp.save
+        ep.observaciones << "Cambiado detalle financiero #{bp.detallefinanciero_id}\n"
+      end
+      #detallefinanciero_persona
     end
 
+    # @param c Sivel2Gen::Caso
+    # @param menserror Colchon para mensajes de error
+    # @return true y menserror no es modificado o false y se agrega problema a menserror
+    def eliminar_caso(c, menserror)
+      if !c || !c.id
+        menserror << "Caso no válido.\n"
+        return false
+      end
+      begin
+        #Sivel2Gen::Caso.connection.execute('BEGIN')
+        Sivel2Gen::Caso.connection.execute(
+          "DELETE FROM sivel2_sjr_categoria_desplazamiento
+           WHERE desplazamiento_id IN (SELECT id FROM sivel2_sjr_desplazamiento
+              WHERE caso_id=#{c.id});"
+        )
+        ['sivel2_sjr_ayudasjr_respuesta', 
+         'sivel2_sjr_ayudaestado_respuesta',
+         'sivel2_sjr_derecho_respuesta', 
+         'sivel2_sjr_aspsicosocial_respuesta', 
+         'sivel2_sjr_motivosjr_respuesta', 
+         'sivel2_sjr_progestado_respuesta'
+        ].each do |trr|
+          ord = "DELETE FROM #{trr}
+           WHERE respuesta_id IN (SELECT id FROM sivel2_sjr_respuesta 
+             WHERE caso_id=#{c.id});"
+          #puts "OJO ord='#{ord}'"
+          Sivel2Gen::Caso.connection.execute(ord)
+        end
+        Sivel2Gen::Caso.connection.execute(
+          "DELETE FROM sivel2_sjr_accionjuridica_respuesta 
+           WHERE respuesta_id IN (SELECT id FROM sivel2_sjr_respuesta 
+             WHERE caso_id=#{c.id});"
+        )
+
+        Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_actosjr
+        WHERE acto_id IN (SELECT id FROM sivel2_gen_acto
+          WHERE caso_id=#{c.id});")
+
+        Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_sjr_desplazamiento
+        WHERE caso_id=#{c.id};")
+        Sivel2Gen::Caso.connection.execute("UPDATE sivel2_gen_caso
+        SET ubicacion_id=NULL
+          WHERE id=#{c.id};")
+        Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET llegada_id=NULL WHERE caso_id=#{c.id};")
+        Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET salida_id=NULL WHERE caso_id=#{c.id};")
+        Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET llegadam_id=NULL WHERE caso_id=#{c.id};")
+        Sivel2Gen::Caso.connection.execute("UPDATE sivel2_sjr_casosjr
+        SET salidam_id=NULL WHERE caso_id=#{c.id};")
+        Sivel2Gen::Caso.connection.execute("DELETE FROM msip_ubicacion
+        WHERE caso_id=#{c.id};")
+        Sivel2Gen::Caso.connection.execute(
+          "DELETE FROM sivel2_sjr_actividad_casosjr
+        WHERE casosjr_id=#{c.id}")
+        Sivel2Gen::Caso.connection.execute(
+          "DELETE FROM sivel2_sjr_respuesta 
+        WHERE caso_id=#{c.id}")
+        cs = c.casosjr
+        if cs
+          cs.destroy
+        end
+        c.destroy
+        return true
+      rescue Exception => e
+        menserror << "Problema eliminando caso #{e}.\n"
+        return false
+      end
+
+      #    Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_gen_acto
+      #      WHERE caso_id=#{c.id};")
+      #    Sivel2Gen::Caso.connection.execute("DELETE FROM sivel2_gen_caso
+      #      WHERE id=#{c.id};")
+      #    Sivel2Gen::Caso.connection.execute('COMMIT;')
+    end
 
 
     def lista_params
