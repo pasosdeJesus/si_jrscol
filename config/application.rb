@@ -84,6 +84,8 @@ module Sivel2Sjrcol
 
     config.x.cor1440_edita_poblacion = false
 
+    config.x.jos19_etiquetaunificadas = "BENEFICIARIOS UNIFICADOS"
+
     if ENV.fetch('WC_PERMISOS', '') != '' && 
         ENV.fetch('RAILS_ENV', '') == 'development'
       config.web_console.permissions = ENV['WC_PERMISOS']

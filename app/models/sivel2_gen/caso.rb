@@ -100,5 +100,6 @@ class Sivel2Gen::Caso < ActiveRecord::Base
     end
   end
 
+
 end
 
