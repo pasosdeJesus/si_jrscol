@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: a88dc54a43545cc2242a1a79d2b5be2637415bac
+  revision: 1ceb801452433ad56c7eee8cdd8140920a8bd5ef
   branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 89e25cf36edde558a982849a6ff87ee510ff10b3
+  revision: 6d1f1ed4bb6b48b2a69a520b3631f814b70d4306
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 1ebfaf60c67d8b51cc7716167ae06c91fd081bdd
+  revision: d792d9ceb85afa5b37c4c9e6414520abc8973c0d
   branch: main
   specs:
     jos19 (2.2.0.beta2)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: dc219cc315057122dd8a1d480eabcd3f4c377e1c
+  revision: c4f78ce0a8e1661dee8da5ed33691dac121375b9
   branch: main
   specs:
     mr519_gen (2.2.0.beta2)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 268429573c801e6c07f652fcdac3caaab3fddb9b
+  revision: 9fed60ffa546afd694349cd647c84a60f12e1d3f
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: 3a2bece7d3928762e1b9923c950ee1fb79604e6b
+  revision: c6e9f27c80f6c51a39b6aea179007c89b01ccb89
   branch: main
   specs:
     sal7711_gen (2.2.0.beta2)
@@ -95,7 +95,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: 16fdb8c15a0bd34a9c0391a4f34a19ea0dfdd7ba
+  revision: 4e872666026040c3fba3ddfe8348ac6501f87e28
   branch: main
   specs:
     sal7711_web (2.2.0.beta2)
@@ -104,7 +104,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 24f282f9a8b02ab06bcdd66f776468c58e4b36bd
+  revision: 8094dce8bba8810d5d3df59097932b3a69ece0f8
   branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
@@ -273,7 +273,7 @@ GEM
     jsbundling-rails (1.1.1)
       railties (>= 6.0.0)
     kgio (2.11.4)
-    libxml-ruby (4.1.0)
+    libxml-ruby (4.1.1)
     loofah (2.20.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)

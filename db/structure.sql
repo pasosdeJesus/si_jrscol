@@ -6986,7 +6986,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2022-12-15'::date)
+          WHERE (sivel2_gen_conscaso.caso_id = 143)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -16839,6 +16839,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230424110835'),
 ('20230424175427'),
 ('20230424182752'),
-('20230427195057');
+('20230427195057'),
+('20230504084246');
 
 

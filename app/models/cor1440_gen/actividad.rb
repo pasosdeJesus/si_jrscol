@@ -113,7 +113,30 @@ module Cor1440Gen
         )
       end
     end
- 
+
+    # Validación de sexo en asistente
+    validate :valida_sexo_asistentes
+    def valida_sexo_asistentes
+      docerr = []
+      if controlador && controlador.params && controlador.params[:actividad] &&
+          controlador.params[:actividad][:asistencia_attributes]
+        controlador.params[:actividad][:asistencia_attributes].each do |l, v|
+          if v[:persona_attributes] && v[:persona_attributes][:sexo] &&
+            v[:persona_attributes][:sexo] == 'S' && v['_destroy'] == 'false'
+            docerr <<  v[:persona_attributes][:numerodocumento]
+          end
+        end
+      end
+      if docerr.count > 0
+        errors.add(
+          :actividad_asistencia_attributes, 
+          "Falta sexo en asistente(s) con identificacion(es) " +
+          docerr.join(", ") + "."
+        )
+      end
+    end
+
+
 
     # FILTROS
    

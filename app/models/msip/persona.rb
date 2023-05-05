@@ -40,6 +40,10 @@ module Msip
       }
 
     validates :ppt, length: { maximum: 32}
+    
+    validates :sexo, inclusion: { 
+      in: %w(H M O), message: "No puede tener sexo 'S'"
+    }
 
     attr_accessor :fechanac
     def fechanac
