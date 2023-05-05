@@ -220,7 +220,12 @@ module Cor1440Gen
     end
 
     def poblacion
-      p1 = poblacion_cor1440_gen
+      p1 = actividad_rangoedadac.inject(0) do |memo, r|
+        memo + (r.mr ? r.mr : 0) +
+          (r.fr ? r.fr : 0) +
+          (r.s ? r.s : 0) +
+          (r.i ? r.i : 0)
+      end
       p2 = poblacion_ids.split(",").count
       if p1 >= p2
         p1.to_i
