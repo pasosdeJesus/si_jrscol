@@ -3981,6 +3981,49 @@ ALTER SEQUENCE public.indicadorgifmm_id_seq OWNED BY public.indicadorgifmm.id;
 
 
 --
+-- Name: jos19_consactividadcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.jos19_consactividadcaso AS
+ SELECT row_number() OVER () AS id,
+    caso.id AS caso_id,
+    asi.actividad_id,
+    victima.id AS victima_id,
+        CASE
+            WHEN (casosjr.contacto_id = persona.id) THEN 1
+            ELSE 0
+        END AS es_contacto,
+    actividad.fecha AS actividad_fecha,
+    ( SELECT msip_oficina.nombre
+           FROM public.msip_oficina
+          WHERE (msip_oficina.id = actividad.oficina_id)
+         LIMIT 1) AS actividad_oficina,
+    ( SELECT usuario.nusuario
+           FROM public.usuario
+          WHERE (usuario.id = actividad.usuario_id)
+         LIMIT 1) AS actividad_responsable,
+    array_to_string(ARRAY( SELECT cor1440_gen_proyectofinanciero.nombre
+           FROM public.cor1440_gen_proyectofinanciero
+          WHERE (cor1440_gen_proyectofinanciero.id IN ( SELECT apf.proyectofinanciero_id
+                   FROM public.cor1440_gen_actividad_proyectofinanciero apf
+                  WHERE (apf.actividad_id = actividad.id)))), ','::text) AS actividad_convenios,
+    persona.id AS persona_id,
+    persona.nombres AS persona_nombres,
+    persona.apellidos AS persona_apellidos,
+    persona.tdocumento_id AS persona_tipodocumento,
+    caso.memo AS caso_memo,
+    casosjr.fecharec AS caso_fecharec
+   FROM ((((((public.cor1440_gen_asistencia asi
+     JOIN public.msip_persona persona ON ((persona.id = asi.persona_id)))
+     JOIN public.cor1440_gen_actividad actividad ON ((asi.actividad_id = actividad.id)))
+     JOIN public.msip_oficina oficinaac ON ((oficinaac.id = actividad.oficina_id)))
+     JOIN public.sivel2_gen_victima victima ON ((victima.persona_id = persona.id)))
+     JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
+     JOIN public.sivel2_sjr_casosjr casosjr ON ((caso.id = casosjr.caso_id)))
+  WITH NO DATA;
+
+
+--
 -- Name: sivel2_sjr_victimasjr; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -8131,49 +8174,6 @@ CREATE SEQUENCE public.sivel2_sjr_comosupo_id_seq
 --
 
 ALTER SEQUENCE public.sivel2_sjr_comosupo_id_seq OWNED BY public.sivel2_sjr_comosupo.id;
-
-
---
--- Name: sivel2_sjr_consactividadcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.sivel2_sjr_consactividadcaso AS
- SELECT row_number() OVER () AS id,
-    caso.id AS caso_id,
-    asi.actividad_id,
-    victima.id AS victima_id,
-        CASE
-            WHEN (casosjr.contacto_id = persona.id) THEN 1
-            ELSE 0
-        END AS es_contacto,
-    actividad.fecha AS actividad_fecha,
-    ( SELECT msip_oficina.nombre
-           FROM public.msip_oficina
-          WHERE (msip_oficina.id = actividad.oficina_id)
-         LIMIT 1) AS actividad_oficina,
-    ( SELECT usuario.nusuario
-           FROM public.usuario
-          WHERE (usuario.id = actividad.usuario_id)
-         LIMIT 1) AS actividad_responsable,
-    array_to_string(ARRAY( SELECT cor1440_gen_proyectofinanciero.nombre
-           FROM public.cor1440_gen_proyectofinanciero
-          WHERE (cor1440_gen_proyectofinanciero.id IN ( SELECT apf.proyectofinanciero_id
-                   FROM public.cor1440_gen_actividad_proyectofinanciero apf
-                  WHERE (apf.actividad_id = actividad.id)))), ','::text) AS actividad_convenios,
-    persona.id AS persona_id,
-    persona.nombres AS persona_nombres,
-    persona.apellidos AS persona_apellidos,
-    persona.tdocumento_id AS persona_tipodocumento,
-    caso.memo AS caso_memo,
-    casosjr.fecharec AS caso_fecharec
-   FROM ((((((public.cor1440_gen_asistencia asi
-     JOIN public.msip_persona persona ON ((persona.id = asi.persona_id)))
-     JOIN public.cor1440_gen_actividad actividad ON ((asi.actividad_id = actividad.id)))
-     JOIN public.msip_oficina oficinaac ON ((oficinaac.id = actividad.oficina_id)))
-     JOIN public.sivel2_gen_victima victima ON ((victima.persona_id = persona.id)))
-     JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
-     JOIN public.sivel2_sjr_casosjr casosjr ON ((caso.id = casosjr.caso_id)))
-  WITH NO DATA;
 
 
 --
@@ -16842,6 +16842,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230427195057'),
 ('20230504084246'),
 ('20230505183021'),
-('20230505194356');
+('20230505194356'),
+('20230506183428');
 
 
