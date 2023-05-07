@@ -32,3 +32,15 @@
 footer {
   font-size: 0.8rem;
 }
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  height: 40px;
+}
+
+#div_contenido {
+  margin-top: 60px;
+}
