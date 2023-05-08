@@ -79,6 +79,7 @@ es:
         municipio_gifmm: Municipio
         sector_gifmm: Sector GIFMM
         parte_rmrp: Parte RMRP
+        tipo_implementacion: Tipo de implementación
       "cor1440_gen/actividad":
         nombre: 'Nombre (*)'
         fecha_localizada: 'Fecha (*)'

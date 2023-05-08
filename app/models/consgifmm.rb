@@ -1,6 +1,8 @@
 class Consgifmm < ActiveRecord::Base
   include Msip::Modelo
 
+  self.primary_key = "id"
+
   belongs_to :detallefinanciero, 
     class_name: 'Detallefinanciero', 
     foreign_key: 'id', optional: false
@@ -993,6 +995,8 @@ class Consgifmm < ActiveRecord::Base
   def self.refresca_consulta(ordenar_por = nil)
     if !ActiveRecord::Base.connection.data_source_exists? "#{CONSULTA}"
       crea_consulta(ordenar_por = nil)
+      ActiveRecord::Base.connection.execute(
+        "CREATE UNIQUE INDEX on #{CONSULTA} (id);")
     else
       ActiveRecord::Base.connection.execute(
         "REFRESH MATERIALIZED VIEW #{CONSULTA}")

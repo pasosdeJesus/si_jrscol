@@ -43,6 +43,28 @@ class ConsgifmmController < Heb412Gen::ModelosController
     ['Consgifmm']
   end
 
+  def columnas_posibles
+    [ :actividad_id,
+      :fecha,
+      :objetivo,
+      :conveniofinanciado_nombre,
+      :actividadmarcologico_nombre,
+      :socio_principal,
+      :tipo_implementacion,
+      :socio_implementador,
+      :departamento_gifmm,
+      :municipio_gifmm,
+      :mes,
+      :estado,
+      :parte_rmrp,
+      :sector_gifmm,
+      :indicador_gifmm,
+      :beneficiarios_cuenta_y_enlaces,
+      :beneficiarios_nuevos_mes_cuenta_y_enlaces
+    ]
+  end
+
+
   # Genera conteo por caso/beneficiario y tipo de actividad de convenio
   # #caso #act fechaact nom ap id gen edadfact rangoedad_fact etnia tipoac1 tipoac2 tipoac3 tipoac4 ... oficina asesoract 
   #                 EDADES HOMBRES            EDADES MUJERES                    
@@ -52,8 +74,24 @@ class ConsgifmmController < Heb412Gen::ModelosController
       fant = Date.today - 30
       params[:filtro] = {}
       params[:filtro][:busfechaini] = fant.to_s
+      params[:filtro][:columnas] = [
+        :actividad_id,
+        :fecha,
+        :objetivo,
+        :conveniofinanciado_nombre,
+        :actividadmarcologico_nombre,
+        :socio_principal,
+        :tipo_implementacion,
+        :socio_implementador,
+        :departamento_gifmm,
+        :municipio_gifmm,
+        :mes,
+        :estado,
+        :parte_rmrp,
+        :sector_gifmm,
+      ]
     end
-    ::Consgifmm.refresca_consulta
+    ::Consgifmm.refresca_consulta(params[:filtro][:columnas])
     index_msip(::Consgifmm.all)
   end
 
@@ -242,14 +280,14 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.oficina.to_s,
           reg.actividad_id,
           reg['conveniofinanciado_nombre'],
-          reg.socio_principal,
+          reg.presenta('socio_principal'),
           reg.presenta('tipo_implementacion'),
           reg.presenta('socio_implementador'),
           reg['departamento_gifmm'],
           reg['municipio_gifmm'],
           reg.presenta('mes'),
-          reg.sector_gifmm,
-          reg.indicador_gifmm,
+          reg.presenta('sector_gifmm'),
+          reg.presenta('indicador_gifmm'),
           reg['actividadmarcologico_nombre'],
           reg['actividad_nombre'].to_s,
           reg['actividad_objetivo'].to_s,
@@ -257,53 +295,53 @@ class ConsgifmmController < Heb412Gen::ModelosController
           '', #'Actividad para caminantes',
           '', #'Actividad en apoyo en ETPV',
           '', #'Tipo de apoyo al ETPV',
-          reg.detalleah_cantidad,
-          reg.detalleah_modalidad,
+          reg.presenta('detalleah_cantidad'),
+          reg.presenta('detalleah_modalidad'),
           '', # Por ahora en blanco pues no definieron lo de la tabla con tasa de cambio reg.detalleah_monto_por_persona,
-          reg.detalleah_mecanismo_entrega,
+          reg.presenta('detalleah_mecanismo_entrega'),
           '', #'Cantidad de output: # beneficiarios indirectos'
-          reg.beneficiarios_ids.split(",").count,
-          reg.beneficiarios_nuevos_mes_ids.split(",").count,
-          reg.beneficiarios_vocacion_permanencia_ids.split(",").count,
-          reg.beneficiarios_en_transito_ids.split(",").count,
-          reg.beneficiarios_comunidades_de_acogida_ids.split(",").count,
-          reg.beneficiarios_pendulares_ids.split(",").count,
-          reg.beneficiarios_colombianos_retornados_ids.split(",").count,
-          reg.beneficiarios_victimas_ids.split(",").count,
-          reg.beneficiarios_victimasdobleafectacion_ids.split(",").count,
-          reg.beneficiarios_sinperfilpoblacional_ids.split(",").count,
-          reg.beneficiarias_mujeres_0_5_ids.split(",").count,
-          reg.beneficiarias_mujeres_6_12_ids.split(",").count,
-          reg.beneficiarias_mujeres_13_17_ids.split(",").count,
-          reg.beneficiarias_mujeres_18_25_ids.split(",").count,
-          reg.beneficiarias_mujeres_26_59_ids.split(",").count,
-          reg.beneficiarias_mujeres_60_o_mas_ids.split(",").count,
-          reg.beneficiarios_hombres_0_5_ids.split(",").count,
-          reg.beneficiarios_hombres_6_12_ids.split(",").count,
-          reg.beneficiarios_hombres_13_17_ids.split(",").count,
-          reg.beneficiarios_hombres_18_25_ids.split(",").count,
-          reg.beneficiarios_hombres_26_59_ids.split(",").count,
-          reg.beneficiarios_hombres_60_o_mas_ids.split(",").count,
-          reg.beneficiarios_otrosexo_0_5_ids.split(",").count,
-          reg.beneficiarios_otrosexo_6_12_ids.split(",").count,
-          reg.beneficiarios_otrosexo_13_17_ids.split(",").count,
-          reg.beneficiarios_otrosexo_18_25_ids.split(",").count,
-          reg.beneficiarios_otrosexo_26_59_ids.split(",").count,
-          reg.beneficiarios_otrosexo_60_o_mas_ids.split(",").count,
-          reg.beneficiarios_con_discapacidad_ids.split(",").count,
-          reg.beneficiarios_afrodescendientes_ids.split(",").count,
-          reg.beneficiarios_indigenas_ids.split(",").count,
-          reg.beneficiarios_otra_etnia_ids.split(",").count,
-          reg.beneficiarios_sinsexo_0_5_ids.split(",").count,
-          reg.beneficiarios_sinsexo_6_12_ids.split(",").count,
-          reg.beneficiarios_sinsexo_13_17_ids.split(",").count,
-          reg.beneficiarios_sinsexo_18_25_ids.split(",").count,
-          reg.beneficiarios_sinsexo_26_59_ids.split(",").count,
-          reg.beneficiarios_sinsexo_60_o_mas_ids.split(",").count,
-          reg.beneficiarias_mujeres_sinedad_ids.split(",").count,
-          reg.beneficiarios_hombres_sinedad_ids.split(",").count,
-          reg.beneficiarios_sinsexo_sinedad_ids.split(",").count,
-          reg.beneficiarios_otrosexo_sinedad_ids.split(",").count,
+          reg.presenta('beneficiarios_ids').split(",").count,
+          reg.presenta('beneficiarios_nuevos_mes_ids').split(",").count,
+          reg.presenta('beneficiarios_vocacion_permanencia_ids').split(",").count,
+          reg.presenta('beneficiarios_en_transito_ids').split(",").count,
+          reg.presenta('beneficiarios_comunidades_de_acogida_ids').split(",").count,
+          reg.presenta('beneficiarios_pendulares_ids').split(",").count,
+          reg.presenta('beneficiarios_colombianos_retornados_ids').split(",").count,
+          reg.presenta('beneficiarios_victimas_ids').split(",").count,
+          reg.presenta('beneficiarios_victimasdobleafectacion_ids').split(",").count,
+          reg.presenta('beneficiarios_sinperfilpoblacional_ids').split(",").count,
+          reg.presenta('beneficiarias_mujeres_0_5_ids').split(",").count,
+          reg.presenta('beneficiarias_mujeres_6_12_ids').split(",").count,
+          reg.presenta('beneficiarias_mujeres_13_17_ids').split(",").count,
+          reg.presenta('beneficiarias_mujeres_18_25_ids').split(",").count,
+          reg.presenta('beneficiarias_mujeres_26_59_ids').split(",").count,
+          reg.presenta('beneficiarias_mujeres_60_o_mas_ids').split(",").count,
+          reg.presenta('beneficiarios_hombres_0_5_ids').split(",").count,
+          reg.presenta('beneficiarios_hombres_6_12_ids').split(",").count,
+          reg.presenta('beneficiarios_hombres_13_17_ids').split(",").count,
+          reg.presenta('beneficiarios_hombres_18_25_ids').split(",").count,
+          reg.presenta('beneficiarios_hombres_26_59_ids').split(",").count,
+          reg.presenta('beneficiarios_hombres_60_o_mas_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_0_5_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_6_12_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_13_17_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_18_25_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_26_59_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_60_o_mas_ids').split(",").count,
+          reg.presenta('beneficiarios_con_discapacidad_ids').split(",").count,
+          reg.presenta('beneficiarios_afrodescendientes_ids').split(",").count,
+          reg.presenta('beneficiarios_indigenas_ids').split(",").count,
+          reg.presenta('beneficiarios_otra_etnia_ids').split(",").count,
+          reg.presenta('beneficiarios_sinsexo_0_5_ids').split(",").count,
+          reg.presenta('beneficiarios_sinsexo_6_12_ids').split(",").count,
+          reg.presenta('beneficiarios_sinsexo_13_17_ids').split(",").count,
+          reg.presenta('beneficiarios_sinsexo_18_25_ids').split(",").count,
+          reg.presenta('beneficiarios_sinsexo_26_59_ids').split(",").count,
+          reg.presenta('beneficiarios_sinsexo_60_o_mas_ids').split(",").count,
+          reg.presenta('beneficiarias_mujeres_sinedad_ids').split(",").count,
+          reg.presenta('beneficiarios_hombres_sinedad_ids').split(",").count,
+          reg.presenta('beneficiarios_sinsexo_sinedad_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_sinedad_ids').split(",").count,
         ]
         hoja.add_row l, style: estilo_base
       end
@@ -330,7 +368,8 @@ class ConsgifmmController < Heb412Gen::ModelosController
 
   def self.vista_listado(plant, ids, modelo, narch, parsimp, extension,
                          campoid = :id, params)
-    registros = modelo.where(campoid => ids)
+    ::ConsgifmmExp.refresca_consulta(nil, ids);
+    registros = ::ConsgifmmExp.all.where(consgifmm_id: ids)
     if plant.id == 51
       r = self.vista_consgifmm_excel(
         plant, registros, narch, parsimp, extension, params)
