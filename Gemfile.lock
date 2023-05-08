@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 6d1f1ed4bb6b48b2a69a520b3631f814b70d4306
+  revision: 47f7bd0ad62e9d9cbd12a28abff706a4c6859f3d
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 9fed60ffa546afd694349cd647c84a60f12e1d3f
+  revision: be707e0337fd040b9a167b5c92b9bec404668a0b
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -114,7 +114,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: 6ababdc63d50fbf5db7ad8f9bdce85f832e5c2af
+  revision: 33df39d6d3d17b39ec023a1c348d74c9169958a0
   branch: main
   specs:
     sivel2_sjr (2.2.0.beta2)
@@ -390,7 +390,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.9.0)
+    selenium-webdriver (4.9.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
