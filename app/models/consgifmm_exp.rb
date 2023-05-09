@@ -149,10 +149,10 @@ class ConsgifmmExp < ActiveRecord::Base
   end
 
 
-  def beneficiarios_ids
-    r = self.persona_ids.sort.uniq
-    r.join(',')
-  end
+  #def beneficiarios_ids
+  #  r = self.persona_ids.sort.uniq
+  #  r.join(',')
+  #end
 
   # Auxiliar que retorna listado de identificaciones de entre
   # los beneficiarios que cumplan una condición sobre
@@ -881,6 +881,7 @@ class ConsgifmmExp < ActiveRecord::Base
 
   def self.consulta
     "SELECT consgifmm.id AS consgifmm_id,
+      consgifmm.beneficiarios_ids,
 	    detallefinanciero.id as detallefinanciero_id,
       cor1440_gen_actividad.id AS actividad_id,
       cor1440_gen_actividadpf.proyectofinanciero_id,
