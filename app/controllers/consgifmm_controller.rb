@@ -7,25 +7,9 @@ class ConsgifmmController < Heb412Gen::ModelosController
   end
 
   def atributos_index
-    [
-      :actividad_id,
-      :fecha,
-      :objetivo,
-      :conveniofinanciado_nombre,
-      :actividadmarcologico_nombre,
-      :socio_principal,
-      :tipo_implementacion,
-      :socio_implementador,
-      :departamento_gifmm,
-      :municipio_gifmm,
-      :mes,
-      :estado,
-      :parte_rmrp,
-      :sector_gifmm,
-      :indicador_gifmm,
-      :beneficiarios_cuenta_y_enlaces,
-      :beneficiarios_nuevos_mes_cuenta_y_enlaces,
-    ]
+    c = (@columnas.map {|c| c.to_sym}) & ([:actividad_id] + columnas_posibles)
+    puts "OJO c=#{c}"
+    return c
   end
 
   def index_reordenar(c)
@@ -44,9 +28,8 @@ class ConsgifmmController < Heb412Gen::ModelosController
   end
 
   def columnas_posibles
-    [ :actividad_id,
-      :fecha,
-      :objetivo,
+    [ :fecha,
+      :actividad_objetivo,
       :conveniofinanciado_nombre,
       :actividadmarcologico_nombre,
       :socio_principal,
@@ -64,7 +47,6 @@ class ConsgifmmController < Heb412Gen::ModelosController
     ]
   end
 
-
   # Genera conteo por caso/beneficiario y tipo de actividad de convenio
   # #caso #act fechaact nom ap id gen edadfact rangoedad_fact etnia tipoac1 tipoac2 tipoac3 tipoac4 ... oficina asesoract 
   #                 EDADES HOMBRES            EDADES MUJERES                    
@@ -74,24 +56,10 @@ class ConsgifmmController < Heb412Gen::ModelosController
       fant = Date.today - 30
       params[:filtro] = {}
       params[:filtro][:busfechaini] = fant.to_s
-      params[:filtro][:columnas] = [
-        :actividad_id,
-        :fecha,
-        :objetivo,
-        :conveniofinanciado_nombre,
-        :actividadmarcologico_nombre,
-        :socio_principal,
-        :tipo_implementacion,
-        :socio_implementador,
-        :departamento_gifmm,
-        :municipio_gifmm,
-        :mes,
-        :estado,
-        :parte_rmrp,
-        :sector_gifmm,
-      ]
+      params[:filtro][:columnas] = columnas_posibles
     end
-    ::Consgifmm.refresca_consulta(params[:filtro][:columnas])
+    @columnas = [:actividad_id] | params[:filtro][:columnas]
+    ::Consgifmm.refresca_consulta(@columnas)
     index_msip(::Consgifmm.all)
   end
 

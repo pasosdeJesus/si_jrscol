@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row filtro-fila">
+    <div class="offset-sm-0 col-sm-4 offset-md-1 col-md-1">
+      Columnas:
+    </div>
+    <div class="offset-sm-0 col-sm-4">
+      <%= f.input :columnas,
+        collection: controller.columnas_posibles,
+        label_method: lambda {|t| Consgifmm.human_attribute_name(t)},
+        label: false,
+        selected: @columnas,
+        input_html: { 
+          class: 'chosen-select',
+          multiple: true,
+        } %>
+    </div>
+  </div> <!-- row -->
+
+  <div class="row filtro-fila">
+    <div class="offset-md-2 col-md-3">
+      Cuenta de registros: <%= @registros.count %>
+    </div>
+    <div class="offset-md-2 col-md-3">
+      <%= f.button :submit, 'Cambiar', class: 'btn btn-default',
+        'data-turbo' => false %>
+    </div>
+  </div>
+</div>
