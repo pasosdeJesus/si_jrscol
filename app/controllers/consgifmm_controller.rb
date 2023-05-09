@@ -56,7 +56,12 @@ class ConsgifmmController < Heb412Gen::ModelosController
       fant = Date.today - 30
       params[:filtro] = {}
       params[:filtro][:busfechaini] = fant.to_s
-      params[:filtro][:columnas] = columnas_posibles
+      params[:filtro][:columnas] = columnas_posibles - [
+        :sector_gifmm,
+        :indicador_gifmm,
+        :beneficiarios_cuenta_y_enlaces,
+        :beneficiarios_nuevos_mes_cuenta_y_enlaces
+      ]
     end
     @columnas = [:actividad_id] | params[:filtro][:columnas]
     ::Consgifmm.refresca_consulta(@columnas)
