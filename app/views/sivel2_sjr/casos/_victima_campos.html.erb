@@ -42,7 +42,7 @@
 
           <br>
           <a data-bs-toggle="collapse" href='#ampliosfamiliar-<%=fp.object.id%>'>
-            <h5>DATOS AMPLIOS DEL MIEMBRO DEL GRUPO FAMILIAR</h5>
+            <h5>DATOS AMPLIOS DEL INTEGRANTE DEL GRUPO FAMILIAR</h5>
           </a>
           <div class="collapse multi-collapse" id="ampliosfamiliar-<%=fp.object.id%>">
             <% [2,4,5,1].each do |i| %>
@@ -77,7 +77,7 @@
 
     </div>
   </div>
-  <%= link_to_remove_association "Eliminar Víctima", f, {
+  <%= link_to_remove_association "Eliminar Integrante", f, {
     class: 'btn btn-sm btn-danger', 
     'data-existing':  'true',
     style: 'margin-bottom: 1em'
