@@ -5,7 +5,8 @@
     <b>Fecha de realización:</b> <%= @actividad.fecha %><br>
 
     <b>Oficina:</b> <%= @actividad.oficina.nombre if @actividad.oficina %> <br>
-    <b>Departamento:</b><%= @actividad.presenta('departamento') %><br>
+    <b>Departamento:</b> <%= @actividad.presenta('departamento') %><br>
+    <b>Objetivo:</b> <%= @actividad.objetivo || '' %><br>
   </div>
   <div class="col-md-6">
     <b>Nombre:</b> <%= @actividad.nombre %><br>
@@ -19,7 +20,9 @@
         <%= link_to nc, sivel2_gen.caso_path(nc), target: '_blank' %>
       <% end %>
     <% end %><br>
-    <b>Municipio:</b><%= @actividad.presenta('municipio') %><br>
+    <b>Municipio:</b> <%= @actividad.presenta('municipio') %><br>
+    <b>Áreas:</b> <%= @actividad.proyecto_ids.map {|pid|
+      Cor1440Gen::Proyecto.find(pid).nombre }.join(", ") %><br>
   </div>
 </div>
 <br>
