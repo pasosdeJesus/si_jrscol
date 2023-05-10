@@ -3,17 +3,3 @@
     <%= link_to(x.caso_id, sivel2_gen.caso_path(x.caso_id), target: '_blank') %>
   <% end %>
 </td>
-<td>
-  <%= fpersona.input :huella, as: :text,
-    label: false,
-    input_html: {
-      class: 'autogrow', 
-      rows: 2, 
-      cols: 20,
-      style: 'width: 200px',
-      data: {
-        "persona-huella-target": "huella"
-      }
-    }
-  %>
-</td>
