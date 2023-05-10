@@ -1219,6 +1219,32 @@ CREATE TABLE public.cor1440_gen_asistencia (
 
 
 --
+-- Name: cor1440_gen_financiador; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_financiador (
+    id integer NOT NULL,
+    nombre character varying(1000),
+    observaciones character varying(5000),
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    nombregifmm character varying(256)
+);
+
+
+--
+-- Name: cor1440_gen_financiador_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_financiador_proyectofinanciero (
+    financiador_id integer NOT NULL,
+    proyectofinanciero_id integer NOT NULL
+);
+
+
+--
 -- Name: cor1440_gen_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1360,25 +1386,6 @@ CREATE MATERIALIZED VIEW public.consgifmm AS
     cor1440_gen_actividad.id AS actividad_id,
     cor1440_gen_actividadpf.proyectofinanciero_id,
     cor1440_gen_actividadpf.id AS actividadpf_id,
-    detallefinanciero.unidadayuda_id,
-    detallefinanciero.cantidad,
-    detallefinanciero.valorunitario,
-    detallefinanciero.valortotal,
-    detallefinanciero.mecanismodeentrega_id,
-    detallefinanciero.modalidadentrega_id,
-    detallefinanciero.tipotransferencia_id,
-    detallefinanciero.frecuenciaentrega_id,
-    detallefinanciero.numeromeses,
-    detallefinanciero.numeroasistencia,
-        CASE
-            WHEN (detallefinanciero.id IS NULL) THEN ARRAY( SELECT DISTINCT subpersona_ids.persona_id
-               FROM ( SELECT cor1440_gen_asistencia.persona_id
-                       FROM public.cor1440_gen_asistencia
-                      WHERE (cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id)) subpersona_ids)
-            ELSE ARRAY( SELECT detallefinanciero_persona.persona_id
-               FROM public.detallefinanciero_persona
-              WHERE (detallefinanciero_persona.detallefinanciero_id = detallefinanciero.id))
-        END AS persona_ids,
     cor1440_gen_actividad.objetivo AS actividad_objetivo,
     cor1440_gen_actividad.fecha,
     cor1440_gen_proyectofinanciero.nombre AS conveniofinanciado_nombre,
@@ -1389,11 +1396,38 @@ CREATE MATERIALIZED VIEW public.consgifmm AS
            FROM public.msip_oficina
           WHERE (msip_oficina.id = cor1440_gen_actividad.oficina_id)
          LIMIT 1) AS oficina,
-    cor1440_gen_actividad.nombre AS actividad_nombre
-   FROM (((((((((public.cor1440_gen_actividad
+    cor1440_gen_actividad.nombre AS actividad_nombre,
+    simp.socio_principal,
+        CASE
+            WHEN ((simp.socio_principal)::text = 'SJR Col'::text) THEN 'Directa'::text
+            ELSE 'Indirecta'::text
+        END AS tipo_implementacion,
+        CASE
+            WHEN ((simp.socio_principal)::text = 'SJR Col'::text) THEN ''::text
+            ELSE 'SJR Col'::text
+        END AS socio_implementador,
+    'En proceso'::text AS estado,
+    array_to_string(
+        CASE
+            WHEN (detallefinanciero.id IS NULL) THEN ARRAY( SELECT DISTINCT subpersona_ids.persona_id
+               FROM ( SELECT cor1440_gen_asistencia.persona_id
+                       FROM public.cor1440_gen_asistencia
+                      WHERE (cor1440_gen_asistencia.actividad_id = cor1440_gen_actividad.id)) subpersona_ids)
+            ELSE ARRAY( SELECT detallefinanciero_persona.persona_id
+               FROM public.detallefinanciero_persona
+              WHERE (detallefinanciero_persona.detallefinanciero_id = detallefinanciero.id))
+        END, ','::text) AS beneficiarios_ids
+   FROM ((((((((((public.cor1440_gen_actividad
      JOIN public.cor1440_gen_actividad_actividadpf ON ((cor1440_gen_actividad.id = cor1440_gen_actividad_actividadpf.actividad_id)))
      JOIN public.cor1440_gen_actividadpf ON ((cor1440_gen_actividadpf.id = cor1440_gen_actividad_actividadpf.actividadpf_id)))
      JOIN public.cor1440_gen_proyectofinanciero ON ((cor1440_gen_actividadpf.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)))
+     JOIN ( SELECT pf.id AS proyectofinanciero_id,
+            ( SELECT COALESCE(f.nombregifmm, f.nombre) AS "coalesce"
+                   FROM (public.cor1440_gen_financiador_proyectofinanciero fpf
+                     JOIN public.cor1440_gen_financiador f ON ((f.id = fpf.financiador_id)))
+                  WHERE (fpf.proyectofinanciero_id = pf.id)
+                 LIMIT 1) AS socio_principal
+           FROM public.cor1440_gen_proyectofinanciero pf) simp ON ((simp.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)))
      LEFT JOIN public.detallefinanciero ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
      LEFT JOIN public.msip_ubicacionpre ON ((cor1440_gen_actividad.ubicacionpre_id = msip_ubicacionpre.id)))
      LEFT JOIN public.msip_departamento ON ((msip_ubicacionpre.departamento_id = msip_departamento.id)))
@@ -1411,6 +1445,7 @@ CREATE MATERIALIZED VIEW public.consgifmm AS
 
 CREATE MATERIALIZED VIEW public.consgifmm_exp AS
  SELECT consgifmm.id AS consgifmm_id,
+    consgifmm.beneficiarios_ids,
     detallefinanciero.id AS detallefinanciero_id,
     cor1440_gen_actividad.id AS actividad_id,
     cor1440_gen_actividadpf.proyectofinanciero_id,
@@ -1446,17 +1481,17 @@ CREATE MATERIALIZED VIEW public.consgifmm_exp AS
          LIMIT 1) AS oficina,
     cor1440_gen_actividad.nombre AS actividad_nombre
    FROM ((((((((((public.consgifmm
-     JOIN public.cor1440_gen_actividad ON ((cor1440_gen_actividad.id = consgifmm.actividad_id)))
-     JOIN public.cor1440_gen_actividad_actividadpf ON ((cor1440_gen_actividad.id = cor1440_gen_actividad_actividadpf.actividad_id)))
+     JOIN public.cor1440_gen_actividad ON ((consgifmm.actividad_id = cor1440_gen_actividad.id)))
+     JOIN public.cor1440_gen_actividad_actividadpf ON (((consgifmm.actividadpf_id = cor1440_gen_actividad_actividadpf.actividadpf_id) AND (cor1440_gen_actividad.id = cor1440_gen_actividad_actividadpf.actividad_id))))
      JOIN public.cor1440_gen_actividadpf ON ((cor1440_gen_actividadpf.id = cor1440_gen_actividad_actividadpf.actividadpf_id)))
      JOIN public.cor1440_gen_proyectofinanciero ON ((cor1440_gen_actividadpf.proyectofinanciero_id = cor1440_gen_proyectofinanciero.id)))
-     LEFT JOIN public.detallefinanciero ON ((detallefinanciero.actividad_id = cor1440_gen_actividad.id)))
+     LEFT JOIN public.detallefinanciero ON (((consgifmm.detallefinanciero_id = cor1440_gen_actividad.id) AND (detallefinanciero.actividad_id = cor1440_gen_actividad.id))))
      LEFT JOIN public.msip_ubicacionpre ON ((cor1440_gen_actividad.ubicacionpre_id = msip_ubicacionpre.id)))
      LEFT JOIN public.msip_departamento ON ((msip_ubicacionpre.departamento_id = msip_departamento.id)))
      LEFT JOIN public.depgifmm ON ((msip_departamento.deplocal_cod = depgifmm.id)))
      LEFT JOIN public.msip_municipio ON ((msip_ubicacionpre.municipio_id = msip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((msip_departamento.deplocal_cod * 1000) + msip_municipio.munlocal_cod) = mungifmm.id)))
-  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['42807-908-'::text, '43378-905-'::text])))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['42822-908-'::text, '42825-908-'::text, '42829-908-'::text, '42843-908-'::text, '42844-908-'::text, '42845-908-'::text, '42846-908-'::text, '42848-908-'::text, '42850-908-'::text, '42852-908-'::text, '42952-810-'::text, '43182-908-'::text, '43185-908-'::text, '43198-908-'::text, '43214-908-'::text, '43229-811-'::text, '43271-844-'::text, '43331-911-'::text, '43345-841-'::text, '42923-841-'::text, '42923-844-'::text, '42962-810-'::text, '43119-909-'::text, '43190-908-'::text, '43199-908-'::text, '43200-908-'::text, '43201-908-'::text, '43245-907-'::text, '42946-844-'::text, '42946-841-'::text, '42947-844-'::text, '42947-841-'::text, '43192-908-'::text, '43216-908-'::text, '43217-908-'::text, '43265-809-'::text, '43318-811-'::text, '43218-908-'::text, '43273-810-'::text, '43303-872-'::text, '43332-908-'::text, '42995-807-'::text, '43181-908-'::text, '43194-908-'::text, '43196-908-'::text, '43204-908-'::text, '43209-908-'::text, '43221-908-'::text, '43335-908-'::text, '43338-908-'::text, '43089-910-'::text, '43242-908-'::text, '43248-908-'::text, '43249-908-'::text, '43250-908-'::text, '43251-908-'::text, '43260-908-'::text, '43261-908-'::text, '43262-908-'::text, '43264-908-'::text, '43266-908-'::text, '43267-908-'::text, '43268-908-'::text, '43269-908-'::text, '43274-908-'::text, '43277-908-'::text, '43281-908-'::text, '43282-908-'::text, '43283-908-'::text, '43284-908-'::text, '43286-908-'::text, '43288-908-'::text, '43289-845-'::text, '43289-918-'::text, '43337-908-'::text, '43108-909-'::text, '43114-804-'::text, '43211-908-'::text, '43244-908-'::text, '43287-657-'::text, '43287-872-'::text, '43291-918-'::text, '43291-845-'::text, '43295-918-'::text, '43295-845-'::text, '43304-844-'::text, '43316-873-'::text, '43325-909-'::text, '43340-908-'::text, '43350-845-'::text, '43222-849-'::text, '43280-810-'::text, '43344-908-'::text, '43296-908-'::text, '43297-908-'::text, '43299-908-'::text, '43300-908-'::text, '43313-844-'::text, '43315-841-'::text, '43321-809-'::text, '43358-848-'::text, '43359-805-'::text, '43360-907-'::text, '43365-907-'::text, '43370-907-'::text, '42807-908-'::text, '43378-905-'::text])))
   ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
 
@@ -2374,22 +2409,6 @@ CREATE TABLE public.cor1440_gen_efecto_respuestafor (
 
 
 --
--- Name: cor1440_gen_financiador; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_financiador (
-    id integer NOT NULL,
-    nombre character varying(1000),
-    observaciones character varying(5000),
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    nombregifmm character varying(256)
-);
-
-
---
 -- Name: cor1440_gen_financiador_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2406,16 +2425,6 @@ CREATE SEQUENCE public.cor1440_gen_financiador_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_financiador_id_seq OWNED BY public.cor1440_gen_financiador.id;
-
-
---
--- Name: cor1440_gen_financiador_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_financiador_proyectofinanciero (
-    financiador_id integer NOT NULL,
-    proyectofinanciero_id integer NOT NULL
-);
 
 
 --
@@ -7245,7 +7254,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2022-12-15'::date)
+          WHERE (sivel2_gen_conscaso.caso_id = 143)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;

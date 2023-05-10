@@ -183,29 +183,13 @@ module Msip
     end
 
 
-    def datos
-      return if !params[:persona_id] 
-      @persona = Msip::Persona.find(params[:persona_id].to_i)
-      authorize! :read, @persona
-      oj = { 
-        id: @persona.id,
-        nombres: @persona.nombres,
-        apellidos: @persona.apellidos,
-        sexo: @persona.sexo,
-        tdocumento: @persona.tdocumento ? @persona.tdocumento.sigla :
-        '',
-        numerodocumento: @persona.numerodocumento,
-        dianac: @persona.dianac,
-        mesnac: @persona.mesnac,
-        anionac: @persona.anionac,
+    def datos_complementarios(oj)
+      return oj.merge(
         ultimoestatusmigratorio_id: @persona.ultimoestatusmigratorio_id,
         ultimoperfilorgsocial_id: @persona.ultimoperfilorgsocial_id,
         ppt: @persona.ppt,
-      }
-      respond_to do |format|
-        format.json { render json: oj, status: :ok }
-        format.html { render inilne: oj.to_s, status: :ok }
-      end
+        caso_ids: Sivel2Gen::Victima.where(persona_id: @persona.id).map(&:caso_id)
+      )
     end
 
     def atributos_html_encabezado_formulario
@@ -720,7 +704,7 @@ module Msip
       persona = Msip::Persona.create(
         nombres: 'N',
         apellidos: 'N',
-        sexo: 'S',
+        sexo: 'M',
         tdocumento_id: 11, # SIN DOCUMENTO
         numerodocumento: numerodocumento
       )

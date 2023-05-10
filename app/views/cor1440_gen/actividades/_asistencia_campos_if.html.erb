@@ -1,0 +1,5 @@
+<td class='llena_caso_ids'>
+  <% Sivel2Gen::Victima.where(persona_id: fpersona.object.id).each do |x| %>
+    <%= link_to(x.caso_id, sivel2_gen.caso_path(x.caso_id), target: '_blank') %>
+  <% end %>
+</td>

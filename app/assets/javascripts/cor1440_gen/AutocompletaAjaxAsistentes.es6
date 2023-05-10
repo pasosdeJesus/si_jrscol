@@ -71,6 +71,13 @@ export default class Cor1440GenAutocompletaAjaxAsistentes {
         if (correo != null) {
           correo.value = resp.correo
         }
+        const caso_ids = divcp.querySelector('[class=llena_caso_ids]')
+        let enlaces_casos = ''
+        resp.caso_ids.forEach( numc => {
+          enlaces_casos += 
+            `<a href="/casos/${numc}" target="_blank">${numc}</a>\n`
+        })
+        caso_ids.innerHTML = enlaces_casos
         eorig.target.setAttribute('data-autocompleta', 'no')
         eorig.target.removeAttribute('list')
         const sel = document.getElementById(Cor1440GenAutocompletaAjaxAsistentes.idDatalist)

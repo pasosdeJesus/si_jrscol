@@ -8,7 +8,7 @@ module Msip
 
     belongs_to :ultimoperfilorgsocial, foreign_key: 'ultimoperfilorgsocial_id',
       validate: true, class_name: 'Msip::Perfilorgsocial', optional: false
-    
+
     belongs_to :ultimoestatusmigratorio, 
       foreign_key: 'ultimoestatusmigratorio_id',
       validate: true, class_name: 'Sivel2Sjr::Statusmigratorio', 
