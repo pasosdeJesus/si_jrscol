@@ -498,6 +498,17 @@ module Cor1440Gen
     def update
       update_cor1440_gen
 
+      # Pone ultimoperfil cuando no hay
+      @registro.asistencia.each do |asi|
+        if asi.persona.ultimoperfilorgsocial_id.nil? && 
+            !asi.perfilorgsocial_id.nil?
+          asi.persona.ultimoperfilorgsocial_id = asi.perfilorgsocial_id
+          if asi.persona.valid?
+            asi.persona.save
+          end
+        end
+      end
+
       if @registro.valid?
         # Actualizar último perfil cuando corresponda y se pueda
         @registro.asistencia.each do |asi|
