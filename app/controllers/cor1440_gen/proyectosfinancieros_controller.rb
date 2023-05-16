@@ -54,7 +54,8 @@ module Cor1440Gen
         :nombrecorto, 
         :titulo, 
         :descripcion,
-        :indicadorgifmm_id, 
+        :indicadorgifmm_id,
+        :presupuesto,
         :_destroy ] 
       }
     end

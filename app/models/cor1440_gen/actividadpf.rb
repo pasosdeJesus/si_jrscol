@@ -4,6 +4,8 @@ module Cor1440Gen
   class Actividadpf < ActiveRecord::Base
     include Cor1440Gen::Concerns::Models::Actividadpf
 
+    validates :presupuesto, comparison: { greater_than_or_equal_to: 0 }
+
     belongs_to :indicadorgifmm, foreign_key: 'indicadorgifmm_id',
       optional: true, 
       class_name: 'Indicadorgifmm'

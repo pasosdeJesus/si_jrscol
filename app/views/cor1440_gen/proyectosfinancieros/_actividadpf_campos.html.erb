@@ -37,6 +37,9 @@
       label: false %>
   </td>
   <td>
+    <%= f.input :presupuesto, label: false %>
+  </td>
+  <td>
     <%= f.input :id, as: :hidden %>
     <%= link_to_remove_association "Eliminar", f, 
       :class => 'btn btn-sm btn-danger', 
