@@ -1,9 +1,9 @@
 <% if can? :read, Msip::Oficina %>
   <%= f.input :oficina_id,
     collection: Msip::Oficina.all,
+    label: "Oficina",
     label_method: :nombre,
     value_method: :id,
-    label: false,
     selected: @contarb_oficinaid,
     input_html: { 
       class: 'chosen-select',
