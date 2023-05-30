@@ -177,7 +177,7 @@ class ConsgifmmExp < ActiveRecord::Base
       e = Sivel2Gen::RangoedadHelper::edad_de_fechanac_fecha(
           p.anionac, p.mesnac, p.dianac,
           finmes.year, finmes.month, finmes.day)
-      p.sexo == sexo && 
+      p.sexo.to_s == sexo.to_s && 
         (!con_edad || p.anionac) &&
         (edadini.nil? || e >= edadini) &&
         (edadfin.nil? || e <= edadfin)
@@ -249,8 +249,9 @@ class ConsgifmmExp < ActiveRecord::Base
   end
 
   def beneficiarios_hombres_6_12_ids
-    beneficiarios_condicion_sexo_edad_ids(
+    r = beneficiarios_condicion_sexo_edad_ids(
       Msip::Persona::convencion_sexo[:sexo_masculino], 6, 12)
+    return r
   end
 
   def beneficiarios_hombres_13_17_ids

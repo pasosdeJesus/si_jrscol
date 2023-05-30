@@ -104,7 +104,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 1d060f28a467c8d59a085da67cdfa264f88e37b4
+  revision: 7a902de4ed53407cf105d9f4192d67d3438dd2b9
   branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
@@ -354,8 +354,9 @@ GEM
       activesupport (>= 4.2)
       choice (~> 0.2.0)
       ruby-graphviz (~> 1.2)
-    rails-html-sanitizer (1.5.0)
-      loofah (~> 2.19, >= 2.19.1)
+    rails-html-sanitizer (1.6.0)
+      loofah (~> 2.21)
+      nokogiri (~> 1.14)
     rails-i18n (7.0.7)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
