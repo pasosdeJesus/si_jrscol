@@ -1,0 +1,23 @@
+<tr class='nested-fields campos_gastoaprobado'>
+  <td>
+    <%= f.input :actividadpf_id,
+      collection: Cor1440Gen::Actividadpf.all.where(
+        id: @registro.actividadpf_ids),
+        label: false,
+        label_method: lambda {|t| t.presenta_nombre},
+      input_html: {
+      }
+    %>
+  </td>
+  <td>
+    <%= f.input :valor,
+    label: false %>
+  </td>
+  <td>
+    <%= f.input :id, as: :hidden %>
+    <%= link_to_remove_association t("Eliminar"), f,
+      class: "btn btn-sm btn-danger",
+      "data-existing": true %>
+    <div><%= f.error_notification %></div>
+  </td>
+</tr>

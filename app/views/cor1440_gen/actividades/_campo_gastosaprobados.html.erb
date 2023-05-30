@@ -1,0 +1,30 @@
+<input id='actividad_id' type='hidden' value='<%= f.object.id %>'>
+
+<turbo-frame id="marco-gastosaprobados" data-controller="rapidobenefcaso">
+  <div class='table-responsive'>
+    <table class="tablagastosaprobados table table-bordered table-sm ">
+      <thead class="thead-light">
+        <tr>
+          <th><%= t('Actividad de Marco Lógico') %></th>
+          <th><%= t('Valor') %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="gastoaprobado">
+        <%= f.simple_fields_for :gastoaprobado do |a| %>
+          <%= render 'gastoaprobado_campos', f: a %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="links">
+    <%= link_to_add_association t('Añadir gasto'), f, 
+      :gastoaprobado,
+      :"data-association-insertion-node" => "tbody#gastoaprobado", 
+      :"data-association-insertion-method" => "append", 
+      partial: 'gastoaprobado_campos',
+      :class => 'btn btn-sm btn-primary'
+    %>
+  </div>
+</turbo-frame>
+

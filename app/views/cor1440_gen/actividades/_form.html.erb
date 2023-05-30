@@ -126,7 +126,10 @@
   <%= render partial: 'cor1440_gen/actividades/form_intermedio_3', 
     locals: {f: f} %>
 
+  <%= render partial: 'campo_gastosaprobados', locals: {f: f} %>
+
   <%= render partial: 'campo_anexos', locals: {f: f} %>
+
   <div class="form-actions">
     <%= f.input :created_at, as: :hidden %>
     <%= f.input :updated_at, as: :hidden %>

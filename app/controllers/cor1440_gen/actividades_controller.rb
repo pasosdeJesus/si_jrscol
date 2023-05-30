@@ -555,6 +555,13 @@ module Cor1440Gen
           'valortotal',
           '_destroy'
         ]
+      ] + [
+        :gastoaprobado_attributes => [
+          'actividadpf_id',
+          'id',
+          'valor',
+          '_destroy'
+        ]
       ]
     end
 

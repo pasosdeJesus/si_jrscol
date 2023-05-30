@@ -14,6 +14,12 @@ module Cor1440Gen
     accepts_nested_attributes_for :detallefinanciero,
       allow_destroy: true, reject_if: :all_blank
 
+    has_many :gastoaprobado, dependent: :delete_all,
+      class_name: 'Cor1440Gen::Gastoaprobado',
+      foreign_key: 'actividad_id'
+    accepts_nested_attributes_for :gastoaprobado,
+      allow_destroy: true, reject_if: :all_blank
+
     attr_accessor :rapidobenefcaso_id
 
     validate :oficina_responsable_current_usuario

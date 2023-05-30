@@ -38,6 +38,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'espaciopart', 'espaciospart'
   inflect.irregular 'indicadorgifmm', 'indicadoresgifmm'
   inflect.irregular 'frecuenciaentrega', 'frecuenciasentrega'
+  inflect.irregular 'gastoaprobado', 'gastosaprobados'
   inflect.irregular 'lineaorgsocial', 'lineasorgsocial'
   inflect.irregular 'motivosjr', 'motivossjr'
   inflect.irregular 'mecanismodeentrega', 'mecanismosdeentrega'
