@@ -1206,7 +1206,8 @@ CREATE TABLE public.cor1440_gen_actividadpf (
     actividadtipo_id integer,
     indicadorgifmm_id integer,
     formulario_id integer,
-    heredade_id integer
+    heredade_id integer,
+    presupuesto numeric DEFAULT 0.0 NOT NULL
 );
 
 
@@ -1498,7 +1499,7 @@ CREATE MATERIALIZED VIEW public.consgifmm_exp AS
      LEFT JOIN public.depgifmm ON ((msip_departamento.deplocal_cod = depgifmm.id)))
      LEFT JOIN public.msip_municipio ON ((msip_ubicacionpre.municipio_id = msip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((msip_departamento.deplocal_cod * 1000) + msip_municipio.munlocal_cod) = mungifmm.id)))
-  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['49632-1108-'::text, '49634-1122-'::text, '49640-1012-'::text, '49662-1117-'::text, '49732-1001-'::text, '49738-1001-'::text, '49738-1121-'::text, '49788-1106-'::text, '49800-1000-'::text, '49800-1117-'::text, '49836-1022-'::text, '49837-1020-'::text, '49840-1020-'::text, '48866-908-'::text, '49676-1000-'::text, '49686-1010-'::text, '49739-1026-'::text, '49755-997-'::text, '49759-1095-'::text, '49783-1000-'::text, '49783-1117-'::text, '49795-1107-'::text, '49797-1000-'::text, '49797-1117-'::text, '49798-1106-'::text, '49805-1010-'::text, '49806-1023-'::text, '49808-1010-'::text, '49810-1010-'::text, '49825-1106-'::text, '49845-1006-'::text, '49846-1006-'::text, '49847-1006-'::text, '49848-1006-'::text, '49774-1092-'::text, '49781-1087-'::text, '49803-992-'::text, '49818-1009-'::text, '49824-1107-'::text])))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = '49803-992-'::text))
   ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
 
@@ -1993,6 +1994,7 @@ CREATE TABLE public.msip_persona (
     ultimoperfilorgsocial_id integer,
     ultimoestatusmigratorio_id integer,
     ppt character varying(32),
+    huella character varying(1024),
     CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
     CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
     CONSTRAINT persona_sexo_check CHECK (('MHSO'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
@@ -2451,6 +2453,39 @@ CREATE TABLE public.cor1440_gen_formulario_tipoindicador (
     tipoindicador_id integer NOT NULL,
     formulario_id integer NOT NULL
 );
+
+
+--
+-- Name: cor1440_gen_gastoaprobado; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_gastoaprobado (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    actividadpf_id integer NOT NULL,
+    valor numeric NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: cor1440_gen_gastoaprobado_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.cor1440_gen_gastoaprobado_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cor1440_gen_gastoaprobado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.cor1440_gen_gastoaprobado_id_seq OWNED BY public.cor1440_gen_gastoaprobado.id;
 
 
 --
@@ -9232,6 +9267,13 @@ ALTER TABLE ONLY public.cor1440_gen_financiador ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: cor1440_gen_gastoaprobado id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado ALTER COLUMN id SET DEFAULT nextval('public.cor1440_gen_gastoaprobado_id_seq'::regclass);
+
+
+--
 -- Name: cor1440_gen_indicadorpf id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -10337,6 +10379,14 @@ ALTER TABLE ONLY public.cor1440_gen_efecto
 
 ALTER TABLE ONLY public.cor1440_gen_financiador
     ADD CONSTRAINT cor1440_gen_financiador_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cor1440_gen_gastoaprobado cor1440_gen_gastoaprobado_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
+    ADD CONSTRAINT cor1440_gen_gastoaprobado_pkey PRIMARY KEY (id);
 
 
 --
@@ -14205,6 +14255,14 @@ ALTER TABLE ONLY public.msip_orgsocial_persona
 
 
 --
+-- Name: cor1440_gen_gastoaprobado fk_rails_48d96f819c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
+    ADD CONSTRAINT fk_rails_48d96f819c FOREIGN KEY (actividad_id) REFERENCES public.cor1440_gen_actividad(id);
+
+
+--
 -- Name: cor1440_gen_actividad_anexo fk_rails_49ec1ae361; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14650,6 +14708,14 @@ ALTER TABLE ONLY public.mr519_gen_encuestapersona
 
 ALTER TABLE ONLY public.sivel2_gen_caso
     ADD CONSTRAINT fk_rails_850036942a FOREIGN KEY (ubicacion_id) REFERENCES public.msip_ubicacion(id);
+
+
+--
+-- Name: cor1440_gen_gastoaprobado fk_rails_8824bc57d7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
+    ADD CONSTRAINT fk_rails_8824bc57d7 FOREIGN KEY (actividadpf_id) REFERENCES public.cor1440_gen_actividadpf(id);
 
 
 --
@@ -16882,6 +16948,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230406092509'),
 ('20230407010923'),
 ('20230407011451'),
+('20230408143528'),
 ('20230418155831'),
 ('20230418194845'),
 ('20230419174417'),
@@ -16894,6 +16961,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230505194356'),
 ('20230506183428'),
 ('20230506192413'),
-('20230508193508');
+('20230508193508'),
+('20230516135641'),
+('20230523202021');
 
 
