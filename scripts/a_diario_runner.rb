@@ -31,7 +31,7 @@ end
 
 def arreglar_poblacion
   resultados = ''
-  numdif = Cor1440Gen::ConteosHelper.arregla_tablas_poblacion_desde_2020(resultados)
+  numdif = ::ConteosHelper.arregla_tablas_poblacion_desde_2020(resultados)
   puts resultados
 
   if numdif > 0
