@@ -22,15 +22,15 @@
           <%= rmr %>
         </td>
         <td>
-          <% rs=  rango.s? ? rango.s : 0 %>
+          <% rs = rango.s? ? rango.s : 0 %>
           <%= rs %>
         </td>
         <td>
-          <% ri=  rango.i? ? rango.i : 0 %>
-          <%= rs %>
+          <% ri = rango.i? ? rango.i : 0 %>
+          <%= ri %>
         </td>
         <td>
-          <b> <%= rfr + rmr + rs + ri%> </b>
+          <b> <%= rfr + rmr + rs + ri %> </b>
         </td>
       </tr>
     <% end %>
@@ -45,7 +45,7 @@
       <td id="tactividads">
         <b> <%= sr = @registro.actividad_rangoedadac.sum(:s) %> </b>
       </td>
-      <td id="tactividads">
+      <td id="tactividadi">
         <b> <%= si = @registro.actividad_rangoedadac.sum(:i) %> </b>
       </td>
       <td id="tactividadtot">

@@ -24,10 +24,10 @@ module ConteosHelper
       end
     end
 
-    convF = Msip::Persona.convencion_sexo[:sexo_femenino]
-    convM = Msip::Persona.convencion_sexo[:sexo_masculino]
-    convS = Msip::Persona.convencion_sexo[:sexo_sinsexo]
-    convI = Msip::Persona.convencion_sexo[:sexo_intersexual]
+    convF = Msip::Persona.convencion_sexo[:sexo_femenino].to_s
+    convM = Msip::Persona.convencion_sexo[:sexo_masculino].to_s
+    convS = Msip::Persona.convencion_sexo[:sexo_sininformacion].to_s
+    convI = Msip::Persona.convencion_sexo[:sexo_intersexual].to_s
 
 
     rangoedadsexo = {}
@@ -66,10 +66,10 @@ module ConteosHelper
 
     numdif = 0
 
-    convF = Msip::Persona.convencion_sexo[:sexo_femenino]
-    convM = Msip::Persona.convencion_sexo[:sexo_masculino]
-    convS = Msip::Persona.convencion_sexo[:sexo_sinsexo]
-    convI = Msip::Persona.convencion_sexo[:sexo_intersexual]
+    convF = Msip::Persona.convencion_sexo[:sexo_femenino].to_s
+    convM = Msip::Persona.convencion_sexo[:sexo_masculino].to_s
+    convS = Msip::Persona.convencion_sexo[:sexo_sininformacion].to_s
+    convI = Msip::Persona.convencion_sexo[:sexo_intersexual].to_s
 
     res = Cor1440Gen::Rangoedadac.habilitados
     res.each do |re|
@@ -166,15 +166,15 @@ module ConteosHelper
   #
   # @param resultado Colchón para escribir resultados del arreglo
   # @return número de cambios efectuados
-  def arregla_tabla_poblacion_de_asistentes_actividad(a, resultado)
+  def arreglar_tabla_poblacion_de_asistentes_actividad(a, resultado)
     d = genera_dicc_poblacion_de_asistentes(a)
 
     numdif = 0
 
-    convF = Msip::Persona.convencion_sexo[:sexo_femenino]
-    convM = Msip::Persona.convencion_sexo[:sexo_masculino]
-    convS = Msip::Persona.convencion_sexo[:sexo_sinsexo]
-    convI = Msip::Persona.convencion_sexo[:sexo_intersexual]
+    convF = Msip::Persona.convencion_sexo[:sexo_femenino].to_s
+    convM = Msip::Persona.convencion_sexo[:sexo_masculino].to_s
+    convS = Msip::Persona.convencion_sexo[:sexo_sininformacion].to_s
+    convI = Msip::Persona.convencion_sexo[:sexo_intersexual].to_s
 
     res = Cor1440Gen::Rangoedadac.habilitados
     res.each do |re|
@@ -247,7 +247,7 @@ module ConteosHelper
 
     numdif
   end
-  module_function :arregla_tabla_poblacion_de_asistentes_actividad
+  module_function :arreglar_tabla_poblacion_de_asistentes_actividad
 
   # Compara tablas de población de todas las actividaddes
   # con conteos generados de asistentes
@@ -269,7 +269,7 @@ module ConteosHelper
   # @parama actividades
   # @param resultado Colchón donde escribir resultados del arreglo
   # @return número de diferencias encontradas
-  def arregla_tablas_poblacion(actividades, resultado)
+  def arreglar_tablas_poblacion(actividades, resultado)
     numdif = 0
     univ = actividades.count
     c = 0
@@ -282,26 +282,26 @@ module ConteosHelper
         ultp = por
         STDERR.puts "#{por}%"
       end
-      numdif += arregla_tabla_poblacion_de_asistentes_actividad(a, resultado)
+      numdif += arreglar_tabla_poblacion_de_asistentes_actividad(a, resultado)
     end
     resultado << "\nEn #{univ} actividades revisadas se realizaron #{numdif} cambios"
     numdif
   end
-  module_function :arregla_tablas_poblacion
+  module_function :arreglar_tablas_poblacion
 
   # Arregla tablas de población de las actividades desde 2020
   # con conteos generados de asistentes
   #
   # @param resultado Colchón donde escribir resultados del arreglo
   # @return número de diferencias encontradas
-  def arregla_tablas_poblacion_desde_2020(resultado)
+  def arreglar_tablas_poblacion_desde_2020(resultado)
     ActiveRecord::Base.connection.execute(<<-SQL)
       DROP VIEW IF EXISTS cor1440_gen_vista_resumentpob CASCADE;
       CREATE VIEW cor1440_gen_vista_resumentpob AS (
       SELECT * FROM (SELECT a.id AS actividad_id, ARRAY_TO_STRING(ARRAY(
             SELECT rangoedadac_id::text || ' ' || coalesce(fr::text,'0')
             || ' ' || coalesce(mr::text, '0') || ' ' || coalesce(s::text, '0')
-            || ' ' || coalesce(i:text, '0')
+            || ' ' || coalesce(i::text, '0')
             FROM cor1440_gen_actividad_rangoedadac
             WHERE actividad_id=a.id
             ORDER BY rangoedadac_id), ' | ') AS tpob
@@ -331,29 +331,29 @@ module ConteosHelper
       DROP VIEW IF EXISTS cor1440_gen_vista_tpoblacion_de_asist;
       CREATE VIEW cor1440_gen_vista_tpoblacion_de_asist AS (
       SELECT actividad_id, rangoedadac_id, coalesce(fn, 0) AS f,
-        coalesce(mn, 0) AS m, coalesce(sn, 0) AS s, coalesce(in, 0) AS i
+        coalesce(mn, 0) AS m, coalesce(sn, 0) AS s, coalesce(inum, 0) AS i
       FROM (
         SELECT DISTINCT actividad_id, rangoedadac_id, (SELECT cuenta
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convecion_sexo[:sexo_femenino].to_s}' 
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_femenino].to_s}' 
             LIMIT 1) AS fn, (SELECT cuenta
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convecion_sexo[:sexo_masculino].to_s}' 
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_masculino].to_s}' 
             LIMIT 1) AS mn, (SELECT cuenta
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convecion_sexo[:sexo_sininformacion].to_s}'
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_sininformacion].to_s}'
             LIMIT 1) AS sn, (SELECT cuenta
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convecion_sexo[:sexo_intersexual].to_s}' 
-            LIMIT 1) AS in
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_intersexual].to_s}' 
+            LIMIT 1) AS inum
         FROM cor1440_gen_vista_asist_rangoe_sexo AS v
       ) AS sub
       );
@@ -387,9 +387,9 @@ module ConteosHelper
     SQL
     ids = resc.pluck("id")
     ap = Cor1440Gen::Actividad.where(id: ids)
-    arregla_tablas_poblacion(ap, resultado)
+    arreglar_tablas_poblacion(ap, resultado)
   end
-  module_function :arregla_tablas_poblacion_desde_2020
+  module_function :arreglar_tablas_poblacion_desde_2020
 
   # Elimina tabla de población de una actividad y la recalcula con
   # listado de asistencia
@@ -447,7 +447,6 @@ module ConteosHelper
         DECLARE
           rangos INTEGER ARRAY;
           idrangos INTEGER ARRAY;
-          j INTEGER;
           a_dia INTEGER;
           a_mes INTEGER;
           a_anio INTEGER;
@@ -485,8 +484,8 @@ module ConteosHelper
             WHERE ac.id=par_actividad_id
           LOOP
             RAISE NOTICE 'persona_id es %', asistente.id;
-            edad = msip_edad_de_fechanac_fecharef(asistente.anionac, asistente.mesnac,
-              asistente.dianac, a_anio, a_mes, a_dia);
+            edad = msip_edad_de_fechanac_fecharef(asistente.anionac, 
+              asistente.mesnac, asistente.dianac, a_anio, a_mes, a_dia);
             RAISE NOTICE 'edad es %', edad;
             SELECT id INTO rango_id FROM cor1440_gen_rangoedadac WHERE
               fechadeshabilitacion IS NULL AND
@@ -506,12 +505,12 @@ module ConteosHelper
                 UPDATE cor1440_gen_actividad_rangoedadac SET mr = mr + 1
                   WHERE actividad_id=par_actividad_id
                   AND rangoedadac_id=rango_id;
-              WHEN '#{Msip::Persona.sexo_opciones[:sexo_sininformacion].to_s}' THEN
-                UPDATE cor1440_gen_actividad_rangoedadac SET s = s + 1
+              WHEN '#{Msip::Persona.sexo_opciones[:sexo_intersexual].to_s}' THEN
+                UPDATE cor1440_gen_actividad_rangoedadac SET i = i + 1
                   WHERE actividad_id=par_actividad_id
                   AND rangoedadac_id=rango_id;
               ELSE
-                UPDATE cor1440_gen_actividad_rangoedadac SET i = i + 1
+                UPDATE cor1440_gen_actividad_rangoedadac SET s = s + 1
                   WHERE actividad_id=par_actividad_id
                   AND rangoedadac_id=rango_id;
             END CASE;
@@ -519,7 +518,7 @@ module ConteosHelper
 
           DELETE FROM cor1440_gen_actividad_rangoedadac
             WHERE actividad_id = par_actividad_id
-            AND mr = 0 AND fr = 0 AND s = 0 AND i = 0
+            AND mr = 0 AND fr = 0 AND i = 0 AND s = 0
           ;
           RETURN;
         END;
