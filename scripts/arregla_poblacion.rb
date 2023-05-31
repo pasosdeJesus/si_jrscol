@@ -7,7 +7,6 @@ def arreglar_poblacion
 
   if numdif > 0
     puts "Se hicieron #{numdif} correcciones"
-    notificar_mantenimiento(resultados)
   end
 end
 
