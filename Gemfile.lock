@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: a5c8843eea30a5b5b7c8929bf2dda3d628474d28
+  revision: db0fe144e9758a4ecef4cf15e307745a2304c01b
   branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 6cdb9623c87365d15accef41dd5af610d3f45cf3
+  revision: cde325d3f5df0a4598e8af213af6bd6fcc17e136
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 725ea0fd9abbe2b86c3e98e6b4f9a62b080c043c
+  revision: 8566c53af999e04034b04f4b32a634a98ceb5fd2
   branch: main
   specs:
     jos19 (2.2.0.beta2)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: c29fc45dbc5bed1c239b13995f1ad68dcedaa5c0
+  revision: ae9a974f711bc8e878c075440011ee9a804b3e4a
   branch: main
   specs:
     mr519_gen (2.2.0.beta2)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: d4db20c2da70e902bddcbadbf2f8104c3c797a33
+  revision: cacd101e7d996071b667ffef10718f5eee64780a
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: e3db24002d13a3a9614722532df43896fe69c073
+  revision: 2ac135b901f2f8c2814a43289cb59954816b9a80
   branch: main
   specs:
     sal7711_gen (2.2.0.beta2)
@@ -95,7 +95,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: 7f2d9fb28162b87ac3dd49e23861587f740267a1
+  revision: a9ae58c02ee8289f6840e2aff0df69e403127fb7
   branch: main
   specs:
     sal7711_web (2.2.0.beta2)
@@ -104,7 +104,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 835f5ea958c305b9f12fd4b50c3c794410ceaa96
+  revision: 287fa98206305f94570d36266d41702b5ddd732a
   branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
@@ -114,7 +114,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: 83092b14d66205059c9ad23e96394d797a30da3d
+  revision: f36cb456f9fffa826782fcefc913588fe8288407
   branch: main
   specs:
     sivel2_sjr (2.2.0.beta2)
@@ -262,10 +262,10 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     htmlentities (4.3.4)
-    i18n (1.13.0)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
-    irb (1.6.4)
+    irb (1.7.0)
       reline (>= 0.3.0)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
@@ -322,7 +322,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     public_suffix (5.0.1)
-    puma (6.2.2)
+    puma (6.3.0)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.7)
@@ -371,7 +371,7 @@ GEM
     rake (13.0.6)
     redcarpet (3.6.0)
     regexp_parser (2.8.0)
-    reline (0.3.4)
+    reline (0.3.5)
       io-console (~> 0.5)
     responders (3.1.0)
       actionpack (>= 5.2)
@@ -416,7 +416,7 @@ GEM
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     thor (1.2.2)
-    tilt (2.1.0)
+    tilt (2.2.0)
     timeout (0.3.2)
     ttfunk (1.7.0)
     turbo-rails (1.4.0)

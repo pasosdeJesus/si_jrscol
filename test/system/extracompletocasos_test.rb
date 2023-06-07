@@ -17,6 +17,7 @@ class ExtracompletocasosTest < ApplicationSystemTestCase
     fill_in "Clave", with: @usuario.password
     click_button "Iniciar Sesión"
     assert page.has_content?("Administrar")
+    find('[aria-label=Close]').click
 
 
     # Creamos caso 

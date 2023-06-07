@@ -3183,7 +3183,7 @@ CREATE VIEW public.cor1440_gen_vista_resumentpob AS
  SELECT sub.actividad_id,
     sub.tpob
    FROM ( SELECT a.id AS actividad_id,
-            array_to_string(ARRAY( SELECT (((((((cor1440_gen_actividad_rangoedadac.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.fr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.mr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.s)::text, '0'::text))
+            array_to_string(ARRAY( SELECT (((((((((cor1440_gen_actividad_rangoedadac.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.fr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.mr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.s)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.i)::text, '0'::text))
                    FROM public.cor1440_gen_actividad_rangoedadac
                   WHERE (cor1440_gen_actividad_rangoedadac.actividad_id = a.id)
                   ORDER BY cor1440_gen_actividad_rangoedadac.rangoedadac_id), ' | '::text) AS tpob
@@ -3201,21 +3201,26 @@ CREATE VIEW public.cor1440_gen_vista_tpoblacion_de_asist AS
     sub.rangoedadac_id,
     COALESCE(sub.fn, (0)::bigint) AS f,
     COALESCE(sub.mn, (0)::bigint) AS m,
-    COALESCE(sub.sn, (0)::bigint) AS s
+    COALESCE(sub.sn, (0)::bigint) AS s,
+    COALESCE(sub.inum, (0)::bigint) AS i
    FROM ( SELECT DISTINCT v.actividad_id,
             v.rangoedadac_id,
             ( SELECT i.cuenta
                    FROM public.cor1440_gen_vista_asist_rangoe_sexo i
-                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'F'::bpchar))
+                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'M'::bpchar))
                  LIMIT 1) AS fn,
             ( SELECT i.cuenta
                    FROM public.cor1440_gen_vista_asist_rangoe_sexo i
-                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'M'::bpchar))
+                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'H'::bpchar))
                  LIMIT 1) AS mn,
             ( SELECT i.cuenta
                    FROM public.cor1440_gen_vista_asist_rangoe_sexo i
                   WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'S'::bpchar))
-                 LIMIT 1) AS sn
+                 LIMIT 1) AS sn,
+            ( SELECT i.cuenta
+                   FROM public.cor1440_gen_vista_asist_rangoe_sexo i
+                  WHERE ((i.actividad_id = v.actividad_id) AND (i.rangoedadac_id = v.rangoedadac_id) AND (i.sexo = 'O'::bpchar))
+                 LIMIT 1) AS inum
            FROM public.cor1440_gen_vista_asist_rangoe_sexo v) sub;
 
 
@@ -3227,7 +3232,7 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_vista_resumentpob2 AS
  SELECT sub.actividad_id,
     sub.tpob
    FROM ( SELECT a.id AS actividad_id,
-            array_to_string(ARRAY( SELECT (((((((cor1440_gen_vista_tpoblacion_de_asist.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.f)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.m)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.s)::text, '0'::text))
+            array_to_string(ARRAY( SELECT (((((((((cor1440_gen_vista_tpoblacion_de_asist.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.f)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.m)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.s)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.i)::text, '0'::text))
                    FROM public.cor1440_gen_vista_tpoblacion_de_asist
                   WHERE (cor1440_gen_vista_tpoblacion_de_asist.actividad_id = a.id)
                   ORDER BY cor1440_gen_vista_tpoblacion_de_asist.rangoedadac_id), ' | '::text) AS tpob
