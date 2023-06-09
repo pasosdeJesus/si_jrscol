@@ -434,25 +434,30 @@ module Cor1440Gen
       end
     end
 
-    # Añade todos los beneficiarios de un caso al listado de asistencia.
-    # 
+    # Hace validaciones y retornar listado de beneficiarios de un caso
+    # que no estén en el listado de asistencia
     # Recibe params[:actividad_id] y params[:caso_id]
-    def rapido_benef_caso
+    def rapido_benef_caso_posibles_asistentes
       authorize! :new, Msip::Persona
       if params[:actividad_id].nil?
         resp_error 'Falta parámetro actividad_id'
-        return
+        return nil
       end
       if params[:caso_id].nil?
         resp_error 'Falta parámetro caso_id'
-        return
+        return nil
+      end
+      if params[:persona_ids].nil?
+        pids = nil
+      else
+        pids = params[:persona_ids].split(",").map(&:to_i)
       end
 
       puts "** cuenta: #{Cor1440Gen::Actividad.where(id: params[:actividad_id].to_i).count.to_s}"
       if Cor1440Gen::Actividad.where(id: params[:actividad_id].to_i).count == 0
         reps_error 'No se encontró actividad ' + 
           params[:actividad_id].to_i.to_s
-        return
+        return nil
       end
       act = Cor1440Gen::Actividad.find(params[:actividad_id].to_i)
       if Sivel2Gen::Caso.where(id: params[:caso_id].to_i).count == 0
@@ -463,24 +468,71 @@ module Cor1440Gen
       yaestaban = []
       caso = Sivel2Gen::Caso.find(params[:caso_id].to_i)
       vics = caso.victimasjr.where(fechadesagregacion: nil)
+      listaret = []
       vics.each do |v|
         if Cor1440Gen::Asistencia.where(
             actividad_id: act.id,
-            persona_id: v.victima.persona_id).count == 0
-          asistencia = Cor1440Gen::Asistencia.create(
-            actividad_id: act.id,
-            persona_id: v.victima.persona_id,
-            perfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id || 10
-          )
-          if !asistencia.save
-            resp_error 'No pudo crear asistencia' 
-            return
-          end
-          res << v.victima.persona_id
-        else
-          yaestaban << v.victima.persona_id
+            persona_id: v.victima.persona_id).count == 0 && (pids.nil? || pids.include?(v.victima.persona_id))
+          listaret << {
+            id: v.victima.persona_id, 
+            nombre: v.victima.persona.presenta_nombre,
+            ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id || 10
+          }
         end
       end
+      return [act, listaret]
+    end # def rapido_benef_caso_posibles_asistentes
+
+    # Retorna lista de beneficiarios proveniente de un caso
+    # que no están en el listado de asistencia de una actividad
+    def lista_benef_caso_asistencia
+      rb = rapido_benef_caso_posibles_asistentes
+      act = rb[0]
+      listap = rb[1]
+      if listap.nil?
+        return
+      end
+
+      respond_to do |format|
+        format.js { # Usa este
+          render inline: listap.to_json 
+        }
+        format.json { 
+          render json: listap.to_json, status: :created 
+        }
+        format.html { 
+          render inline: listap.to_json 
+        }
+      end
+    end
+
+
+    # Añade todos los beneficiarios de un caso al listado de asistencia.
+    # 
+    # Recibe params[:actividad_id] y params[:caso_id]
+    def rapido_benef_caso
+      rb = rapido_benef_caso_posibles_asistentes
+      act = rb[0]
+      listap = rb[1]
+      if listap.nil?
+        return
+      end
+
+      res = []
+      yaestaban = []
+      listap.each do |dp|
+        asistencia = Cor1440Gen::Asistencia.create(
+          actividad_id: act.id,
+          persona_id: dp[:id],
+          perfilorgsocial_id: dp[:ultimoperfilorgsocial_id]
+        )
+        if !asistencia.save
+          resp_error 'No pudo crear asistencia' 
+          return
+        end
+        res << dp[:id]
+      end
+
       respond_to do |format|
         format.js { # Usa este
           render inline: res.to_json 
@@ -538,7 +590,11 @@ module Cor1440Gen
 
     def lista_params
       lista_params_cor1440_gen  + 
-        [:ubicacionpre_id, :covid] + [ 
+        [
+          :covid,
+          :rapidobenefcaso_id, 
+          :ubicacionpre_id, 
+        ] + [ 
           :detallefinanciero_attributes => [
           'cantidad',
           'convenioactividad',

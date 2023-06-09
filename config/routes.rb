@@ -98,8 +98,8 @@ Rails.application.routes.draw do
     get '/actividadespflistado' => 'cor1440_gen/actividadespf#index',
       as: :index_actividadespf
 
-    get '/asistencia/rapidobenefcaso' =>
-    'cor1440_gen/actividades#rapido_benef_caso', as: :rapido_benef_caso
+    get '/asistencia/rapidobenefcaso' => 'cor1440_gen/actividades#rapido_benef_caso', 
+      as: :rapido_benef_caso
 
     get '/consgifmm' => 'consgifmm#index',
       as: :consgifmm
