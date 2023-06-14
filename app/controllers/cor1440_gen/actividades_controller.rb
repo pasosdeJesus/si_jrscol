@@ -625,13 +625,15 @@ module Cor1440Gen
       if respond_to?(:index_reordenar)
         registros = index_reordenar(registros)
       end
-      if plant.id == 52
-        r = Cor1440Gen::Actividad::vista_reporte_completo_excel(
+      case plant.id
+      when 52
+        registros = Cor1440Gen::Actividad::vista_reporte_completo_excel(
           plant, registros, narch, parsimp, extension, params)
-        return r
-      else
-        registros
+      when 53
+        registros = Cor1440Gen::Actividad::vista_reporte_psu_excel(
+          plant, registros, narch, parsimp, extension, params)
       end
+      return registros
     end
 
   end

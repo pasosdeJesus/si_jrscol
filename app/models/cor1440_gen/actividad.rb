@@ -788,7 +788,7 @@ module Cor1440Gen
           'Fecha',
           'Lugar',
           'Oficina',
-          'Convenios financieros',
+          'Convenios financiados',
           'Actividad(es) de convenio',
           'Área(s)',
           'Subárea(s) de actividad',
@@ -924,6 +924,102 @@ module Cor1440Gen
 
       return n
     end
+
+    def self.vista_reporte_psu_excel(
+      plant, registros, narch, parsimp, extension, params)
+
+      ruta = File.join(Rails.application.config.x.heb412_ruta, 
+                       plant.ruta).to_s
+
+      p = Axlsx::Package.new
+      lt = p.workbook
+      e = lt.styles
+
+      estilo_base = e.add_style sz: 12
+      estilo_titulo = e.add_style sz: 20
+      estilo_encabezado = e.add_style sz: 12, b: true
+      #, fg_color: 'FF0000', bg_color: '00FF00'
+
+      lt.add_worksheet do |hoja|
+        hoja.add_row ['Reporte PSU de Actividades'], 
+          height: 30, style: estilo_titulo
+        hoja.add_row []
+        hoja.add_row [
+          'Fecha inicial', params['filtro']['busfechaini'], 
+          'Fecha final', params['filtro']['busfechafin'] ], style: estilo_base
+        idpf = (!params['filtro'] || 
+                !params['filtro']['busproyectofinanciero_nombre'] || 
+                params['filtro']['busproyectofinanciero_nombre'] == ''
+               ) ? nil : params['filtro']['busproyectofinanciero_nombre']
+        idaml = (!params['filtro'] || 
+                 !params['filtro']['busactividadpf_nombre'] || 
+                 params['filtro']['busactividadpf_nombre'] == ''
+                ) ? nil : params['filtro']['busactividadpf_nombre']
+
+        npf = idpf.nil? ? '' :
+          Cor1440Gen::Proyectofinanciero.where(id: idpf).
+          pluck(:nombre).join('; ')
+        naml = idaml.nil? ? '' :
+          Cor1440Gen::Actividadpf.where(id: idaml).
+          pluck(:titulo).join('; ')
+
+        hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
+        hoja.add_row []
+        l = [
+          'Id',
+          'Fecha',
+          'Nombre',
+          'Área(s)',
+          'Actividad(es) de convenio',
+          'Convenios financiados',
+          'Oficina',
+          'Responsable',
+          'Objetivo',
+          'Resultado',
+          'Población',
+        ]
+        numfilas = l.length
+        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+
+        hoja.merge_cells("A1:#{colfin}1")
+
+        hoja.add_row l, style: [estilo_encabezado] * numfilas
+
+        registros.each do |reg|
+          l = [
+            reg.id.to_s,
+            reg.presenta('fecha'),
+            reg.nombre,
+            reg.presenta('proyecto'),
+            reg.presenta('actividadpf'),
+            reg.presenta('proyectofinanciero'),
+            reg.presenta('oficina'),
+            reg.presenta('responsable'),
+            reg.presenta('objetivo'),
+            reg.presenta('resultado'),
+            reg.presenta('poblacion'),
+          ]
+          hoja.add_row l, style: estilo_base
+        end
+        anchos = [20] * numfilas
+        hoja.column_widths(*anchos)
+        ultf = 0
+        hoja.rows.last.tap do |row|
+          ultf = row.row_index
+        end
+        if ultf>0
+          l = [nil] * numfilas
+          hoja.add_row l
+        end
+      end
+
+      n=File.join('/tmp', File.basename(narch + ".xlsx"))
+      p.serialize n
+      FileUtils.rm(narch + "#{extension}-0")
+
+      return n
+    end
+
 
   end
 end
