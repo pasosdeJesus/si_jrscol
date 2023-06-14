@@ -221,31 +221,3 @@ $(document).on('click', 'a.agregaractos[href^="#"]', (e) ->
 $(document).off('focusin',
   'input[id^=caso_victima_attributes][id$=persona_attributes_nombres]')
 
-$(document).on('change',
-'select[id=persona_tdocumento_id]', (e) ->
-  root = window
-  msip_arregla_puntomontaje(root)
-  std = $(this)
-  obtener_ayuda(root, std)
-)
-$(document).on('change',
-'select[id$=persona_attributes_tdocumento_id]', (e) ->
-  root = window
-  msip_arregla_puntomontaje(root)
-  std = $(this)
-  obtener_ayuda(root, std)
-)
-@obtener_ayuda = (root, elem) ->
-  rutac = root.puntomontaje + 'admin/tdocumentos/'+ elem.val() + '.json'
-  $.getJSON(rutac, (data) ->
-    nd = elem.parent().parent().parent().find("input[id$=_numerodocumento]")
-    if (data.ayuda == null)
-      ini = 'Si el tipo de documento es cédula de ciudadanía teclee solo dígitos'
-      nd.attr('data-bs-toggle', 'tooltip')
-      nd.attr("data-bs-original-title", ini)
-    else
-      nd.attr('data-bs-toggle', 'tooltip') 
-      nd.attr("data-bs-original-title", data.ayuda)
-      $(nd).tooltip({track: true})
-  )
-
