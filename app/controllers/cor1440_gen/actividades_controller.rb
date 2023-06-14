@@ -618,5 +618,21 @@ module Cor1440Gen
       params.require(:actividad).permit(lista_params)
     end
 
+
+    def self.vista_listado(plant, ids, modelo, narch, parsimp, extension,
+      campoid = :id, params = nil, controlador = nil)
+      registros = modelo.where(campoid => ids)
+      if respond_to?(:index_reordenar)
+        registros = index_reordenar(registros)
+      end
+      if plant.id == 52
+        r = Cor1440Gen::Actividad::vista_reporte_completo_excel(
+          plant, registros, narch, parsimp, extension, params)
+        return r
+      else
+        registros
+      end
+    end
+
   end
 end

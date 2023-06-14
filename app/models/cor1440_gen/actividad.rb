@@ -740,5 +740,190 @@ module Cor1440Gen
         presenta_actividad(atr)
       end
     end
+
+
+    def self.vista_reporte_completo_excel(
+      plant, registros, narch, parsimp, extension, params)
+
+      ruta = File.join(Rails.application.config.x.heb412_ruta, 
+                       plant.ruta).to_s
+
+      p = Axlsx::Package.new
+      lt = p.workbook
+      e = lt.styles
+
+      estilo_base = e.add_style sz: 12
+      estilo_titulo = e.add_style sz: 20
+      estilo_encabezado = e.add_style sz: 12, b: true
+      #, fg_color: 'FF0000', bg_color: '00FF00'
+
+      lt.add_worksheet do |hoja|
+        hoja.add_row ['Reporte Completo de Actividades'], 
+          height: 30, style: estilo_titulo
+        hoja.add_row []
+        hoja.add_row [
+          'Fecha inicial', params['filtro']['busfechaini'], 
+          'Fecha final', params['filtro']['busfechafin'] ], style: estilo_base
+        idpf = (!params['filtro'] || 
+                !params['filtro']['busproyectofinanciero_nombre'] || 
+                params['filtro']['busproyectofinanciero_nombre'] == ''
+               ) ? nil : params['filtro']['busproyectofinanciero_nombre']
+        idaml = (!params['filtro'] || 
+                 !params['filtro']['busactividadpf_nombre'] || 
+                 params['filtro']['busactividadpf_nombre'] == ''
+                ) ? nil : params['filtro']['busactividadpf_nombre']
+
+        npf = idpf.nil? ? '' :
+          Cor1440Gen::Proyectofinanciero.where(id: idpf).
+          pluck(:nombre).join('; ')
+        naml = idaml.nil? ? '' :
+          Cor1440Gen::Actividadpf.where(id: idaml).
+          pluck(:titulo).join('; ')
+
+        hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
+        hoja.add_row []
+        l = [
+          'Id',
+          'Nombre',
+          'Fecha',
+          'Lugar',
+          'Oficina',
+          'Convenios financieros',
+          'Actividad(es) de convenio',
+          'Área(s)',
+          'Subárea(s) de actividad',
+          'Responsable',
+          'Corresponsables',
+          'Objetivo',
+          'Resultado',
+          'Población',
+          'Observaciones',
+          'Fecha Creación',
+          'Fecha actualización',
+          'Total mujeres beneficiadas',
+          'Total hombres beneficiados',
+          'Total beneficiarios sin sexo',
+          'Total beneficiarios otro sexo',
+          'Equipo mujeres JRS',
+          'Equipo hombres JRS',
+          'Mujeres 0-15',
+          'Mujeres 6-12',
+          'Mujeres 13-17',
+          'Mujeres 18-26',
+          'Mujeres 27-59',
+          'Mujeres 60+',
+          'Mujeres SRE',
+          'Hombres 0-15',
+          'Hombres 6-12',
+          'Hombres 13-17',
+          'Hombres 18-26',
+          'Hombres 27-59',
+          'Hombres 60+',
+          'Hombres SRE',
+          'Sin sexo 0-15',
+          'Sin sexo 6-12',
+          'Sin sexo 13-17',
+          'Sin sexo 18-26',
+          'Sin sexo 27-59',
+          'Sin sexo 60+',
+          'Sin sexo SRE',
+          'Otro sexo 0-15',
+          'Otro sexo 6-12',
+          'Otro sexo 13-17',
+          'Otro sexo 18-26',
+          'Otro sexo 27-59',
+          'Otro sexo 60+',
+          'Otro sexo SRE'
+        ]
+        numfilas = l.length
+        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+
+        hoja.merge_cells("A1:#{colfin}1")
+
+        l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
+          ['Sin sexo'] + ([''] * 6) + ['Otro sexo'] + ([''] * 6)
+        hoja.add_row l2, style: [estilo_encabezado] * numfilas
+        hoja.merge_cells("X6:AD6")
+        hoja.merge_cells("AE6:AK6")
+        hoja.merge_cells("AL6:AR6")
+        hoja.merge_cells("AS6:AY6")
+
+        hoja.add_row l, style: [estilo_encabezado] * numfilas
+
+        registros.each do |reg|
+          l = [
+            reg.id.to_s,
+            reg.nombre,
+            reg.presenta('fecha'),
+            reg.presenta('lugar'),
+            reg.presenta('oficina'),
+            reg.presenta('proyectofinanciero'),
+            reg.presenta('actividadpf'),
+            reg.presenta('proyecto'),
+            reg.presenta('subarea'),
+            reg.presenta('responsable'),
+            reg.presenta('corresponsables'),
+            reg.presenta('objetivo'),
+            reg.presenta('resultado'),
+            reg.presenta('poblacion'),
+            reg.presenta('observaciones'),
+            reg.created_at.to_s,
+            reg.updated_at.to_s,
+            reg.presenta('poblacion_mujeres_r'),
+            reg.presenta('poblacion_hombres_r'),
+            reg.presenta('poblacion_sinsexo'),
+            reg.presenta('poblacion_intersexuales'),
+            reg.presenta('poblacion_mujeres_l'),
+            reg.presenta('poblacion_hombres_l'),
+            reg.presenta('poblacion_mujeres_r_g1'),
+            reg.presenta('poblacion_mujeres_r_g2'),
+            reg.presenta('poblacion_mujeres_r_g3'),
+            reg.presenta('poblacion_mujeres_r_g4'),
+            reg.presenta('poblacion_mujeres_r_g5'),
+            reg.presenta('poblacion_mujeres_r_g6'),
+            reg.presenta('poblacion_mujeres_r_g7'),
+            reg.presenta('poblacion_hombres_r_g1'),
+            reg.presenta('poblacion_hombres_r_g2'),
+            reg.presenta('poblacion_hombres_r_g3'),
+            reg.presenta('poblacion_hombres_r_g4'),
+            reg.presenta('poblacion_hombres_r_g5'),
+            reg.presenta('poblacion_hombres_r_g6'),
+            reg.presenta('poblacion_hombres_r_g7'),
+            reg.presenta('poblacion_sinsexo_g1'),
+            reg.presenta('poblacion_sinsexo_g2'),
+            reg.presenta('poblacion_sinsexo_g3'),
+            reg.presenta('poblacion_sinsexo_g4'),
+            reg.presenta('poblacion_sinsexo_g5'),
+            reg.presenta('poblacion_sinsexo_g6'),
+            reg.presenta('poblacion_sinsexo_g7'),
+            reg.presenta('poblacion_intersexuales_g1'),
+            reg.presenta('poblacion_intersexuales_g2'),
+            reg.presenta('poblacion_intersexuales_g3'),
+            reg.presenta('poblacion_intersexuales_g4'),
+            reg.presenta('poblacion_intersexuales_g5'),
+            reg.presenta('poblacion_intersexuales_g6'),
+            reg.presenta('poblacion_intersexuales_g7')
+          ]
+          hoja.add_row l, style: estilo_base
+        end
+        anchos = [20] * numfilas
+        hoja.column_widths(*anchos)
+        ultf = 0
+        hoja.rows.last.tap do |row|
+          ultf = row.row_index
+        end
+        if ultf>0
+          l = [nil] * numfilas
+          hoja.add_row l
+        end
+      end
+
+      n=File.join('/tmp', File.basename(narch + ".xlsx"))
+      p.serialize n
+      FileUtils.rm(narch + "#{extension}-0")
+
+      return n
+    end
+
   end
 end
