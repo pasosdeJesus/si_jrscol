@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 657a154bb55b2f43904cc0b5e961f6fff21fdd80
+  revision: 8658a7cd33f81b3f82b56d672ead292c46d97ffd
   branch: main
   specs:
     cor1440_gen (2.2.0.beta2)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: be0f9b78a49028b5a7f92b45159fd0fee5133644
+  revision: 70aef02c4b7cda1e7a53672c22f298a908ceba7c
   branch: main
   specs:
     heb412_gen (2.2.0.beta2)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 8566c53af999e04034b04f4b32a634a98ceb5fd2
+  revision: e3db83794c5cc2867e9e602aacd66b8607018512
   branch: main
   specs:
     jos19 (2.2.0.beta2)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: bc131bb75e7b6da5d53d202476ee10075d521508
+  revision: 894fe324a7d881e77e9b3a1cd985bda1324e45c7
   branch: main
   specs:
     mr519_gen (2.2.0.beta2)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: df40d5c5ebb7f72cb0909d1340a1a2a2738ff99b
+  revision: cbbf443dc7ed5ee29358c94560276d43dc679ff9
   branch: main
   specs:
     msip (2.2.0.beta2)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_gen.git
-  revision: 521d5416246eabe8a5d144be31a5ed7067612502
+  revision: e4d7557f17917e29a53dd99ff9f709bbf8e0f7b3
   branch: main
   specs:
     sal7711_gen (2.2.0.beta2)
@@ -95,7 +95,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sal7711_web.git
-  revision: 9d313976758f9a4f13d5ab6367c65c939f9af1de
+  revision: c8c4eadff3af54edff4467745310ed3d5e65a869
   branch: main
   specs:
     sal7711_web (2.2.0.beta2)
@@ -104,7 +104,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: fe28986569b535adafeb6e8b4afb6341407636b6
+  revision: 4a8ae3d38e197cee7ed7e12d79a08e65febc2ff4
   branch: main
   specs:
     sivel2_gen (2.2.0.beta2)
@@ -114,7 +114,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: 021e37436cd14c53edece4a2c479984c829edeb7
+  revision: 43341f9b12ef2009ccc059c4111700e7dbfe90b0
   branch: main
   specs:
     sivel2_sjr (2.2.0.beta2)
