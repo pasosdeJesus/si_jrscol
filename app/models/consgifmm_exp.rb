@@ -156,6 +156,19 @@ class ConsgifmmExp < ActiveRecord::Base
 
   # Auxiliar que retorna listado de identificaciones de entre
   # los beneficiarios que cumplan una condición sobre
+  # el registro de asistencia (recibida como bloque)
+  def asistentes_condicion_ids
+    idn = self.actividad.asistencia_ids
+    idv = idn.select {|ia|
+      p = Cor1440Gen::Asistencia.find(ia)
+      yield(p)
+    }
+    idv.sort.join(',')
+  end
+
+
+  # Auxiliar que retorna listado de identificaciones de entre
+  # los beneficiarios que cumplan una condición sobre
   # la persona (recibida como bloque)
   def beneficiarios_condicion_ids
     idn = beneficiarios_ids.split(',')
@@ -363,6 +376,11 @@ class ConsgifmmExp < ActiveRecord::Base
     }
   end
 
+  def asistentes_colombianos_retornados_ids
+    return asistentes_condicion_ids {|p|
+      p.perfilorgsocial_id == 16
+    }
+  end
 
   def beneficiarios_colombianos_retornados_ids
     return beneficiarios_condicion_ids {|p|
@@ -370,7 +388,13 @@ class ConsgifmmExp < ActiveRecord::Base
     }
   end
 
-  def beneficiarios_comunidades_de_acogida_ids
+  def asistentes_comunidades_de_acogida_ids
+    return asistentes_condicion_ids {|p|
+      p.perfilorgsocial_id == 13
+    }
+  end
+
+  def ieneficiarios_comunidades_de_acogida_ids
     return beneficiarios_condicion_ids {|p|
       p.ultimoperfilorgsocial_id == 13
     }
@@ -385,6 +409,12 @@ class ConsgifmmExp < ActiveRecord::Base
         v.victimasjr.discapacidad &&
         v.victimasjr.discapacidad.nombre != 'NINGUNA'
       }
+    }
+  end
+
+  def asistentes_en_transito_ids
+    return asistentes_condicion_ids {|p|
+      p.perfilorgsocial_id == 11
     }
   end
 
@@ -712,13 +742,27 @@ class ConsgifmmExp < ActiveRecord::Base
     }
   end
 
+  def asistentes_pendulares_ids
+    return asistentes_condicion_ids {|p|
+      p.perfilorgsocial_id == 12
+    }
+  end
+
   def beneficiarios_pendulares_ids
     return beneficiarios_condicion_ids {|p|
       p.ultimoperfilorgsocial_id == 12
     }
   end
 
+  def asistentes_sinperfilpoblacional_ids
+    return asistentes_condicion_ids {|a|
+      a.perfilorgsocial_id.nil?
+    }
+  end
+
+
   def beneficiarios_sinperfilpoblacional_ids
+    debugger
     return beneficiarios_condicion_ids {|p|
       p.ultimoperfilorgsocial_id.nil?
     }
@@ -734,9 +778,21 @@ class ConsgifmmExp < ActiveRecord::Base
       Msip::Persona::convencion_sexo[:sexo_sininformacion], nil, 17, false)
   end
 
+  def asistentes_victimas_ids
+    return asistentes_condicion_ids {|p|
+      p.perfilorgsocial_id == 14
+    }
+  end
+
   def beneficiarios_victimas_ids
     return beneficiarios_condicion_ids {|p|
       p.ultimoperfilorgsocial_id == 14
+    }
+  end
+
+  def asistentes_victimasdobleafectacion_ids
+    return asistentes_condicion_ids {|p|
+      p.perfilorgsocial_id == 15
     }
   end
 
@@ -746,6 +802,11 @@ class ConsgifmmExp < ActiveRecord::Base
     }
   end
 
+  def asistentes_vocacion_permanencia_ids
+    return asistentes_condicion_ids {|p|
+      p.perfilorgsocial_id == 10
+    }
+  end
 
   def beneficiarios_vocacion_permanencia_ids
     return beneficiarios_condicion_ids {|p|

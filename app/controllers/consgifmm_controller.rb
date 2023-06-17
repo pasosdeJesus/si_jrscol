@@ -249,6 +249,9 @@ class ConsgifmmController < Heb412Gen::ModelosController
       hoja.add_row l, style: [estilo_encabezado] * numfilas
       
       registros.each do |reg|
+
+        #debugger
+        #sp = reg.presenta('asistentes_vocacion_permanencia_ids')
         l = [
           reg.oficina.to_s,
           reg.actividad_id,
@@ -275,14 +278,14 @@ class ConsgifmmController < Heb412Gen::ModelosController
           '', #'Cantidad de output: # beneficiarios indirectos'
           reg.presenta('beneficiarios_ids').split(",").count,
           reg.presenta('beneficiarios_nuevos_mes_ids').split(",").count,
-          reg.presenta('beneficiarios_vocacion_permanencia_ids').split(",").count,
-          reg.presenta('beneficiarios_en_transito_ids').split(",").count,
-          reg.presenta('beneficiarios_comunidades_de_acogida_ids').split(",").count,
-          reg.presenta('beneficiarios_pendulares_ids').split(",").count,
-          reg.presenta('beneficiarios_colombianos_retornados_ids').split(",").count,
-          reg.presenta('beneficiarios_victimas_ids').split(",").count,
-          reg.presenta('beneficiarios_victimasdobleafectacion_ids').split(",").count,
-          reg.presenta('beneficiarios_sinperfilpoblacional_ids').split(",").count,
+          reg.presenta('asistentes_vocacion_permanencia_ids').split(",").count,
+          reg.presenta('asistentes_en_transito_ids').split(",").count,
+          reg.presenta('asistentes_comunidades_de_acogida_ids').split(",").count,
+          reg.presenta('asistentes_pendulares_ids').split(",").count,
+          reg.presenta('asistentes_colombianos_retornados_ids').split(",").count,
+          reg.presenta('asistentes_victimas_ids').split(",").count,
+          reg.presenta('asistentes_victimasdobleafectacion_ids').split(",").count,
+          reg.presenta('asistentes_sinperfilpoblacional_ids').split(",").count,
           reg.presenta('beneficiarias_mujeres_0_5_ids').split(",").count,
           reg.presenta('beneficiarias_mujeres_6_12_ids').split(",").count,
           reg.presenta('beneficiarias_mujeres_13_17_ids').split(",").count,
