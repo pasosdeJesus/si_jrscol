@@ -1,6 +1,5 @@
 module GifmmHelper
 
-
   # Recibe id de persona y fecha hasta la cual mirar casos
   # o actividades para determinar y retornar cadena con su 
   # perfil migratorio (i.e nombre de la tabla pefilmigracion) más 
@@ -20,7 +19,7 @@ module GifmmHelper
       c.migracion[0].perfilmigracion
     }
     ma = Cor1440Gen::Asistencia.where(persona_id: idp).joins(
-      'JOIN cor1440_gen_actividad ON ' + 
+      'JOIN cor1440_gen_actividad ON ' +
       'cor1440_gen_actividad.id = cor1440_gen_asistencia.actividad_id').
       where('cor1440_gen_actividad.fecha <= ?', fecha).
       order('cor1440_gen_actividad.fecha DESC').find {|as|
