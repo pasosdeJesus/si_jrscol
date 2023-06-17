@@ -67,15 +67,6 @@ module Sivel2Sjrcol
     config.x.sivel2_mapaosm_diasatras = ENV.fetch(
       'SIVEL2_CONSWEB_EPILOGO', 182)
 
-    # sal7711
-    config.x.url_colchon = ENV.fetch('COLCHON_ARTICULOS', 'colchon-articulos')
-    config.x.sal7711_presencia_adjunto = true
-    config.x.sal7711_presencia_adjuntodesc = true
-    config.x.sal7711_presencia_fuenteprensa = true
-    config.x.sal7711_presencia_fecha = true
-    config.x.sal7711_presencia_pagina = false
-
-
     # cor1440
     config.x.cor1440_permisos_por_oficina = 
       (ENV['COR1440_PERMISOS_POR_OFICINA'] && ENV['COR1440_PERMISOS_POR_OFICINA'] != '')
