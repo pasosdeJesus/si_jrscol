@@ -126,7 +126,6 @@ Rails.application.routes.draw do
   mount Jos19::Engine, at: rutarel, as: 'jos19'
   mount Sivel2Gen::Engine, at: rutarel, as: 'sivel2_gen'
   mount Cor1440Gen::Engine, at: rutarel, as: 'cor1440_gen'
-  mount Sal7711Gen::Engine, at: rutarel, as: 'sal7711_gen'
   mount Mr519Gen::Engine, at: rutarel, as: 'mr519_gen'
   mount Heb412Gen::Engine, at: rutarel, as: 'heb412_gen'
   mount Msip::Engine, at: rutarel, as: 'msip'

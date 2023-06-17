@@ -96,16 +96,6 @@ gem 'cor1440_gen',
   git: 'https://gitlab.com/pasosdeJesus/cor1440_gen.git', branch: 'main'
   #path: '../cor1440_gen'
 
-# Motor Sal7711_gen
-gem 'sal7711_gen',
-  git: 'https://gitlab.com/pasosdeJesus/sal7711_gen.git', branch: 'main'
-  #path: '../sal7711_gen'
-
-# Motor Sal7711_web
-gem 'sal7711_web',
-  git: 'https://gitlab.com/pasosdeJesus/sal7711_web.git', branch: 'main'
-  #path: '../sal7711_web'
-
 # Motor de SIVeL 2
 gem 'sivel2_gen',
   git: 'https://gitlab.com/pasosdeJesus/sivel2_gen.git', branch: 'main'
