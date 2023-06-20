@@ -38,6 +38,7 @@ footer {
   top: 0px;
   left: 0px;
   height: 40px;
+  z-index: 9999;
 }
 
 #div_contenido {
