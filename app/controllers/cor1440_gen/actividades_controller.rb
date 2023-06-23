@@ -476,7 +476,7 @@ module Cor1440Gen
           listaret << {
             id: v.victima.persona_id, 
             nombre: v.victima.persona.presenta_nombre,
-            ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id || 10
+            ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id
           }
         end
       end
@@ -526,7 +526,7 @@ module Cor1440Gen
           persona_id: dp[:id],
           perfilorgsocial_id: dp[:ultimoperfilorgsocial_id]
         )
-        if !asistencia.save
+        if !asistencia.save(validate: false)
           resp_error 'No pudo crear asistencia' 
           return
         end

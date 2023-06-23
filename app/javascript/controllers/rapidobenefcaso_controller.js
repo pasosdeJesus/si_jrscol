@@ -15,7 +15,7 @@ export default class extends Controller {
     console.log('conectado controlador rapidobenefcaso')
   }
 
-  actualizaListado(d) {
+  actualizarListado(d) {
     document.body.style.cursor = "wait"
     let e = d.e
     let url = `/asistencia/rapidobenefcaso?actividad_id=${d.actividad_id}&`+
@@ -94,12 +94,12 @@ export default class extends Controller {
 
     if ( this.requiereGuardar() ) {
       window.MsipGuardarFormularioYRepintar(
-        ['errores'], this.actualizaListado, 
+        ['errores'], this.actualizarListado, 
         {actividad_id: this.actividad_id, caso_id: this.caso_id, e: e},
         this.manejaError, e
       )
     } else {
-      this.actualizaListado({actividad_id: this.actividad_id, caso_id: this.caso_id, e: e})
+      this.actualizarListado({actividad_id: this.actividad_id, caso_id: this.caso_id, e: e})
     }
 
   }
@@ -134,7 +134,7 @@ export default class extends Controller {
       }
     })
     window.modal_casoasistencia.hide();
-    this.actualizaListado(parametrosActividad);
+    this.actualizarListado(parametrosActividad);
   }
 
 }
