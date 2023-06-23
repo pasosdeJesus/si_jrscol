@@ -28,6 +28,5 @@ Se ha desarrollado sobre:
 * [sivel2_gen](https://github.com/pasosdeJesus/sivel2_gen)
 * [sivel2_sjr](https://github.com/pasosdeJesus/sivel2_sjr)
 * [cor1440_gen](https://github.com/pasosdeJesus/cor1440_gen)
-* [sal7711_gen](https://github.com/pasosdeJesus/sal7711_gen)
 
 
