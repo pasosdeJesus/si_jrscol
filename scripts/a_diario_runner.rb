@@ -5,13 +5,13 @@ def eliminar_generados
     orden = "ls -l public/heb412/generados/"
     res = `#{orden}`
     puts res
-    orden = "rm public/heb412/generados/*ods"
+    orden = "rm public/heb412/generados/*ods*"
     res = `#{orden}`
     puts res
-    orden = "rm public/heb412/generados/*xlsx"
+    orden = "rm public/heb412/generados/*xlsx*"
     res = `#{orden}`
     puts res
-    orden = "rm public/heb412/generados/*pdf"
+    orden = "rm public/heb412/generados/*pdf*"
     res = `#{orden}`
     puts res
 end
@@ -45,7 +45,7 @@ def run
     puts "No esta definida variable de ambiente SMTP_MAQ"
     exit 1
   end
-  arreglar_poblacion
+  #arreglar_poblacion
   eliminar_generados
   m = Jos19::UnificarHelper.eliminar_casos_en_blanco
   puts m;

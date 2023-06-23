@@ -33,7 +33,7 @@ doas su ${USUARIO_AP} -c "psql -U $us -h /var/www/var/run/postgresql $bd -c 'DEL
 	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_respuestafor) 
 	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_proyecto) 
 	AND id NOT IN (SELECT actividad_id FROM sivel2_sjr_actividad_casosjr) 
-	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_msip_anexo) 
+	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_anexo) 
 	AND (id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero) 
           OR id IN (SELECT DISTINCT actividad_id FROM cor1440_gen_actividad_proyectofinanciero WHERE proyectofinanciero_id=10 AND 
 	  actividad_id NOT IN (select actividad_id from cor1440_gen_actividad_proyectofinanciero where proyectofinanciero_id<>10)))
@@ -46,7 +46,8 @@ doas su ${USUARIO_AP} -c "psql -U $us -h /var/www/var/run/postgresql $bd -c 'DEL
 	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_respuestafor) 
 	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_proyecto) 
 	AND id NOT IN (SELECT actividad_id FROM sivel2_sjr_actividad_casosjr) 
-	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_msip_anexo) 
+	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_anexo) 
+	AND id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_rangoedadac) 
 	AND (id NOT IN (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero) 
           OR id IN (SELECT DISTINCT actividad_id FROM cor1440_gen_actividad_proyectofinanciero WHERE proyectofinanciero_id=10 AND 
 	  actividad_id NOT IN (select actividad_id from cor1440_gen_actividad_proyectofinanciero where proyectofinanciero_id<>10))) ; '"
