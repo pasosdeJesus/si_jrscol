@@ -94,6 +94,20 @@ module Msip
       return r
     end
 
+    def en_blanco?
+      self.nombres == 'N' &&
+      self.apellidos == 'N' &&
+      self.anionac.nil? &&
+      self.mesnac.nil? &&
+      self.dianac.nil? &&
+      self.pais_id.nil? &&
+      self.departamento_id.nil? &&
+      self.municipio_id.nil? &&
+      self.clase_id.nil? &&
+      self.ultimoperfilorgsocial_id.nil? &&
+      self.ultimoestatusmigratorio_id.nil? &&
+      self.ppt.nil?
+    end
   end
 end
 

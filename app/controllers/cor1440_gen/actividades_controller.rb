@@ -166,13 +166,14 @@ module Cor1440Gen
           pid = pp[8..].to_i
           if pid > 0 && params[pp] == "true" &&
               Msip::Persona.where(id: pid).count == 1
-            Cor1440Gen::Asistencia.create!(
+            nr =Cor1440Gen::Asistencia.create(
               persona_id: pid,
               actividad_id: @registro.id,
               externo: false,
               orgsocial_id: nil,
-              perfilorgsocial_id: 10 # Migrante con vocación de permanencia
+              perfilorgsocial_id: nil
             )
+            nr.save(validate: false)
           end
         end
       elsif params['caso_id'] && 
@@ -183,13 +184,14 @@ module Cor1440Gen
           where('sivel2_sjr_victimasjr.fechadesagregacion IS NULL').
           pluck(:persona_id)
         personas.each do |p|
-          Cor1440Gen::Asistencia.create!(
+          nr = Cor1440Gen::Asistencia.create(
             persona_id: p,
             actividad_id: @registro.id,
             externo: false,
             orgsocial_id: nil,
-            perfilorgsocial_id: 10 # Migrante con vocación de permanencia
+            perfilorgsocial_id: nil
           )
+          nr.save(validate: false)
         end
       end
 
@@ -253,14 +255,14 @@ module Cor1440Gen
       true
     end
 
-    def nueva_asistencia_completa_persona
-      @persona.ultimoperfilorgsocial_id = 10; 
-      @persona.ultimoestatusmigratorio_id = 8; 
-    end
+    #def nueva_asistencia_completa_persona
+    #  @persona.ultimoperfilorgsocial_id = 10; 
+    #  @persona.ultimoestatusmigratorio_id = 8; 
+    #end
 
-    def nueva_asistencia_completa_asistencia
-      @asistencia.perfilorgsocial_id=10; 
-    end
+    #def nueva_asistencia_completa_asistencia
+    #  @asistencia.perfilorgsocial_id=10; 
+    #end
 
     # GET /actividades/1/edit
     def edit
