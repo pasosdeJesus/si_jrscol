@@ -54,6 +54,8 @@ module Msip
           registro = modelo.create!(MODELO_PARAMS.merge({departamento_id: 17}))
         when "clase"
           registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
+        when "tdocumento"
+          registro = modelo.create!(MODELO_PARAMS.merge({sigla: 'TD'}))
         when "vereda"
           registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
         else
