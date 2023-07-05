@@ -21,3 +21,6 @@ application.register("rapidobenefcaso", RapidobenefcasoController)
 
 import RespuestacasoController from "./respuestacaso_controller"
 application.register("respuestacaso", RespuestacasoController)
+
+import VisibuemController from "./visibuem_controller"
+application.register("visibuem", VisibuemController)

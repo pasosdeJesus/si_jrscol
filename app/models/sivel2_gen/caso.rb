@@ -40,7 +40,8 @@ class Sivel2Gen::Caso < ActiveRecord::Base
       if v.persona.ultimoperfilorgsocial_id.nil?
         errors.add(:persona, "Falta perfil poblacional de #{v.persona.presenta_nombre}")
       end
-      if v.persona.ultimoestatusmigratorio_id.nil?
+      if [10, 11, 12].include?(v.persona.ultimoperfilorgsocial_id) && 
+          v.persona.ultimoestatusmigratorio_id.nil?
         errors.add(:persona, "Falta estatus migratorio de #{v.persona.presenta_nombre}")
       end
 

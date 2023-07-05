@@ -4,5 +4,8 @@
 <%= f.input :ultimoperfilorgsocial_id,
   collection: col,
   label_method: :nombre,
-  value_method: :id
+  value_method: :id,
+  input_html: {
+    'data-action': 'change->visibuem#cambiarUltimoperfil'
+  }
 %>

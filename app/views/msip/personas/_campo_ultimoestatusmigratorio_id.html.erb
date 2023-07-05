@@ -1,3 +1,10 @@
+
+<% estilo_mostrar='none' %>
+<% if [10, 11, 12].include?(f.object.ultimoperfilorgsocial_id) then %>
+  <% estilo_mostrar='block' %>
+<% end %>
+
+
 <% col = Msip::ModeloHelper.opciones_tabla_basica(
   Sivel2Sjr::Statusmigratorio, f, 'ultimoestatusmigratorio_id')
 %>
@@ -6,6 +13,10 @@
   collection: col,
   label_method: :nombre,
   value_method: :id,
+  wrapper_html: {
+    style: 'display: ' + estilo_mostrar,
+    'data-visibuem-target': 'uem'
+  },
   input_html: {
     'data-action': 'change->persona-ppt#cambia_ultimoestatusmigratorio'
   }
