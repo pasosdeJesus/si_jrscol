@@ -220,7 +220,7 @@ CREATE PROCEDURE public.cor1440_gen_recalcular_poblacion_actividad(IN par_activi
               UPDATE cor1440_gen_actividad_rangoedadac SET mr = mr + 1
                 WHERE actividad_id=par_actividad_id
                 AND rangoedadac_id=rango_id;
-            WHEN 'O' THEN
+            WHEN 'I' THEN
               UPDATE cor1440_gen_actividad_rangoedadac SET i = i + 1
                 WHERE actividad_id=par_actividad_id
                 AND rangoedadac_id=rango_id;
@@ -1995,7 +1995,7 @@ CREATE TABLE public.msip_persona (
     ppt character varying(32),
     CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
     CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
-    CONSTRAINT persona_sexo_check CHECK (('MHSO'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
+    CONSTRAINT persona_sexo_check CHECK (('MHSI'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
 );
 
 
@@ -2142,7 +2142,7 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                           WHERE (aapf.actividad_id = be.actividad_id)))
                   ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_fecha >= '2022-07-01'::date) AND (be.actividad_fecha <= '2022-12-31'::date))
+  WHERE (true AND (be.actividad_fecha >= '2023-01-01'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
   WITH NO DATA;
 
 
@@ -16927,6 +16927,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230614220241'),
 ('20230622205528'),
 ('20230622205529'),
-('20230622205530');
+('20230622205530'),
+('20230706085249'),
+('20230706090216');
 
 

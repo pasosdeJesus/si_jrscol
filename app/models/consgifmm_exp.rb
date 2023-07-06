@@ -293,37 +293,37 @@ class ConsgifmmExp < ActiveRecord::Base
     }
   end
 
-  def beneficiarios_otrosexo_0_5_ids
+  def beneficiarios_intersexuales_0_5_ids
     beneficiarios_condicion_sexo_edad_ids(
       Msip::Persona::convencion_sexo[:sexo_sininformacion], 0, 5)
   end
 
-  def beneficiarios_otrosexo_6_12_ids
+  def beneficiarios_intersexuales_6_12_ids
     beneficiarios_condicion_sexo_edad_ids(
       Msip::Persona::convencion_sexo[:sexo_sininformacion], 6, 12)
   end
 
-  def beneficiarios_otrosexo_13_17_ids
+  def beneficiarios_intersexuales_13_17_ids
     beneficiarios_condicion_sexo_edad_ids(
       Msip::Persona::convencion_sexo[:sexo_sininformacion], 13, 17)
   end
 
-  def beneficiarios_otrosexo_18_25_ids
+  def beneficiarios_intersexuales_18_25_ids
     beneficiarios_condicion_sexo_edad_ids(
       Msip::Persona::convencion_sexo[:sexo_sininformacion], 18, 25)
   end
 
-  def beneficiarios_otrosexo_26_59_ids
+  def beneficiarios_intersexuales_26_59_ids
     beneficiarios_condicion_sexo_edad_ids(
       Msip::Persona::convencion_sexo[:sexo_sininformacion], 26, 59)
   end
 
-  def beneficiarios_otrosexo_60_o_mas_ids
+  def beneficiarios_intersexuales_60_o_mas_ids
     beneficiarios_condicion_sexo_edad_ids(
       Msip::Persona::convencion_sexo[:sexo_sininformacion], 60, nil)
   end
 
-  def beneficiarios_otrosexo_sinedad_ids
+  def beneficiarios_intersexuales_sinedad_ids
     return beneficiarios_condicion_ids {|p|
       p.sexo == Msip::Persona::convencion_sexo[:sexo_sininformacion] && 
         !p.anionac
