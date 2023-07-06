@@ -13,7 +13,7 @@ module Cor1440Gen
 
     Cor1440Gen.actividadg1 = "Funcionarias del SJR"
     Cor1440Gen.actividadg3 = "Funcionarios del SJR"
-    Cor1440Gen.actividadg6 = "Externos otro sexo"
+    Cor1440Gen.actividadg6 = "Intersexuales externos"
 
     def self.posibles_nuevaresp
       return {

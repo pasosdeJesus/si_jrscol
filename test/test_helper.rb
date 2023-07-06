@@ -107,7 +107,7 @@ PRUEBA_DETALLEFINANCIERO = {
 PRUEBA_ETIQUETA = {
   id: 1000,
   nombre: "Eti",
-  observaciones: "O",
+  observaciones: "Ob",
   fechacreacion: "2014-09-04",
   created_at: "2014-09-04",
 }
