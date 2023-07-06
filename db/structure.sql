@@ -1498,7 +1498,7 @@ CREATE MATERIALIZED VIEW public.consgifmm_exp AS
      LEFT JOIN public.depgifmm ON ((msip_departamento.deplocal_cod = depgifmm.id)))
      LEFT JOIN public.msip_municipio ON ((msip_ubicacionpre.municipio_id = msip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((msip_departamento.deplocal_cod * 1000) + msip_municipio.munlocal_cod) = mungifmm.id)))
-  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = '49325-1116-'::text))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['50556-1010-'::text, '50557-1010-'::text, '50558-1010-'::text, '50574-1011-'::text, '50578-1011-'::text, '50582-1011-'::text, '50583-1011-'::text, '50612-1010-'::text, '50615-1011-'::text, '50616-1011-'::text, '50668-1007-'::text, '50669-1007-'::text, '50670-1007-'::text, '50676-1001-'::text, '50685-1022-'::text, '50685-1001-'::text, '50738-1009-'::text, '50740-1009-'::text, '50743-1009-'::text, '50747-1009-'::text, '50753-1011-'::text, '50755-1009-'::text, '50776-1118-'::text, '50835-1012-'::text, '50836-1012-'::text, '50837-1000-'::text, '50838-1012-'::text, '50856-1012-'::text, '50863-1012-'::text, '50887-1006-'::text, '50889-1006-'::text, '50917-1009-'::text, '50482-995-'::text, '50495-1009-'::text, '50552-1023-'::text, '50617-1012-'::text, '50618-1012-'::text, '50655-1012-'::text, '50656-1012-'::text, '50658-1023-'::text, '50659-1023-'::text, '50667-1007-'::text, '50686-1008-'::text, '50700-1006-'::text, '50795-1001-'::text, '50798-1010-'::text, '50805-1009-'::text, '50806-1009-'::text, '50827-1007-'::text, '50882-1001-'::text, '50884-1009-'::text, '50885-1009-'::text, '50908-1004-'::text, '50911-1010-'::text, '50912-1010-'::text, '50609-1010-'::text, '50620-1007-'::text, '50634-1023-'::text, '50647-1008-'::text, '50725-1005-'::text, '50800-1114-'::text, '50871-1007-'::text, '50873-990-'::text, '50909-1010-'::text, '50920-1001-'::text, '50677-1001-'::text, '50680-1011-'::text, '50681-1011-'::text, '50691-1011-'::text, '50692-1011-'::text, '50712-1000-'::text, '50712-1001-'::text, '50733-1011-'::text, '50734-1023-'::text, '50735-1012-'::text, '50736-1022-'::text, '50737-1020-'::text, '50810-1001-'::text, '50814-1020-'::text, '50815-1022-'::text, '50816-1020-'::text, '50817-1022-'::text, '50818-1020-'::text, '50819-1022-'::text, '50820-1020-'::text, '50821-1022-'::text, '50822-1020-'::text, '50823-1022-'::text, '50825-1020-'::text, '50826-1022-'::text, '50829-1007-'::text, '50831-1007-'::text, '50841-1007-'::text, '50843-1007-'::text, '50844-1007-'::text, '50845-1007-'::text, '50846-1007-'::text, '50847-1007-'::text, '50848-1007-'::text, '50849-1007-'::text, '50850-1007-'::text, '50851-1007-'::text, '50852-1007-'::text, '50853-1007-'::text, '50854-1007-'::text, '50869-1119-'::text, '50872-1001-'::text, '50874-1119-'::text, '50881-1006-'::text, '50901-1020-'::text, '50907-1022-'::text, '50919-1012-'::text, '50772-1009-'::text, '50793-1010-'::text, '50794-1010-'::text, '50797-1119-'::text, '50804-1010-'::text, '50830-1007-'::text, '50833-1007-'::text, '50840-1020-'::text, '50862-1020-'::text, '50868-1013-'::text, '50876-990-'::text, '50878-990-'::text, '50894-1020-'::text, '50359-1023-'::text, '50842-1007-'::text, '50860-1020-'::text, '50867-1092-'::text, '50883-1121-'::text, '50900-1012-'::text, '50918-1004-'::text, '50925-1012-'::text, '50926-1007-'::text, '50927-1007-'::text, '50928-1007-'::text, '50931-1022-'::text, '50931-1020-'::text, '50934-1021-'::text, '50936-1009-'::text, '50523-1023-'::text, '50376-1012-'::text])))
   ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
 
@@ -2142,7 +2142,7 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                           WHERE (aapf.actividad_id = be.actividad_id)))
                   ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_fecha >= '2023-01-01'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
+  WHERE (true AND (be.actividad_fecha >= '2023-06-15'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
   WITH NO DATA;
 
 
@@ -4171,6 +4171,49 @@ CREATE SEQUENCE public.indicadorgifmm_id_seq
 --
 
 ALTER SEQUENCE public.indicadorgifmm_id_seq OWNED BY public.indicadorgifmm.id;
+
+
+--
+-- Name: jos19_consactividadcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.jos19_consactividadcaso AS
+ SELECT row_number() OVER () AS id,
+    caso.id AS caso_id,
+    asi.actividad_id,
+    victima.id AS victima_id,
+        CASE
+            WHEN (casosjr.contacto_id = persona.id) THEN 1
+            ELSE 0
+        END AS es_contacto,
+    actividad.fecha AS actividad_fecha,
+    ( SELECT msip_oficina.nombre
+           FROM public.msip_oficina
+          WHERE (msip_oficina.id = actividad.oficina_id)
+         LIMIT 1) AS actividad_oficina,
+    ( SELECT usuario.nusuario
+           FROM public.usuario
+          WHERE (usuario.id = actividad.usuario_id)
+         LIMIT 1) AS actividad_responsable,
+    array_to_string(ARRAY( SELECT cor1440_gen_proyectofinanciero.nombre
+           FROM public.cor1440_gen_proyectofinanciero
+          WHERE (cor1440_gen_proyectofinanciero.id IN ( SELECT apf.proyectofinanciero_id
+                   FROM public.cor1440_gen_actividad_proyectofinanciero apf
+                  WHERE (apf.actividad_id = actividad.id)))), ','::text) AS actividad_convenios,
+    persona.id AS persona_id,
+    persona.nombres AS persona_nombres,
+    persona.apellidos AS persona_apellidos,
+    persona.tdocumento_id AS persona_tipodocumento,
+    caso.memo AS caso_memo,
+    casosjr.fecharec AS caso_fecharec
+   FROM ((((((public.cor1440_gen_asistencia asi
+     JOIN public.msip_persona persona ON ((persona.id = asi.persona_id)))
+     JOIN public.cor1440_gen_actividad actividad ON ((asi.actividad_id = actividad.id)))
+     JOIN public.msip_oficina oficinaac ON ((oficinaac.id = actividad.oficina_id)))
+     JOIN public.sivel2_gen_victima victima ON ((victima.persona_id = persona.id)))
+     JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
+     JOIN public.sivel2_sjr_casosjr casosjr ON ((caso.id = casosjr.caso_id)))
+  WITH NO DATA;
 
 
 --
@@ -7134,31 +7177,31 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_os_0_5_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_os_0_5_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_os_6_12_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_os_6_12_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_os_13_17_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_os_13_17_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_os_18_26_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_os_18_26_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_os_27_59_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_os_27_59_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_os_60m_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_os_60m_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_os_se_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_os_se_fecha_salida,
     array_to_string(ARRAY( SELECT (((((((supracategoria.tviolencia_id)::text || ':'::text) || categoria.supracategoria_id) || ':'::text) || categoria.id) || ' '::text) || (categoria.nombre)::text)
            FROM public.sivel2_gen_categoria categoria,
             public.sivel2_gen_supracategoria supracategoria,
@@ -7189,7 +7232,11 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.persona_id = contacto.id) AND (vcontacto.caso_id = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.etnia_id = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (true = false)
+  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
+           FROM public.sivel2_gen_conscaso
+          WHERE (sivel2_gen_conscaso.fecharec >= '2023-06-15'::date)
+          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
+  ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
 
 
@@ -16929,6 +16976,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230622205529'),
 ('20230622205530'),
 ('20230706085249'),
-('20230706090216');
+('20230706090216'),
+('20230707125612');
 
 
