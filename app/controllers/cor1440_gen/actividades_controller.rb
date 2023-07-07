@@ -222,6 +222,14 @@ module Cor1440Gen
       redirect_to cor1440_gen.edit_actividad_path(@registro)
     end
 
+    def nuevo_asistente_antes_de_actualizar(asistente, atr_asistente)
+      if asistente.persona.ultimoperfilorgsocial_id.nil? &&
+          atr_asistente[:perfilorgsocial_id].to_i > 0
+        asistente.persona.ultimoperfilorgsocial_id = atr_asistente[:perfilorgsocial_id].to_i
+        asistente.persona.save(validate: false)
+      end
+    end
+
     # Genera conteo de beneficiarios por actividad de marco lógico desde 
     # desde actividad
     def programa_generacion_listado_int50(params, extension, campoid, 
