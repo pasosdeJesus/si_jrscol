@@ -977,6 +977,7 @@ module Cor1440Gen
           'Objetivo',
           'Resultado',
           'Población',
+          'Anexos',
         ]
         numfilas = l.length
         colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
@@ -998,6 +999,7 @@ module Cor1440Gen
             reg.presenta('objetivo'),
             reg.presenta('resultado'),
             reg.presenta('poblacion'),
+            reg.presenta('numero_anexos'),
           ]
           hoja.add_row l, style: estilo_base
         end
