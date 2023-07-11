@@ -27,6 +27,10 @@ module Msip
       foreign_key: 'persona_id', dependent: :delete
     accepts_nested_attributes_for :datosbio, reject_if: :all_blank
 
+    validates :anionac, presence: {message: "Año de nacimiento requerido"}, allow_blank: false
+    validates :mesnac, presence: {message: "Mes de nacimiento requerido. Si no lo conoce use Junio"}, allow_blank: false
+    validates :dianac, presence: {message: "Día de nacimento requerido. Si no lo conoce use 15"}, allow_blank: false
+
     validates :nombres, presence: true, allow_blank: false,
       length: { maximum: 100}
 
