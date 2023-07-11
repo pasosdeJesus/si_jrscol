@@ -191,6 +191,9 @@ PRUEBA_PERSONA = {
   sexo: 'M',
   numerodocumento: '1061769227',
   tdocumento_id: 11,
+  anionac: 1987,
+  mesnac: 6,
+  dianac: 15,
   ultimoperfilorgsocial_id: 13,
   ultimoestatusmigratorio_id: 2
 }
@@ -201,6 +204,9 @@ PRUEBA_PERSONA2 = {
   sexo: 'M',
   numerodocumento: '127935',
   tdocumento_id: 11,
+  anionac: 1988,
+  mesnac: 7,
+  dianac: 16,
   ultimoperfilorgsocial_id: 13,
   ultimoestatusmigratorio_id: 2
 }

@@ -118,13 +118,7 @@ module Cor1440Gen
       assert_equal([1], actividad.rangoedadac_ids) # 0 a 5
 
       persona.anionac = nil; 
-      persona.save
-      persona.reload
-      actividad.reload
-      asistencia.reload
-      assert_predicate asistencia, :valid?
-      assert_equal([7], actividad.rangoedadac_ids) # SIN INFORMACIÓN
-
+      assert !persona.valid?
 
       asistencia.destroy
       actividad.reload
