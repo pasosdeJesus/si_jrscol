@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: cfb01936156db6ac7bb2b59c9df4d72577ca84a9
+  revision: aca7d292848237cceb238edf0e4bc9bc42346e4c
   branch: main
   specs:
     cor1440_gen (2.2.0.beta4)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: bfe18a8b4d5d799f10eb37d85258ffb706d6ffaf
+  revision: 9e70d579ebb8a1870349d238e6101b665bbf1c09
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -247,8 +247,8 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
-    irb (1.7.1)
-      reline (>= 0.3.0)
+    irb (1.7.2)
+      reline (>= 0.3.6)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
