@@ -5,6 +5,7 @@
       <th colspan="2">Identificación</th>
       <th>Relación con contacto</th>
       <th>Perfil</th>
+      <th>PPT</th>
     </tr>
   </thead>
   <tbody id="victima">
@@ -34,6 +35,10 @@
           <%= victima.persona.ultimoperfilorgsocial_id ? 
             victima.persona.ultimoperfilorgsocial.nombre : '' %>
         </td>
+        <td>
+          <%= victima.persona.ppt ? victima.persona.ppt : '' %>
+        </td>
+
       </tr>
     <% end %>
   </tbody>
