@@ -835,20 +835,20 @@ module Cor1440Gen
           'Intersexuales 60+',
           'Intersexuales SRE'
         ]
-        numfilas = l.length
-        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+        numcol = l.length
+        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
 
         hoja.merge_cells("A1:#{colfin}1")
 
         l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
           ['Sin sexo'] + ([''] * 6) + ['Intersexuales'] + ([''] * 6)
-        hoja.add_row l2, style: [estilo_encabezado] * numfilas
+        hoja.add_row l2, style: [estilo_encabezado] * numcol
         hoja.merge_cells("X6:AD6")
         hoja.merge_cells("AE6:AK6")
         hoja.merge_cells("AL6:AR6")
         hoja.merge_cells("AS6:AY6")
 
-        hoja.add_row l, style: [estilo_encabezado] * numfilas
+        hoja.add_row l, style: [estilo_encabezado] * numcol
 
         registros.each do |reg|
           l = [
@@ -906,14 +906,14 @@ module Cor1440Gen
           ]
           hoja.add_row l, style: estilo_base
         end
-        anchos = [20] * numfilas
+        anchos = [20] * numcol
         hoja.column_widths(*anchos)
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
         if ultf>0
-          l = [nil] * numfilas
+          l = [nil] * numcol
           hoja.add_row l
         end
       end
@@ -937,137 +937,157 @@ module Cor1440Gen
 
       estilo_base = e.add_style sz: 12
       estilo_titulo = e.add_style sz: 20
+      estilo_titulo2 = e.add_style sz: 16
       estilo_encabezado = e.add_style sz: 12, b: true
       #, fg_color: 'FF0000', bg_color: '00FF00'
 
+      logo = File.expand_path('app/assets/images/logo.jpg')
+      l = [
+        'Id',
+        'Fecha',
+        'Nombre',
+        'Área(s)',
+        'Actividad(es) de marco lógico',
+        'Convenios financiados',
+        'Oficina',
+        'Responsable',
+        'Objetivo',
+        'Resultado',
+        'Población',
+        'Lugar',
+        'Subárea(s)',
+        'Corresponsables',
+        'Observaciones',
+        'Fecha de creación',
+        'Fecha de actualización',
+        'Total mujeres beneficiadas',
+        'Total hombres beneficiados',
+        'Total beneficiarios sin sexo',
+        'Total beneficiarios intersexuales',
+        'Mujeres JRS',
+        'Hombres JRS',
+        '0-5',
+        '6-12',
+        '13-17',
+        '18-26',
+        '27-59',
+        '60+',
+        'Sin RE',
+        '0-5',
+        '6-12',
+        '13-17',
+        '18-26',
+        '27-59',
+        '60+',
+        'Sin RE',
+        '0-5',
+        '6-12',
+        '13-17',
+        '18-26',
+        '27-59',
+        '60+',
+        'Sin RE',
+        '0-5',
+        '6-12',
+        '13-17',
+        '18-26',
+        '27-59',
+        '60+',
+        'Sin RE',
+        'Descr. Anexo 1',
+        'Descr. Anexo 2',
+        'Descr. Anexo 3',
+        'Descr. Anexo 4',
+        'Descr. Anexo 5',
+        'Covid19',
+        'Departamento',
+        'Municipio',
+        'Lugar',
+        'Población ids',
+        'DVRE – Derechos Vulnerados',
+        'DVRE – Se brindo informaciones',
+        'DVRE – Acciones persona_id',
+        'DVRE – Ayuda del estadounidenses',
+        'DVRE – Cantidad Ayuda Estadounidenses',
+        'DVRE – Instituciones que ayudaron',
+        'DVRE – Programas respuesta Estado',
+        'DVRE – Dificultades y observaciones',
+        'DVRE – Asistencia Humanitaria',
+        'DVRE – Detalle Asistencia Humanitaria',
+        'ASJ – Asesoria Juridica',
+        'ASJ – Detalle Asesoria Juridica',
+        'ACJ - Accion Juridica 1',
+        'ACJ – Respuesta 1',
+        'ACJ – Accion juridica 2',
+        'ACJ – Respuesta 2',
+        'OSA – Otros servicios y asesorias',
+        'OSA – Detalle otros servicios y asesorias',
+        'Organizaciones sociales',
+        'Ids de organizaciones sociales',
+        'Ids de casos asociados',
+        'Numero de anexos',
+        'Ids de Anexos',
+        'Núm. Detalles Financieros',
+        'Ids de detalles Financieros'
+      ]
+      numcol = l.length
+      colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
+      anchos = [18, 12, 25] + ([20] * (numcol-3))
+
+
       lt.add_worksheet do |hoja|
-        hoja.add_row ['Reporte Extracompleto de Actividades'], 
-          height: 30, style: estilo_titulo
+        hoja.add_image(image_src: logo, start_at: 'A1', end_at: 'C3')
+        hoja.add_row [nil, nil, 'Servicio Jesuita a Refugiados - Colombia'] +
+          [nil]*(numcol-3), height: 30, style: estilo_titulo
+        hoja.add_row [nil, nil, 'Reporte Extracompleto de Actividades', nil, nil, 'SI-JRSCOL'] + [nil]*(numcol-6), height: 30, style: estilo_titulo2
         hoja.add_row []
-        hoja.add_row [
-          'Fecha inicial', params['filtro']['busfechaini'], 
-          'Fecha final', params['filtro']['busfechafin'] ], style: estilo_base
         idpf = (!params['filtro'] || 
                 !params['filtro']['busproyectofinanciero_nombre'] || 
                 params['filtro']['busproyectofinanciero_nombre'] == ''
                ) ? nil : params['filtro']['busproyectofinanciero_nombre']
+        npf = idpf.nil? ? '' :
+          Cor1440Gen::Proyectofinanciero.where(id: idpf).
+          pluck(:nombre).join('; ')
+
+        hoja.add_row ['Fecha inicial', params['filtro']['busfechaini'], 
+          'Convenio financiero', npf],  style: estilo_base
+
         idaml = (!params['filtro'] || 
                  !params['filtro']['busactividadpf_nombre'] || 
                  params['filtro']['busactividadpf_nombre'] == ''
                 ) ? nil : params['filtro']['busactividadpf_nombre']
-
-        npf = idpf.nil? ? '' :
-          Cor1440Gen::Proyectofinanciero.where(id: idpf).
-          pluck(:nombre).join('; ')
         naml = idaml.nil? ? '' :
           Cor1440Gen::Actividadpf.where(id: idaml).
           pluck(:titulo).join('; ')
+        hoja.add_row ['Fecha final', params['filtro']['busfechafin'], 
+          'Actividades de marco lógico', naml],  style: estilo_base
 
-        hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
+
         hoja.add_row []
 
-        l = [
-          'Id',
-          'Fecha',
-          'Nombre',
-          'Área(s)',
-          'Actividad(es) de marco lógico',
-          'Convenios financiados',
-          'Oficina',
-          'Responsable',
-          'Objetivo',
-          'Resultado',
-          'Población',
-          'Lugar',
-          'Subárea(s)',
-          'Corresponsables',
-          'Observaciones',
-          'Fecha de creación',
-          'Fecha de actualización',
-          'Total mujeres beneficiadas',
-          'Total hombres beneficiados',
-          'Total beneficiarios sin sexo',
-          'Total beneficiarios intersexuales',
-          'Mujeres JRS',
-          'Hombres JRS',
-          '0-5',
-          '6-12',
-          '13-17',
-          '18-26',
-          '27-59',
-          '60+',
-          'Sin RE',
-          '0-5',
-          '6-12',
-          '13-17',
-          '18-26',
-          '27-59',
-          '60+',
-          'Sin RE',
-          '0-5',
-          '6-12',
-          '13-17',
-          '18-26',
-          '27-59',
-          '60+',
-          'Sin RE',
-          '0-5',
-          '6-12',
-          '13-17',
-          '18-26',
-          '27-59',
-          '60+',
-          'Sin RE',
-          'Descr. Anexo 1',
-          'Descr. Anexo 2',
-          'Descr. Anexo 3',
-          'Descr. Anexo 4',
-          'Descr. Anexo 5',
-          'Covid19',
-          'Departamento',
-          'Municipio',
-          'Lugar',
-          'Población ids',
-          'DVRE – Derechos Vulnerados',
-          'DVRE – Se brindo informaciones',
-          'DVRE – Acciones persona_id',
-          'DVRE – Ayuda del estadounidenses',
-          'DVRE – Cantidad Ayuda Estadounidenses',
-          'DVRE – Instituciones que ayudaron',
-          'DVRE – Programas respuesta Estado',
-          'DVRE – Dificultades y observaciones',
-          'DVRE – Asistencia Humanitaria',
-          'DVRE – Detalle Asistencia Humanitaria',
-          'ASJ – Asesoria Juridica',
-          'ASJ – Detalle Asesoria Juridica',
-          'ACJ - Accion Juridica 1',
-          'ACJ – Respuesta 1',
-          'ACJ – Accion juridica 2',
-          'ACJ – Respuesta 2',
-          'OSA – Otros servicios y asesorias',
-          'OSA – Detalle otros servicios y asesorias',
-          'Organizaciones sociales',
-          'Ids de organizaciones sociales',
-          'Ids de casos asociados',
-          'Numero de anexos',
-          'Ids de Anexos',
-          'Núm. Detalles Financieros',
-          'Ids de detalles Financieros'
-        ]
-        numfilas = l.length
-        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+        hoja.merge_cells("A1:B2")
+        hoja.merge_cells("C1:#{colfin}1")
+        hoja.merge_cells("C2:E2")
+        hoja.merge_cells("F2:#{colfin}2")
 
-        hoja.merge_cells("A1:#{colfin}1")
+        hoja.add_border "A1:B2"
+        hoja.add_border "C1:#{colfin}1"
+        hoja.add_border "C2:E2"
+        hoja.add_border "F2:H2"
+        hoja.add_border "A4:D5"
+        # hoja.add_border "B3:D3", { edges: [:top], style: :thick }
 
         l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
           ['Sin sexo'] + ([''] * 6) + ['Intersexuales'] + ([''] * 6)
-        hoja.add_row l2, style: [estilo_encabezado] * numfilas
-        hoja.merge_cells("X6:AD6")
-        hoja.merge_cells("AE6:AK6")
-        hoja.merge_cells("AL6:AR6")
-        hoja.merge_cells("AS6:AY6")
+        hoja.add_row l2, style: [estilo_encabezado] * numcol
 
-        hoja.add_row l, style: [estilo_encabezado] * numfilas
+        hoja.merge_cells("X7:AD7")
+        hoja.merge_cells("AE7:AK7")
+        hoja.merge_cells("AL7:AR7")
+        hoja.merge_cells("AS7:AY7")
+
+        hoja.add_row l, style: [estilo_encabezado] * numcol
+        hoja.add_border "A4:D5"
 
         registros.each do |reg|
           l = [
@@ -1161,14 +1181,13 @@ module Cor1440Gen
           hoja.add_row l, style: estilo_base
         end
 
-        anchos = [20] * numfilas
         hoja.column_widths(*anchos)
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
         if ultf>0
-          l = [nil] * numfilas
+          l = [nil] * numcol
           hoja.add_row l
         end
       end
@@ -1235,12 +1254,12 @@ module Cor1440Gen
           'Población',
           'Anexos',
         ]
-        numfilas = l.length
-        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+        numcol = l.length
+        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
 
         hoja.merge_cells("A1:#{colfin}1")
 
-        hoja.add_row l, style: [estilo_encabezado] * numfilas
+        hoja.add_row l, style: [estilo_encabezado] * numcol
 
         registros.each do |reg|
           l = [
@@ -1259,14 +1278,14 @@ module Cor1440Gen
           ]
           hoja.add_row l, style: estilo_base
         end
-        anchos = [20] * numfilas
+        anchos = [20] * numcol
         hoja.column_widths(*anchos)
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
         if ultf>0
-          l = [nil] * numfilas
+          l = [nil] * numcol
           hoja.add_row l
         end
       end
