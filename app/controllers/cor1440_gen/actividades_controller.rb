@@ -642,6 +642,10 @@ module Cor1440Gen
       when 53
         registros = Cor1440Gen::Actividad::vista_reporte_psu_excel(
           plant, registros, narch, parsimp, extension, params)
+      when 54
+        registros = Cor1440Gen::Actividad::vista_reporte_extracompleto_excel(
+          plant, registros, narch, parsimp, extension, params)
+
       end
       return registros
     end

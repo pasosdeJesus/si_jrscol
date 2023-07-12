@@ -925,6 +925,262 @@ module Cor1440Gen
       return n
     end
 
+    def self.vista_reporte_extracompleto_excel(
+      plant, registros, narch, parsimp, extension, params)
+
+      ruta = File.join(Rails.application.config.x.heb412_ruta, 
+                       plant.ruta).to_s
+
+      p = Axlsx::Package.new
+      lt = p.workbook
+      e = lt.styles
+
+      estilo_base = e.add_style sz: 12
+      estilo_titulo = e.add_style sz: 20
+      estilo_encabezado = e.add_style sz: 12, b: true
+      #, fg_color: 'FF0000', bg_color: '00FF00'
+
+      lt.add_worksheet do |hoja|
+        hoja.add_row ['Reporte Extracompleto de Actividades'], 
+          height: 30, style: estilo_titulo
+        hoja.add_row []
+        hoja.add_row [
+          'Fecha inicial', params['filtro']['busfechaini'], 
+          'Fecha final', params['filtro']['busfechafin'] ], style: estilo_base
+        idpf = (!params['filtro'] || 
+                !params['filtro']['busproyectofinanciero_nombre'] || 
+                params['filtro']['busproyectofinanciero_nombre'] == ''
+               ) ? nil : params['filtro']['busproyectofinanciero_nombre']
+        idaml = (!params['filtro'] || 
+                 !params['filtro']['busactividadpf_nombre'] || 
+                 params['filtro']['busactividadpf_nombre'] == ''
+                ) ? nil : params['filtro']['busactividadpf_nombre']
+
+        npf = idpf.nil? ? '' :
+          Cor1440Gen::Proyectofinanciero.where(id: idpf).
+          pluck(:nombre).join('; ')
+        naml = idaml.nil? ? '' :
+          Cor1440Gen::Actividadpf.where(id: idaml).
+          pluck(:titulo).join('; ')
+
+        hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
+        hoja.add_row []
+
+        l = [
+          'Id',
+          'Fecha',
+          'Nombre',
+          'Área(s)',
+          'Actividad(es) de marco lógico',
+          'Convenios financiados',
+          'Oficina',
+          'Responsable',
+          'Objetivo',
+          'Resultado',
+          'Población',
+          'Lugar',
+          'Subárea(s)',
+          'Corresponsables',
+          'Observaciones',
+          'Fecha de creación',
+          'Fecha de actualización',
+          'Total mujeres beneficiadas',
+          'Total hombres beneficiados',
+          'Total beneficiarios sin sexo',
+          'Total beneficiarios intersexuales',
+          'Mujeres JRS',
+          'Hombres JRS',
+          '0-5',
+          '6-12',
+          '13-17',
+          '18-26',
+          '27-59',
+          '60+',
+          'Sin RE',
+          '0-5',
+          '6-12',
+          '13-17',
+          '18-26',
+          '27-59',
+          '60+',
+          'Sin RE',
+          '0-5',
+          '6-12',
+          '13-17',
+          '18-26',
+          '27-59',
+          '60+',
+          'Sin RE',
+          '0-5',
+          '6-12',
+          '13-17',
+          '18-26',
+          '27-59',
+          '60+',
+          'Sin RE',
+          'Descr. Anexo 1',
+          'Descr. Anexo 2',
+          'Descr. Anexo 3',
+          'Descr. Anexo 4',
+          'Descr. Anexo 5',
+          'Covid19',
+          'Departamento',
+          'Municipio',
+          'Lugar',
+          'Población ids',
+          'DVRE – Derechos Vulnerados',
+          'DVRE – Se brindo informaciones',
+          'DVRE – Acciones persona_id',
+          'DVRE – Ayuda del estadounidenses',
+          'DVRE – Cantidad Ayuda Estadounidenses',
+          'DVRE – Instituciones que ayudaron',
+          'DVRE – Programas respuesta Estado',
+          'DVRE – Dificultades y observaciones',
+          'DVRE – Asistencia Humanitaria',
+          'DVRE – Detalle Asistencia Humanitaria',
+          'ASJ – Asesoria Juridica',
+          'ASJ – Detalle Asesoria Juridica',
+          'ACJ - Accion Juridica 1',
+          'ACJ – Respuesta 1',
+          'ACJ – Accion juridica 2',
+          'ACJ – Respuesta 2',
+          'OSA – Otros servicios y asesorias',
+          'OSA – Detalle otros servicios y asesorias',
+          'Organizaciones sociales',
+          'Ids de organizaciones sociales',
+          'Ids de casos asociados',
+          'Numero de anexos',
+          'Ids de Anexos',
+          'Núm. Detalles Financieros',
+          'Ids de detalles Financieros'
+        ]
+        numfilas = l.length
+        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+
+        hoja.merge_cells("A1:#{colfin}1")
+
+        l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
+          ['Sin sexo'] + ([''] * 6) + ['Intersexuales'] + ([''] * 6)
+        hoja.add_row l2, style: [estilo_encabezado] * numfilas
+        hoja.merge_cells("X6:AD6")
+        hoja.merge_cells("AE6:AK6")
+        hoja.merge_cells("AL6:AR6")
+        hoja.merge_cells("AS6:AY6")
+
+        hoja.add_row l, style: [estilo_encabezado] * numfilas
+
+        registros.each do |reg|
+          l = [
+            reg.id.to_s,
+            reg.presenta('fecha'),
+            reg.nombre,
+            reg.presenta('áreas_de_actividad'),
+            reg.presenta('actividad_del_marco_lógico'),
+            reg.presenta('convenio_financiado'),
+            reg.presenta('oficina'),
+            reg.presenta('responsable'),
+            reg.presenta('objetivo'),
+            reg.presenta('resultado'),
+            reg.presenta('poblacion'),
+            reg.presenta('lugar'),
+            reg.presenta('subáreas'),
+            reg.presenta('corresponsables'),
+            reg.presenta('observaciones'),
+            reg.presenta('creacion'),
+            reg.presenta('actualizacion'),
+            reg.presenta('poblacion_mujeres_r'),
+            reg.presenta('poblacion_hombres_r'),
+            reg.presenta('poblacion_sinsexo'),
+            reg.presenta('poblacion_intersexuales'),
+            reg.presenta('poblacion_mujeres_l'),
+            reg.presenta('poblacion_hombres_l'),
+            reg.presenta('poblacion_mujeres_r_g1'),
+            reg.presenta('poblacion_mujeres_r_g2'),
+            reg.presenta('poblacion_mujeres_r_g3'),
+            reg.presenta('poblacion_mujeres_r_g4'),
+            reg.presenta('poblacion_mujeres_r_g5'),
+            reg.presenta('poblacion_mujeres_r_g6'),
+            reg.presenta('poblacion_mujeres_r_g7'),
+            reg.presenta('poblacion_hombres_r_g1'),
+            reg.presenta('poblacion_hombres_r_g2'),
+            reg.presenta('poblacion_hombres_r_g3'),
+            reg.presenta('poblacion_hombres_r_g4'),
+            reg.presenta('poblacion_hombres_r_g5'),
+            reg.presenta('poblacion_hombres_r_g6'),
+            reg.presenta('poblacion_hombres_r_g7'),
+            reg.presenta('poblacion_sinsexo_g1'),
+            reg.presenta('poblacion_sinsexo_g2'),
+            reg.presenta('poblacion_sinsexo_g3'),
+            reg.presenta('poblacion_sinsexo_g4'),
+            reg.presenta('poblacion_sinsexo_g5'),
+            reg.presenta('poblacion_sinsexo_g6'),
+            reg.presenta('poblacion_sinsexo_g7'),
+            reg.presenta('poblacion_intersexuales_g1'),
+            reg.presenta('poblacion_intersexuales_g2'),
+            reg.presenta('poblacion_intersexuales_g3'),
+            reg.presenta('poblacion_intersexuales_g4'),
+            reg.presenta('poblacion_intersexuales_g5'),
+            reg.presenta('poblacion_intersexuales_g6'),
+            reg.presenta('poblacion_intersexuales_g7'),
+            reg.presenta('anexo_1_desc'),
+            reg.presenta('anexo_2_desc'),
+            reg.presenta('anexo_3_desc'),
+            reg.presenta('anexo_4_desc'),
+            reg.presenta('anexo_5_desc'),
+            reg.presenta('covid19'),
+            reg.presenta('departamento'),
+            reg.presenta('municipio'),
+            reg.presenta('lugar'),
+            reg.presenta('poblacion_ids'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.derechos_vulnerados'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.se_brindo_informacion'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.acciones_persona'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.ayuda_del_estado'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.cantidad_ayuda_estado'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.instituciones_que_ayudaron'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.programas_respuesta_estado'),
+            reg.presenta('derechos_vulnerados_respuesta_estado.Comentarios adicionales frente a la respuesta del EStado'),
+            reg.presenta('asistencia_humanitaria.asistencia_humanitaria'),
+            reg.presenta('asistencia_humanitaria.detalle_asistencia_humanitaria'),
+            reg.presenta('asesoria_juridica.asesoria_juridica'),
+            reg.presenta('asesoria_juridica.detalle_asesoria_juridica'),
+            reg.presenta('accion_juridica.accion_juridica_1'),
+            reg.presenta('accion_juridica.respuesta_1'),
+            reg.presenta('accion_juridica.accion_juridica_2'),
+            reg.presenta('accion_juridica.respuesta_2'),
+            reg.presenta('otros_servicios_asesorias_caso.otros_servicios_asesorias'),
+            reg.presenta('otros_servicios_asesorias_caso.detalle_otros_servicios_asesorias'),
+            reg.presenta('organizaciones_sociales'),
+            reg.presenta('organizaciones_sociales_ids'),
+            reg.presenta('casos_asociados'),
+            reg.presenta('numero_anexos'),
+            reg.presenta('anexos_ids'),
+            reg.presenta('numero_detalles_financieros'),
+            reg.presenta('detalles_financieros_ids'),
+          ]
+          hoja.add_row l, style: estilo_base
+        end
+
+        anchos = [20] * numfilas
+        hoja.column_widths(*anchos)
+        ultf = 0
+        hoja.rows.last.tap do |row|
+          ultf = row.row_index
+        end
+        if ultf>0
+          l = [nil] * numfilas
+          hoja.add_row l
+        end
+      end
+
+      n=File.join('/tmp', File.basename(narch + ".xlsx"))
+      p.serialize n
+      FileUtils.rm(narch + "#{extension}-0")
+
+      return n
+    end
+
+
     def self.vista_reporte_psu_excel(
       plant, registros, narch, parsimp, extension, params)
 
