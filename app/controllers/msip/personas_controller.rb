@@ -20,8 +20,7 @@ module Msip
         :caso_ids, 
         :proyectofinanciero_ids, 
         :actividad_ids, 
-        :detallefinanciero_ids,
-        :etiqueta_ids
+        :detallefinanciero_ids
       ]
       a[a.index(:anionac)] = :fechanac 
       return a
