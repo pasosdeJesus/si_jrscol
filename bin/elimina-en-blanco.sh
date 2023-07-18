@@ -52,3 +52,12 @@ doas su ${USUARIO_AP} -c "psql -U $us -h /var/www/var/run/postgresql $bd -c 'DEL
           OR id IN (SELECT DISTINCT actividad_id FROM cor1440_gen_actividad_proyectofinanciero WHERE proyectofinanciero_id=10 AND 
 	  actividad_id NOT IN (select actividad_id from cor1440_gen_actividad_proyectofinanciero where proyectofinanciero_id<>10))) ; '"
 
+doas su ${USUARIO_AP} -c "psql -U $us -h /var/www/var/run/postgresql $bd -c 'DELETE FROM msip_persona WHERE 
+	nombres='N'
+	AND apellidos='N'
+	AND id NOT IN (SELECT persona_id FROM sivel2_gen_victima)
+	AND id NOT IN (SELECT persona_id FROM cor1440_gen_asistencia)
+	AND id NOT IN (SELECT persona_id FROM cor1440_gen_beneficiariopf)
+	AND id NOT IN (SELECT persona_id FROM msip_etiqueta_persona)
+; '"
+
