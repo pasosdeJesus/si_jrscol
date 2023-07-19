@@ -93,6 +93,7 @@ class Ability < Sivel2Sjr::Ability
     ['', 'modalidadentrega'],
     ['', 'mungifmm'],
     ['', 'perfilmigracion'],
+    ['', 'productoleg'],
     ['', 'sectorgifmm'],
     ['', 'tipoproteccion'],
     ['', 'tipotransferencia'],

@@ -270,6 +270,9 @@ es:
         Tiposanexo: Tipos de anexo
       "msip/ubicacion":
         Ubicacion: Ubicación
+      "productoleg":
+        Productoleg: Producto/servicio para legalización
+        Productosleg: Productos/servicios para legalización
       "sivel2_gen/anexo_victima":
         tipoanexo: Tipo de anexo
         tipoanexo_id: Tipo de anexo
