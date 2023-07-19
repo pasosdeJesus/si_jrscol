@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 292d8a434f2e150dd9a1551696ac4e2b99fdcaa4
+  revision: 055474401724a1d3e871a3dda8599bdd26099f7e
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -307,7 +307,7 @@ GEM
     puma (6.3.0)
       nio4r (~> 2.0)
     racc (1.7.1)
-    rack (2.2.7)
+    rack (2.2.8)
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (7.0.6)
@@ -430,7 +430,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.9)
+    zeitwerk (2.6.10)
 
 PLATFORMS
   x86_64-openbsd

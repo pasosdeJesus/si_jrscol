@@ -7,6 +7,40 @@ module Sivel2Gen
     load_and_authorize_resource class: Sivel2Gen::Caso
     include Sivel2Sjr::Concerns::Controllers::ValidarcasosController
 
+    def valida_beneficiarios_en_varios_casos
+      base = ActiveRecord::Base.connection.execute(<<-SQL)
+        SELECT id FROM (SELECT p.id, count(v.id)
+          FROM msip_persona AS p
+          JOIN sivel2_gen_victima AS v ON v.persona_id=p.id
+          JOIN sivel2_sjr_victimasjr AS vs ON vs.victima_id=v.id
+          WHERE vs.fechadesagregacion IS NULL
+          GROUP BY 1) AS s
+        WHERE s.count>1
+        ORDER BY id;
+      SQL
+      ids = base.pluck("id")
+      reg = Msip::Persona.joins(:tdocumento).where(id: ids)
+      res = reg.
+        select([:id, :nombres, :apellidos, 'msip_tdocumento.sigla', 
+                :numerodocumento,
+                "ARRAY_TO_STRING(ARRAY(SELECT caso_id "\
+                " FROM sivel2_gen_victima AS v "\
+                " JOIN sivel2_sjr_victimasjr AS vs ON vs.victima_id=v.id "\
+                " WHERE v.persona_id=msip_persona.id AND "\
+                "  vs.fechadesagregacion IS NULL "\
+                " ORDER BY id), ',') AS caso_ids"
+        ])
+      arr = ActiveRecord::Base.connection.select_all(res.to_sql)
+      @validaciones << { 
+        titulo: 'Beneficiarios no desagregados en más de un caso',
+        encabezado: ['Id', 'Nombres', 'Apellidos', 
+                     'Tipo Doc.', 'Núm. Doc', 
+                     'Códigos'],
+        cuerpo: arr 
+      }
+    end
+
+
 
     def validar_sin_derechovulnerado
       casos = ini_filtro
@@ -88,6 +122,7 @@ module Sivel2Gen
 
     def validar_interno
       @rango_fechas = 'Fecha de recepción'
+      valida_beneficiarios_en_varios_casos
       valida_nombres_beneficiarios_cortos
       validar_sin_casosjr
       validar_sivel2_sjr
