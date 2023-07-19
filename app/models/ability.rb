@@ -94,6 +94,7 @@ class Ability < Sivel2Sjr::Ability
     ['', 'mungifmm'],
     ['', 'perfilmigracion'],
     ['', 'productoleg'],
+    ['', 'proveedor'],
     ['', 'sectorgifmm'],
     ['', 'tipoproteccion'],
     ['', 'tipotransferencia'],

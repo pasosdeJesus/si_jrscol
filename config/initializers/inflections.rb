@@ -49,6 +49,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'perfilmigracion', 'perfilesmigracion'
   inflect.irregular 'productoleg', 'productosleg'
   inflect.irregular 'progestado', 'progsestado'
+  inflect.irregular 'proveedor', 'proveedores'
   inflect.irregular 'sectorgifmm', 'sectoresgifmm'
   inflect.irregular 'tipoorgsocial', 'tiposorgsocial'
   inflect.irregular 'tipoanexo', 'tiposanexo'
