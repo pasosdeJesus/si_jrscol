@@ -25,10 +25,10 @@ export default class extends Controller {
       "el mismo dedo hasta que se apague.\n"); 
     console.log('conectado controlador persona_huella_controller');
     fetch("http://127.0.0.1:8888/v1/servirhuella.json", {
-      // mode: 'no-cors',
       method: 'GET',
       headers: {
         Accept: 'application/json',
+        mode: 'no-cors',
       },
     },
     ).then(response => {
