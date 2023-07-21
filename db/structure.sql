@@ -10,13 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
--- *not* creating schema, since initdb creates it
-
-
---
 -- Name: es_co_utf_8; Type: COLLATION; Schema: public; Owner: -
 --
 
@@ -1160,6 +1153,205 @@ CREATE VIEW public.cmunrec AS
 
 
 --
+-- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_asistencia (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    rangoedadac_id integer,
+    externo boolean,
+    orgsocial_id integer,
+    perfilorgsocial_id integer
+);
+
+
+--
+-- Name: msip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_perfilorgsocial (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: msip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.msip_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: msip_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_persona (
+    id integer DEFAULT nextval('public.msip_persona_id_seq'::regclass) NOT NULL,
+    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    anionac integer,
+    mesnac integer,
+    dianac integer,
+    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
+    numerodocumento character varying(100),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    pais_id integer,
+    nacionalde integer,
+    tdocumento_id integer NOT NULL,
+    departamento_id integer,
+    municipio_id integer,
+    clase_id integer,
+    buscable tsvector,
+    ultimoperfilorgsocial_id integer,
+    ultimoestatusmigratorio_id integer,
+    ppt character varying(32),
+    huella character varying(1024),
+    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
+    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
+    CONSTRAINT persona_sexo_check CHECK (('MHSI'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
+);
+
+
+--
+-- Name: msip_tdocumento; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_tdocumento (
+    id integer NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    sigla character varying(500) NOT NULL,
+    formatoregex character varying(500),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    ayuda character varying(1000)
+);
+
+
+--
+-- Name: sivel2_gen_caso_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_caso_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_caso; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_caso (
+    id integer DEFAULT nextval('public.sivel2_gen_caso_id_seq'::regclass) NOT NULL,
+    titulo character varying(50),
+    fecha date NOT NULL,
+    hora character varying(10),
+    duracion character varying(10),
+    memo text NOT NULL,
+    grconfiabilidad character varying(5),
+    gresclarecimiento character varying(5),
+    grimpunidad character varying(8),
+    grinformacion character varying(8),
+    bienes text,
+    intervalo_id integer DEFAULT 5,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    ubicacion_id integer
+);
+
+
+--
+-- Name: sivel2_sjr_victimasjr; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_victimasjr (
+    sindocumento boolean,
+    estadocivil_id integer DEFAULT 0,
+    rolfamilia_id integer DEFAULT 0 NOT NULL,
+    cabezafamilia boolean,
+    maternidad_id integer DEFAULT 0,
+    discapacitado boolean,
+    actividadoficio_id integer DEFAULT 0,
+    escolaridad_id integer DEFAULT 0,
+    asisteescuela boolean,
+    tienesisben boolean,
+    departamento_id integer,
+    municipio_id integer,
+    nivelsisben integer,
+    regimensalud_id integer DEFAULT 0,
+    eps character varying(1000),
+    libretamilitar boolean,
+    distrito integer,
+    progadultomayor boolean,
+    fechadesagregacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    victima_id integer NOT NULL,
+    actualtrabajando boolean,
+    discapacidad_id integer
+);
+
+
+--
+-- Name: consbenefactcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.consbenefactcaso AS
+ SELECT persona.id AS persona_id,
+    persona.nombres AS persona_nombres,
+    persona.apellidos AS persona_apellidos,
+    tdocumento.sigla AS persona_tdocumento,
+    persona.numerodocumento AS persona_numerodocumento,
+    persona.sexo AS persona_sexo,
+    ((((COALESCE((persona.anionac)::text, ''::text) || '-'::text) || COALESCE((persona.mesnac)::text, ''::text)) || '-'::text) || COALESCE((persona.dianac)::text, ''::text)) AS persona_fechanac,
+    public.msip_edad_de_fechanac_fecharef(persona.anionac, persona.mesnac, persona.dianac, (EXTRACT(year FROM now()))::integer, (EXTRACT(month FROM now()))::integer, (EXTRACT(day FROM now()))::integer) AS persona_edad_actual,
+    pais.nombre AS persona_paisnac,
+    COALESCE(perfilorgsocial.nombre) AS persona_ultimoperfilorgsocial,
+    victima.id AS victima_id,
+    caso.id AS caso_id,
+    casosjr.fecharec AS caso_fecharec,
+        CASE
+            WHEN (casosjr.contacto_id = persona.id) THEN 'Si'::text
+            ELSE 'No'::text
+        END AS caso_titular,
+    casosjr.telefono AS caso_telefono,
+    ARRAY( SELECT subaf.actividad_id
+           FROM ( SELECT DISTINCT cor1440_gen_asistencia.actividad_id,
+                    caso.fecha
+                   FROM public.cor1440_gen_asistencia
+                  WHERE (cor1440_gen_asistencia.persona_id = persona.id)
+                  ORDER BY cor1440_gen_asistencia.actividad_id) subaf) AS actividad_ids
+   FROM (((((((public.msip_persona persona
+     JOIN public.msip_tdocumento tdocumento ON ((persona.tdocumento_id = tdocumento.id)))
+     LEFT JOIN public.msip_pais pais ON ((persona.pais_id = pais.id)))
+     LEFT JOIN public.msip_perfilorgsocial perfilorgsocial ON ((persona.ultimoperfilorgsocial_id = perfilorgsocial.id)))
+     LEFT JOIN public.sivel2_gen_victima victima ON ((victima.persona_id = persona.id)))
+     LEFT JOIN public.sivel2_sjr_victimasjr victimasjr ON (((victimasjr.victima_id = victima.id) AND (victimasjr.fechadesagregacion IS NULL))))
+     LEFT JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
+     LEFT JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.caso_id = caso.id)))
+  WITH NO DATA;
+
+
+--
 -- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1206,22 +1398,8 @@ CREATE TABLE public.cor1440_gen_actividadpf (
     actividadtipo_id integer,
     indicadorgifmm_id integer,
     formulario_id integer,
-    heredade_id integer
-);
-
-
---
--- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_asistencia (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    persona_id integer NOT NULL,
-    rangoedadac_id integer,
-    externo boolean,
-    orgsocial_id integer,
-    perfilorgsocial_id integer
+    heredade_id integer,
+    presupuesto numeric DEFAULT 0.0 NOT NULL
 );
 
 
@@ -1926,21 +2104,6 @@ ALTER SEQUENCE public.cor1440_gen_asistencia_id_seq OWNED BY public.cor1440_gen_
 
 
 --
--- Name: msip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_perfilorgsocial (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: cor1440_gen_benefext; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1954,67 +2117,6 @@ CREATE VIEW public.cor1440_gen_benefext AS
            FROM ((public.cor1440_gen_actividad ac
              JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
              LEFT JOIN public.msip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
-
-
---
--- Name: msip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.msip_persona_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: msip_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_persona (
-    id integer DEFAULT nextval('public.msip_persona_id_seq'::regclass) NOT NULL,
-    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    anionac integer,
-    mesnac integer,
-    dianac integer,
-    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
-    numerodocumento character varying(100),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    pais_id integer,
-    nacionalde integer,
-    tdocumento_id integer NOT NULL,
-    departamento_id integer,
-    municipio_id integer,
-    clase_id integer,
-    buscable tsvector,
-    ultimoperfilorgsocial_id integer,
-    ultimoestatusmigratorio_id integer,
-    ppt character varying(32),
-    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
-    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
-    CONSTRAINT persona_sexo_check CHECK (('MHSI'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
-);
-
-
---
--- Name: msip_tdocumento; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_tdocumento (
-    id integer NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    sigla character varying(500) NOT NULL,
-    formatoregex character varying(500),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    ayuda character varying(1000)
-);
 
 
 --
@@ -2142,7 +2244,7 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                           WHERE (aapf.actividad_id = be.actividad_id)))
                   ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_fecha >= '2023-06-15'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
+  WHERE (true AND (be.actividad_fecha >= '2023-01-01'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
   WITH NO DATA;
 
 
@@ -2451,6 +2553,39 @@ CREATE TABLE public.cor1440_gen_formulario_tipoindicador (
     tipoindicador_id integer NOT NULL,
     formulario_id integer NOT NULL
 );
+
+
+--
+-- Name: cor1440_gen_gastoaprobado; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_gastoaprobado (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    actividadpf_id integer NOT NULL,
+    valor numeric NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: cor1440_gen_gastoaprobado_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.cor1440_gen_gastoaprobado_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cor1440_gen_gastoaprobado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.cor1440_gen_gastoaprobado_id_seq OWNED BY public.cor1440_gen_gastoaprobado.id;
 
 
 --
@@ -3499,41 +3634,6 @@ ALTER SEQUENCE public.discapacidad_id_seq OWNED BY public.discapacidad.id;
 
 
 --
--- Name: sivel2_gen_caso_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_gen_caso_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_caso; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_caso (
-    id integer DEFAULT nextval('public.sivel2_gen_caso_id_seq'::regclass) NOT NULL,
-    titulo character varying(50),
-    fecha date NOT NULL,
-    hora character varying(10),
-    duracion character varying(10),
-    memo text NOT NULL,
-    grconfiabilidad character varying(5),
-    gresclarecimiento character varying(5),
-    grimpunidad character varying(8),
-    grinformacion character varying(8),
-    bienes text,
-    intervalo_id integer DEFAULT 5,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    ubicacion_id integer
-);
-
-
---
 -- Name: sivel2_sjr_migracion; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4217,35 +4317,42 @@ CREATE MATERIALIZED VIEW public.jos19_consactividadcaso AS
 
 
 --
--- Name: sivel2_sjr_victimasjr; Type: TABLE; Schema: public; Owner: -
+-- Name: jos19_consbenefactcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sivel2_sjr_victimasjr (
-    sindocumento boolean,
-    estadocivil_id integer DEFAULT 0,
-    rolfamilia_id integer DEFAULT 0 NOT NULL,
-    cabezafamilia boolean,
-    maternidad_id integer DEFAULT 0,
-    discapacitado boolean,
-    actividadoficio_id integer DEFAULT 0,
-    escolaridad_id integer DEFAULT 0,
-    asisteescuela boolean,
-    tienesisben boolean,
-    departamento_id integer,
-    municipio_id integer,
-    nivelsisben integer,
-    regimensalud_id integer DEFAULT 0,
-    eps character varying(1000),
-    libretamilitar boolean,
-    distrito integer,
-    progadultomayor boolean,
-    fechadesagregacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    victima_id integer NOT NULL,
-    actualtrabajando boolean,
-    discapacidad_id integer
-);
+CREATE MATERIALIZED VIEW public.jos19_consbenefactcaso AS
+ SELECT persona.id AS persona_id,
+    persona.nombres AS persona_nombres,
+    persona.apellidos AS persona_apellidos,
+    tdocumento.sigla AS persona_tdocumento,
+    persona.numerodocumento AS persona_numerodocumento,
+    persona.sexo AS persona_sexo,
+    ((((COALESCE((persona.anionac)::text, ''::text) || '-'::text) || COALESCE((persona.mesnac)::text, ''::text)) || '-'::text) || COALESCE((persona.dianac)::text, ''::text)) AS persona_fechanac,
+    public.msip_edad_de_fechanac_fecharef(persona.anionac, persona.mesnac, persona.dianac, (EXTRACT(year FROM now()))::integer, (EXTRACT(month FROM now()))::integer, (EXTRACT(day FROM now()))::integer) AS persona_edad_actual,
+    pais.nombre AS persona_paisnac,
+    COALESCE(perfilorgsocial.nombre) AS persona_ultimoperfilorgsocial,
+    victima.id AS victima_id,
+    caso.id AS caso_id,
+    casosjr.fecharec AS caso_fecharec,
+        CASE
+            WHEN (casosjr.contacto_id = persona.id) THEN 'Si'::text
+            ELSE 'No'::text
+        END AS caso_titular,
+    casosjr.telefono AS caso_telefono,
+    ARRAY( SELECT subaf.actividad_id
+           FROM ( SELECT DISTINCT cor1440_gen_asistencia.actividad_id,
+                    caso.fecha
+                   FROM public.cor1440_gen_asistencia
+                  WHERE (cor1440_gen_asistencia.persona_id = persona.id)
+                  ORDER BY cor1440_gen_asistencia.actividad_id) subaf) AS actividad_ids
+   FROM ((((((public.msip_persona persona
+     JOIN public.msip_tdocumento tdocumento ON ((persona.tdocumento_id = tdocumento.id)))
+     LEFT JOIN public.msip_pais pais ON ((persona.pais_id = pais.id)))
+     LEFT JOIN public.msip_perfilorgsocial perfilorgsocial ON ((persona.ultimoperfilorgsocial_id = perfilorgsocial.id)))
+     LEFT JOIN public.sivel2_gen_victima victima ON ((victima.persona_id = persona.id)))
+     LEFT JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
+     LEFT JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.caso_id = caso.id)))
+  WITH NO DATA;
 
 
 --
@@ -6012,6 +6119,40 @@ ALTER SEQUENCE public.perfilmigracion_id_seq OWNED BY public.perfilmigracion.id;
 
 
 --
+-- Name: productoleg; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.productoleg (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: productoleg_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.productoleg_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: productoleg_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.productoleg_id_seq OWNED BY public.productoleg.id;
+
+
+--
 -- Name: sal7711_gen_articulo; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -7234,7 +7375,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2023-06-15'::date)
+          WHERE (sivel2_gen_conscaso.caso_id = 143)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -9306,6 +9447,13 @@ ALTER TABLE ONLY public.cor1440_gen_financiador ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: cor1440_gen_gastoaprobado id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado ALTER COLUMN id SET DEFAULT nextval('public.cor1440_gen_gastoaprobado_id_seq'::regclass);
+
+
+--
 -- Name: cor1440_gen_indicadorpf id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -9828,6 +9976,13 @@ ALTER TABLE ONLY public.mungifmm ALTER COLUMN id SET DEFAULT nextval('public.mun
 --
 
 ALTER TABLE ONLY public.perfilmigracion ALTER COLUMN id SET DEFAULT nextval('public.perfilmigracion_id_seq'::regclass);
+
+
+--
+-- Name: productoleg id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.productoleg ALTER COLUMN id SET DEFAULT nextval('public.productoleg_id_seq'::regclass);
 
 
 --
@@ -10411,6 +10566,14 @@ ALTER TABLE ONLY public.cor1440_gen_efecto
 
 ALTER TABLE ONLY public.cor1440_gen_financiador
     ADD CONSTRAINT cor1440_gen_financiador_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cor1440_gen_gastoaprobado cor1440_gen_gastoaprobado_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
+    ADD CONSTRAINT cor1440_gen_gastoaprobado_pkey PRIMARY KEY (id);
 
 
 --
@@ -11395,6 +11558,14 @@ ALTER TABLE ONLY public.sivel2_sjr_personadesea
 
 ALTER TABLE ONLY public.sivel2_gen_presponsable
     ADD CONSTRAINT presponsable_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: productoleg productoleg_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.productoleg
+    ADD CONSTRAINT productoleg_pkey PRIMARY KEY (id);
 
 
 --
@@ -14279,6 +14450,14 @@ ALTER TABLE ONLY public.msip_orgsocial_persona
 
 
 --
+-- Name: cor1440_gen_gastoaprobado fk_rails_48d96f819c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
+    ADD CONSTRAINT fk_rails_48d96f819c FOREIGN KEY (actividad_id) REFERENCES public.cor1440_gen_actividad(id);
+
+
+--
 -- Name: cor1440_gen_actividad_anexo fk_rails_49ec1ae361; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14724,6 +14903,14 @@ ALTER TABLE ONLY public.mr519_gen_encuestapersona
 
 ALTER TABLE ONLY public.sivel2_gen_caso
     ADD CONSTRAINT fk_rails_850036942a FOREIGN KEY (ubicacion_id) REFERENCES public.msip_ubicacion(id);
+
+
+--
+-- Name: cor1440_gen_gastoaprobado fk_rails_8824bc57d7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
+    ADD CONSTRAINT fk_rails_8824bc57d7 FOREIGN KEY (actividadpf_id) REFERENCES public.cor1440_gen_actividadpf(id);
 
 
 --
@@ -16956,6 +17143,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230406092509'),
 ('20230407010923'),
 ('20230407011451'),
+('20230408143528'),
 ('20230418155831'),
 ('20230418194845'),
 ('20230419174417'),
@@ -16969,6 +17157,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230506183428'),
 ('20230506192413'),
 ('20230508193508'),
+('20230516135641'),
+('20230523202021'),
 ('20230613111532'),
 ('20230614170400'),
 ('20230614220241'),
@@ -16978,6 +17168,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230706085249'),
 ('20230706090216'),
 ('20230707125612'),
-('20230712004821');
+('20230712004821'),
+('20230712163859'),
+('20230719142021');
 
 
