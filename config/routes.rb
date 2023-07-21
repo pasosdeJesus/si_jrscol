@@ -54,7 +54,10 @@ Rails.application.routes.draw do
     resources :clavesrespaldos, path_names: { new: 'nueva' },
       controller: 'msip/clavesrespaldos'
 
-    get "/conteos/accionesjuridicas" => 'sivel2_sjr/conteos#accionesjuridicas', 
+    get "/beneficiarios/caso_y_actividades" => "consbenefactcaso#index",
+      as: :consbenefactcaso
+
+    get "/conteos/accionesjuridicas" => 'sivel2_sjr/conteos#accionesjuridicas',
       as: :conteos_accionesjuridicas
     get "/conteos/desplazamientos" => 'sivel2_sjr/conteos#desplazamientos', 
       as: :conteos_desplazamientos
