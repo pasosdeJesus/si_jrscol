@@ -960,6 +960,7 @@ class Ability < Sivel2Sjr::Ability
         can [:new, :solicitar], Sivel2Gen::Caso
 
         can :read, Jos19::Consactividadcaso
+        can :read, ::Consbenefactcaso
         can :read, ::Consgifmm
 
       when Ability::ROLANALI
@@ -988,6 +989,7 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Jos19::Consactividadcaso
+        can :read, ::Consbenefactcaso
         can :read, ::Consgifmm
 
       when Ability::ROLCOOR
@@ -1015,6 +1017,7 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Jos19::Consactividadcaso
+        can :read, ::Consbenefactcaso
         can :read, ::Consgifmm
 
       when Ability::ROLOFICIALPF
@@ -1041,6 +1044,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
 
         can :read, Jos19::Consactividadcaso
+        can :read, ::Consbenefactcaso
         can :read, ::Consgifmm
 
       when Ability::ROLGESTIONHUMANA
@@ -1067,6 +1071,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, Sivel2Gen::Acto
 
         can :read, Jos19::Consactividadcaso
+        can :read, ::Consbenefactcaso
         can :read, ::Consgifmm
 
         can [:create, :read, :write, :update], Usuario
@@ -1101,6 +1106,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Sivel2Gen::Acto
 
         can :read, Jos19::Consactividadcaso
+        can :read, ::Consbenefactcaso
         can :read, ::Consgifmm
 
         can :manage, Usuario

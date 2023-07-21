@@ -71,6 +71,8 @@
 
       <%= despliega_abajo "Beneficiarios" do %>
         <%= opcion_menu "Lista", msip.personas_path, desplegable: true %>
+          <%= opcion_menu "Reporte de beneficiarios con caso y actividades",
+            main_app.consbenefactcaso_path, {desplegable: true} %>
         <%= opcion_menu "Reporte de identificaciones repetidos", main_app.beneficiarios_repetidos_path, desplegable: true %>
         <% if can? :deduplicar, Msip::Persona then %>
           <%= opcion_menu "Deduplicar automaticamente", main_app.beneficiarios_deduplicar_path, desplegable: true %>

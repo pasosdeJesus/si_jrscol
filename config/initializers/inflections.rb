@@ -31,6 +31,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'causamigracion', 'causasmigracion'
   inflect.irregular 'claverespaldo', 'clavesrespaldos'
   inflect.irregular 'consgifmm', 'consgifmm'
+	inflect.irregular 'consbenefactcaso', 'consbenefactcaso'
   inflect.irregular 'detallefinanciero', 'detallesfinancieros'
   inflect.irregular 'depgifmm', 'depsgifmm'
   inflect.irregular 'dificultadmigracion', 'dificultadesmigracion'
