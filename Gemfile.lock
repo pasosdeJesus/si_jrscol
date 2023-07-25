@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 3066795ce678d30ada62a33b479edb1b61b917ed
+  revision: 92cd4c9c67935d4743612e4ec2184a20b8d84e82
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 063335da42cc080732426797e0a3b901d97eaa40
+  revision: 2dfd91ca4086d405b8c925245e44fc08cfd02370
   branch: main
   specs:
     sivel2_gen (2.2.0.beta4)
@@ -424,13 +424,13 @@ GEM
       railties (>= 6.0.0)
     webrick (1.8.1)
     websocket (1.2.9)
-    websocket-driver (0.7.5)
+    websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.8)
+    zeitwerk (2.6.9)
 
 PLATFORMS
   x86_64-openbsd
