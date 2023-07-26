@@ -62,3 +62,4 @@ app/javascript/controllers/cor1440_gen
 cobertura-sistema/
 cobertura-unitarias/
 public/cobertura/
+test/puppeteer/node_modules/
