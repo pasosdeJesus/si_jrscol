@@ -1160,205 +1160,6 @@ CREATE VIEW public.cmunrec AS
 
 
 --
--- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_asistencia (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    persona_id integer NOT NULL,
-    rangoedadac_id integer,
-    externo boolean,
-    orgsocial_id integer,
-    perfilorgsocial_id integer
-);
-
-
---
--- Name: msip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_perfilorgsocial (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: msip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.msip_persona_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: msip_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_persona (
-    id integer DEFAULT nextval('public.msip_persona_id_seq'::regclass) NOT NULL,
-    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
-    anionac integer,
-    mesnac integer,
-    dianac integer,
-    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
-    numerodocumento character varying(100),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    pais_id integer,
-    nacionalde integer,
-    tdocumento_id integer NOT NULL,
-    departamento_id integer,
-    municipio_id integer,
-    clase_id integer,
-    buscable tsvector,
-    ultimoperfilorgsocial_id integer,
-    ultimoestatusmigratorio_id integer,
-    ppt character varying(32),
-    huella character varying(1024),
-    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
-    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
-    CONSTRAINT persona_sexo_check CHECK (('MHSI'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
-);
-
-
---
--- Name: msip_tdocumento; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_tdocumento (
-    id integer NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    sigla character varying(500) NOT NULL,
-    formatoregex character varying(500),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    ayuda character varying(1000)
-);
-
-
---
--- Name: sivel2_gen_caso_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_gen_caso_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_caso; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_caso (
-    id integer DEFAULT nextval('public.sivel2_gen_caso_id_seq'::regclass) NOT NULL,
-    titulo character varying(50),
-    fecha date NOT NULL,
-    hora character varying(10),
-    duracion character varying(10),
-    memo text NOT NULL,
-    grconfiabilidad character varying(5),
-    gresclarecimiento character varying(5),
-    grimpunidad character varying(8),
-    grinformacion character varying(8),
-    bienes text,
-    intervalo_id integer DEFAULT 5,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    ubicacion_id integer
-);
-
-
---
--- Name: sivel2_sjr_victimasjr; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_victimasjr (
-    sindocumento boolean,
-    estadocivil_id integer DEFAULT 0,
-    rolfamilia_id integer DEFAULT 0 NOT NULL,
-    cabezafamilia boolean,
-    maternidad_id integer DEFAULT 0,
-    discapacitado boolean,
-    actividadoficio_id integer DEFAULT 0,
-    escolaridad_id integer DEFAULT 0,
-    asisteescuela boolean,
-    tienesisben boolean,
-    departamento_id integer,
-    municipio_id integer,
-    nivelsisben integer,
-    regimensalud_id integer DEFAULT 0,
-    eps character varying(1000),
-    libretamilitar boolean,
-    distrito integer,
-    progadultomayor boolean,
-    fechadesagregacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    victima_id integer NOT NULL,
-    actualtrabajando boolean,
-    discapacidad_id integer
-);
-
-
---
--- Name: consbenefactcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.consbenefactcaso AS
- SELECT persona.id AS persona_id,
-    persona.nombres AS persona_nombres,
-    persona.apellidos AS persona_apellidos,
-    tdocumento.sigla AS persona_tdocumento,
-    persona.numerodocumento AS persona_numerodocumento,
-    persona.sexo AS persona_sexo,
-    ((((COALESCE((persona.anionac)::text, ''::text) || '-'::text) || COALESCE((persona.mesnac)::text, ''::text)) || '-'::text) || COALESCE((persona.dianac)::text, ''::text)) AS persona_fechanac,
-    public.msip_edad_de_fechanac_fecharef(persona.anionac, persona.mesnac, persona.dianac, (EXTRACT(year FROM now()))::integer, (EXTRACT(month FROM now()))::integer, (EXTRACT(day FROM now()))::integer) AS persona_edad_actual,
-    pais.nombre AS persona_paisnac,
-    COALESCE(perfilorgsocial.nombre) AS persona_ultimoperfilorgsocial,
-    victima.id AS victima_id,
-    caso.id AS caso_id,
-    casosjr.fecharec AS caso_fecharec,
-        CASE
-            WHEN (casosjr.contacto_id = persona.id) THEN 'Si'::text
-            ELSE 'No'::text
-        END AS caso_titular,
-    casosjr.telefono AS caso_telefono,
-    ARRAY( SELECT subaf.actividad_id
-           FROM ( SELECT DISTINCT cor1440_gen_asistencia.actividad_id,
-                    caso.fecha
-                   FROM public.cor1440_gen_asistencia
-                  WHERE (cor1440_gen_asistencia.persona_id = persona.id)
-                  ORDER BY cor1440_gen_asistencia.actividad_id) subaf) AS actividad_ids
-   FROM (((((((public.msip_persona persona
-     JOIN public.msip_tdocumento tdocumento ON ((persona.tdocumento_id = tdocumento.id)))
-     LEFT JOIN public.msip_pais pais ON ((persona.pais_id = pais.id)))
-     LEFT JOIN public.msip_perfilorgsocial perfilorgsocial ON ((persona.ultimoperfilorgsocial_id = perfilorgsocial.id)))
-     LEFT JOIN public.sivel2_gen_victima victima ON ((victima.persona_id = persona.id)))
-     LEFT JOIN public.sivel2_sjr_victimasjr victimasjr ON (((victimasjr.victima_id = victima.id) AND (victimasjr.fechadesagregacion IS NULL))))
-     LEFT JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
-     LEFT JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.caso_id = caso.id)))
-  WITH NO DATA;
-
-
---
 -- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1405,8 +1206,22 @@ CREATE TABLE public.cor1440_gen_actividadpf (
     actividadtipo_id integer,
     indicadorgifmm_id integer,
     formulario_id integer,
-    heredade_id integer,
-    presupuesto numeric DEFAULT 0.0 NOT NULL
+    heredade_id integer
+);
+
+
+--
+-- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_asistencia (
+    id bigint NOT NULL,
+    actividad_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    rangoedadac_id integer,
+    externo boolean,
+    orgsocial_id integer,
+    perfilorgsocial_id integer
 );
 
 
@@ -1683,7 +1498,7 @@ CREATE MATERIALIZED VIEW public.consgifmm_exp AS
      LEFT JOIN public.depgifmm ON ((msip_departamento.deplocal_cod = depgifmm.id)))
      LEFT JOIN public.msip_municipio ON ((msip_ubicacionpre.municipio_id = msip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((msip_departamento.deplocal_cod * 1000) + msip_municipio.munlocal_cod) = mungifmm.id)))
-  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['50556-1010-'::text, '50557-1010-'::text, '50558-1010-'::text, '50574-1011-'::text, '50578-1011-'::text, '50582-1011-'::text, '50583-1011-'::text, '50612-1010-'::text, '50615-1011-'::text, '50616-1011-'::text, '50668-1007-'::text, '50669-1007-'::text, '50670-1007-'::text, '50676-1001-'::text, '50685-1022-'::text, '50685-1001-'::text, '50738-1009-'::text, '50740-1009-'::text, '50743-1009-'::text, '50747-1009-'::text, '50753-1011-'::text, '50755-1009-'::text, '50776-1118-'::text, '50835-1012-'::text, '50836-1012-'::text, '50837-1000-'::text, '50838-1012-'::text, '50856-1012-'::text, '50863-1012-'::text, '50887-1006-'::text, '50889-1006-'::text, '50917-1009-'::text, '50482-995-'::text, '50495-1009-'::text, '50552-1023-'::text, '50617-1012-'::text, '50618-1012-'::text, '50655-1012-'::text, '50656-1012-'::text, '50658-1023-'::text, '50659-1023-'::text, '50667-1007-'::text, '50686-1008-'::text, '50700-1006-'::text, '50795-1001-'::text, '50798-1010-'::text, '50805-1009-'::text, '50806-1009-'::text, '50827-1007-'::text, '50882-1001-'::text, '50884-1009-'::text, '50885-1009-'::text, '50908-1004-'::text, '50911-1010-'::text, '50912-1010-'::text, '50609-1010-'::text, '50620-1007-'::text, '50634-1023-'::text, '50647-1008-'::text, '50725-1005-'::text, '50800-1114-'::text, '50871-1007-'::text, '50873-990-'::text, '50909-1010-'::text, '50920-1001-'::text, '50677-1001-'::text, '50680-1011-'::text, '50681-1011-'::text, '50691-1011-'::text, '50692-1011-'::text, '50712-1000-'::text, '50712-1001-'::text, '50733-1011-'::text, '50734-1023-'::text, '50735-1012-'::text, '50736-1022-'::text, '50737-1020-'::text, '50810-1001-'::text, '50814-1020-'::text, '50815-1022-'::text, '50816-1020-'::text, '50817-1022-'::text, '50818-1020-'::text, '50819-1022-'::text, '50820-1020-'::text, '50821-1022-'::text, '50822-1020-'::text, '50823-1022-'::text, '50825-1020-'::text, '50826-1022-'::text, '50829-1007-'::text, '50831-1007-'::text, '50841-1007-'::text, '50843-1007-'::text, '50844-1007-'::text, '50845-1007-'::text, '50846-1007-'::text, '50847-1007-'::text, '50848-1007-'::text, '50849-1007-'::text, '50850-1007-'::text, '50851-1007-'::text, '50852-1007-'::text, '50853-1007-'::text, '50854-1007-'::text, '50869-1119-'::text, '50872-1001-'::text, '50874-1119-'::text, '50881-1006-'::text, '50901-1020-'::text, '50907-1022-'::text, '50919-1012-'::text, '50772-1009-'::text, '50793-1010-'::text, '50794-1010-'::text, '50797-1119-'::text, '50804-1010-'::text, '50830-1007-'::text, '50833-1007-'::text, '50840-1020-'::text, '50862-1020-'::text, '50868-1013-'::text, '50876-990-'::text, '50878-990-'::text, '50894-1020-'::text, '50359-1023-'::text, '50842-1007-'::text, '50860-1020-'::text, '50867-1092-'::text, '50883-1121-'::text, '50900-1012-'::text, '50918-1004-'::text, '50925-1012-'::text, '50926-1007-'::text, '50927-1007-'::text, '50928-1007-'::text, '50931-1022-'::text, '50931-1020-'::text, '50934-1021-'::text, '50936-1009-'::text, '50523-1023-'::text, '50376-1012-'::text])))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['45134-1023-'::text, '45137-1004-'::text, '45140-1023-'::text, '45234-1013-'::text, '45241-1000-'::text, '45150-1023-'::text, '45261-1000-'::text, '45261-1001-'::text, '45243-1000-'::text, '45149-1004-'::text, '45157-1000-'::text, '45435-1023-'::text, '45231-1000-'::text, '45254-1000-'::text, '45434-1004-'::text, '45436-1023-'::text, '45371-1013-'::text, '47075-1009-'::text, '47088-1011-'::text, '45421-1004-'::text, '45437-1023-'::text, '45626-1000-'::text, '45450-1022-'::text, '45454-1023-'::text, '45533-1004-'::text, '45535-1022-'::text, '45535-1021-'::text, '45535-1020-'::text, '45536-1021-'::text, '45536-1020-'::text, '45536-1022-'::text, '45537-1022-'::text, '45537-1021-'::text, '45537-1020-'::text, '45538-1021-'::text, '45538-1022-'::text, '45538-1020-'::text, '45539-1022-'::text, '45539-1021-'::text, '45539-1020-'::text, '45540-1021-'::text, '45540-1022-'::text, '45540-1020-'::text, '45543-1021-'::text, '45543-1022-'::text, '45543-1020-'::text, '45544-1020-'::text, '45544-1021-'::text, '45544-1022-'::text, '45545-1020-'::text, '45545-1021-'::text, '45545-1022-'::text, '45552-1000-'::text, '45552-1001-'::text, '45453-1022-'::text, '45659-1023-'::text, '45457-1004-'::text, '45616-1012-'::text, '45664-1023-'::text, '45680-1023-'::text, '45473-1012-'::text, '45625-1012-'::text, '45526-1004-'::text, '45594-1000-'::text, '45594-1009-'::text, '45606-1009-'::text, '45606-1000-'::text, '45628-1000-'::text, '45628-1011-'::text, '45674-1023-'::text, '45718-1001-'::text, '45718-1013-'::text, '45546-844-'::text, '45613-1009-'::text, '45681-1023-'::text, '46044-1001-'::text, '46051-1022-'::text, '45740-1013-'::text, '45740-1001-'::text, '47073-1011-'::text, '47134-1023-'::text, '45592-1010-'::text, '45596-1011-'::text, '45599-1010-'::text, '45642-1010-'::text, '45651-1004-'::text, '46192-1028-'::text, '47137-1023-'::text, '45679-1023-'::text, '45719-1033-'::text, '45684-1000-'::text, '45790-1012-'::text, '45849-1004-'::text, '47141-1023-'::text, '45730-1000-'::text, '45733-1004-'::text, '45774-1000-'::text, '45781-1000-'::text, '45798-1013-'::text, '45851-1004-'::text, '46187-1023-'::text, '46460-1009-'::text, '45812-841-'::text, '45813-841-'::text, '45834-1029-'::text, '45903-1000-'::text, '45946-997-'::text, '46028-1010-'::text, '45819-1013-'::text, '45852-1004-'::text, '45904-1000-'::text, '45994-1009-'::text, '46029-1010-'::text, '46033-1013-'::text, '46033-1001-'::text, '47292-1023-'::text, '45854-1012-'::text, '46053-1012-'::text, '45905-1000-'::text, '45965-997-'::text, '45995-1009-'::text, '46030-1001-'::text, '46030-1013-'::text, '46107-1009-'::text, '46113-1011-'::text, '46114-1009-'::text, '46189-1023-'::text, '46615-1029-'::text, '46734-1022-'::text, '46744-1022-'::text, '46745-1020-'::text, '46745-1021-'::text, '46746-1022-'::text, '46747-1021-'::text, '46747-1020-'::text, '46756-1022-'::text, '46766-1020-'::text, '46766-1021-'::text, '46766-1022-'::text, '50218-1013-'::text, '50218-1001-'::text, '45864-1013-'::text, '45870-1013-'::text, '46020-1004-'::text, '46054-1012-'::text, '46104-1000-'::text, '46104-1009-'::text, '46196-1023-'::text, '46459-1009-'::text, '46765-1022-'::text, '45950-1020-'::text, '45951-1020-'::text, '46025-1004-'::text, '46026-1005-'::text, '46064-1012-'::text, '46103-1000-'::text, '46103-1011-'::text, '46197-1023-'::text, '46492-1001-'::text, '45907-1000-'::text, '46450-1012-'::text, '45955-1004-'::text, '46344-1001-'::text, '46351-1022-'::text, '46353-1020-'::text, '46398-1001-'::text, '46398-1013-'::text, '46052-997-'::text, '46180-992-'::text, '46458-1009-'::text, '46198-1023-'::text, '46201-1020-'::text, '46201-1022-'::text, '46202-1022-'::text, '46202-1020-'::text, '46205-1022-'::text, '46205-1020-'::text, '46209-1020-'::text, '46209-1022-'::text, '46216-1022-'::text, '46216-1020-'::text, '46223-1022-'::text, '46223-1020-'::text, '46256-1020-'::text, '46256-1022-'::text, '46258-1022-'::text, '46258-1020-'::text, '46286-1022-'::text, '46286-1020-'::text, '46293-1020-'::text, '46293-1022-'::text, '46294-1022-'::text, '46294-1020-'::text, '46307-1020-'::text, '46307-1022-'::text, '46311-1022-'::text, '46311-1020-'::text, '46313-1020-'::text, '46313-1022-'::text, '46318-1020-'::text, '46318-1022-'::text, '46445-1012-'::text, '46448-1012-'::text, '46451-1004-'::text, '46451-1005-'::text, '46451-1003-'::text, '46474-1004-'::text, '47021-1010-'::text, '47025-1029-'::text, '46265-1003-'::text, '46447-1012-'::text, '46493-1001-'::text, '46075-1010-'::text, '46088-1010-'::text, '46089-1010-'::text, '46090-1010-'::text, '46091-1010-'::text, '46102-1000-'::text, '46194-1013-'::text, '46195-1012-'::text, '46254-1023-'::text, '46475-1004-'::text, '46905-1020-'::text, '46905-1022-'::text, '46906-1022-'::text, '46906-1020-'::text, '46907-1022-'::text, '46907-1020-'::text, '46909-1020-'::text, '46909-1022-'::text, '46910-1022-'::text, '46910-1020-'::text, '46912-1020-'::text, '46912-1022-'::text, '46914-1020-'::text, '46914-1022-'::text, '46916-1022-'::text, '46916-1020-'::text, '46936-1020-'::text, '46936-1022-'::text, '46937-1020-'::text, '46937-1022-'::text, '46938-1022-'::text, '46938-1020-'::text, '46941-1022-'::text, '46941-1020-'::text, '47575-1020-'::text, '47575-1022-'::text, '49862-657-'::text, '46106-1009-'::text, '46255-1023-'::text, '46376-1012-'::text, '46124-1005-'::text, '46199-1023-'::text, '46259-1023-'::text, '46347-1000-'::text, '46399-1012-'::text, '47126-1028-'::text, '46403-1001-'::text, '46403-1013-'::text, '46421-1012-'::text, '46441-997-'::text, '46456-1009-'::text, '46457-1009-'::text, '46478-1023-'::text, '46426-1012-'::text, '46446-1012-'::text, '46449-1012-'::text, '46461-1004-'::text, '46461-1001-'::text, '46461-1005-'::text, '46476-1004-'::text, '46479-1023-'::text, '46735-1021-'::text, '46735-1020-'::text, '46741-1021-'::text, '46741-1020-'::text, '46764-1021-'::text, '46764-1020-'::text, '46771-1020-'::text, '46771-1021-'::text, '46771-1022-'::text, '46887-1021-'::text, '46887-1020-'::text, '46887-1022-'::text, '46889-1021-'::text, '46889-1022-'::text, '46889-1020-'::text, '46891-1022-'::text, '46891-1020-'::text, '46891-1021-'::text, '46892-1021-'::text, '46892-1020-'::text, '46893-1022-'::text, '46893-1020-'::text, '46893-1021-'::text, '46894-1020-'::text, '46894-1021-'::text, '46894-1022-'::text, '46896-1022-'::text, '46896-1021-'::text, '46896-1020-'::text, '46897-1020-'::text, '46897-1022-'::text, '46897-1021-'::text, '46898-1022-'::text, '46898-1020-'::text, '46898-1021-'::text, '46899-1021-'::text, '46899-1022-'::text, '46899-1020-'::text, '46900-1022-'::text, '46900-1020-'::text, '46900-1021-'::text, '47222-1000-'::text, '47222-1009-'::text, '47236-1011-'::text, '46472-1003-'::text, '46472-1000-'::text, '46207-1013-'::text, '46381-1012-'::text, '46505-869-'::text, '46509-869-'::text, '46621-1000-'::text, '46621-1001-'::text, '46708-1001-'::text, '46708-1013-'::text, '46517-1005-'::text, '46601-1004-'::text, '47000-1021-'::text, '47001-1021-'::text, '47003-1021-'::text, '47004-1021-'::text, '47005-1021-'::text, '47006-1021-'::text, '47007-1021-'::text, '47009-1021-'::text, '47010-1021-'::text, '47012-1021-'::text, '47013-1021-'::text, '47297-1023-'::text, '46553-1009-'::text, '47124-1008-'::text, '47124-1001-'::text, '47127-1007-'::text, '46516-1005-'::text, '46548-1009-'::text, '46551-1009-'::text, '46573-1021-'::text, '46575-1021-'::text, '46576-1021-'::text, '46577-1021-'::text, '46584-1021-'::text, '46585-1021-'::text, '46586-1021-'::text, '46587-1021-'::text, '46588-1021-'::text, '46589-1021-'::text, '46591-1021-'::text, '46592-1021-'::text, '46593-1021-'::text, '47172-992-'::text, '46507-1000-'::text, '46552-1009-'::text, '46605-1005-'::text, '47078-1009-'::text, '47300-1023-'::text, '47022-1012-'::text, '47301-1023-'::text, '46594-1004-'::text, '46603-1005-'::text, '46798-1000-'::text, '46800-1009-'::text, '47041-657-'::text, '47303-1023-'::text, '46607-1022-'::text, '46617-995-'::text, '46618-997-'::text, '46622-1001-'::text, '46720-1013-'::text, '46720-1001-'::text, '46818-1022-'::text, '47024-1012-'::text, '47112-1008-'::text, '47112-1001-'::text, '47113-1007-'::text, '47117-1001-'::text, '47117-1008-'::text, '47118-1007-'::text, '47241-1009-'::text, '46625-1005-'::text, '46638-992-'::text, '46639-992-'::text, '46640-992-'::text, '46642-992-'::text, '46643-992-'::text, '46644-992-'::text, '46645-992-'::text, '46646-992-'::text, '46647-992-'::text, '46648-992-'::text, '46649-992-'::text, '46650-992-'::text, '46651-992-'::text, '46652-992-'::text, '46653-992-'::text, '46654-992-'::text, '46655-992-'::text, '46656-992-'::text, '46657-992-'::text, '46658-992-'::text, '46659-992-'::text, '46660-992-'::text, '46661-992-'::text, '46662-992-'::text, '46663-992-'::text, '46664-992-'::text, '46665-992-'::text, '46666-992-'::text, '46667-992-'::text, '46668-992-'::text, '46669-992-'::text, '46670-992-'::text, '46671-992-'::text, '46672-992-'::text, '46681-995-'::text, '46776-1022-'::text, '47015-1013-'::text, '47027-1001-'::text, '47120-992-'::text, '47170-992-'::text, '47171-1026-'::text, '47188-990-'::text, '47199-1027-'::text, '47244-1009-'::text, '48941-1023-'::text, '46974-1012-'::text, '46988-1012-'::text, '46991-1012-'::text, '46705-1005-'::text, '46773-993-'::text, '46774-1010-'::text, '46777-1022-'::text, '46799-1009-'::text, '47069-1013-'::text, '47069-1001-'::text, '47107-1001-'::text, '47107-1008-'::text, '47109-1007-'::text, '47110-1001-'::text, '47110-1008-'::text, '47111-1007-'::text, '47119-1008-'::text, '47119-1001-'::text, '47121-1007-'::text, '47324-1004-'::text, '46775-1022-'::text, '46806-1000-'::text, '46812-1000-'::text, '46816-1000-'::text, '46817-1000-'::text, '46819-1000-'::text, '46961-1020-'::text, '46971-1022-'::text, '47014-1001-'::text, '47016-1013-'::text, '47080-1010-'::text, '47133-1008-'::text, '47133-1001-'::text, '47136-1007-'::text, '47147-1000-'::text, '47304-1023-'::text, '46830-1000-'::text, '46831-1000-'::text, '46833-1000-'::text, '46834-1000-'::text, '46835-1000-'::text, '46836-1000-'::text, '46838-1000-'::text, '46839-1000-'::text, '46840-1000-'::text, '46888-1000-'::text, '46895-1000-'::text, '47083-1009-'::text, '47087-1011-'::text, '47090-1011-'::text, '47305-1023-'::text, '47327-1005-'::text, '47332-1004-'::text, '47592-1000-'::text, '49239-1000-'::text, '47036-1012-'::text, '47092-1008-'::text, '47092-1001-'::text, '47106-1007-'::text, '47143-1006-'::text, '47148-1006-'::text, '47150-1006-'::text, '47152-1006-'::text, '47153-1006-'::text, '47306-1023-'::text, '47338-995-'::text, '46953-1010-'::text, '46970-1010-'::text, '47011-1010-'::text, '47019-1010-'::text, '47033-1021-'::text, '47158-1021-'::text, '47159-1021-'::text, '47160-1021-'::text, '47161-1021-'::text, '47162-1021-'::text, '47163-1021-'::text, '47164-1021-'::text, '47165-1021-'::text, '47166-1021-'::text, '47167-1021-'::text, '47168-1021-'::text, '47169-1021-'::text, '47315-1012-'::text, '47318-1012-'::text, '47319-1012-'::text, '47350-1010-'::text, '47096-1011-'::text, '47098-1009-'::text, '47192-991-'::text, '47397-1012-'::text, '47398-1012-'::text, '47401-1012-'::text, '48060-1023-'::text, '47218-1011-'::text, '47218-1009-'::text, '47418-1012-'::text, '47421-1012-'::text, '47423-1012-'::text, '47453-1012-'::text, '47497-1023-'::text, '47808-1005-'::text, '48815-1004-'::text, '47394-1005-'::text, '47394-1003-'::text, '47399-1012-'::text, '47458-1012-'::text, '47586-1000-'::text, '47400-1012-'::text, '47455-1012-'::text, '48061-1023-'::text, '47705-1003-'::text, '47461-1009-'::text, '47462-1009-'::text, '47463-1009-'::text, '47473-1009-'::text, '47480-1009-'::text, '47530-1012-'::text, '47532-1012-'::text, '47553-1012-'::text, '47812-1005-'::text, '48062-1023-'::text, '48622-1029-'::text, '48816-1004-'::text, '47539-1008-'::text, '47542-1008-'::text, '47554-1011-'::text, '47573-1008-'::text, '47574-1008-'::text, '47578-1008-'::text, '47579-1008-'::text, '47580-1008-'::text, '47581-1008-'::text, '47582-1008-'::text, '47585-1008-'::text, '47596-1000-'::text, '47603-1008-'::text, '47604-1008-'::text, '47605-1008-'::text, '47607-1008-'::text, '47608-1008-'::text, '47612-1009-'::text, '47615-1009-'::text, '47627-1011-'::text, '47632-1009-'::text, '47634-1009-'::text, '47638-1011-'::text, '47655-1009-'::text, '47688-1011-'::text, '47702-1009-'::text, '47706-1011-'::text, '47710-1009-'::text, '47723-993-'::text, '47703-1009-'::text, '47708-1009-'::text, '47724-1012-'::text, '47749-1012-'::text, '47792-1012-'::text, '47814-1005-'::text, '48064-1023-'::text, '48633-1028-'::text, '48827-1004-'::text, '47793-1012-'::text, '48066-1023-'::text, '51121-1000-'::text])))
   ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
 
@@ -2111,6 +1926,21 @@ ALTER SEQUENCE public.cor1440_gen_asistencia_id_seq OWNED BY public.cor1440_gen_
 
 
 --
+-- Name: msip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_perfilorgsocial (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: cor1440_gen_benefext; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -2124,6 +1954,67 @@ CREATE VIEW public.cor1440_gen_benefext AS
            FROM ((public.cor1440_gen_actividad ac
              JOIN public.cor1440_gen_asistencia asis ON ((asis.actividad_id = ac.id)))
              LEFT JOIN public.msip_perfilorgsocial porg ON ((porg.id = asis.perfilorgsocial_id)))) sub;
+
+
+--
+-- Name: msip_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.msip_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: msip_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_persona (
+    id integer DEFAULT nextval('public.msip_persona_id_seq'::regclass) NOT NULL,
+    nombres character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    apellidos character varying(100) NOT NULL COLLATE public.es_co_utf_8,
+    anionac integer,
+    mesnac integer,
+    dianac integer,
+    sexo character(1) DEFAULT 'S'::bpchar NOT NULL,
+    numerodocumento character varying(100),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    pais_id integer,
+    nacionalde integer,
+    tdocumento_id integer NOT NULL,
+    departamento_id integer,
+    municipio_id integer,
+    clase_id integer,
+    buscable tsvector,
+    ultimoperfilorgsocial_id integer,
+    ultimoestatusmigratorio_id integer,
+    ppt character varying(32),
+    CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
+    CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
+    CONSTRAINT persona_sexo_check CHECK (('MHSI'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
+);
+
+
+--
+-- Name: msip_tdocumento; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_tdocumento (
+    id integer NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    sigla character varying(500) NOT NULL,
+    formatoregex character varying(500),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    ayuda character varying(1000)
+);
 
 
 --
@@ -2249,9 +2140,97 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                   WHERE (apf.id IN ( SELECT aapf.actividadpf_id
                            FROM public.cor1440_gen_actividad_actividadpf aapf
                           WHERE (aapf.actividad_id = be.actividad_id)))
-                  ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
+                  ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml,
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1092))) AS "OE2R2.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1093))) AS "OE2R2.A2",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1091))) AS "OE2R1.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1085))) AS "OE1R1.A0",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1086))) AS "OE1R1.A0_5",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1094))) AS "OE2R3.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1095))) AS "OE2R3.A2",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1108))) AS "OE3R2.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1096))) AS "OE2R3.A3",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1107))) AS "OE3R1.A2",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1116))) AS "OE4R1.A3.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1117))) AS "OE4R1.A4.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1118))) AS "OE4R1.A5.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1111))) AS "OE1R1.A4",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1119))) AS "OE4R2.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1120))) AS "OE4R2.A2.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1121))) AS "OE4R2.A3.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1122))) AS "OE4R3.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1123))) AS "OE4R3.A2.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1087))) AS "OE1R1.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1089))) AS "OE1R1.A2",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1090))) AS "OE1R1.A3",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1106))) AS "OE3R1.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1109))) AS "OE3R2.A2",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1110))) AS "OE3R2.A3",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1113))) AS "OE1R2.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1114))) AS "OE4R1.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1115))) AS "OE4R1.A2."
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_fecha >= '2023-01-01'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
+  WHERE (true AND ((be.actividad_oficina)::text = 'NARIÑO'::text) AND (be.actividad_id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+           FROM public.cor1440_gen_actividad_proyectofinanciero
+          WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 264))) AND (be.actividad_id IN ( SELECT cor1440_gen_actividad_actividadpf.actividad_id
+           FROM public.cor1440_gen_actividad_actividadpf
+          WHERE (cor1440_gen_actividad_actividadpf.actividadpf_id = 1087))) AND (be.actividad_fecha >= '2023-01-01'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
   WITH NO DATA;
 
 
@@ -2560,39 +2539,6 @@ CREATE TABLE public.cor1440_gen_formulario_tipoindicador (
     tipoindicador_id integer NOT NULL,
     formulario_id integer NOT NULL
 );
-
-
---
--- Name: cor1440_gen_gastoaprobado; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_gastoaprobado (
-    id bigint NOT NULL,
-    actividad_id integer NOT NULL,
-    actividadpf_id integer NOT NULL,
-    valor numeric NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: cor1440_gen_gastoaprobado_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.cor1440_gen_gastoaprobado_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: cor1440_gen_gastoaprobado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.cor1440_gen_gastoaprobado_id_seq OWNED BY public.cor1440_gen_gastoaprobado.id;
 
 
 --
@@ -3370,16 +3316,16 @@ CREATE MATERIALIZED VIEW public.cres1 AS
  SELECT sub.actividad_id,
     sub.fecha,
     sub.oficina_id,
-    sub.ayudasjr_id
+    sub.derecho_id
    FROM ( SELECT DISTINCT a.id AS actividad_id,
             a.fecha,
             a.oficina_id,
-            json_array_elements_text(v.valorjson) AS ayudasjr_id
+            json_array_elements_text(v.valorjson) AS derecho_id
            FROM ((public.mr519_gen_valorcampo v
              JOIN public.cor1440_gen_actividad_respuestafor ar ON ((ar.respuestafor_id = v.respuestafor_id)))
              JOIN public.cor1440_gen_actividad a ON ((a.id = ar.actividad_id)))
-          WHERE (v.campo_id = 110)) sub
-  WHERE ((sub.ayudasjr_id IS NOT NULL) AND (sub.ayudasjr_id <> ''::text))
+          WHERE (v.campo_id = 100)) sub
+  WHERE ((sub.derecho_id IS NOT NULL) AND (sub.derecho_id <> ''::text))
   WITH NO DATA;
 
 
@@ -3462,25 +3408,25 @@ CREATE VIEW public.cvp1 AS
    FROM public.sivel2_sjr_casosjr casosjr,
     public.sivel2_sjr_respuesta respuesta,
     public.sivel2_sjr_derecho_respuesta derecho_respuesta
-  WHERE ((respuesta.caso_id = casosjr.caso_id) AND (derecho_respuesta.respuesta_id = respuesta.id) AND (respuesta.fechaatencion >= '2023-01-01'::date) AND (respuesta.fechaatencion <= '2023-06-13'::date) AND (casosjr.oficina_id = 3));
+  WHERE ((respuesta.caso_id = casosjr.caso_id) AND (derecho_respuesta.respuesta_id = respuesta.id));
 
 
 --
--- Name: sivel2_sjr_ayudasjr_derecho; Type: TABLE; Schema: public; Owner: -
+-- Name: sivel2_sjr_ayudaestado_derecho; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sivel2_sjr_ayudasjr_derecho (
-    ayudasjr_id integer,
+CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
+    ayudaestado_id integer,
     derecho_id integer
 );
 
 
 --
--- Name: sivel2_sjr_ayudasjr_respuesta; Type: TABLE; Schema: public; Owner: -
+-- Name: sivel2_sjr_ayudaestado_respuesta; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sivel2_sjr_ayudasjr_respuesta (
-    ayudasjr_id integer DEFAULT 0 NOT NULL,
+CREATE TABLE public.sivel2_sjr_ayudaestado_respuesta (
+    ayudaestado_id integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     respuesta_id integer NOT NULL
@@ -3494,10 +3440,10 @@ CREATE TABLE public.sivel2_sjr_ayudasjr_respuesta (
 CREATE VIEW public.cvp2 AS
  SELECT ar.respuesta_id,
     ad.derecho_id,
-    ar.ayudasjr_id
-   FROM public.sivel2_sjr_ayudasjr_respuesta ar,
-    public.sivel2_sjr_ayudasjr_derecho ad
-  WHERE (ar.ayudasjr_id = ad.ayudasjr_id);
+    ar.ayudaestado_id
+   FROM public.sivel2_sjr_ayudaestado_respuesta ar,
+    public.sivel2_sjr_ayudaestado_derecho ad
+  WHERE (ar.ayudaestado_id = ad.ayudaestado_id);
 
 
 --
@@ -3638,6 +3584,41 @@ CREATE SEQUENCE public.discapacidad_id_seq
 --
 
 ALTER SEQUENCE public.discapacidad_id_seq OWNED BY public.discapacidad.id;
+
+
+--
+-- Name: sivel2_gen_caso_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_caso_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_caso; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_caso (
+    id integer DEFAULT nextval('public.sivel2_gen_caso_id_seq'::regclass) NOT NULL,
+    titulo character varying(50),
+    fecha date NOT NULL,
+    hora character varying(10),
+    duracion character varying(10),
+    memo text NOT NULL,
+    grconfiabilidad character varying(5),
+    gresclarecimiento character varying(5),
+    grimpunidad character varying(8),
+    grinformacion character varying(8),
+    bienes text,
+    intervalo_id integer DEFAULT 5,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    ubicacion_id integer
+);
 
 
 --
@@ -4324,42 +4305,35 @@ CREATE MATERIALIZED VIEW public.jos19_consactividadcaso AS
 
 
 --
--- Name: jos19_consbenefactcaso; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+-- Name: sivel2_sjr_victimasjr; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE MATERIALIZED VIEW public.jos19_consbenefactcaso AS
- SELECT persona.id AS persona_id,
-    persona.nombres AS persona_nombres,
-    persona.apellidos AS persona_apellidos,
-    tdocumento.sigla AS persona_tdocumento,
-    persona.numerodocumento AS persona_numerodocumento,
-    persona.sexo AS persona_sexo,
-    ((((COALESCE((persona.anionac)::text, ''::text) || '-'::text) || COALESCE((persona.mesnac)::text, ''::text)) || '-'::text) || COALESCE((persona.dianac)::text, ''::text)) AS persona_fechanac,
-    public.msip_edad_de_fechanac_fecharef(persona.anionac, persona.mesnac, persona.dianac, (EXTRACT(year FROM now()))::integer, (EXTRACT(month FROM now()))::integer, (EXTRACT(day FROM now()))::integer) AS persona_edad_actual,
-    pais.nombre AS persona_paisnac,
-    COALESCE(perfilorgsocial.nombre) AS persona_ultimoperfilorgsocial,
-    victima.id AS victima_id,
-    caso.id AS caso_id,
-    casosjr.fecharec AS caso_fecharec,
-        CASE
-            WHEN (casosjr.contacto_id = persona.id) THEN 'Si'::text
-            ELSE 'No'::text
-        END AS caso_titular,
-    casosjr.telefono AS caso_telefono,
-    ARRAY( SELECT subaf.actividad_id
-           FROM ( SELECT DISTINCT cor1440_gen_asistencia.actividad_id,
-                    caso.fecha
-                   FROM public.cor1440_gen_asistencia
-                  WHERE (cor1440_gen_asistencia.persona_id = persona.id)
-                  ORDER BY cor1440_gen_asistencia.actividad_id) subaf) AS actividad_ids
-   FROM ((((((public.msip_persona persona
-     JOIN public.msip_tdocumento tdocumento ON ((persona.tdocumento_id = tdocumento.id)))
-     LEFT JOIN public.msip_pais pais ON ((persona.pais_id = pais.id)))
-     LEFT JOIN public.msip_perfilorgsocial perfilorgsocial ON ((persona.ultimoperfilorgsocial_id = perfilorgsocial.id)))
-     LEFT JOIN public.sivel2_gen_victima victima ON ((victima.persona_id = persona.id)))
-     LEFT JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
-     LEFT JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.caso_id = caso.id)))
-  WITH NO DATA;
+CREATE TABLE public.sivel2_sjr_victimasjr (
+    sindocumento boolean,
+    estadocivil_id integer DEFAULT 0,
+    rolfamilia_id integer DEFAULT 0 NOT NULL,
+    cabezafamilia boolean,
+    maternidad_id integer DEFAULT 0,
+    discapacitado boolean,
+    actividadoficio_id integer DEFAULT 0,
+    escolaridad_id integer DEFAULT 0,
+    asisteescuela boolean,
+    tienesisben boolean,
+    departamento_id integer,
+    municipio_id integer,
+    nivelsisben integer,
+    regimensalud_id integer DEFAULT 0,
+    eps character varying(1000),
+    libretamilitar boolean,
+    distrito integer,
+    progadultomayor boolean,
+    fechadesagregacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    victima_id integer NOT NULL,
+    actualtrabajando boolean,
+    discapacidad_id integer
+);
 
 
 --
@@ -6126,40 +6100,6 @@ ALTER SEQUENCE public.perfilmigracion_id_seq OWNED BY public.perfilmigracion.id;
 
 
 --
--- Name: productoleg; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.productoleg (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: productoleg_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.productoleg_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: productoleg_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.productoleg_id_seq OWNED BY public.productoleg.id;
-
-
---
 -- Name: sal7711_gen_articulo; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -7381,8 +7321,9 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.etnia_id = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.fecharec >= '2023-06-15'::date)
+           FROM (public.sivel2_gen_conscaso
+             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.caso_id = sivel2_gen_conscaso.caso_id)))
+          WHERE (sivel2_sjr_casosjr.oficina_id = 102)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -8366,28 +8307,6 @@ CREATE TABLE public.sivel2_sjr_ayudaestado (
 
 
 --
--- Name: sivel2_sjr_ayudaestado_derecho; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_ayudaestado_derecho (
-    ayudaestado_id integer,
-    derecho_id integer
-);
-
-
---
--- Name: sivel2_sjr_ayudaestado_respuesta; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_ayudaestado_respuesta (
-    ayudaestado_id integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    respuesta_id integer NOT NULL
-);
-
-
---
 -- Name: sivel2_sjr_ayudasjr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -8412,6 +8331,28 @@ CREATE TABLE public.sivel2_sjr_ayudasjr (
     updated_at timestamp without time zone,
     observaciones character varying(5000),
     CONSTRAINT ayudasjr_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sivel2_sjr_ayudasjr_derecho; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_ayudasjr_derecho (
+    ayudasjr_id integer,
+    derecho_id integer
+);
+
+
+--
+-- Name: sivel2_sjr_ayudasjr_respuesta; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_ayudasjr_respuesta (
+    ayudasjr_id integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    respuesta_id integer NOT NULL
 );
 
 
@@ -9454,13 +9395,6 @@ ALTER TABLE ONLY public.cor1440_gen_financiador ALTER COLUMN id SET DEFAULT next
 
 
 --
--- Name: cor1440_gen_gastoaprobado id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cor1440_gen_gastoaprobado ALTER COLUMN id SET DEFAULT nextval('public.cor1440_gen_gastoaprobado_id_seq'::regclass);
-
-
---
 -- Name: cor1440_gen_indicadorpf id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -9983,13 +9917,6 @@ ALTER TABLE ONLY public.mungifmm ALTER COLUMN id SET DEFAULT nextval('public.mun
 --
 
 ALTER TABLE ONLY public.perfilmigracion ALTER COLUMN id SET DEFAULT nextval('public.perfilmigracion_id_seq'::regclass);
-
-
---
--- Name: productoleg id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.productoleg ALTER COLUMN id SET DEFAULT nextval('public.productoleg_id_seq'::regclass);
 
 
 --
@@ -10573,14 +10500,6 @@ ALTER TABLE ONLY public.cor1440_gen_efecto
 
 ALTER TABLE ONLY public.cor1440_gen_financiador
     ADD CONSTRAINT cor1440_gen_financiador_pkey PRIMARY KEY (id);
-
-
---
--- Name: cor1440_gen_gastoaprobado cor1440_gen_gastoaprobado_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
-    ADD CONSTRAINT cor1440_gen_gastoaprobado_pkey PRIMARY KEY (id);
 
 
 --
@@ -11565,14 +11484,6 @@ ALTER TABLE ONLY public.sivel2_sjr_personadesea
 
 ALTER TABLE ONLY public.sivel2_gen_presponsable
     ADD CONSTRAINT presponsable_pkey PRIMARY KEY (id);
-
-
---
--- Name: productoleg productoleg_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.productoleg
-    ADD CONSTRAINT productoleg_pkey PRIMARY KEY (id);
 
 
 --
@@ -14457,14 +14368,6 @@ ALTER TABLE ONLY public.msip_orgsocial_persona
 
 
 --
--- Name: cor1440_gen_gastoaprobado fk_rails_48d96f819c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
-    ADD CONSTRAINT fk_rails_48d96f819c FOREIGN KEY (actividad_id) REFERENCES public.cor1440_gen_actividad(id);
-
-
---
 -- Name: cor1440_gen_actividad_anexo fk_rails_49ec1ae361; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14910,14 +14813,6 @@ ALTER TABLE ONLY public.mr519_gen_encuestapersona
 
 ALTER TABLE ONLY public.sivel2_gen_caso
     ADD CONSTRAINT fk_rails_850036942a FOREIGN KEY (ubicacion_id) REFERENCES public.msip_ubicacion(id);
-
-
---
--- Name: cor1440_gen_gastoaprobado fk_rails_8824bc57d7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cor1440_gen_gastoaprobado
-    ADD CONSTRAINT fk_rails_8824bc57d7 FOREIGN KEY (actividadpf_id) REFERENCES public.cor1440_gen_actividadpf(id);
 
 
 --
@@ -17150,7 +17045,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230406092509'),
 ('20230407010923'),
 ('20230407011451'),
-('20230408143528'),
 ('20230418155831'),
 ('20230418194845'),
 ('20230419174417'),
@@ -17164,8 +17058,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230506183428'),
 ('20230506192413'),
 ('20230508193508'),
-('20230516135641'),
-('20230523202021'),
 ('20230613111532'),
 ('20230614170400'),
 ('20230614220241'),
@@ -17177,7 +17069,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230707125612'),
 ('20230712004821'),
 ('20230712163859'),
-('20230719142021'),
 ('20230722180204'),
 ('20230723011110');
 
