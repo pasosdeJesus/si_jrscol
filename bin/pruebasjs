@@ -1,0 +1,48 @@
+#!/bin/sh
+echo "=== Pruebas de regresión al sistema con Javascript"
+# Para ejecutar en navegador visible ejecutar con
+#  CONCABEZA=1 bin/pruebasjs
+
+export PUERTODES=33001
+export IPDES=127.0.0.1
+export RAILS_ENV=test
+export CONFIG_HOSTS=127.0.0.1
+
+fstat | grep ":${PUERTODES}" 
+if (test "$?" = "0") then {
+  echo "Ya está corriendo un proceso en el puerto $PUERTODES, detengalo antes";
+  exit 1;
+} fi;
+if (test ! -f .env) then {
+  echo "Falta .env"
+  exit 1;
+} fi;
+. ./.env
+
+echo "=== Deteniendo"
+bin/detiene
+
+echo "=== Precompilando"
+bin/rails assets:precompile
+
+echo "=== Iniciando servidor"
+CONFIG_HOSTS=127.0.0.1 R=f bin/corre &
+
+sleep 10;
+
+echo "***"
+w3m -dump http://${IPDES}:${PUERTODES}/${RUTA_RELATIVA}
+echo "***"
+
+cd test/puppeteer
+yarn cache clean
+yarn upgrade
+yarn
+for i in *.mjs; do
+  echo "Ejecutando $i"
+  node $i
+done
+
+cd ../..
+bin/detiene &
+
