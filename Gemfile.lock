@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 055474401724a1d3e871a3dda8599bdd26099f7e
+  revision: 827a796ec7a46f118b9310b1671d41676591445e
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 2dfd91ca4086d405b8c925245e44fc08cfd02370
+  revision: 6f3e9646c1652acb6d686e6b5eb6d6f9c8b1d196
   branch: main
   specs:
     sivel2_gen (2.2.0.beta4)
@@ -171,7 +171,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     andand (1.3.3)
     babel-source (5.8.35)
@@ -374,7 +374,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.10.0)
+    selenium-webdriver (4.11.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -430,7 +430,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.10)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   x86_64-openbsd
@@ -491,4 +491,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.4.17
+   2.4.18
