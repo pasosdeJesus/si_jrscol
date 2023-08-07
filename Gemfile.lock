@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: f336cb6a0785a03bf8b9f9b119efed87b1c79693
+  revision: cf89139609802142019ae64d23424018b8a54650
   branch: main
   specs:
     cor1440_gen (2.2.0.beta4)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 6376824ebfcc163f64c53b9d91512ebaa1df120e
+  revision: 0179bfb1aa48bfb0764441f04e0588f7df27ad21
   branch: main
   specs:
     heb412_gen (2.2.0.beta4)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: dd9fe5e988e77814ad424f69edbb0112dcb31262
+  revision: 4c37ffe7489666e9ad82b0cc30c5cb1471698838
   branch: main
   specs:
     mr519_gen (2.2.0.beta4)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 827a796ec7a46f118b9310b1671d41676591445e
+  revision: c7ed7a88e585655165534c9a732e79ef4dcee361
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 6f3e9646c1652acb6d686e6b5eb6d6f9c8b1d196
+  revision: 75f7e292c9fe25fe9ff0eda68e5a3a6305bd7f2e
   branch: main
   specs:
     sivel2_gen (2.2.0.beta4)
@@ -328,7 +328,7 @@ GEM
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-    rails-dom-testing (2.1.1)
+    rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
