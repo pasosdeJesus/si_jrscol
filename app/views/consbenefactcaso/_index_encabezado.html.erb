@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row filtro-fila">
+    <div class="offset-sm-0 col-sm-4 offset-md-1 col-md-1">
+      Filtro por actividad:
+    </div>
+    <div class="offset-sm-0 col-sm-4">
+      <label>
+        Fecha inicial
+        <%= f.input :busactividad_fechaini,
+          maxlength: 10, 
+          size: 10,
+          label: false,
+          placeholder: 'Fecha Inicial',
+          as: :string,
+          input_html: {
+            type: "date",
+            value: Msip::ModeloHelper::poromision(
+              params, :busactividad_fechaini
+            ),
+            'data-enviarautomatico': ''
+          }
+        %>
+      </label>
+    </div>
+    <div class="offset-sm-0 col-sm-4">
+      <label>
+        Fecha final
+        <%= f.input :busactividad_fechafin,
+          maxlength: 10, 
+          size: 10,
+          label: false,
+          placeholder: 'Fecha Final',
+          as: :string,
+          input_html: {
+            type: "date",
+            value: Msip::ModeloHelper::poromision(params, :busactividad_fechafin),
+            'data-enviarautomatico' => ''
+          } %>
+      </label>
+    </div>
+  </div> <!-- row -->
+
+  <div class="row filtro-fila">
+    <div class="offset-sm-2 col-sm-3">
+      <%= render partial: 'contar_filtro_2_1',
+        locals: {f: f} %>
+    </div>
+    <div class="col-sm-3">
+      <label>Convenio financiado
+        <%= render partial: 
+          'cor1440_gen/actividades/filtro_proyectofinanciero',
+          locals: {f: f} %>
+      </label>
+    </div>
+    <div class="col-sm-3" id="marco-filtro-actividadpf">
+      <label>Actividad de marco lógico
+        <%= render partial: 'cor1440_gen/actividades/filtro_actividadpf', 
+          locals: {f: f} %>
+      </label>
+    </div>
+
+  </div> <!-- row -->
+
+  <div class="row filtro-fila">
+    <div class="offset-md-2 col-md-3">
+      Cuenta de registros: <%= @registros.count %>
+    </div>
+    <div class="offset-md-2 col-md-3">
+      <%= f.button :submit, 'Contar', class: 'btn btn-default',
+        'data-turbo' => false %>
+    </div>
+  </div>
+</div>

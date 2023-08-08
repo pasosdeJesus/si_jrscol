@@ -11,7 +11,7 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
   end
 
   def atributos_index
-    [:oficina_caso_o_actividades,
+    [:actividad_oficina_nombres,
      :persona_id,
      :persona_nombres,
      :persona_apellidos,
@@ -26,8 +26,12 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
      :caso_fecharec,
      :caso_titular,
      :caso_telefono,
-     :actividades_ids
+     :actividad_ids
     ]
+  end
+
+  def atributos_filtro_antestabla
+    ['actividad_fechaini', 'actividad_fechafin', 'actividad_oficina_id']
   end
 
   def index_reordenar(c)

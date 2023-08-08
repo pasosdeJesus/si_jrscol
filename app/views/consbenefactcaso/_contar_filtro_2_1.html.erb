@@ -1,0 +1,19 @@
+<% if can? :read, Msip::Oficina %>
+  <label>
+    Oficina
+    <%= f.input :busactividad_oficina_id,
+      collection: Msip::Oficina.habilitados,
+      label: false,
+      label_method: :nombre,
+      value_method: :id,
+      selected: Msip::ModeloHelper::poromision(
+        params, :busactividad_oficina_id
+      ),
+      input_html: { 
+        class: 'chosen-select',
+        multiple: true,
+        'data-enviarautomatico' => ''
+      },
+      include_blank: '-- Oficina' %>
+  </label>
+<% end %>

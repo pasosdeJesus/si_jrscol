@@ -38,15 +38,25 @@ class Consbenefactcaso < ActiveRecord::Base
     where("persona_apellidos ILIKE '%" + 
           ActiveRecord::Base.connection.quote_string(d) + "%'")
   }
+
   scope :filtro_actividad_fechaini, lambda { |f|
-    where('actividad_fecha >= ?', f)
+    where('actividad_max_fecha >= ?', f)
   }
 
   scope :filtro_actividad_fechafin, lambda { |f|
-    where('actividad_fecha <= ?', f)
+    where('actividad_min_fecha <= ?', f)
   }
 
-  scope :filtro_actividad_proyectofinanciero, lambda { |pf|
+  scope :filtro_actividad_oficina_id, lambda { |idof|
+    where(
+      "array_position(actividad_oficina_nombres, "\
+      " (SELECT nombre FROM msip_oficina WHERE id IN (?))) is not null", 
+      idof.select {|n| n != ''}.map(&:to_i)
+    )
+  }
+
+
+  scope :filtro_proyectofinanciero, lambda { |pf|
     where('actividad_id IN (SELECT actividad_id ' +
           'FROM  cor1440_gen_actividad_proyectofinanciero WHERE ' +
           'proyectofinanciero_id=?)', pf)
@@ -58,7 +68,9 @@ class Consbenefactcaso < ActiveRecord::Base
 
 
   def presenta(atr)
-    puts atr
+    if atr.to_s == 'actividad_ids'
+      #debugger
+    end
     m =/^edad_([^_]*)_r_(.*)/.match(atr.to_s)
     if (m && ((m[1] == 'mujer' && self.persona.sexo == Msip::Persona::convencion_sexo[:sexo_femenino].to_s) ||
         (m[1] == 'hombre' && self.persona.sexo == Msip::Persona::convencion_sexo[:sexo_masculino].to_s) ||
@@ -150,8 +162,24 @@ class Consbenefactcaso < ActiveRecord::Base
         END AS caso_titular,
         casosjr.telefono AS caso_telefono,
         ARRAY(SELECT actividad_id FROM (
-          SELECT DISTINCT actividad_id, fecha FROM cor1440_gen_asistencia
-            WHERE persona_id=persona.id ORDER BY 1) AS subaf) AS actividad_ids
+          SELECT DISTINCT actividad_id FROM cor1440_gen_asistencia
+            WHERE persona_id=persona.id ORDER BY 1) AS subaf) AS actividad_ids,
+        ARRAY(SELECT DISTINCT ofnombre FROM (
+          SELECT DISTINCT actividad_id, ac.oficina_id, of.nombre AS ofnombre
+            FROM cor1440_gen_asistencia AS asis
+            JOIN cor1440_gen_actividad AS ac ON asis.actividad_id=ac.id
+            JOIN msip_oficina AS of ON ac.oficina_id=of.id
+            WHERE persona_id=persona.id ORDER BY 1) AS subaf) AS actividad_oficina_nombres,
+        (SELECT MAX(acfecha) FROM (
+          SELECT DISTINCT actividad_id, ac.fecha as acfecha 
+            FROM cor1440_gen_asistencia AS asis 
+            JOIN cor1440_gen_actividad AS ac ON asis.actividad_id=ac.id
+            WHERE persona_id=persona.id ORDER BY 1) AS subaf) AS actividad_max_fecha,
+        (SELECT MIN(acfecha) FROM (
+          SELECT DISTINCT actividad_id, ac.fecha as acfecha 
+            FROM cor1440_gen_asistencia AS asis 
+            JOIN cor1440_gen_actividad AS ac ON asis.actividad_id=ac.id
+            WHERE persona_id=persona.id ORDER BY 1) AS subaf) AS actividad_min_fecha
 
         FROM msip_persona AS persona
         INNER JOIN msip_tdocumento AS tdocumento ON

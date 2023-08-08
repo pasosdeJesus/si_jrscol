@@ -1153,6 +1153,29 @@ CREATE VIEW public.cmunrec AS
 
 
 --
+-- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad (
+    id integer NOT NULL,
+    minutos integer,
+    nombre character varying(500),
+    objetivo character varying(5000),
+    resultado character varying(5000),
+    fecha date NOT NULL,
+    observaciones character varying(5000),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    oficina_id integer NOT NULL,
+    rangoedadac_id integer,
+    usuario_id integer NOT NULL,
+    lugar character varying(500),
+    ubicacionpre_id integer,
+    covid boolean
+);
+
+
+--
 -- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1164,6 +1187,38 @@ CREATE TABLE public.cor1440_gen_asistencia (
     externo boolean,
     orgsocial_id integer,
     perfilorgsocial_id integer
+);
+
+
+--
+-- Name: msip_oficina_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.msip_oficina_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: msip_oficina; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_oficina (
+    id integer DEFAULT nextval('public.msip_oficina_id_seq'::regclass) NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    pais_id integer,
+    departamento_id integer,
+    municipio_id integer,
+    clase_id integer,
+    CONSTRAINT regionsjr_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
 
@@ -1334,11 +1389,33 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso AS
         END AS caso_titular,
     casosjr.telefono AS caso_telefono,
     ARRAY( SELECT subaf.actividad_id
-           FROM ( SELECT DISTINCT cor1440_gen_asistencia.actividad_id,
-                    caso.fecha
+           FROM ( SELECT DISTINCT cor1440_gen_asistencia.actividad_id
                    FROM public.cor1440_gen_asistencia
                   WHERE (cor1440_gen_asistencia.persona_id = persona.id)
-                  ORDER BY cor1440_gen_asistencia.actividad_id) subaf) AS actividad_ids
+                  ORDER BY cor1440_gen_asistencia.actividad_id) subaf) AS actividad_ids,
+    ARRAY( SELECT DISTINCT subaf.ofnombre
+           FROM ( SELECT DISTINCT asis.actividad_id,
+                    ac.oficina_id,
+                    of.nombre AS ofnombre
+                   FROM ((public.cor1440_gen_asistencia asis
+                     JOIN public.cor1440_gen_actividad ac ON ((asis.actividad_id = ac.id)))
+                     JOIN public.msip_oficina of ON ((ac.oficina_id = of.id)))
+                  WHERE (asis.persona_id = persona.id)
+                  ORDER BY asis.actividad_id) subaf) AS actividad_oficina_nombres,
+    ( SELECT max(subaf.acfecha) AS max
+           FROM ( SELECT DISTINCT asis.actividad_id,
+                    ac.fecha AS acfecha
+                   FROM (public.cor1440_gen_asistencia asis
+                     JOIN public.cor1440_gen_actividad ac ON ((asis.actividad_id = ac.id)))
+                  WHERE (asis.persona_id = persona.id)
+                  ORDER BY asis.actividad_id) subaf) AS actividad_max_fecha,
+    ( SELECT min(subaf.acfecha) AS min
+           FROM ( SELECT DISTINCT asis.actividad_id,
+                    ac.fecha AS acfecha
+                   FROM (public.cor1440_gen_asistencia asis
+                     JOIN public.cor1440_gen_actividad ac ON ((asis.actividad_id = ac.id)))
+                  WHERE (asis.persona_id = persona.id)
+                  ORDER BY asis.actividad_id) subaf) AS actividad_min_fecha
    FROM (((((((public.msip_persona persona
      JOIN public.msip_tdocumento tdocumento ON ((persona.tdocumento_id = tdocumento.id)))
      LEFT JOIN public.msip_pais pais ON ((persona.pais_id = pais.id)))
@@ -1348,29 +1425,6 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso AS
      LEFT JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
      LEFT JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.caso_id = caso.id)))
   WITH NO DATA;
-
-
---
--- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad (
-    id integer NOT NULL,
-    minutos integer,
-    nombre character varying(500),
-    objetivo character varying(5000),
-    resultado character varying(5000),
-    fecha date NOT NULL,
-    observaciones character varying(5000),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    oficina_id integer NOT NULL,
-    rangoedadac_id integer,
-    usuario_id integer NOT NULL,
-    lugar character varying(500),
-    ubicacionpre_id integer,
-    covid boolean
-);
 
 
 --
@@ -1509,38 +1563,6 @@ CREATE TABLE public.detallefinanciero (
 CREATE TABLE public.detallefinanciero_persona (
     detallefinanciero_id integer NOT NULL,
     persona_id integer
-);
-
-
---
--- Name: msip_oficina_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.msip_oficina_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: msip_oficina; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_oficina (
-    id integer DEFAULT nextval('public.msip_oficina_id_seq'::regclass) NOT NULL,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    pais_id integer,
-    departamento_id integer,
-    municipio_id integer,
-    clase_id integer,
-    CONSTRAINT regionsjr_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
 
