@@ -31,7 +31,13 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
   end
 
   def atributos_filtro_antestabla
-    ['actividad_fechaini', 'actividad_fechafin', 'actividad_oficina_id']
+    [
+      'actividad_fechaini', 
+      'actividad_fechafin', 
+      'actividad_oficina_id',
+      'actividadpf',
+      'proyectofinanciero'
+    ]
   end
 
   def index_reordenar(c)
@@ -40,13 +46,33 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
 
 
   def vistas_manejadas
-    ['consbenefactcaso']
+    ['Consbenefactcaso']
   end
 
   def index
     ::Consbenefactcaso.refresca_consulta
 
     index_msip(::Consbenefactcaso.all)
+  end
+
+  def self.index_reordenar(registros)
+    registros.reorder([:persona_id])
+  end
+
+  def self.vista_listado(plant, ids, modelo, narch, parsimp, extension,
+                         campoid = :persona_id, 
+                         params = nil, controlador = nil)
+    registros = modelo.where(persona_id: ids)
+    if respond_to?(:index_reordenar)
+      registros = index_reordenar(registros)
+    end
+    case plant.id
+    when 55
+      registros = Consbenefactcaso::vista_reporte_excel(
+        plant, registros, narch, parsimp, extension, params)
+
+    end
+    return registros
   end
 
   def self.valor_campo_compuesto(registro, campo)

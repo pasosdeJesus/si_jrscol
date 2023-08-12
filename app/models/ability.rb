@@ -775,6 +775,36 @@ class Ability < Sivel2Sjr::Ability
       ruta: '/casos'
     },
 
+    'Consbenefactcaso' => {
+      solo_multiple: true,
+      campos: [
+          'id',
+          'persona_nombres',
+          'persona_apellidos',
+          'persona_tdocumento',
+          'persona_numerodocumento',
+          'persona_sexo',
+          'persona_fechanac',
+          'persona_edad_actual',
+          'persona_paisnac',
+          'persona_ultimoperfilorgsocial',
+          'victima_id',
+          'caso_id',
+          'caso_fecharec',
+          'caso_titular',
+          'caso_telefono',
+          'actividad_ids',
+          'actividad_oficina_nombres',
+          'actividad_max_fecha',
+          'actividad_min_fecha',
+          'actividad_proyectofinanciero_ids',
+          'actividad_actividadpf_ids',
+      ],
+      controlador: '::Consbenefactcaso',
+      ruta: '/beneficiarios/caso_y_actividades'
+    },
+
+
     'Consgifmm' => {
       solo_multiple: true,
       campos: [

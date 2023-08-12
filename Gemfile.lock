@@ -37,17 +37,6 @@ GIT
       rails
 
 GIT
-  remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 0af662ce93c888f197d41587acd5c8acdd8e813b
-  branch: main
-  specs:
-    heb412_gen (2.2.0.beta4)
-      mr519_gen
-      msip
-      redcarpet
-      rspreadsheet
-
-GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
   revision: ecd5babeb70ee19c770bb5f2b76cdc6bbc9ce190
   branch: main
@@ -102,6 +91,15 @@ GIT
     sivel2_sjr (2.2.0.beta2)
       rails
       sivel2_gen
+
+PATH
+  remote: ../heb412_gen
+  specs:
+    heb412_gen (2.2.0.beta4)
+      mr519_gen
+      msip
+      redcarpet
+      rspreadsheet
 
 GEM
   remote: https://rubygems.org/

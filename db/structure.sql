@@ -10,6 +10,13 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+--
 -- Name: es_co_utf_8; Type: COLLATION; Schema: public; Owner: -
 --
 
@@ -1176,6 +1183,39 @@ CREATE TABLE public.cor1440_gen_actividad (
 
 
 --
+-- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_actividadpf (
+    actividad_id bigint NOT NULL,
+    actividadpf_id bigint NOT NULL
+);
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
+    actividad_id integer NOT NULL,
+    proyectofinanciero_id integer NOT NULL,
+    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
+);
+
+
+--
 -- Name: cor1440_gen_asistencia; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1415,7 +1455,19 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso AS
                    FROM (public.cor1440_gen_asistencia asis
                      JOIN public.cor1440_gen_actividad ac ON ((asis.actividad_id = ac.id)))
                   WHERE (asis.persona_id = persona.id)
-                  ORDER BY asis.actividad_id) subaf) AS actividad_min_fecha
+                  ORDER BY asis.actividad_id) subaf) AS actividad_min_fecha,
+    ARRAY( SELECT DISTINCT subaf.proyectofinanciero_id
+           FROM ( SELECT DISTINCT apf.proyectofinanciero_id
+                   FROM (public.cor1440_gen_asistencia asis
+                     JOIN public.cor1440_gen_actividad_proyectofinanciero apf ON ((apf.actividad_id = asis.actividad_id)))
+                  WHERE (asis.persona_id = persona.id)
+                  ORDER BY apf.proyectofinanciero_id) subaf) AS actividad_proyectofinanciero_ids,
+    ARRAY( SELECT DISTINCT subaf.actividadpf_id
+           FROM ( SELECT DISTINCT aaf.actividadpf_id
+                   FROM (public.cor1440_gen_asistencia asis
+                     JOIN public.cor1440_gen_actividad_actividadpf aaf ON ((aaf.actividad_id = asis.actividad_id)))
+                  WHERE (asis.persona_id = persona.id)
+                  ORDER BY aaf.actividadpf_id) subaf) AS actividad_actividadpf_ids
    FROM (((((((public.msip_persona persona
      JOIN public.msip_tdocumento tdocumento ON ((persona.tdocumento_id = tdocumento.id)))
      LEFT JOIN public.msip_pais pais ON ((persona.pais_id = pais.id)))
@@ -1425,16 +1477,6 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso AS
      LEFT JOIN public.sivel2_gen_caso caso ON ((victima.caso_id = caso.id)))
      LEFT JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.caso_id = caso.id)))
   WITH NO DATA;
-
-
---
--- Name: cor1440_gen_actividad_actividadpf; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_actividadpf (
-    actividad_id bigint NOT NULL,
-    actividadpf_id bigint NOT NULL
-);
 
 
 --
@@ -1734,29 +1776,6 @@ CREATE SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq OWNED BY public.cor1440_gen_actividad_proyecto.id;
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.cor1440_gen_actividad_proyectofinanciero_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: cor1440_gen_actividad_proyectofinanciero; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_proyectofinanciero (
-    actividad_id integer NOT NULL,
-    proyectofinanciero_id integer NOT NULL,
-    id integer DEFAULT nextval('public.cor1440_gen_actividad_proyectofinanciero_id_seq'::regclass) NOT NULL
-);
 
 
 --
@@ -7231,8 +7250,9 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.etnia_id = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 143)
+           FROM (public.sivel2_gen_conscaso
+             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.caso_id = sivel2_gen_conscaso.caso_id)))
+          WHERE (sivel2_sjr_casosjr.oficina_id = 102)
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -16979,6 +16999,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230712004821'),
 ('20230712163859'),
 ('20230722180204'),
-('20230723011110');
+('20230723011110'),
+('20230811101631');
 
 

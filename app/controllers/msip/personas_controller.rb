@@ -192,7 +192,7 @@ module Msip
     end
 
     def atributos_html_encabezado_formulario
-      {'data-controller': 'msip--sindocaut persona-ppt'}
+      {'data-controller': 'msip--sindocaut visibuem persona-ppt'}
     end
 
     def filtro_etiqueta(ide)

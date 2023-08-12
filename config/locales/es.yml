@@ -61,6 +61,23 @@ es:
         Causasmigracion: Causas de migración
       "consbenefactcaso":
         Consbenefactcaso: Reporte de beneficiarios con casos y actividades
+        actividad_oficina_nombres: Oficina(s)
+        persona_id: Id. Persona
+        persona_nombres: Nombres
+        persona_apellidos: Apellidos
+        persona_tdocumento: Tipo de documento
+        persona_numerodocumento: Número de documento
+        persona_sexo: Sexo
+        persona_fechanac: Fecha de nacimiento
+        persona_edad_actual: Edad actual
+        persona_paisnac: País
+        persona_ultimoperfilorgsocial: Último perfil
+        persona_ultimoperfilorgsocial: Último perfil
+        caso_id: Id. Caso
+        caso_fecharec: Fecha de recepción
+        caso_titular: Titular
+        caso_telefono: Teléfono
+        actividad_ids: Id. Actividades
       "consgifmm":
         Consactividadcaso: Reporte GIFMM detallado
         Consgifmm: GIFMM
