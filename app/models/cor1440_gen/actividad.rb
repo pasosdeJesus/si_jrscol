@@ -106,6 +106,7 @@ module Cor1440Gen
         end
       end
       if docerr.count > 0
+        Rails.logger.info "*OJO* Falta perfil poblacional en asistente(s) con identificacion(es) " + docerr.join(", ") + "."
         errors.add(
           :actividad_asistencia_attributes, 
           "Falta perfil poblacional en asistente(s) con identificacion(es) " +
