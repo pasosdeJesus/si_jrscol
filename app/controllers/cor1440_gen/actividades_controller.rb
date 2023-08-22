@@ -522,6 +522,9 @@ module Cor1440Gen
     # Recibe params[:actividad_id] y params[:caso_id]
     def rapido_benef_caso
       rb = rapido_benef_caso_posibles_asistentes
+      if rb.nil? || rb.count == 0
+        return
+      end
       act = rb[0]
       listap = rb[1]
       if listap.nil?
