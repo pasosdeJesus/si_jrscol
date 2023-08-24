@@ -593,6 +593,8 @@ module Sivel2Sjr
           WHERE caso_id = #{@caso.id};
         DELETE FROM sivel2_sjr_actividad_casosjr
           WHERE casosjr_id = #{@caso.id};
+        UPDATE sivel2_gen_caso SET ubicacion_id=NULL 
+          WHERE id=#{@caso.id};
       SQL
       @caso.casosjr.destroy if @caso.casosjr
       if @caso.casosjr && @caso.casosjr.errors.present?
