@@ -68,18 +68,18 @@ import {
     const targetPage = page;
     await scrollIntoViewIfNeeded([
       [
-        'aria/Perfiles en organización social'
+        'aria/Poblaciones relacionadas con organización social'
       ],
       [
-        'text/Perfiles en organización social'
+        'text/Poblaciones relacionadas con organización social'
       ]
     ], targetPage, timeout);
     const element = await waitForSelectors([
       [
-        'aria/Perfiles en organización social'
+        'aria/Poblaciones relacionadas con organización social'
       ],
       [
-        'text/Perfiles en organización social'
+        'text/Poblaciones relacionadas con organización social'
       ]
     ], targetPage, { timeout, visible: true });
     await element.click({
@@ -212,6 +212,9 @@ import {
   }
   {
     const targetPage = page;
+    const promises = []; 
+    promises.push(targetPage.waitForNavigation());
+
     targetPage.on('dialog', async dialog => {
       console.log(dialog.message());
       await dialog.accept(); //dismiss()
@@ -233,7 +236,7 @@ import {
         y: 13.3125,
       },
     });
-    //await Promise.all(promises);
+    await Promise.all(promises);
   }
 
   {
@@ -246,7 +249,7 @@ import {
       ],
       selectors: [
         [
-          'text/Msip::Perfilorgsocial eliminado.'
+          'text/Msip::Sectororgsocial eliminado.'
         ]
       ]
     }, frame, timeout);

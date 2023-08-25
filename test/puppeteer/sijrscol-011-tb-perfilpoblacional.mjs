@@ -18,7 +18,7 @@ import {
 (async () => {
 
 
-  let timeout = 5000;
+  let timeout = 15000;
   let urlini, browser, page;
   [urlini, browser, page] = await prepararYAutenticarDeAmbiente(timeout);
 
@@ -68,25 +68,21 @@ import {
     const targetPage = page;
     await scrollIntoViewIfNeeded([
       [
-        'aria/Grupos'
+        'aria/Perfiles poblacionales'
       ],
       [
-        'text/Grupos'
+        'text/Perfiles poblacionales'
       ]
     ], targetPage, timeout);
     const element = await waitForSelectors([
       [
-        'aria/Grupos'
+        'aria/Perfiles poblacionales'
       ],
       [
-        'text/Grupos'
+        'text/Perfiles poblacionales'
       ]
     ], targetPage, { timeout, visible: true });
     await element.click({
-      offset: {
-        x: 36.5,
-        y: 9.5,
-      },
     });
   }
 
@@ -216,6 +212,9 @@ import {
   }
   {
     const targetPage = page;
+    const promises = []; 
+    promises.push(targetPage.waitForNavigation());
+
     targetPage.on('dialog', async dialog => {
       console.log(dialog.message());
       await dialog.accept(); //dismiss()
@@ -237,7 +236,7 @@ import {
         y: 13.3125,
       },
     });
-    //await Promise.all(promises);
+    await Promise.all(promises);
   }
 
   {
@@ -250,7 +249,7 @@ import {
       ],
       selectors: [
         [
-          'text/Msip::Grupo eliminado.'
+          'text/Msip::Perfilorgsocial eliminado.'
         ]
       ]
     }, frame, timeout);

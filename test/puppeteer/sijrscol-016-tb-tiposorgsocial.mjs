@@ -68,21 +68,25 @@ import {
     const targetPage = page;
     await scrollIntoViewIfNeeded([
       [
-        'aria/Sectores de organizaciones sociales'
+        'aria/Tipos de organización social'
       ],
       [
-        'text/Sectores de organizaciones sociales'
+        'text/Tipos de organización social'
       ]
     ], targetPage, timeout);
     const element = await waitForSelectors([
       [
-        'aria/Sectores de organizaciones sociales'
+        'aria/Tipos de organización social'
       ],
       [
-        'text/Sectores de organizaciones sociales'
+        'text/Tipos de organización social'
       ]
     ], targetPage, { timeout, visible: true });
     await element.click({
+      offset: {
+        x: 36.5,
+        y: 9.5,
+      },
     });
   }
 
@@ -109,6 +113,7 @@ import {
     });
     await Promise.all(promises);
   }
+
   {
     const targetPage = page;
     await scrollIntoViewIfNeeded([
@@ -212,6 +217,9 @@ import {
   }
   {
     const targetPage = page;
+    const promises = []; 
+    promises.push(targetPage.waitForNavigation());
+
     targetPage.on('dialog', async dialog => {
       console.log(dialog.message());
       await dialog.accept(); //dismiss()
@@ -233,7 +241,7 @@ import {
         y: 13.3125,
       },
     });
-    //await Promise.all(promises);
+    await Promise.all(promises);
   }
 
   {
@@ -246,7 +254,7 @@ import {
       ],
       selectors: [
         [
-          'text/Msip::Sectororgsocial eliminado.'
+          'text/Msip::Tipoorgsocial eliminado.'
         ]
       ]
     }, frame, timeout);
