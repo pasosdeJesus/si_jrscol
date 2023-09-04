@@ -1033,7 +1033,8 @@ CREATE TABLE public.sivel2_sjr_casosjr (
     fechallegadam date,
     llegadam_id integer,
     motivom character varying(5000),
-    asesorfechaini date
+    asesorfechaini date,
+    ninosdelconflicto boolean
 );
 
 
@@ -16976,6 +16977,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230712163859'),
 ('20230722180204'),
 ('20230723011110'),
-('20230811101631');
+('20230811101631'),
+('20230904144334');
 
 

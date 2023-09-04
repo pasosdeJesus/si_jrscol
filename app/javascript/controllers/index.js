@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ChequeoExpandeController from "./chequeo_expande_controller"
+application.register("chequeo-expande", ChequeoExpandeController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

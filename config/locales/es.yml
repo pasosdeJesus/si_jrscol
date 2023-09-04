@@ -321,10 +321,11 @@ es:
       "sivel2_sjr/ayudasjr": 
         "{:derecho_ids=>[]}": Derechos relacionados
       "sivel2_sjr/casosjr": 
-        memo1612: Descripción para Resolución 1612
+        docrefugiado: Número de salvoconducto
         estatus_refugio: Estatús del refugio
         fechadecrefugio: Fecha de declaración
-        docrefugiado: Número de salvoconducto
+        memo1612: Descripción para Resolución 1612
+        ninosdelconflicto: ¿Hay niños, niñas o adolescentes víctimas de violencias relacionadas al conflicto armado?
         tipoanexo: Tipo de anexo
       "sivel2_sjr/clasifdesp": 
         Clasifdesp: Clasificación de Desplazamiento

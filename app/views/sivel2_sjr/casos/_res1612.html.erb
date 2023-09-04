@@ -1,0 +1,23 @@
+<div class="accordion" id="acordeon-res1612" data-controller="chequeo-expande">
+  <div class="accordion-item ">
+    <h5 class="accordion-header mb-0 " id="enc_res1612">
+      <%= s.input :ninosdelconflicto, as: :boolean,
+        input_html: {
+          "data-action" => "change->chequeo-expande#cambiar"
+        }
+      %>
+    </h5>
+    <% collapse = s.object.ninosdelconflicto ? '' : 'collapse' %>
+    <div data-chequeo-expande-target="divexpandir"
+         class="accordion-collapse <%= collapse %>" 
+         aria-labelledby="enc_res1612" 
+         data-bs-parent="acordeon-res1612" 
+         id="res1612" style="">
+         <div class="accordion-body table-responsive" 
+              style="overflow-x:scroll">
+
+         </div>
+    </div>
+  </div>
+</div>
+
