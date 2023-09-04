@@ -111,6 +111,9 @@ Rails.application.routes.draw do
 
     get '/revisaben_detalle' => 'cor1440_gen/actividades#revisaben_detalle'
 
+    # Evita error en prueba dificil
+    get "/admin/oficinas" => "msip/admin/oficinas#index", as: :oficinas_path
+
     root "msip/hogar#index"
 
     namespace :admin do
