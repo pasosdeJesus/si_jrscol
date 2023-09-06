@@ -5,9 +5,9 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   // Conecta con data-controller="persona-ppt"
   // En el campo para el último estatus migratorio agregar
-  // data-persona-ppt-action='change->persona-ppt#cambia_ultimoestatusmigratorio
+  // data-action="change->persona-ppt#cambia_ultimoestatusmigratorio"
   // En el campo del ppt agregar
-  // data-persona-ppt-target='ppt'
+  // data-persona-ppt-target="ppt"
 
   static targets = [ 
     "ppt"
