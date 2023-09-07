@@ -608,6 +608,42 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: actonino; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.actonino (
+    id bigint NOT NULL,
+    caso_id integer NOT NULL,
+    fecha date NOT NULL,
+    ubicacionpre_id integer NOT NULL,
+    presponsable_id integer NOT NULL,
+    categoria_id integer NOT NULL,
+    persona_id integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: actonino_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.actonino_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: actonino_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.actonino_id_seq OWNED BY public.actonino.id;
+
+
+--
 -- Name: agresionmigracion; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -7227,8 +7263,9 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.etnia_id = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 143)
+           FROM (public.sivel2_gen_conscaso
+             JOIN public.sivel2_sjr_casosjr ON ((sivel2_sjr_casosjr.caso_id = sivel2_gen_conscaso.caso_id)))
+          WHERE ((sivel2_gen_conscaso.fecharec >= '2023-01-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2023-07-31'::date) AND (sivel2_sjr_casosjr.oficina_id = 6))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -9132,6 +9169,13 @@ ALTER SEQUENCE public.viadeingreso_id_seq OWNED BY public.viadeingreso.id;
 
 
 --
+-- Name: actonino id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.actonino ALTER COLUMN id SET DEFAULT nextval('public.actonino_id_seq'::regclass);
+
+
+--
 -- Name: agresionmigracion id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -10029,6 +10073,14 @@ ALTER TABLE ONLY public.sivel2_gen_acto
 
 ALTER TABLE ONLY public.sivel2_gen_acto
     ADD CONSTRAINT acto_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: actonino actonino_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.actonino
+    ADD CONSTRAINT actonino_pkey PRIMARY KEY (id);
 
 
 --
@@ -14105,6 +14157,14 @@ ALTER TABLE ONLY public.cor1440_gen_valorcampoact
 
 
 --
+-- Name: actonino fk_rails_338c234631; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.actonino
+    ADD CONSTRAINT fk_rails_338c234631 FOREIGN KEY (caso_id) REFERENCES public.sivel2_gen_caso(id);
+
+
+--
 -- Name: sivel2_gen_anexo_victima fk_rails_33ed22a32a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14825,6 +14885,14 @@ ALTER TABLE ONLY public.detallefinanciero
 
 
 --
+-- Name: actonino fk_rails_94e63d76eb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.actonino
+    ADD CONSTRAINT fk_rails_94e63d76eb FOREIGN KEY (persona_id) REFERENCES public.msip_persona(id);
+
+
+--
 -- Name: cor1440_gen_resultadopf fk_rails_95485cfc7a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -15137,6 +15205,14 @@ ALTER TABLE ONLY public.cor1440_gen_financiador_proyectofinanciero
 
 
 --
+-- Name: actonino fk_rails_cb9d0fd150; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.actonino
+    ADD CONSTRAINT fk_rails_cb9d0fd150 FOREIGN KEY (presponsable_id) REFERENCES public.sivel2_gen_presponsable(id);
+
+
+--
 -- Name: usuario fk_rails_cc636858ad; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -15206,6 +15282,14 @@ ALTER TABLE ONLY public.cor1440_gen_proyectofinanciero
 
 ALTER TABLE ONLY public.msip_datosbio
     ADD CONSTRAINT fk_rails_d18580755b FOREIGN KEY (res_departamento_id) REFERENCES public.msip_departamento(id);
+
+
+--
+-- Name: actonino fk_rails_d18b7bd1f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.actonino
+    ADD CONSTRAINT fk_rails_d18b7bd1f1 FOREIGN KEY (ubicacionpre_id) REFERENCES public.msip_ubicacionpre(id);
 
 
 --
@@ -15318,6 +15402,14 @@ ALTER TABLE ONLY public.cor1440_gen_formulario_mindicadorpf
 
 ALTER TABLE ONLY public.heb412_gen_campoplantillahcm
     ADD CONSTRAINT fk_rails_e0e38e0782 FOREIGN KEY (plantillahcm_id) REFERENCES public.heb412_gen_plantillahcm(id);
+
+
+--
+-- Name: actonino fk_rails_e196eba044; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.actonino
+    ADD CONSTRAINT fk_rails_e196eba044 FOREIGN KEY (categoria_id) REFERENCES public.sivel2_gen_categoria(id);
 
 
 --
@@ -16977,6 +17069,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230722180204'),
 ('20230723011110'),
 ('20230811101631'),
-('20230904144334');
+('20230904144334'),
+('20230906154935');
 
 

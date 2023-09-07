@@ -7,6 +7,16 @@ class Sivel2Gen::Caso < ActiveRecord::Base
   accepts_nested_attributes_for :actosjr, allow_destroy: true, 
     reject_if: :all_blank
 
+  has_many :actonino,
+    foreign_key: "caso_id",
+    validate: true,
+    dependent: :destroy,
+    class_name: '::Actonino'
+  accepts_nested_attributes_for :actonino,
+    allow_destroy: true,
+    reject_if: :all_blank
+
+
   has_one :casosjr, class_name: 'Sivel2Sjr::Casosjr',
     foreign_key: "caso_id", inverse_of: :caso, validate: true, 
     dependent: :destroy

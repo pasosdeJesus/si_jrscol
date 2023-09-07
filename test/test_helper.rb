@@ -41,6 +41,15 @@ PRUEBA_ACTIVIDADPF = {
   resultadopf_id: 1,
 }
 
+PRUEBA_ACTONINO = {
+  caso_id: 1,
+  persona_id: 1,
+  fecha: '2020-06-15',
+  ubicacionpre_id: 1, # Colombia
+  presponsable_id: 8, # GAULA
+  categoria_id: 40 # ASESINATO
+}
+
 PRUEBA_AREA = {
   id: 1,
   nombre: 'A',

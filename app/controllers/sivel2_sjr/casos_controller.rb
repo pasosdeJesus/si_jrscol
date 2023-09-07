@@ -1065,6 +1065,7 @@ module Sivel2Sjr
           :idioma_id,
           :llegada_id, 
           :llegada_idm, 
+          :ninosdelconflicto,
           :proteccion_id, 
           :salida_id, 
           :salida_idm, 

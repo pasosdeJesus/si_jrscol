@@ -114,6 +114,14 @@ Rails.application.routes.draw do
     # Evita error en prueba dificil
     get "/admin/oficinas" => "msip/admin/oficinas#index", as: :oficinas_path
 
+
+    resources :actonino, only: [], param: :index do 
+      member do
+        delete '(:id)', to: "actosninos#destroy", as: "eliminar"
+        post '/' => "actosninos#create", as: "crear"
+      end
+    end
+
     root "msip/hogar#index"
 
     namespace :admin do

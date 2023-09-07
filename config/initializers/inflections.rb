@@ -21,6 +21,7 @@
 
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'accionjuridica', 'accionesjuridicas'
+  inflect.irregular 'actonino', 'actosninos'
   inflect.irregular 'autoridadrefugio', 'autoridadesrefugio'
   inflect.irregular 'benefactividadpf', 'benefactividadpf'
   inflect.irregular 'categoria', 'categorias'

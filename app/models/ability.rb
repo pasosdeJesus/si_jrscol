@@ -983,7 +983,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Msip::Persona
         can :manage, Msip::Ubicacionpre
 
-        can :manage, Sivel2Gen::Acto
+        can :manage, [Sivel2Gen::Acto, ::Actonino]
         can :read, Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
         can [:update, :create, :destroy], Sivel2Gen::Caso,
           casosjr: { asesor: usuario.id, oficina_id:usuario.oficina_id }
@@ -1012,7 +1012,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Msip::Persona
         can :manage, Msip::Ubicacionpre
 
-        can :manage, Sivel2Gen::Acto
+        can :manage, [Sivel2Gen::Acto, ::Actonino]
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
         can [:new, :solicitar], Sivel2Gen::Caso
         can [:update, :create, :destroy, :edit], 
@@ -1040,7 +1040,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Msip::Persona
         can :manage, Msip::Ubicacionpre
 
-        can :manage, Sivel2Gen::Acto
+        can :manage, [Sivel2Gen::Acto, ::Actonino]
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
         can [:new, :solicitar], Sivel2Gen::Caso
         can [:update, :create, :destroy, :poneretcomp], 
@@ -1071,7 +1071,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Caso
-        can :manage, Sivel2Gen::Acto
+        can :manage, [Sivel2Gen::Acto, ::Actonino]
 
         can :read, Jos19::Consactividadcaso
         can :read, ::Consbenefactcaso
@@ -1098,7 +1098,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, Msip::Ubicacionpre
 
         can :read, Sivel2Gen::Caso
-        can :read, Sivel2Gen::Acto
+        can :read, [Sivel2Gen::Acto, ::Actonino]
 
         can :read, Jos19::Consactividadcaso
         can :read, ::Consbenefactcaso
@@ -1133,7 +1133,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Caso
-        can :manage, Sivel2Gen::Acto
+        can :manage, [Sivel2Gen::Acto, ::Actonino]
 
         can :read, Jos19::Consactividadcaso
         can :read, ::Consbenefactcaso

@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 
+// Expande/contrae un div colapsable
 export default class extends Controller {
   // Conecta con data-controller="chequeo-expande"
   // En el botón de chequeo que expandirá:
@@ -16,7 +17,6 @@ export default class extends Controller {
   }
 
   cambiar(e) {
-    debugger
     if (e.target.checked) {
       this.divexpandirTarget.classList.remove('collapse')
     } else {
