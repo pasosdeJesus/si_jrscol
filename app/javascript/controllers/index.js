@@ -4,9 +4,6 @@
 
 import { application } from "./application"
 
-import ChequeoExpandeController from "./chequeo_expande_controller"
-application.register("chequeo-expande", ChequeoExpandeController)
-
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
@@ -30,6 +27,9 @@ application.register("persona-ppt", PersonaPptController)
 
 import RapidobenefcasoController from "./rapidobenefcaso_controller"
 application.register("rapidobenefcaso", RapidobenefcasoController)
+
+import Res1612Controller from "./res1612_controller"
+application.register("res1612", Res1612Controller)
 
 import RespuestacasoController from "./respuestacaso_controller"
 application.register("respuestacaso", RespuestacasoController)

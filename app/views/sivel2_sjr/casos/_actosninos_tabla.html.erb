@@ -1,0 +1,147 @@
+  <div class="panel-body table-responsive" style="min-height: 20em">
+    <div class="div-tabla"> 
+      <div class="div-tabla-cuerpo">
+        <div class="div-tabla-fila"> 
+          <div class="div-tabla-celda" style="max-width: 10em">Fecha</div>
+          <div class="div-tabla-celda" style="max-width: 10em">Municipio</div>
+          <div class="div-tabla-celda" style="max-width: 10em">Presunto Responsable</div>
+          <div class="div-tabla-celda" style="max-width: 10em">Categoría</div>
+          <div class="div-tabla-celda" style="max-width: 10em">Víctima menor</div>
+          <div class="div-tabla-celda" style="max-width: 10em">Acciones</div>
+        </div>
+        <% f.object.actonino.each do |an| %>
+          <div class='div-tabla-fila'>
+            <div class="div-tabla-celda">
+              <%= an.fecha %>
+            </div>
+            <div class="div-tabla-celda">
+              <%= an.ubicacionpre.presenta_nombre %>
+            </div>
+            <div class="div-tabla-celda">
+              <%= an.presponsable.presenta_nombre %>
+            </div>
+            <div class="div-tabla-celda">
+              <%= an.categoria.presenta_nombre %>
+            </div>
+            <div class="div-tabla-celda">
+              <%= an.persona.presenta_nombre %>
+            </div>
+            <div class="div-tabla-celda">
+              <%= link_to "Eliminar",
+                main_app.eliminar_actonino_path(an.id),
+                formmethod: :delete,
+                formnovalidate: true, 
+                class: 'btn btn-sm btn-danger',
+                data: { 
+                  turbo_frame: "actonino_#{f.index}",
+                  "turbo-stream": "turbo-stream",
+                  "turbo-method": :delete,
+                  turbo: true,
+                } %>
+            </div> 
+          </div> <!-- tabla-fila -->
+        <% end %>
+        <div class='div-tabla-fila'>
+          <% an = ::Actonino.new() %>
+          <%= f.simple_fields_for an, 
+            url: main_app.crear_actonino_path(index: 0) do |fan| %>
+            <div class="div-tabla-celda" style="max-width: 10em">
+              <input class="form-control string optional msip-sf-bs-input" 
+                     type="date"
+                     name="caso[actonino][fecha]"
+                     value="<%= Msip::ModeloHelper.poromision_con2p(
+                       params, :caso, :actonino, :fecha, ''
+                     ) %>
+                     id="caso_actonino_fecha"
+                     data-action="change->res1612#actualizar"
+                     style="background-color: rgb(242, 242, 255); color: rgb(0, 0, 0);">
+            </div>
+            <div class="div-tabla-celda" style="max-width: 10em">
+              <% sel = Msip::ModeloHelper.poromision_con2p(
+                  params, :caso, :actonino, :ubicacionpre_id, ''
+              ) %>
+              <%= fan.association :ubicacionpre,
+                collection: Msip::Ubicacionpre.where(pais_id: 170).
+                where('departamento_id IS NOT NULL').
+                where('municipio_id IS NOT NULL').
+                where('clase_id IS NULL').
+                where('lugar IS NULL').
+                where('sitio IS NULL').order(:nombre),
+                label_method: :presenta_nombre,
+                value_method: :id,
+                label: false,
+                selection: sel,
+                input_html: {
+                  "data-action": "change->res1612#actualizar"
+                }
+              %>
+            </div>
+            <div class="div-tabla-celda" style="max-width: 10em">
+              <%= fan.association :presponsable,
+                collection: Sivel2Gen::Presponsable.habilitados,
+                label_method: :presenta_nombre,
+                value_method: :id,
+                label: false,
+                selection: Msip::ModeloHelper.poromision_con2p(
+                  params, :caso, :actonino, :presponsable_id, ''
+                ),
+                input_html: {
+                  "data-action": "change->res1612#actualizar"
+                }
+              %>
+            </div> 
+            <div class="div-tabla-celda" style="max-width: 10em">
+              <%= fan.association :categoria,
+                collection: Sivel2Gen::Categoria.habilitados,
+                label_method: :presenta_nombre,
+                value_method: :id,
+                label: false,
+                selection: Msip::ModeloHelper.poromision_con2p(
+                  params, :caso, :actonino, :categoria_id, ''
+                ),
+                input_html: {
+                  "data-action": "change->res1612#actualizar"
+                }
+              %>
+            </div>
+            <div class="div-tabla-celda" style="max-width: 10em">
+              <%= fan.association :persona,
+                collection: Msip::Persona.where(id: @caso.persona_ids),
+                label_method: :presenta_nombre,
+                value_method: :id,
+                label: false,
+                selection: Msip::ModeloHelper.poromision_con2p(
+                  params, :caso, :actonino, :persona_id, ''
+                ),
+                input_html: {
+                  "data-action": "change->res1612#actualizar"
+                }
+              %>
+            </div>
+            <div class="div-tabla-celda" style="max-width: 10em">
+              <%= link_to "Agregar",
+                main_app.crear_actonino_path(
+                  index: @caso.actonino.size, 
+                  caso_id: @caso.id
+                ),
+                formmethod: :post,
+                formnovalidate: true,
+                class: 'btn btn-sm btn-primary',
+                id: "agregar-actonino", 
+                data:  {
+                  "turbo-stream": "turbo-stream",
+                  "turbo-method": :post,
+                  turbo: true,
+                  "res1612-target": "botonacto"
+                } %>
+              <% if @problema %>
+                <div><%= @problema %></div>
+                <%= render partial: 'msip/hogar/errores',
+                  locals: {f: fan} %>
+              <% end %>
+            </div>
+          <% end %>
+        </div> <!-- tabla-fila -->
+      </div> <!-- tabla-cuerpo -->
+    </div> <!-- tabla -->
+  </div> <!-- panel -->

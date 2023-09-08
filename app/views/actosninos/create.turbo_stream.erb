@@ -1,26 +1,6 @@
 <%= simple_form_for @caso, url: sivel2_gen.caso_path(@caso) do |form| %>
-  <% debugger %>
-  <%= form.simple_fields_for :actonino, 
-    child_index: params[:index] do |cfp_form| %>
-    <%= turbo_stream.replace "agregar-actonino" do %>
-      <%= link_to "Agregar otro acto de violencia contra menor", 
-        main_app.crear_actonino_path(
-          index: cfp_form.index.to_i + 1,
-          caso_id: @caso.id
-        ), 
-        formmethod: :post,
-        formnovalidate: true,
-        class: 'btn btn-sm btn-primary',
-        id: "agregar-actonino",
-        data:  {
-          "turbo-stream": "turbo-stream",
-          "turbo-method": :post,
-          turbo: true
-        } %>
-    <% end %>
-
-    <%= turbo_stream.append "actosninos_marco" do %>
-      <%= render "/sivel2_sjr/casos/actonino_campos", f: cfp_form %>
-    <% end %>
+  <%= turbo_stream.replace "actosninos_marco" do %>
+    <% s = render partial: "sivel2_sjr/casos/actosninos", locals: {f: form} %>
+    <%= s %>
   <% end %>
 <% end %>

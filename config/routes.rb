@@ -115,7 +115,7 @@ Rails.application.routes.draw do
     get "/admin/oficinas" => "msip/admin/oficinas#index", as: :oficinas_path
 
 
-    resources :actonino, only: [], param: :index do 
+    resources :actonino, only: [] do 
       member do
         delete '(:id)', to: "actosninos#destroy", as: "eliminar"
         post '/' => "actosninos#create", as: "crear"

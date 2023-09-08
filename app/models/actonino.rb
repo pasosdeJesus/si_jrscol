@@ -38,8 +38,10 @@ class Actonino < ActiveRecord::Base
       e = Msip::EdadSexoHelper.edad_de_fechanac_fecha(
         persona.anionac, persona.mesnac, persona.dianac,
         fecha.year, fecha.month, fecha.day)
-      if (e>18) then
+      if (e > 18) then
           errors.add(:actonino, "Víctima #{persona.presenta_nombre} es mayor de edad (#{e} años) para la fecha del acto contra menor (#{self.fecha})")
+      elsif (e < 0) then
+          errors.add(:actonino, "Víctima #{persona.presenta_nombre} no habría nacido para para la fecha del acto contra menor (#{self.fecha})")
       end
     end
   end

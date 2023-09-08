@@ -1,10 +1,4 @@
-<%= fields model: @caso do |f| %>
-  <%= f.simple_fields_for :actonino, 
-    child_index: params[:index] do |subf| %>
-    <%= turbo_frame_tag "actonino_#{subf.index}" do %>
-      <%= subf.hidden_field :id, value: params[:id] %>
-      <%= subf.hidden_field :_destroy, value: true %>
-    <% end %>
-  <% end %>
+<%= simple_form_for @caso, url: sivel2_gen.caso_path(@caso) do |form| %>
+  <% s = render partial: "sivel2_sjr/casos/actosninos", locals: {f: form} %>
+  <%= s %>
 <% end %>
-
