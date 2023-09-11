@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/kreeti/kt-paperclip.git
-  revision: 743979bb57f5a680d9bc17399149a759d1e0b873
+  revision: 8a6631b598eb8a248927ab39acd1b10c0c4cf445
   specs:
-    kt-paperclip (7.2.0)
+    kt-paperclip (7.2.1)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
       marcel (~> 1.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 871b724a98da1ac65e1f0efd4d4229395e7494e2
+  revision: b31b37b629a153967554632e528bff41d6991215
   branch: main
   specs:
     cor1440_gen (2.2.0.beta4)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: cbab039989337979889c892058114a4e7d18f2c5
+  revision: c5e293d535502a8f0f174d8bfadb0bf4c9fcd2fe
   branch: main
   specs:
     heb412_gen (2.2.0.beta4)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: e736baa4c0de4167436f3a0a76f0d670620aa30b
+  revision: 7f07c4d1d11e5b040eb99a583745af87f8e58421
   branch: main
   specs:
     jos19 (2.2.0.beta4)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 8802786ac8a7f4ab81ac2d52770ae00513d14fc0
+  revision: 7113d81bb3806cf17eee69a9cddfb94c5d896390
   branch: main
   specs:
     mr519_gen (2.2.0.beta4)
@@ -65,26 +65,9 @@ GIT
       rails
 
 GIT
-  remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 14a0c7e231c5bd4402ca90499c25c08a873a227a
+  remote: https://gitlab.com/pasosdeJesus/msip.git
+  revision: 99626c5eb40dcf06be418f95759bd39c5cc626d1
   branch: main
-  specs:
-    sivel2_gen (2.2.0.beta4)
-      color
-      devise
-      rails
-
-GIT
-  remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
-  revision: b7b5b91dad74c13fc330bc7ddc33623bc3c68b88
-  branch: main
-  specs:
-    sivel2_sjr (2.2.0.beta2)
-      rails
-      sivel2_gen
-
-PATH
-  remote: ../msip
   specs:
     msip (2.2.0.beta4)
       cancancan (~> 3)
@@ -101,70 +84,89 @@ PATH
       twitter_cldr (~> 6)
       will_paginate (~> 3)
 
+GIT
+  remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
+  revision: 14a0c7e231c5bd4402ca90499c25c08a873a227a
+  branch: main
+  specs:
+    sivel2_gen (2.2.0.beta4)
+      color
+      devise
+      rails
+
+GIT
+  remote: https://gitlab.com/pasosdeJesus/sivel2_sjr.git
+  revision: 5cc4a772b288fe24d885eb4e95ebe2664b3c2400
+  branch: main
+  specs:
+    sivel2_sjr (2.2.0.beta2)
+      rails
+      sivel2_gen
+
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    actioncable (7.0.8)
+      actionpack (= 7.0.8)
+      activesupport (= 7.0.8)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activestorage (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    actionmailbox (7.0.8)
+      actionpack (= 7.0.8)
+      activejob (= 7.0.8)
+      activerecord (= 7.0.8)
+      activestorage (= 7.0.8)
+      activesupport (= 7.0.8)
       mail (>= 2.7.1)
       net-imap
       net-pop
       net-smtp
-    actionmailer (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      actionview (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    actionmailer (7.0.8)
+      actionpack (= 7.0.8)
+      actionview (= 7.0.8)
+      activejob (= 7.0.8)
+      activesupport (= 7.0.8)
       mail (~> 2.5, >= 2.5.4)
       net-imap
       net-pop
       net-smtp
       rails-dom-testing (~> 2.0)
-    actionpack (7.0.7.2)
-      actionview (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    actionpack (7.0.8)
+      actionview (= 7.0.8)
+      activesupport (= 7.0.8)
       rack (~> 2.0, >= 2.2.4)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activestorage (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    actiontext (7.0.8)
+      actionpack (= 7.0.8)
+      activerecord (= 7.0.8)
+      activestorage (= 7.0.8)
+      activesupport (= 7.0.8)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.0.7.2)
-      activesupport (= 7.0.7.2)
+    actionview (7.0.8)
+      activesupport (= 7.0.8)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    activejob (7.0.7.2)
-      activesupport (= 7.0.7.2)
+    activejob (7.0.8)
+      activesupport (= 7.0.8)
       globalid (>= 0.3.6)
-    activemodel (7.0.7.2)
-      activesupport (= 7.0.7.2)
-    activerecord (7.0.7.2)
-      activemodel (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
-    activestorage (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    activemodel (7.0.8)
+      activesupport (= 7.0.8)
+    activerecord (7.0.8)
+      activemodel (= 7.0.8)
+      activesupport (= 7.0.8)
+    activestorage (7.0.8)
+      actionpack (= 7.0.8)
+      activejob (= 7.0.8)
+      activerecord (= 7.0.8)
+      activesupport (= 7.0.8)
       marcel (~> 1.0)
       mini_mime (>= 1.1.0)
-    activesupport (7.0.7.2)
+    activesupport (7.0.8)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -232,7 +234,7 @@ GEM
       dotenv (= 2.8.1)
       railties (>= 3.2)
     erubi (1.12.0)
-    execjs (2.8.1)
+    execjs (2.9.0)
     ferrum (0.13)
       addressable (~> 2.5)
       concurrent-ruby (~> 1.1)
@@ -271,7 +273,7 @@ GEM
     mime-types-data (3.2023.0808)
     mini_mime (1.1.5)
     mini_portile2 (2.8.4)
-    minitest (5.19.0)
+    minitest (5.20.0)
     msgpack (1.7.2)
     net-imap (0.3.7)
       date
@@ -311,20 +313,20 @@ GEM
     rack (2.2.8)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rails (7.0.7.2)
-      actioncable (= 7.0.7.2)
-      actionmailbox (= 7.0.7.2)
-      actionmailer (= 7.0.7.2)
-      actionpack (= 7.0.7.2)
-      actiontext (= 7.0.7.2)
-      actionview (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activemodel (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activestorage (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    rails (7.0.8)
+      actioncable (= 7.0.8)
+      actionmailbox (= 7.0.8)
+      actionmailer (= 7.0.8)
+      actionpack (= 7.0.8)
+      actiontext (= 7.0.8)
+      actionview (= 7.0.8)
+      activejob (= 7.0.8)
+      activemodel (= 7.0.8)
+      activerecord (= 7.0.8)
+      activestorage (= 7.0.8)
+      activesupport (= 7.0.8)
       bundler (>= 1.15.0)
-      railties (= 7.0.7.2)
+      railties (= 7.0.8)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -344,9 +346,9 @@ GEM
     rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    railties (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
+    railties (7.0.8)
+      actionpack (= 7.0.8)
+      activesupport (= 7.0.8)
       method_source
       rake (>= 12.2)
       thor (~> 1.0)
