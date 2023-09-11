@@ -10,9 +10,9 @@ class CatNombreRes1612 < ActiveRecord::Migration[7.0]
       UPDATE sivel2_gen_categoria
         SET nombre_res1612 = 'ASESINATO' where id=3000; -- HOMICIDIO EN PERSONA PROTEGIDA
       INSERT INTO sivel2_gen_categoria (id, nombre, nombre_res1612, tipocat, supracategoria_id,
-        fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES
+        fechacreacion, created_at, updated_at) VALUES
         (3023, 'MUTILACIÓN', 'MUTILACIÓN', 'I', 100, 
-         '2023-09-11', '2023-09-11', '2023-09-11', '2023-09-11');
+         '2023-09-11', '2023-09-11', '2023-09-11');
       UPDATE sivel2_gen_categoria
         SET nombre_res1612 = 'LESIONES PERSONALES' where id=3004; -- HERIDAS
       UPDATE sivel2_gen_categoria
@@ -32,9 +32,9 @@ class CatNombreRes1612 < ActiveRecord::Migration[7.0]
       UPDATE sivel2_gen_categoria
         SET nombre_res1612 = 'DESPLAZAMIENTO FORZADO' WHERE id=3509; -- DESPLAZAMIENTO FORZADO
       INSERT INTO sivel2_gen_categoria (id, nombre, nombre_res1612, tipocat, supracategoria_id,
-        fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES
+        fechacreacion, created_at, updated_at) VALUES
         (3024, 'OTRO', 'OTRO', 'I', 100,
-         '2023-09-11', '2023-09-11', '2023-09-11', '2023-09-11');
+         '2023-09-11', '2023-09-11', '2023-09-11');
     SQL
   end
   def down

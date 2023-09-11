@@ -6861,6 +6861,7 @@ CREATE TABLE public.sivel2_gen_presponsable (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     observaciones character varying(5000),
+    nombre_res1612 character varying(128),
     CONSTRAINT presponsable_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -17072,6 +17073,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230811101631'),
 ('20230904144334'),
 ('20230906154935'),
-('20230911155127');
+('20230911155127'),
+('20230911165625');
 
 

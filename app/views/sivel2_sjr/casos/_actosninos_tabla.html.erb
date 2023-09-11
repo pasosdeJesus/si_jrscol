@@ -78,10 +78,14 @@
               %>
             </div>
             <div class="div-tabla-celda" style="max-width: 10em">
+              <% colpr = Sivel2Gen::Presponsable.habilitados.
+              where("nombre_res1612 IS NOT NULL").
+              where("TRIM(nombre_res1612) <> ''").
+              order(:nombre_res1612) %>
               <%= fan.association :presponsable,
-                collection: Sivel2Gen::Presponsable.habilitados,
+                collection: colpr,
                 include_blank: true,
-                label_method: :presenta_nombre,
+                label_method: lambda {|r| r.nombre_res1612},
                 value_method: :id,
                 label: false,
                 selected: Msip::ModeloHelper.poromision_con2p(
