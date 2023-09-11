@@ -6667,6 +6667,7 @@ CREATE TABLE public.sivel2_gen_categoria (
     updated_at timestamp without time zone,
     observaciones character varying(5000),
     supracategoria_id integer,
+    nombre_res1612 character varying(128),
     CONSTRAINT categoria_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion))),
     CONSTRAINT categoria_tipocat_check CHECK (((tipocat = 'I'::bpchar) OR (tipocat = 'C'::bpchar) OR (tipocat = 'O'::bpchar)))
 );
@@ -17070,6 +17071,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230723011110'),
 ('20230811101631'),
 ('20230904144334'),
-('20230906154935');
+('20230906154935'),
+('20230911155127');
 
 

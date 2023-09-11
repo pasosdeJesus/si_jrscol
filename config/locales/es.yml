@@ -300,6 +300,8 @@ es:
         asesorhistorico: Asesores históricos
       "sivel2_gen/caso_presponsable": 
         presponsable: Presunto responsable
+      "sivel2_gen/categoria": 
+        nombre_res1612: "Nombre para Res. 1612"
       "sivel2_gen/presponsable": 
         presponsable: presunto responsable
       "sivel2_sjr/accionjuridica": 

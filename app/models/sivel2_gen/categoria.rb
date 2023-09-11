@@ -13,5 +13,9 @@ class Sivel2Gen::Categoria < ActiveRecord::Base
     class_name: 'Sivel2Sjr::Migracion',
     foreign_key: :causaRefugio_id
 
+  scope :filtro_nombre_res1612, lambda {|n|
+    where("unaccent(sivel2_gen_categoria.nombre_res1612) ILIKE '%' || unaccent(?) || '%'", n)
+  }
+
 end
 
