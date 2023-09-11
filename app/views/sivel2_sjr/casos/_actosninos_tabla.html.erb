@@ -151,11 +151,21 @@
               %>
             </div>
             <div class="div-tabla-celda" style="max-width: 10em">
-              <%= link_to "Agregar",
-                main_app.crear_actonino_path(
-                  index: @caso.actonino.size,
-                  caso_id: @caso.id
-                ),
+              <% url = main_app.crear_actonino_path(
+                index: @caso.actonino.size,
+                caso_id: @caso.id).dup %>
+              <% urlsep = "&" %>
+              <% [
+                :fecha, :ubicacionpre_id, :presponsable_id, :categoria_id,
+                :persona_id ].each do |s| %>
+                <% if params && params[:caso] && params[:caso][:actonino] &&
+                    params[:caso][:actonino][s] then %>
+                  <% url << "#{urlsep}caso[actonino][#{s.to_s}]="\
+                    "#{params[:caso][:actonino][s]}" %>
+                  <% urlsep = "&" %>
+                <% end %>
+              <% end %>
+              <%= link_to "Agregar", url,
                 formmethod: :post,
                 formnovalidate: true,
                 class: "btn btn-sm btn-primary",
