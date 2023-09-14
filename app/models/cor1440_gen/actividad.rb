@@ -964,7 +964,7 @@ module Cor1440Gen
         'Total mujeres beneficiadas',
         'Total hombres beneficiados',
         'Total beneficiarios sin sexo',
-        'Total beneficiarios intersexuales',
+        'Total beneficiarios otro sexo',
         'Mujeres JRS',
         'Hombres JRS',
         '0-5',
@@ -1079,7 +1079,7 @@ module Cor1440Gen
         # hoja.add_border "B3:D3", { edges: [:top], style: :thick }
 
         l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
-          ['Sin sexo'] + ([''] * 6) + ['Intersexuales'] + ([''] * 6)
+          ['Sin sexo'] + ([''] * 6) + ['Otro sexo'] + ([''] * 6)
         hoja.add_row l2, style: [estilo_encabezado] * numcol
 
         hoja.merge_cells("X7:AD7")

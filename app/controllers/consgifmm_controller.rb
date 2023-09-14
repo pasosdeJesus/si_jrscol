@@ -298,12 +298,12 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.presenta('beneficiarios_hombres_18_25_ids').split(",").count,
           reg.presenta('beneficiarios_hombres_26_59_ids').split(",").count,
           reg.presenta('beneficiarios_hombres_60_o_mas_ids').split(",").count,
-          reg.presenta('beneficiarios_otrosexo_0_5_ids').split(",").count,
-          reg.presenta('beneficiarios_otrosexo_6_12_ids').split(",").count,
-          reg.presenta('beneficiarios_otrosexo_13_17_ids').split(",").count,
-          reg.presenta('beneficiarios_otrosexo_18_25_ids').split(",").count,
-          reg.presenta('beneficiarios_otrosexo_26_59_ids').split(",").count,
-          reg.presenta('beneficiarios_otrosexo_60_o_mas_ids').split(",").count,
+          reg.presenta('beneficiarios_intersexuales_0_5_ids').split(",").count,
+          reg.presenta('beneficiarios_intersexuales_6_12_ids').split(",").count,
+          reg.presenta('beneficiarios_intersexuales_13_17_ids').split(",").count,
+          reg.presenta('beneficiarios_intersexuales_18_25_ids').split(",").count,
+          reg.presenta('beneficiarios_intersexuales_26_59_ids').split(",").count,
+          reg.presenta('beneficiarios_intersexuales_60_o_mas_ids').split(",").count,
           reg.presenta('beneficiarios_con_discapacidad_ids').split(",").count,
           reg.presenta('beneficiarios_afrodescendientes_ids').split(",").count,
           reg.presenta('beneficiarios_indigenas_ids').split(",").count,
@@ -317,7 +317,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.presenta('beneficiarias_mujeres_sinedad_ids').split(",").count,
           reg.presenta('beneficiarios_hombres_sinedad_ids').split(",").count,
           reg.presenta('beneficiarios_sinsexo_sinedad_ids').split(",").count,
-          reg.presenta('beneficiarios_otrosexo_sinedad_ids').split(",").count,
+          reg.presenta('beneficiarios_intersexuales_sinedad_ids').split(",").count,
         ]
         hoja.add_row l, style: estilo_base
       end
