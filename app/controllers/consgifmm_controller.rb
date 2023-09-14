@@ -232,7 +232,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
         '*Mujeres sin edad',
         '*Hombres sin edad',
         '*Sin sexo y sin edad',
-        '*Intersexuales sin edad'
+        '*Otro sexo y sin edad'
       ]
       numfilas = l.length
       colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
@@ -240,7 +240,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
       hoja.merge_cells("A1:#{colfin}1")
 
       l2 = ([''] * 33) + ['Mujeres'] + ([''] * 5) + ['Hombres'] + ([''] * 5) +
-        ['Intersexuales'] + ([''] * 5)
+        ['Otro sexo'] + ([''] * 5)
       hoja.add_row l2, style: [estilo_encabezado] * numfilas
       hoja.merge_cells("AH6:AM6")
       hoja.merge_cells("AN6:AS6")
@@ -298,12 +298,12 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.presenta('beneficiarios_hombres_18_25_ids').split(",").count,
           reg.presenta('beneficiarios_hombres_26_59_ids').split(",").count,
           reg.presenta('beneficiarios_hombres_60_o_mas_ids').split(",").count,
-          reg.presenta('beneficiarios_intersexuales_0_5_ids').split(",").count,
-          reg.presenta('beneficiarios_intersexuales_6_12_ids').split(",").count,
-          reg.presenta('beneficiarios_intersexuales_13_17_ids').split(",").count,
-          reg.presenta('beneficiarios_intersexuales_18_25_ids').split(",").count,
-          reg.presenta('beneficiarios_intersexuales_26_59_ids').split(",").count,
-          reg.presenta('beneficiarios_intersexuales_60_o_mas_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_0_5_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_6_12_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_13_17_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_18_25_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_26_59_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_60_o_mas_ids').split(",").count,
           reg.presenta('beneficiarios_con_discapacidad_ids').split(",").count,
           reg.presenta('beneficiarios_afrodescendientes_ids').split(",").count,
           reg.presenta('beneficiarios_indigenas_ids').split(",").count,
@@ -317,7 +317,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.presenta('beneficiarias_mujeres_sinedad_ids').split(",").count,
           reg.presenta('beneficiarios_hombres_sinedad_ids').split(",").count,
           reg.presenta('beneficiarios_sinsexo_sinedad_ids').split(",").count,
-          reg.presenta('beneficiarios_intersexuales_sinedad_ids').split(",").count,
+          reg.presenta('beneficiarios_otrosexo_sinedad_ids').split(",").count,
         ]
         hoja.add_row l, style: estilo_base
       end

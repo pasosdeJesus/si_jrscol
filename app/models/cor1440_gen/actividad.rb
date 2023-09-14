@@ -804,7 +804,7 @@ module Cor1440Gen
           'Total mujeres beneficiadas',
           'Total hombres beneficiados',
           'Total beneficiarios sin sexo',
-          'Total beneficiarios intersexuales',
+          'Total beneficiarios otro sexo',
           'Equipo mujeres JRS',
           'Equipo hombres JRS',
           'Mujeres 0-5',
@@ -828,13 +828,13 @@ module Cor1440Gen
           'Sin sexo 27-59',
           'Sin sexo 60+',
           'Sin sexo SRE',
-          'Intersexuales 0-5',
-          'Intersexuales 6-12',
-          'Intersexuales 13-17',
-          'Intersexuales 18-26',
-          'Intersexuales 27-59',
-          'Intersexuales 60+',
-          'Intersexuales SRE'
+          'Otro sexo 0-15',
+          'Otro sexo 6-12',
+          'Otro sexo 13-17',
+          'Otro sexo 18-26',
+          'Otro sexo 27-59',
+          'Otro sexo 60+',
+          'Otro sexo SRE'
         ]
         numcol = l.length
         colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
@@ -842,7 +842,7 @@ module Cor1440Gen
         hoja.merge_cells("A1:#{colfin}1")
 
         l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
-          ['Sin sexo'] + ([''] * 6) + ['Intersexuales'] + ([''] * 6)
+          ['Sin sexo'] + ([''] * 6) + ['Otro sexo'] + ([''] * 6)
         hoja.add_row l2, style: [estilo_encabezado] * numcol
         hoja.merge_cells("X6:AD6")
         hoja.merge_cells("AE6:AK6")

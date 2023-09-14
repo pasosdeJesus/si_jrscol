@@ -4,7 +4,7 @@ module ConteosHelper
   # Da conteo de asistentes a un actividad como una tabla
   # por Rango de Edad y Sexo
   # @return diccionario primer índice es id de rango de edad,
-  #         segundo índice es sexo ('M', 'H', 'S' o 'I')  (o el de
+  #         segundo índice es sexo ('M', 'H', 'S' o 'O')  (o el de
   #         la convención de la base de datos en ese orden).
   def genera_dicc_poblacion_de_asistentes(a)
     personas = {}
