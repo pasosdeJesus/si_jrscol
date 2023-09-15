@@ -922,7 +922,7 @@ class Ability < Sivel2Sjr::Ability
 
   }
 
-  def campos_plantillas
+  def self.campos_plantillas
     Heb412Gen::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone.
       merge(Sivel2Sjr::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone).
       merge(Cor1440Gen::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone).
