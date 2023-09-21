@@ -7209,31 +7209,31 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_os_0_5_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_os_0_5_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_os_6_12_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_os_6_12_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_os_13_17_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_os_13_17_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_os_18_26_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_os_18_26_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_os_27_59_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_os_27_59_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_os_60m_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_os_60m_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_os_se_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_os_se_fecha_salida,
     array_to_string(ARRAY( SELECT (((((((supracategoria.tviolencia_id)::text || ':'::text) || categoria.supracategoria_id) || ':'::text) || categoria.id) || ' '::text) || (categoria.nombre)::text)
            FROM public.sivel2_gen_categoria categoria,
             public.sivel2_gen_supracategoria supracategoria,
@@ -7266,7 +7266,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 144)
+          WHERE ((sivel2_gen_conscaso.fecharec >= '2023-06-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2023-09-07'::date))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;

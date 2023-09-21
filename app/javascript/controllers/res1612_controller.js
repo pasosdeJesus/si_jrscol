@@ -40,7 +40,7 @@ export default class extends Controller {
   }
 
   cambiar(e) {
-    if (e.target.checked) {
+    if (e.target.value == 'true') {
       this.divexpandirTarget.classList.remove('collapse')
     } else {
       this.divexpandirTarget.classList.add('collapse')

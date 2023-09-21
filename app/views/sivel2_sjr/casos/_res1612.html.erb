@@ -1,14 +1,30 @@
 <div class="accordion" id="acordeon-res1612" data-controller="res1612">
   <div class="accordion-item ">
-    <h5 class="accordion-header mb-0 " id="enc_res1612">
-      <%= s.input :ninosdelconflicto, 
-        as: :boolean,
-        input_html: {
-          "data-action" => "change->res1612#cambiar"
-        }
-      %>
-    </h5>
-    <% colapsar = s.object.ninosdelconflicto ? '' : 'collapse' %>
+    <div class="accordion-header mb-0 " id="enc_res1612">
+
+      <fieldset class="form-group radio_buttons optional caso_casosjr_ninosdelconflicto">
+        <legend class="col-form-label pt-0">En este caso ¿Hay niños, niñas o adolescentes víctimas de violencias relacionadas al conflicto armado?
+          <input type="hidden" name="caso[casosjr_attributes][ninosdelconflicto]" value="" autocomplete="off">
+          <input 
+             class="form-check-input radio_buttons optional msip-sf-bs-input" 
+             data-action="change->res1612#cambiar" 
+             type="radio" 
+             value="true" 
+             name="caso[casosjr_attributes][ninosdelconflicto]" 
+             id="caso_casosjr_attributes_ninosdelconflicto_true">
+           <label class="form-check-label collection_radio_buttons" 
+                  for="caso_casosjr_attributes_ninosdelconflicto_true">
+             Si
+           </label>
+          <input class="form-check-input radio_buttons optional msip-sf-bs-input" data-action="change->res1612#cambiar" readonly="readonly" type="radio" value="false" name="caso[casosjr_attributes][ninosdelconflicto]" id="caso_casosjr_attributes_ninosdelconflicto_false">
+          <label class="form-check-label collection_radio_buttons" 
+                 for="caso_casosjr_attributes_ninosdelconflicto_false">
+            No
+          </label>
+        </legend>
+      </fieldset>
+
+       <% colapsar = s.object.ninosdelconflicto ? '' : 'collapse' %>
     <div data-res1612-target="divexpandir"
          class="accordion-collapse <%= colapsar %>" 
          aria-labelledby="enc_res1612" 
