@@ -240,8 +240,8 @@ class Consbenefactcaso < ActiveRecord::Base
         height: 30, style: estilo_titulo
       hoja.add_row []
       hoja.add_row [
-        'Fecha inicial', params['filtro']['busactividad_fechaini'], 
-        'Fecha final', params['filtro']['busactividad_fechafin'] ], style: estilo_base
+        'Fecha inicial de act.', params['filtro']['busactividad_fechaini'], 
+        'Fecha final de act.', params['filtro']['busactividad_fechafin'] ], style: estilo_base
       idof = (!params['filtro'] || 
               !params['filtro']['busactividad_oficina_id'] || 
               params['filtro']['busactividad_oficina_id'] == ''
