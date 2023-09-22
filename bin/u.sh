@@ -55,6 +55,7 @@ $DOAS su - ${USUARIO_AP} -c "cd $DIRAP;
     SMTP_USUARIO=\"${SMTP_USUARIO}\" \
     SMTP_CLAVE=\"${SMTP_CLAVE}\" \
     HEB412_RUTA=${HEB412_RUTA} \
+    RUBY_YJIT_ENABLE=1 \
     bundle exec /usr/local/bin/unicorn_rails \
     -c $DIRAP/config/unicorn.conf.minimal.rb  -E production -D"
 
