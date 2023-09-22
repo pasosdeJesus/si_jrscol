@@ -49,10 +49,72 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
     ['Consbenefactcaso']
   end
 
-  def index
-    ::Consbenefactcaso.refresca_consulta
 
-    index_msip(::Consbenefactcaso.all)
+  def index
+    t = Benchmark.measure {
+      contar_registros
+    }
+    puts "** Tiempo contar_registros: #{t.real}"
+
+    t = Benchmark.measure {
+      index_msip(::Consbenefactcaso.all)
+    }
+    puts "** Tiempo index_msip: #{t.real}"
+  end
+
+  def contar_registros
+    # Parámetros
+    @contarb_pfid = params[:filtro] && 
+      params[:filtro][:busproyectofinanciero] ?
+      params[:filtro][:busproyectofinanciero].select{|i| i != ""}.map(&:to_i) :
+      []
+
+    @contarb_actividadpfid= params[:filtro] &&
+      params[:filtro][:busactividadpf] ?
+      params[:filtro][:busactividadpf].select{|i| i != ""}.map(&:to_i) :
+      []
+
+    @contarb_oficinaid = params[:filtro] && 
+      params[:filtro][:busactividad_oficina_id] && 
+      params[:filtro][:busactividad_oficina_id] != "" ?  
+      params[:filtro][:busactividad_oficina_id].select{
+        |i| i != ''
+      }.map(&:to_i) : []
+
+    @contarb_fechaini = nil
+    if !params[:filtro] || !params[:filtro][:busactividad_fechaini] || 
+        params[:filtro][:busactividad_fechaini] != ""
+      if !params[:filtro] || !params[:filtro][:busactividad_fechaini]
+        @contarb_fechaini = Msip::FormatoFechaHelper.inicio_semestre_ant
+      else
+        @contarb_fechaini = Msip::FormatoFechaHelper.fecha_local_estandar(
+          params[:filtro][:busactividad_fechaini]
+        )
+      end
+    end
+
+    @contarb_fechafin = nil
+    if !params[:filtro] || !params[:filtro][:busactividad_fechafin] || 
+        params[:filtro][:busactividad_fechafin] != ""
+      if !params[:filtro] || !params[:filtro][:busactividad_fechafin]
+        @contarb_fechafin = Msip::FormatoFechaHelper.fin_semestre_ant
+      else
+        @contarb_fechafin = Msip::FormatoFechaHelper.fecha_local_estandar(
+          params[:filtro][:busactividad_fechafin])
+      end
+    end
+
+    @contarb_actividad_ids = []
+    if params[:filtro] && params[:filtro][:busactividad_ids]
+      @contarb_actividad_ids = params[:filtro][:busactividad_ids].split(',').
+        map(&:to_i)
+    end
+
+    Consbenefactcaso.crea_consulta(
+      nil, @contarb_pfid, @contarb_actividadpfid, 
+      @contarb_oficinaid, @contarb_fechaini, 
+      @contarb_fechafin, @contarb_actividad_ids
+    )
   end
 
   def self.index_reordenar(registros)

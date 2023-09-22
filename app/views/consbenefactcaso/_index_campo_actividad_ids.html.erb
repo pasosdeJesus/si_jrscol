@@ -1,9 +1,10 @@
 <% sep = "" %>
 <% registro.actividad_ids.each do |aid| %>
-  <%= sep %>
-  <%= link_to aid,
-    cor1440_gen.actividad_path(aid),
-      target: "_blank" 
-    %>
-  <% sep = ", " %>
+  <% if aid %>
+    <%= sep %>
+    <%= link_to aid,
+      cor1440_gen.actividad_path(aid),
+      target: "_blank" %>
+    <% sep = ", " %>
+  <% end %>
 <% end %>

@@ -14,9 +14,7 @@
           as: :string,
           input_html: {
             type: "date",
-            value: Msip::ModeloHelper::poromision(
-              params, :busactividad_fechaini
-            ),
+            value: @contarb_fechaini,
             'data-enviarautomatico': ''
           }
         %>
@@ -33,8 +31,8 @@
           as: :string,
           input_html: {
             type: "date",
-            value: Msip::ModeloHelper::poromision(params, :busactividad_fechafin),
-            'data-enviarautomatico' => ''
+            value: @contarb_fechafin,
+            'data-enviarautomatico': ''
           } %>
       </label>
     </div>
@@ -49,13 +47,13 @@
       <label>Convenio financiado
         <%= render partial: 
           'cor1440_gen/actividades/filtro_proyectofinanciero',
-          locals: {f: f} %>
+          locals: {f: f, sencillo: false} %>
       </label>
     </div>
     <div class="col-sm-3" id="marco-filtro-actividadpf">
       <label>Actividad de marco lógico
         <%= render partial: 'cor1440_gen/actividades/filtro_actividadpf', 
-          locals: {f: f} %>
+          locals: {f: f, sencillo: false} %>
       </label>
     </div>
 

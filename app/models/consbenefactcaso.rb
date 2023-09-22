@@ -20,41 +20,6 @@ class Consbenefactcaso < ActiveRecord::Base
 
 
 
-  scope :filtro_actividad_ids, lambda { |ids|
-    nids =ids.split(/[ ,]/).select{|n| n != ''}
-    if nids != []
-      cond = "actividad_ids && ARRAY[#{nids.join(",")}]"
-      where(cond)
-    end
-  }
-
-  scope :filtro_actividad_fechaini, lambda { |f|
-    where('actividad_max_fecha >= ?', f)
-  }
-
-  scope :filtro_actividad_fechafin, lambda { |f|
-    where('actividad_min_fecha <= ?', f)
-  }
-
-  scope :filtro_actividad_oficina_id, lambda { |idof|
-    nidof=idof.select{|n| n != ''}
-    if nidof != []
-      where(
-        "actividad_oficina_nombres && "\
-        " ARRAY(SELECT nombre FROM msip_oficina WHERE id IN (?))",
-        nidof.map(&:to_i)
-      )
-    end
-  }
-
-  scope :filtro_actividadpf, lambda { |a|
-    na =a.select{|n| n != ''}
-    if na != []
-      cond = "actividad_actividadpf_ids && ARRAY[#{na.join(",")}::bigint]"
-      where(cond)
-    end
-  }
-
   scope :filtro_caso_id, lambda { |f|
     where(caso_id: f)
   }
@@ -84,30 +49,80 @@ class Consbenefactcaso < ActiveRecord::Base
     where(persona_tdocumento: f)
   }
 
-  scope :filtro_proyectofinanciero, lambda { |pf|
-    cond = "actividad_proyectofinanciero_ids && ARRAY[#{pf.join(",")}]"
-    puts "OJO cond=#{cond}"
-    where(cond)
-  }
-
-
-  def presenta(atr)
-    if atr.to_s == 'actividad_ids'
-      #debugger
+  # Genera consulta
+  # @params ordenar_por Criterio de ordenamiento
+  # @params pf_ids Lista con identificaciones de proyectos financieros o []
+  # @params actividadpf_ids Lista con identificaciones de actividads de pfs o []
+  # @params oficina_ids Lista con identificación de las oficina o []
+  # @params fechaini Fecha inicial en formato estándar o nil
+  # @params fechafin Fecha final en formato estándar o nil
+  # @params actividad_ids Lista de actividades a las cuales limitar
+  #
+  def self.crea_consulta(ordenar_por = nil, pf_ids, actividadpf_ids,
+                         oficina_ids, fechaini, fechafin, actividad_ids)
+    if ARGV.include?("db:migrate")
+      return
     end
-    case atr
-    when 'actividad_oficina_nombres'
-      self.actividad_oficina_nombres.join(", ")
-    when 'actividad_ids'
-      self.actividad_ids.join(", ")
-    else
-      presenta_gen(atr)
-    end
-  end
 
-  def self.consulta
-    # Al renombrar persona_id por id se hacia lenta la generación
-    "SELECT persona.id AS persona_id,
+    wherebe = "TRUE" 
+    if oficina_ids && oficina_ids.count > 0
+      wherebe << " AND ac.oficina_id IN "\
+        "(#{oficina_ids.map(&:to_i).join(',')})"
+    end
+    if pf_ids && pf_ids.count > 0
+      wherebe << " AND apf.proyectofinanciero_id IN "\
+        "(#{pf_ids.map(&:to_i).join(',')})"
+    end
+    if actividadpf_ids && actividadpf_ids.count > 0
+      wherebe << " AND aapf.actividadpf_id IN "\
+        "(#{actividadpf_ids.map(&:to_i).join(',')})"
+    end
+    if fechaini
+      wherebe << " AND ac.fecha >= "\
+        "'#{Msip::SqlHelper.escapar(fechaini)}'"
+    end
+    if fechafin
+      wherebe << " AND ac.fecha <= "\
+        "'#{Msip::SqlHelper.escapar(fechafin)}'"
+    end
+    if actividad_ids.count > 0
+      wherebe << " AND ac.id IN (#{actividad_ids.join(',')})"
+    end
+
+    consulta = <<-SQL
+      DROP MATERIALIZED VIEW IF EXISTS consbenefactcaso2 CASCADE;
+      CREATE MATERIALIZED VIEW consbenefactcaso2 AS 
+        SELECT c1.persona_id,
+        ARRAY_AGG(DISTINCT c1.actividad_id) AS actividad_ids,
+        ARRAY_AGG(DISTINCT c1.actividad_oficina_id) AS actividad_oficina_ids
+        FROM (
+          SELECT DISTINCT sub.persona_id,
+            sub.actividad_id,
+            sub.actividad_oficina_id
+            FROM ( SELECT per.id AS persona_id,
+              ac.id AS actividad_id,
+              ac.fecha AS actividad_fecha,
+              ac.oficina_id AS actividad_oficina_id,
+              apf.proyectofinanciero_id AS actividad_proyectofinanciero_id,
+              aapf.actividadpf_id AS actividad_actividadpf_id
+              FROM msip_persona AS per
+              LEFT JOIN cor1440_gen_asistencia asis ON per.id = asis.persona_id
+              LEFT JOIN cor1440_gen_actividad ac ON ac.id = asis.actividad_id
+              LEFT JOIN cor1440_gen_actividad_proyectofinanciero apf ON apf.actividad_id = ac.id
+              LEFT JOIN cor1440_gen_actividad_actividadpf aapf ON aapf.actividad_id = ac.id
+              LEFT JOIN cor1440_gen_actividadpf apf2 ON apf2.proyectofinanciero_id = apf.proyectofinanciero_id
+              WHERE #{wherebe}
+          ) AS sub
+        ) AS c1
+      GROUP BY 1
+    SQL
+
+    Consbenefactcaso.connection.execute consulta
+
+    consulta = <<-SQL
+      DROP MATERIALIZED VIEW IF EXISTS consbenefactcaso;
+      CREATE MATERIALIZED VIEW consbenefactcaso AS 
+      SELECT c2.persona_id,
         persona.nombres AS persona_nombres,
         persona.apellidos AS persona_apellidos,
         tdocumento.sigla AS persona_tdocumento,
@@ -132,44 +147,10 @@ class Consbenefactcaso < ActiveRecord::Base
           ELSE 'No'
         END AS caso_titular,
         casosjr.telefono AS caso_telefono,
-        ARRAY(SELECT actividad_id FROM (
-          SELECT DISTINCT actividad_id FROM cor1440_gen_asistencia
-            WHERE persona_id=persona.id ORDER BY 1) AS subaf) AS actividad_ids,
-        ARRAY(SELECT DISTINCT ofnombre FROM (
-          SELECT DISTINCT actividad_id, ac.oficina_id, of.nombre AS ofnombre
-            FROM cor1440_gen_asistencia AS asis
-            JOIN cor1440_gen_actividad AS ac ON asis.actividad_id=ac.id
-            JOIN msip_oficina AS of ON ac.oficina_id=of.id
-            WHERE persona_id=persona.id ORDER BY 1) AS subaf)
-          AS actividad_oficina_nombres,
-        (SELECT MAX(acfecha) FROM (
-          SELECT DISTINCT actividad_id, ac.fecha as acfecha
-            FROM cor1440_gen_asistencia AS asis
-            JOIN cor1440_gen_actividad AS ac ON asis.actividad_id=ac.id
-            WHERE persona_id=persona.id ORDER BY 1) AS subaf)
-          AS actividad_max_fecha,
-        (SELECT MIN(acfecha) FROM (
-          SELECT DISTINCT actividad_id, ac.fecha as acfecha
-            FROM cor1440_gen_asistencia AS asis
-            JOIN cor1440_gen_actividad AS ac ON asis.actividad_id=ac.id
-            WHERE persona_id=persona.id ORDER BY 1) AS subaf)
-          AS actividad_min_fecha,
-        ARRAY(SELECT DISTINCT proyectofinanciero_id FROM (
-          SELECT DISTINCT proyectofinanciero_id
-            FROM cor1440_gen_asistencia AS asis
-            JOIN cor1440_gen_actividad_proyectofinanciero AS apf
-              ON apf.actividad_id=asis.actividad_id
-            WHERE persona_id=persona.id ORDER BY 1) AS subaf)
-          AS actividad_proyectofinanciero_ids,
-        ARRAY(SELECT DISTINCT actividadpf_id FROM (
-          SELECT DISTINCT actividadpf_id
-            FROM cor1440_gen_asistencia AS asis
-            JOIN cor1440_gen_actividad_actividadpf AS aaf
-              ON aaf.actividad_id=asis.actividad_id
-            WHERE persona_id=persona.id ORDER BY 1) AS subaf)
-          AS actividad_actividadpf_ids
-
-        FROM msip_persona AS persona
+        c2.actividad_ids,
+        c2.actividad_oficina_ids
+        FROM consbenefactcaso2 AS c2
+        JOIN msip_persona AS persona ON c2.persona_id=persona.id
         INNER JOIN msip_tdocumento AS tdocumento ON
           persona.tdocumento_id=tdocumento.id
         LEFT JOIN msip_pais AS pais ON
@@ -185,37 +166,44 @@ class Consbenefactcaso < ActiveRecord::Base
           victima.caso_id = caso.id
         LEFT JOIN sivel2_sjr_casosjr AS casosjr ON
           casosjr.caso_id = caso.id
-          ;
-    "
-  end
+    SQL
 
-  def self.crea_consulta(ordenar_por = nil)
-    if ARGV.include?("db:migrate")
-      return
-    end
-    if ActiveRecord::Base.connection.data_source_exists?(
-        'consbenefactcaso')
-      ActiveRecord::Base.connection.execute(
-        "DROP MATERIALIZED VIEW IF EXISTS consbenefactcaso")
-    end
-    if ordenar_por
-      w += ' ORDER BY ' + self.interpreta_ordenar_por(ordenar_por)
-    end
-    c = "CREATE
-              MATERIALIZED VIEW consbenefactcaso AS
-              #{self.consulta}
-              #{w} ;"
-    ActiveRecord::Base.connection.execute(c)
-  end #def crea_consulta
+    Consbenefactcaso.connection.execute consulta
+
+    Consbenefactcaso.reset_column_information
+  end # def crea_consulta
 
 
-  def self.refresca_consulta(ordenar_por = nil)
-    if !ActiveRecord::Base.connection.data_source_exists?(
-        'consbenefactcaso')
-      crea_consulta(ordenar_por = nil)
+  def presenta(atr)
+    if atr.to_s == 'actividad_ids'
+      #debugger
+    end
+    case atr
+    when 'actividad_oficina_nombres'
+      r = self.actividad_oficina_ids.
+        select {|i| !i.nil? }.
+        map {|i| Msip::Oficina.find(i).presenta_nombre}.
+        join(", ")
+      r
+    when 'actividad_ids'
+      self.actividad_ids.join(", ")
     else
-      ActiveRecord::Base.connection.execute(
-        "REFRESH MATERIALIZED VIEW consbenefactcaso")
+      m =/^(.*)_enlace$/.match(atr.to_s)
+      if m && !self[m[1]].nil? && !self[m[1]+"_ids"].nil?
+        if self[m[1]].to_i == 0
+          r = "0"
+        else
+          bids = self[m[1]+"_ids"].join(',')
+          r="<a href='#{Rails.application.routes.url_helpers.msip_path +
+          'actividades?filtro[busid]=' + bids}'"\
+          " target='_blank'>"\
+          "#{self[m[1]]}"\
+          "</a>".html_safe
+        end
+        return r.html_safe
+      else
+        presenta_gen(atr)
+      end
     end
   end
 
@@ -268,63 +256,64 @@ class Consbenefactcaso < ActiveRecord::Base
         'Oficina', nof,
         'Convenio financiero', npf, 
         'Actividad de marco lógico', naml], style: estilo_base
-      hoja.add_row []
-      l = [
-        'Oficina(s)',
-        'Id. Persona',
-        'Nombres',
-        'Apellidos',
-        'Tipo de documento',
-        'Número de documento',
-        'Sexo',
-        'Fecha de nacimiento',
-        'Edad actual',
-        'País',
-        'Último perfil',
-        'Id. Caso',
-        'Fecha de recepción',
-        'Titular',
-        'Teléfono',
-        'Id. Actividades'
-      ]
-      numcol = l.length
-      colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
-
-      hoja.merge_cells("A1:#{colfin}1")
-
-      hoja.add_row l, style: [estilo_encabezado] * numcol
-
-      registros.each do |reg|
+        hoja.add_row []
         l = [
-          reg.presenta('actividad_oficina_nombres'),
-          reg.persona_id.to_s,
-          reg.presenta('persona_nombres'),
-          reg.presenta('persona_apellidos'),
-          reg.presenta('persona_tdocumento'),
-          reg.presenta('persona_numerodocumento'),
-          reg.presenta('persona_sexo'),
-          reg.presenta('persona_fechanac'),
-          reg.presenta('persona_edad_actual'),
-          reg.presenta('persona_paisnac'),
-          reg.presenta('persona_ultimoperfilorgsocial'),
-          reg.presenta('caso_id'),
-          reg.presenta('caso_fecharec'),
-          reg.presenta('caso_titular'),
-          reg.presenta('caso_telefono'),
-          reg.presenta('actividad_ids')
+          'Oficina(s)',
+          'Id. Persona',
+          'Nombres',
+          'Apellidos',
+          'Tipo de documento',
+          'Número de documento',
+          'Sexo',
+          'Fecha de nacimiento',
+          'Edad actual',
+          'País',
+          'Último perfil',
+          'Id. Caso',
+          'Fecha de recepción',
+          'Titular',
+          'Teléfono',
+          'Id. Actividades'
         ]
-        hoja.add_row l, style: estilo_base
-      end
-      anchos = [20] * numcol
-      hoja.column_widths(*anchos)
-      ultf = 0
-      hoja.rows.last.tap do |row|
-        ultf = row.row_index
-      end
-      if ultf>0
-        l = [nil] * numcol
-        hoja.add_row l
-      end
+        numcol = l.length
+        colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
+
+        hoja.merge_cells("A1:#{colfin}1")
+
+        hoja.add_row l, style: [estilo_encabezado] * numcol
+
+        registros.each do |reg|
+          o = reg.presenta('actividad_oficina_nombres')
+          l = [
+            reg.presenta('actividad_oficina_nombres'),
+            reg.persona_id.to_s,
+            reg.presenta('persona_nombres'),
+            reg.presenta('persona_apellidos'),
+            reg.presenta('persona_tdocumento'),
+            reg.presenta('persona_numerodocumento'),
+            reg.presenta('persona_sexo'),
+            reg.presenta('persona_fechanac'),
+            reg.presenta('persona_edad_actual'),
+            reg.presenta('persona_paisnac'),
+            reg.presenta('persona_ultimoperfilorgsocial'),
+            reg.presenta('caso_id'),
+            reg.presenta('caso_fecharec'),
+            reg.presenta('caso_titular'),
+            reg.presenta('caso_telefono'),
+            reg.presenta('actividad_ids')
+          ]
+          hoja.add_row l, style: estilo_base
+        end
+        anchos = [20] * numcol
+        hoja.column_widths(*anchos)
+        ultf = 0
+        hoja.rows.last.tap do |row|
+          ultf = row.row_index
+        end
+        if ultf>0
+          l = [nil] * numcol
+          hoja.add_row l
+        end
     end
 
     n=File.join('/tmp', File.basename(narch + ".xlsx"))
