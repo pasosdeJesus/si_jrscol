@@ -81,6 +81,7 @@ gem 'will_paginate' # Listados en páginas
 
 gem 'msip', # Motor generico
   git: 'https://gitlab.com/pasosdeJesus/msip.git', branch: 'main'
+  #ref: "76a5fc04d1c6d26e52d4f15e1e0c68b499f96db2" 
   #path: '../msip'
 
 gem 'mr519_gen', # Motor de gestion de formularios y encuestas
