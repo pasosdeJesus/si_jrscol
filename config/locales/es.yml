@@ -99,6 +99,17 @@ es:
         sector_gifmm: Sector GIFMM
         parte_rmrp: Parte RMRP
         tipo_implementacion: Tipo de implementación
+      "consninovictima":
+        Consninovictima: Reporte de niños(as) víctimas del conflícto
+        caso_id: Id. Caso
+        categoria_id: Categoria de Violencia
+        fecharec: Fecha de recepción
+        fecha: Fecha del hecho
+        persona_id: Id. Persona
+        persona_nombres: Nombres
+        persona_apellidos: Apellidos
+        persona_edad_hecho: Edad al momento del Hecho
+        presponsable: Presunto responsable
       "cor1440_gen/actividad":
         nombre: 'Nombre (*)'
         fecha_localizada: 'Fecha (*)'

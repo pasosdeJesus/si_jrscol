@@ -1007,8 +1007,7 @@ class Ability < Sivel2Sjr::Ability
         can [:new, :solicitar], Sivel2Gen::Caso
 
         can :read, Jos19::Consactividadcaso
-        can :read, ::Consbenefactcaso
-        can :read, ::Consgifmm
+        can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
       when Ability::ROLANALI
 
@@ -1036,8 +1035,7 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Jos19::Consactividadcaso
-        can :read, ::Consbenefactcaso
-        can :read, ::Consgifmm
+        can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
       when Ability::ROLCOOR
         can [:read, :new], Cor1440Gen::Actividad
@@ -1064,8 +1062,7 @@ class Ability < Sivel2Sjr::Ability
           Sivel2Gen::Caso, casosjr: { oficina_id: usuario.oficina_id }
 
         can :read, Jos19::Consactividadcaso
-        can :read, ::Consbenefactcaso
-        can :read, ::Consgifmm
+        can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
       when Ability::ROLOFICIALPF
         can :manage, Cor1440Gen::Actividad
@@ -1091,8 +1088,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, [Sivel2Gen::Acto, ::Actonino]
 
         can :read, Jos19::Consactividadcaso
-        can :read, ::Consbenefactcaso
-        can :read, ::Consgifmm
+        can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
       when Ability::ROLGESTIONHUMANA
         can :read, Cor1440Gen::Actividad
@@ -1118,8 +1114,7 @@ class Ability < Sivel2Sjr::Ability
         can :read, [Sivel2Gen::Acto, ::Actonino]
 
         can :read, Jos19::Consactividadcaso
-        can :read, ::Consbenefactcaso
-        can :read, ::Consgifmm
+        can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
         can [:create, :read, :write, :update], Usuario
         cannot :crearadmin, Usuario
@@ -1153,8 +1148,7 @@ class Ability < Sivel2Sjr::Ability
         can :manage, [Sivel2Gen::Acto, ::Actonino]
 
         can :read, Jos19::Consactividadcaso
-        can :read, ::Consbenefactcaso
-        can :read, ::Consgifmm
+        can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
         can :manage, Usuario
 

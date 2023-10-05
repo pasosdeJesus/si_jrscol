@@ -57,6 +57,9 @@ Rails.application.routes.draw do
     get "/beneficiarios/caso_y_actividades" => "consbenefactcaso#index",
       as: :consbenefactcaso
 
+    get "/ninosvictimas/" => "consninovictima#index",
+      as: :consninovictima
+
     get "/conteos/accionesjuridicas" => 'sivel2_sjr/conteos#accionesjuridicas',
       as: :conteos_accionesjuridicas
     get "/conteos/desplazamientos" => 'sivel2_sjr/conteos#desplazamientos', 
