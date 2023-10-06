@@ -14,7 +14,7 @@ class Ability < Sivel2Sjr::Ability
     ["Administrador", ROLADMIN],
     ["Invitado Nacional", ROLINV],
     ["Director Nacional", ROLDIR],
-    ["Coordinador oficina", ROLCOOR],
+    ["Coordinador territorial", ROLCOOR],
     ["Analista", ROLANALI],
     ["Sistematizador", ROLSIST],
     ["Analista de Prensa", ROLANALIPRENSA],
@@ -24,8 +24,8 @@ class Ability < Sivel2Sjr::Ability
 
   ROLES_CA = [
     'Realizar conteos de casos. ' +
-    'Admministrar casos de todas las oficinas. ' +
-    'Administrar actividades de todas las oficinas. ' +
+    'Admministrar casos de todas las territoriales. ' +
+    'Administrar actividades de todas las territoriales. ' +
     'Administrar usuarios. ' +
     'Administrar documentos en nube. ' +
     'Administrar tablas básicas. ', #ROLADMIN
@@ -34,33 +34,33 @@ class Ability < Sivel2Sjr::Ability
     'Buscar casos y ver casos con etiqueta de compartidos. ', # ROLINV
 
     'Realizar conteos de casos. ' +
-    'Admministrar casos de todas las oficinas. ' +
-    'Administrar actividades de todas las oficinas. ' +
+    'Admministrar casos de todas las territoriales. ' +
+    'Administrar actividades de todas las territoriales. ' +
     'Administrar usuarios. ' +
     'Administrar documentos en nube. ' +
     'Administrar tablas básicas. ', #ROLDIR
 
     'Realizar conteos de casos. ' +
-    'Ver casos de todas las oficinas, crear casos, editar los de su oficina y poner etiquetas de compartir. ' +
-    'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
+    'Ver casos de todas las territoriales, crear casos, editar los de su territorial y poner etiquetas de compartir. ' +
+    'Ver actividades e informes de actividades de todas las territoriales y editar los de su territorial. ' +
     'Ver documentos en nube. ', # ROLCOOR
 
     'Realizar conteos de casos. ' +
-    'Ver casos de todas las oficinas, crear casos y editar los de su oficina. ' +
-    'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
+    'Ver casos de todas las territoriales, crear casos y editar los de su territorial. ' +
+    'Ver actividades e informes de actividades de todas las territoriales y editar los de su territorial. ' +
     'Ver documentos en nube. ', # ROLANALI
 
     'Realizar conteos de casos. ' +
-    'Ver casos de todas las oficinas, crear casos y editar sólo sus casos. ' +
-    'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
+    'Ver casos de todas las territoriales, crear casos y editar sólo sus casos. ' +
+    'Ver actividades e informes de actividades de todas las territoriales y editar los de su territorial. ' +
     'Ver documentos en nube. ', # ROLSIST
 
     'Realizar conteos de casos. ' +
-    'Ver actividades e informes de actividades de todas las oficinas y editar los de su oficina. ' +
+    'Ver actividades e informes de actividades de todas las territoriales y editar los de su territorial. ' +
     'Ver documentos en nube. ', #ROLANALIPRENSA
 
-    'Editar casos de todas las oficinas. ' +
-    'Editar actividades de todas las oficinas y editar cualquier proyecto. ' +
+    'Editar casos de todas las territoriales. ' +
+    'Editar actividades de todas las territoriales y editar cualquier proyecto. ' +
     'Editar cualquier beneficiario. ' +
     'Ver documentos en nube. ', # ROLOFICIALPF
     'Administrar usuarios. ' +
