@@ -32,34 +32,34 @@ class Usuario < ActiveRecord::Base
   has_many :etiqueta, class_name: 'Msip::Etiqueta',
     through: :etiqueta_usuario
 
-  belongs_to :oficina, foreign_key: "oficina_id", validate: true,
-    class_name: 'Msip::Oficina', optional: true
+  belongs_to :territorial, foreign_key: "territorial_id", validate: true,
+    class_name: '::Territorial', optional: true
 
   validate :rol_usuario
   def rol_usuario
     #byebug
-    if oficina && (rol == Ability::ROLADMIN ||
+    if territorial && (rol == Ability::ROLADMIN ||
         rol == Ability::ROLINV || 
         rol == Ability::ROLDIR)
-      errors.add(:oficina, "Oficina debe estar en blanco para el rol elegido")
+      errors.add(:territorial, "Territorial debe estar en blanco para el rol elegido")
     end
-    if !oficina && rol != Ability::ROLADMIN && rol != Ability::ROLINV && 
+    if !territorial && rol != Ability::ROLADMIN && rol != Ability::ROLINV && 
         rol != Ability::ROLDIR
-      errors.add(:oficina, "El rol elegido debe tener oficina")
+      errors.add(:territorial, "El rol elegido debe tener territorial")
     end
     if (etiqueta.count != 0 && rol != Ability::ROLINV) 
       errors.add(:etiqueta, "El rol elegido no requiere etiquetas de compartir")
     end
     if (!current_usuario.nil? && current_usuario.rol == Ability::ROLCOOR)
-      if (oficina.nil? || 
-          oficina.id != current_usuario.oficina_id)
-        errors.add(:oficina, "Solo puede editar usuarios de su oficina")
+      if (territorial.nil? || 
+          territorial.id != current_usuario.territorial_id)
+        errors.add(:territorial, "Solo puede editar usuarios de su territorial")
       end
     end
   end
 
-  scope :filtro_oficina_id, lambda {|o|
-    where(oficina_id: o)
+  scope :filtro_territorial_id, lambda {|o|
+    where(territorial_id: o)
   }
 
   def active_for_authentication?

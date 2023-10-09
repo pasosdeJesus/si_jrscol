@@ -36,14 +36,14 @@ $(document).on('cocoon:after-insert', '#migracion',
     })
     $('.chosen-select').chosen()
 
-    // Que el lugar de llegada en migración sea la ubicación de la oficina
-    id_ofi = $('#caso_casosjr_attributes_oficina_id').val()
+    // Que el lugar de llegada en migración sea la ubicación de la territorial
+    id_ter = $('#caso_casosjr_attributes_territorial_id').val()
     opais = '[id^=caso_migracion_attributes_][id$=_llegada_pais_id]'
     odep = '[id^=caso_migracion_attributes_][id$=_llegada_departamento_id]'
     omun = '[id^=caso_migracion_attributes_][id$=_llegada_municipio_id]'
     oclas = '[id^=caso_migracion_attributes_][id$=_llegada_clase_id]'
-    if(id_ofi != 1){
-      $.getJSON("../../admin/oficinas/"+ id_ofi +".json", function(o){
+    if(id_ter != 1){
+      $.getJSON("../../admin/territoriales/"+ id_ter +".json", function(o){
         cu = 'chosen:updated'
         $(opais).val(o.pais_id).trigger(cu)
         $(odep).val(o.departamento_id).trigger(cu)

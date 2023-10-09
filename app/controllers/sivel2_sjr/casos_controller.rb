@@ -22,7 +22,7 @@ module Sivel2Sjr
         # basicos
         :id,
         :fecharec,
-        :oficina,
+        :territorial,
         :fecha,
         :memo,
         :created_at,
@@ -63,7 +63,7 @@ module Sivel2Sjr
         :nombressp, 
         :numerodocumento,
         :nombres, 
-        :oficina_id, 
+        :territorial_id, 
         :rangoedad_id, 
         :sexo, 
         :tdocumento, 
@@ -79,7 +79,7 @@ module Sivel2Sjr
 
     # Campos por presentar en listado index
     def incluir_inicial
-      return ['casoid', 'contacto', 'fecharec', 'oficina', 
+      return ['casoid', 'contacto', 'fecharec', 'territorial', 
               'nusuario', 'fecha', 'expulsion',
               'llegada', 'ultimaatencion_fecha', 'memo'
       ]
@@ -165,8 +165,8 @@ module Sivel2Sjr
       @caso.casosjr = Sivel2Sjr::Casosjr.new
       @caso.casosjr.fecharec = DateTime.now.strftime('%Y-%m-%d')
       @caso.casosjr.asesor = current_usuario.id
-      @caso.casosjr.oficina_id= current_usuario.oficina_id.nil? ?  
-        1 : current_usuario.oficina_id
+      @caso.casosjr.territorial_id= current_usuario.territorial_id.nil? ?  
+        1 : current_usuario.territorial_id
       if params[:contacto] && 
           Msip::Persona.where(id: params[:contacto].to_i).count == 1
         per = Msip::Persona.find(params[:contacto])
@@ -368,14 +368,14 @@ module Sivel2Sjr
         casosjr_id: @caso.casosjr.id, usuario_id: @caso.casosjr.asesor,
         fechainicio: @caso.casosjr.asesorfechaini,
         fechafin: Date.today.to_s,
-        oficina_id: @caso.casosjr.oficina_id
+        territorial_id: @caso.casosjr.territorial_id
       )
       @caso.casosjr.asesorfechaini = Date.today.to_s
       @caso.casosjr.asesor = params[:caso][:casosjr_attributes][:asesor].to_i
       @caso.save(validate: false)
-      @caso.casosjr.oficina_id = @caso.casosjr.usuario.oficina_id
+      @caso.casosjr.territorial_id = @caso.casosjr.usuario.territorial_id
       @caso.save(validate: false)
-      params[:caso][:casosjr_attributes][:oficina_id] = @caso.casosjr.oficina_id 
+      params[:caso][:casosjr_attributes][:territorial_id] = @caso.casosjr.territorial_id 
       cs = @caso.solicitud.where(
         solicitud: "Ser asesor del caso #{@caso.id}",
         usuario_id: @caso.casosjr.asesor,
@@ -1074,7 +1074,7 @@ module Sivel2Sjr
           :memo1612,
           :motivom,
           :observacionesref,
-          :oficina_id, 
+          :territorial_id, 
           :sustento, 
           :telefono, 
           :_destroy

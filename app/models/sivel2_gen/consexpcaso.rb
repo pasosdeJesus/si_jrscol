@@ -14,7 +14,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       c= "SELECT conscaso.caso_id,
         conscaso.fecharec AS fecharecepcion,
         conscaso.nusuario AS asesor,
-        conscaso.oficina,
+        conscaso.territorial,
         conscaso.fecha AS fechadespemb,
         conscaso.expulsion,
         conscaso.llegada,
@@ -277,7 +277,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
         FROM public.sivel2_gen_conscaso AS conscaso
         JOIN public.sivel2_sjr_casosjr AS casosjr ON casosjr.caso_id=conscaso.caso_id
         JOIN public.sivel2_gen_caso AS caso ON casosjr.caso_id = caso.id 
-        JOIN public.msip_oficina AS oficina ON oficina.id=casosjr.oficina_id
+        JOIN public.territorial AS territorial ON territorial.id=casosjr.territorial_id
         JOIN public.usuario ON usuario.id = casosjr.asesor
         JOIN public.msip_persona as contacto ON contacto.id=casosjr.contacto_id
         LEFT JOIN public.msip_tdocumento AS tdocumento ON 

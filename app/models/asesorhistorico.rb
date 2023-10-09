@@ -11,10 +11,10 @@ class Asesorhistorico < ActiveRecord::Base
     foreign_key: 'usuario_id',
     validate: true,
     class_name: '::Usuario', optional: false
-  belongs_to :oficina,
-    foreign_key: 'oficina_id',
+  belongs_to :territorial,
+    foreign_key: 'territorial_id',
     validate: true,
-    class_name: 'Msip::Oficina', optional: true
+    class_name: '::Territorial', optional: true
 
 
   campofecha_localizado :fechainicio

@@ -11,7 +11,7 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
   end
 
   def atributos_index
-    [:actividad_oficina_nombres,
+    [:actividad_territorial_nombres,
      :persona_id,
      :persona_nombres,
      :persona_apellidos,
@@ -34,7 +34,7 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
     [
       'actividad_fechaini', 
       'actividad_fechafin', 
-      'actividad_oficina_id',
+      'actividad_territorial_id',
       'actividadpf',
       'proyectofinanciero'
     ]
@@ -74,10 +74,10 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
       params[:filtro][:busactividadpf].select{|i| i != ""}.map(&:to_i) :
       []
 
-    @contarb_oficinaid = params[:filtro] && 
-      params[:filtro][:busactividad_oficina_id] && 
-      params[:filtro][:busactividad_oficina_id] != "" ?  
-      params[:filtro][:busactividad_oficina_id].select{
+    @contarb_territorialid = params[:filtro] && 
+      params[:filtro][:busactividad_territorial_id] && 
+      params[:filtro][:busactividad_territorial_id] != "" ?  
+      params[:filtro][:busactividad_territorial_id].select{
         |i| i != ''
       }.map(&:to_i) : []
 
@@ -112,7 +112,7 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
 
     Consbenefactcaso.crea_consulta(
       nil, @contarb_pfid, @contarb_actividadpfid, 
-      @contarb_oficinaid, @contarb_fechaini, 
+      @contarb_territorialid, @contarb_fechaini, 
       @contarb_fechafin, @contarb_actividad_ids
     )
   end

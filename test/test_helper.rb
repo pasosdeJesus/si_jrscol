@@ -27,7 +27,7 @@ PRUEBA_ACTIVIDAD = {
   id: 1,
   nombre:'n',
   fecha:'2017-03-02',
-  oficina_id:1,
+  territorial_id:1,
   usuario_id:1,
   ubicacionpre_id: 1,
   resultado: 'x'
@@ -60,7 +60,7 @@ PRUEBA_AREA = {
 PRUEBA_ASESORHISTORICO = {
   casosjr_id: 1,
   usuario_id: 1,
-  oficina_id: 1,
+  territorial_id: 1,
   fechainicio: '2022-06-22',
   fechafin: '2022-06-23'
 }
@@ -310,7 +310,7 @@ PRUEBA_USUARIO = {
   sign_in_count: 0,
   fechacreacion: "2014-08-05",
   fechadeshabilitacion: nil,
-  oficina_id: nil
+  territorial_id: nil
 }
 
 # Usuario operador para ingresar y hacer pruebas
@@ -318,7 +318,7 @@ PRUEBA_USUARIO_ANALI = {
   nusuario: "analista",
   password: "sjrcol123",
   nombre: "analista",
-  oficina_id: 1,
+  territorial_id: 1,
   descripcion: "analista",
   rol: 5, # Analista
   idioma: "es_CO",
@@ -337,7 +337,7 @@ PRUEBA_USUARIO_AN = {
   nombre: "analista",
   descripcion: "operador en grupo analista de casos",
   rol: 5,
-  oficina_id: 1,
+  territorial_id: 1,
   idioma: "es_CO",
   email: "analista@localhost",
   encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
@@ -351,7 +351,7 @@ PRUEBA_USUARIO_AP= {
   nusuario: "ap",
   password: "sjrcol123",
   nombre: "ap",
-  oficina_id: 1,
+  territorial_id: 1,
   descripcion: "ap",
   rol: 7, # Analista
   idioma: "es_CO",
@@ -367,7 +367,7 @@ PRUEBA_USUARIO_INV = {
   nusuario: "inv",
   password: "sjrcol123",
   nombre: "inv",
-  oficina_id: nil,
+  territorial_id: nil,
   descripcion: "inv",
   rol: 2, # Analista
   idioma: "es_CO",
@@ -383,7 +383,7 @@ PRUEBA_USUARIO_COORD = {
   nusuario: "coord",
   password: "sjrcol123",
   nombre: "coord",
-  oficina_id: 1,
+  territorial_id: 1,
   descripcion: "coord",
   rol: 4, # Coordinador
   idioma: "es_CO",
@@ -401,7 +401,7 @@ PRUEBA_USUARIO_OP = {
   nombre: "operador",
   descripcion: "operador",
   rol: 5,
-  oficina_id: 1,
+  territorial_id: 1,
   idioma: "es_CO",
   email: "operador@localhost",
   encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
@@ -415,7 +415,7 @@ PRUEBA_USUARIO_SIST = {
   nusuario: "sistematiza",
   password: "sjrcol123",
   nombre: "sistematiza",
-  oficina_id: 1,
+  territorial_id: 1,
   descripcion: "sistematiza",
   rol: 5, # Analista
   idioma: "es_CO",

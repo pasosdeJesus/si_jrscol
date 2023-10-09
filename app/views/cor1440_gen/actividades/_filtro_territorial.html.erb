@@ -1,10 +1,10 @@
 <% sel = [] %>
 <% if params && params[:filtro] && 
-    params[:filtro][:busoficina] %>
-  <% sel = params[:filtro][:busoficina] %>
+    params[:filtro][:busterritorial] %>
+  <% sel = params[:filtro][:busterritorial] %>
 <% end %>
-<%= f.input :busoficina,
-  collection: Msip::Oficina.order('nombre'),
+<%= f.input :busterritorial,
+  collection: ::Territorial.order('nombre'),
   label_method: :nombre,
   value_method: :id,
   include_hidden: false,

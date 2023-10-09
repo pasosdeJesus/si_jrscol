@@ -39,12 +39,12 @@
         %>
       </div>
       <div class="offset-sm-4 col-sm-4 offset-md-0 col-md-3">
-        <%= f.input :oficina_id,
-          collection: Msip::Oficina.habilitados,
+        <%= f.input :territorial_id,
+          collection: ::Territorial.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
-          include_blank: '--Oficina',
+          include_blank: '--Territorial',
           input_html: { "data-contarautomatico" => "" }
         %>
       </div>

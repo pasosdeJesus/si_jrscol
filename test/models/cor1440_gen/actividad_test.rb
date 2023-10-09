@@ -5,7 +5,7 @@ module Cor1440Gen
     PRUEBA_ACTIVIDAD = {
       nombre:'n',
       fecha:'2017-03-02',
-      oficina_id:1,
+      territorial_id:1,
       usuario_id:1,
     }
 
@@ -51,7 +51,7 @@ module Cor1440Gen
 
     test "no valido" do
       a = Cor1440Gen::Actividad.new PRUEBA_ACTIVIDAD
-      a.oficina_id=nil
+      a.territorial_id=nil
       assert_not a.valid?
       a.destroy
     end

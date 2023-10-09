@@ -8,7 +8,7 @@ module Msip
       load_and_authorize_resource class: Msip::Oficina
 
       include Msip::Concerns::Controllers::OficinasController
-      
+
       def atributos_index
         [:id,
          :nombre,

@@ -23,8 +23,8 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
     foreign_key: 'llegada_idm', optional: true
   belongs_to :proteccion, class_name: "Sivel2Sjr::Proteccion", 
     foreign_key: "proteccion_id", validate: true, optional: true
-  belongs_to :oficina, class_name: "Msip::Oficina", 
-    foreign_key: "oficina_id", validate: true, optional: true
+  belongs_to :territorial, class_name: "::Territorial", 
+    foreign_key: "territorial_id", validate: true, optional: true
   belongs_to :salida, class_name: "Msip::Ubicacion", validate: true,
     foreign_key: "salida_id", optional: true
   belongs_to :salidam, class_name: 'Msip::Ubicacion', validate: true,
@@ -68,8 +68,8 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
   #_presence_of :fecharec
   validates :motivom, length: { maximum: 5000 }
   validates :memo1612, length: { maximum: 5000 }
-  validates :oficina, presence: true
-  #_presence_of :oficina
+  validates :territorial, presence: true
+  #_presence_of :territorial
 
 
   validate :fecharec_pasada
@@ -128,21 +128,21 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
     end
   end
 
-  # Verifica que un usuario sea de la misma oficina de otro
-  def self.asesor_de_oficina(current_usuario, usuario, oficina)
+  # Verifica que un usuario sea de la misma territorial de otro
+  def self.asesor_de_territorial(current_usuario, usuario, territorial)
     current_usuario.rol == Ability::ROLADMIN ||
       current_usuario.rol == Ability::ROLDIR ||
       usuario.rol == Ability::ROLADMIN ||
       usuario.rol == Ability::ROLDIR ||
-      usuario.oficina_id == oficina.id || oficina.id == 1
+      usuario.territorial_id == territorial.id || territorial.id == 1
   end
 
-  # Verifica que un usuario edita caso de su oficina
-  def self.asesor_edita_de_su_oficina(current_usuario, oficina)
+  # Verifica que un usuario edita caso de su territorial
+  def self.asesor_edita_de_su_territorial(current_usuario, territorial)
     (current_usuario.rol != Ability::ROLSIST &&
      current_usuario.rol != Ability::ROLCOOR &&
      current_usuario.rol != Ability::ROLANALI) ||
-    oficina.id == current_usuario.oficina_id
+    territorial.id == current_usuario.territorial_id
   end
 
   before_destroy do

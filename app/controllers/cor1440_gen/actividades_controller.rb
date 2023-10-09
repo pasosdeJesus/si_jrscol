@@ -33,7 +33,7 @@ module Cor1440Gen
     def self.datos_nuevaresp(caso, controller)
       return {
         nombre: "Seguimiento/Respuesta a caso #{caso.id}",
-        oficina_id: caso.casosjr.oficina_id,
+        territorial_id: caso.casosjr.territorial_id,
         caso_id: caso.id, 
         proyecto_id: 101,
         usuario_id: controller.current_usuario.id 
@@ -65,7 +65,7 @@ module Cor1440Gen
         :nombre, 
         :fecha_localizada, 
         :lugar, 
-        :oficina, 
+        :territorial, 
         :proyectofinanciero, 
         :proyectos,
         :actividadareas, 
@@ -86,7 +86,7 @@ module Cor1440Gen
     def atributos_index
       [ :id,
         :fecha_localizada,
-        :oficina,
+        :territorial,
         :responsable,
         :nombre,
         :proyecto,
@@ -112,7 +112,7 @@ module Cor1440Gen
       [ 
         :id, 
         :fecha, 
-        :oficina, 
+        :territorial, 
         :responsable,
         :nombre, 
         :actividadtipos, 
@@ -140,9 +140,9 @@ module Cor1440Gen
           ::Usuario.where(id: params['usuario_id'].to_i).count == 1
         @registro.usuario_id = params['usuario_id'].to_i
       end
-      if params['oficina_id'] && 
-          Msip::Oficina.where(id: params['oficina_id'].to_i).count == 1
-        @registro.oficina_id = params['oficina_id'].to_i
+      if params['territorial_id'] && 
+          ::Territorial.where(id: params['territorial_id'].to_i).count == 1
+        @registro.territorial_id = params['territorial_id'].to_i
       end
       if params['proyecto_id'] && 
           Cor1440Gen::Proyecto.where(id: params['proyecto_id'].to_i).count == 1
@@ -235,13 +235,13 @@ module Cor1440Gen
     def programa_generacion_listado_int50(params, extension, campoid, 
                                           pl, narch)
       contarb_pfid = [] # Homologar con filtro de actividad
-      contarb_oficinaid = []
+      contarb_territorialid = []
       contarb_fechaini = nil
       contarb_fechafin = nil
       contarb_actividad_ids = @registros.map(&:id)
 
       Cor1440Gen::Benefactividadpf.crea_consulta(
-        nil, contarb_pfid, contarb_oficinaid, contarb_fechaini, 
+        nil, contarb_pfid, contarb_territorialid, contarb_fechaini, 
         contarb_fechafin, contarb_actividad_ids
       )
       registros = Cor1440Gen::Benefactividadpf.where(
@@ -348,12 +348,12 @@ module Cor1440Gen
 
     # Restringe más para conteo por beneficiario
     def filtra_contarb_actividad_por_parametros(contarb_actividad)
-      @contarb_oficinaid = nil
-      if params && params[:filtro] && params[:filtro][:oficina_id] && 
-          params[:filtro][:oficina_id] != ""
-        @contarb_oficinaid = params[:filtro][:oficina_id].to_i
-        contarb_actividad.where('cor1440_gen_actividad.oficina_id=?',
-                                @contarb_oficinaid)
+      @contarb_territorialid = nil
+      if params && params[:filtro] && params[:filtro][:territorial_id] && 
+          params[:filtro][:territorial_id] != ""
+        @contarb_territorialid = params[:filtro][:territorial_id].to_i
+        contarb_actividad.where('cor1440_gen_actividad.territorial_id=?',
+                                @contarb_territorialid)
       else
         contarb_actividad
       end

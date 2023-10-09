@@ -49,6 +49,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'modalidadentrega', 'modalidadesentrega'
   inflect.irregular 'mungifmm', 'munsgifmm'
   inflect.irregular 'perfilmigracion', 'perfilesmigracion'
+  inflect.irregular 'territorial', 'territoriales'
   inflect.irregular 'trivalentepositiva', 'trivalentespositiva'
   inflect.irregular 'progestado', 'progsestado'
   inflect.irregular 'sectorgifmm', 'sectoresgifmm'

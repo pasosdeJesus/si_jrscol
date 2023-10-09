@@ -16,13 +16,13 @@ module Cor1440Gen
 
     attr_accessor :rapidobenefcaso_id
 
-    validate :oficina_responsable_current_usuario
-    def oficina_responsable_current_usuario
-      if (current_usuario && current_usuario.oficina_id && 
-          responsable && responsable.oficina_id &&
-          responsable.oficina_id != current_usuario.oficina_id)
+    validate :territorial_responsable_current_usuario
+    def territorial_responsable_current_usuario
+      if (current_usuario && current_usuario.territorial_id && 
+          responsable && responsable.territorial_id &&
+          responsable.territorial_id != current_usuario.territorial_id)
         errors.add(:responsable, "Para editar responsable el " +
-                   "usuario actual debe estar en la misma oficina")
+                   "usuario actual debe estar en la misma territorial")
       end
     end
 
@@ -141,8 +141,8 @@ module Cor1440Gen
 
     # FILTROS
    
-    scope :filtro_oficina, lambda { |ids|
-      where(oficina_id: ids.map(&:to_i))
+    scope :filtro_territorial, lambda { |ids|
+      where(territorial_id: ids.map(&:to_i))
     }
 
     scope :filtro_proyectofinanciero, lambda { |ids|
@@ -788,7 +788,7 @@ module Cor1440Gen
           'Nombre',
           'Fecha',
           'Lugar',
-          'Oficina',
+          'Territorial',
           'Convenios financiados',
           'Actividad(es) de convenio',
           'Área(s)',
@@ -857,7 +857,7 @@ module Cor1440Gen
             reg.nombre,
             reg.presenta('fecha'),
             reg.presenta('lugar'),
-            reg.presenta('oficina'),
+            reg.presenta('territorial'),
             reg.presenta('proyectofinanciero'),
             reg.presenta('actividadpf'),
             reg.presenta('proyecto'),
@@ -950,7 +950,7 @@ module Cor1440Gen
         'Área(s)',
         'Actividad(es) de marco lógico',
         'Convenios financiados',
-        'Oficina',
+        'Territorial',
         'Responsable',
         'Objetivo',
         'Resultado',
@@ -1098,7 +1098,7 @@ module Cor1440Gen
             reg.presenta('áreas_de_actividad'),
             reg.presenta('actividad_del_marco_lógico'),
             reg.presenta('convenio_financiado'),
-            reg.presenta('oficina'),
+            reg.presenta('territorial'),
             reg.presenta('responsable'),
             reg.presenta('objetivo'),
             reg.presenta('resultado'),
@@ -1248,7 +1248,7 @@ module Cor1440Gen
           'Área(s)',
           'Actividad(es) de convenio',
           'Convenios financiados',
-          'Oficina',
+          'Territorial',
           'Responsable',
           'Objetivo',
           'Resultado',
@@ -1270,7 +1270,7 @@ module Cor1440Gen
             reg.presenta('proyecto'),
             reg.presenta('actividadpf'),
             reg.presenta('proyectofinanciero'),
-            reg.presenta('oficina'),
+            reg.presenta('territorial'),
             reg.presenta('responsable'),
             reg.presenta('objetivo'),
             reg.presenta('resultado'),

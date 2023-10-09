@@ -98,19 +98,19 @@
 
     <div class="row filtro-fila">
       <div class="offset-sm-0 col-sm-2 offset-md-1 col-md-1">
-        <%= Sivel2Gen::Caso.human_attribute_name(:oficina) %>
+        <%= Sivel2Gen::Caso.human_attribute_name(:territorial) %>
       </div>
       <div class="offset-sm-0 col-sm-7">
-        <%= f.input :oficina_id,
-          collection: Msip::Oficina.habilitados,
+        <%= f.input :territorial_id,
+          collection: ::Territorial.habilitados,
           label_method: :nombre,
           value_method: :id,
           label: false,
-          include_blank: '-- Oficina'
+          include_blank: '-- Territorial'
         %>
       </div>
       <div class="offset-sm-0 col-sm-1 text-center">
-        <%= f.input :inc_oficina, 
+        <%= f.input :inc_territorial, 
           as: :boolean, 
           label: false,
           input_html: { checked: "checked" }

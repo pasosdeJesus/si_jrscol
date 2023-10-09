@@ -23,9 +23,9 @@ class Consninovictima < ActiveRecord::Base
     foreign_key: 'municipio_id',
     optional: false
 
-  belongs_to :oficina,
-    class_name: 'Msip::Oficina', 
-    foreign_key: 'oficina_id',
+  belongs_to :territorial,
+    class_name: '::Territorial', 
+    foreign_key: 'territorial_id',
     optional: false
 
   belongs_to :persona,
@@ -79,21 +79,21 @@ class Consninovictima < ActiveRecord::Base
 
   # Genera consulta
   # @params ordenar_por Criterio de ordenamiento
-  # @params oficina_ids Lista con identificación de las oficina o []
+  # @params territorial_ids Lista con identificación de las territorial o []
   # @params fechaini Fecha inicial en formato estándar o nil
   # @params fechafin Fecha final en formato estándar o nil
   # @params caso_ids Lista de casos a los cuales limitar
   #
-  def self.crea_consulta(ordenar_por = nil, oficina_ids, 
+  def self.crea_consulta(ordenar_por = nil, territorial_ids, 
                          fechaini, fechafin, caso_ids)
     if ARGV.include?("db:migrate")
       return
     end
 
     wherebe = "TRUE" 
-    if oficina_ids && oficina_ids.count > 0
-      wherebe << " AND oficina_id IN "\
-        "(#{oficina_ids.map(&:to_i).join(',')})"
+    if territorial_ids && territorial_ids.count > 0
+      wherebe << " AND territorial_id IN "\
+        "(#{territorial_ids.map(&:to_i).join(',')})"
     end
     if fechaini
       wherebe << " AND fecha >= "\
@@ -112,7 +112,7 @@ class Consninovictima < ActiveRecord::Base
       CREATE MATERIALIZED VIEW consninovictima AS 
       SELECT actonino.id AS actonino_id,
         actonino.caso_id AS caso_id,
-        casosjr.oficina_id AS oficina_id,
+        casosjr.territorial_id AS territorial_id,
         casosjr.fecharec AS fecharec,
         persona.id AS persona_id,
         persona.nombres AS persona_nombres,
@@ -204,9 +204,9 @@ class Consninovictima < ActiveRecord::Base
         'Fecha inicial de act.', params['filtro']['busactividad_fechaini'], 
         'Fecha final de act.', params['filtro']['busactividad_fechafin'] ], style: estilo_base
       idof = (!params['filtro'] || 
-              !params['filtro']['busactividad_oficina_id'] || 
-              params['filtro']['busactividad_oficina_id'] == ''
-             ) ? nil : params['filtro']['busactividad_oficina_id']
+              !params['filtro']['busactividad_territorial_id'] || 
+              params['filtro']['busactividad_territorial_id'] == ''
+             ) ? nil : params['filtro']['busactividad_territorial_id']
       idpf = (!params['filtro'] || 
               !params['filtro']['busproyectofinanciero'] || 
               params['filtro']['busproyectofinanciero'] == ''
@@ -216,7 +216,7 @@ class Consninovictima < ActiveRecord::Base
                params['filtro']['busactividadpf'] == ''
               ) ? nil : params['filtro']['busactividadpf']
       nof = idof.nil? ? '' :
-        Msip::Oficina.where(id: idof).
+        ::Territorial.where(id: idof).
         pluck(:nombre).join('; ')
       npf = idpf.nil? ? '' :
         Cor1440Gen::Proyectofinanciero.where(id: idpf).
@@ -226,12 +226,12 @@ class Consninovictima < ActiveRecord::Base
         pluck(:titulo).join('; ')
 
       hoja.add_row [
-        'Oficina', nof,
+        'Territorial', nof,
         'Convenio financiero', npf, 
         'Actividad de marco lógico', naml], style: estilo_base
         hoja.add_row []
         l = [
-          'Oficina(s)',
+          'Territorial(es)',
           'Id. Persona',
           'Nombres',
           'Apellidos',
@@ -256,9 +256,9 @@ class Consninovictima < ActiveRecord::Base
         hoja.add_row l, style: [estilo_encabezado] * numcol
 
         registros.each do |reg|
-          o = reg.presenta('actividad_oficina_nombres')
+          o = reg.presenta('actividad_territorial_nombres')
           l = [
-            reg.presenta('actividad_oficina_nombres'),
+            reg.presenta('actividad_territorial_nombres'),
             reg.persona_id.to_s,
             reg.presenta('persona_nombres'),
             reg.presenta('persona_apellidos'),

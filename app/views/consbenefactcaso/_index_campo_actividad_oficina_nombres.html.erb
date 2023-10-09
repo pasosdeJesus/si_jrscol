@@ -1,8 +1,0 @@
-<% sep = "" %>
-<% registro.actividad_oficina_ids.each do |ofid| %>
-  <% if ofid %>
-    <%= sep %>
-    <%= Msip::Oficina.find(ofid).presenta_nombre %>
-    <% sep = ", " %>
-  <% end %>
-<% end %>

@@ -222,7 +222,7 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
         (contacto.nombres || ' ' || contacto.apellidos) AS contacto,
         ultimaatencion.fecha AS ultimaatencion_fecha,
         casosjr.fecharec,
-        oficina.nombre AS oficina,
+        territorial.nombre AS territorial,
         usuario.nusuario,
         caso.fecha AS fecha,
         (SELECT expulsionubicacionpre FROM 
@@ -232,7 +232,7 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
         caso.memo AS memo
         FROM public.sivel2_sjr_casosjr AS casosjr 
           JOIN public.sivel2_gen_caso AS caso ON casosjr.caso_id = caso.id 
-          JOIN public.msip_oficina AS oficina ON oficina.id=casosjr.oficina_id
+          JOIN public.territorial AS territorial ON territorial.id=casosjr.territorial_id
           JOIN public.usuario ON usuario.id = casosjr.asesor
           JOIN public.msip_persona AS contacto ON contacto.id=casosjr.contacto_id
           JOIN public.sivel2_gen_victima AS vcontacto ON 
@@ -243,11 +243,11 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
       ActiveRecord::Base.connection.execute(
         "CREATE MATERIALIZED VIEW sivel2_gen_conscaso 
         AS SELECT caso_id, contacto, 
-          fecharec, oficina, nusuario, fecha, expulsion, llegada,
+          fecharec, territorial, nusuario, fecha, expulsion, llegada,
           ultimaatencion_fecha,
           memo, to_tsvector('spanish', unaccent(caso_id || ' ' || contacto || 
             ' ' || replace(fecharec::text, '-', ' ') || 
-            ' ' || oficina || ' ' || nusuario || ' ' || 
+            ' ' || territorial || ' ' || nusuario || ' ' || 
             replace(fecha::text, '-', ' ') || ' ' ||
             COALESCE(expulsion, '')  || ' ' || COALESCE(llegada, '') || ' ' || 
             replace(COALESCE(ultimaatencion_fecha::text, ''), '-', ' ')

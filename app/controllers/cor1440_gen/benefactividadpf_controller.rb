@@ -11,7 +11,7 @@ module Cor1440Gen
         arr = Cor1440Gen::Benefactividadpf.column_names
         primeros =[
           "actividad_fecha",
-          "actividad_oficina",
+          "actividad_territorial",
           "actividad_responsable",
           "persona_tipodocumento", 
           "persona_numerodocumento",
@@ -65,9 +65,9 @@ module Cor1440Gen
         params[:filtro][:actividadpf_id].select{|i| i != ""}.map(&:to_i) :
         []
 
-      @contarb_oficinaid = params[:filtro] && 
-        params[:filtro][:oficina_id] && params[:filtro][:oficina_id] != "" ?  
-        params[:filtro][:oficina_id].select{|i| i != ''}.map(&:to_i) : []
+      @contarb_territorialid = params[:filtro] && 
+        params[:filtro][:territorial_id] && params[:filtro][:territorial_id] != "" ?  
+        params[:filtro][:territorial_id].select{|i| i != ''}.map(&:to_i) : []
 #
       @contarb_fechaini = nil
       if !params[:filtro] || !params[:filtro]['fechaini'] || 
@@ -100,7 +100,7 @@ module Cor1440Gen
 
       Cor1440Gen::Benefactividadpf.crea_consulta(
         nil, @contarb_pfid, @contarb_actividadpfid, 
-        @contarb_oficinaid, @contarb_fechaini, 
+        @contarb_territorialid, @contarb_fechaini, 
         @contarb_fechafin, @contarb_actividad_ids
       )
     end
@@ -136,23 +136,23 @@ module Cor1440Gen
         hoja.add_row [
           'Fecha inicial', params['filtro']['fechaini'], 
           'Fecha final', params['filtro']['fechafin'] ], style: estilo_base
-        idof = (!params['filtro'] || !params['filtro']['oficina_id'] || params['filtro']['oficina_id'] == '') ? [] :
-          params['filtro']['oficina_id'].select {|i| i != ''}.map(&:to_i)
+        idof = (!params['filtro'] || !params['filtro']['territorial_id'] || params['filtro']['territorial_id'] == '') ? [] :
+          params['filtro']['territorial_id'].select {|i| i != ''}.map(&:to_i)
         idpf = (!params['filtro'] || 
                 !params['filtro']['proyectofinanciero_id'] || 
                 params['filtro']['proyectofinanciero_id'] == '') ? [] :
         params['filtro']['proyectofinanciero_id'].
         select {|i| i != ''}.map(&:to_i)
         nof = idof == [] ? '' : 
-          Msip::Oficina.where(id: idof).pluck(:nombre).join('; ')
+          ::Territorial.where(id: idof).pluck(:nombre).join('; ')
         npf = idpf == [] ? '' :
           Cor1440Gen::Proyectofinanciero.where(id:idpf).
           pluck(:nombre).join('; ')
-        hoja.add_row ['Oficina', nof, 'Proyecto', npf], style: estilo_base
+        hoja.add_row ['Territorial', nof, 'Proyecto', npf], style: estilo_base
         hoja.add_row []
         l = [
           'Fecha Actividad',
-          'Oficina Actividad',
+          'Territorial Actividad',
           'Responsable',
           'Tipo de documento', 
           'Número de documento',
@@ -185,7 +185,7 @@ module Cor1440Gen
                         'UPPER(persona_apellidos), persona_id').each do |baml|
                           l = [
                             baml['actividad_fecha'].to_s,
-                            baml['actividad_oficina'],
+                            baml['actividad_territorial'],
                             baml['actividad_responsable'],
                             baml['persona_tipodocumento'],
                             baml['persona_numerodocumento'],

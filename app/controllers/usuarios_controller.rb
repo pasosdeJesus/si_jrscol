@@ -1,27 +1,16 @@
 require 'bcrypt'
 
-require 'sivel2_sjr/concerns/controllers/usuarios_controller'
+require 'msip/concerns/controllers/usuarios_controller'
 
 class UsuariosController < Msip::ModelosController
+  include Msip::Concerns::Controllers::UsuariosController
 
-  include Sivel2Sjr::Concerns::Controllers::UsuariosController
-
-  # Autoriza en cada función 
-  
-  def index
-    authorize! :read, ::Usuario
-    @registros= @usuarios = Usuario.order(
-      'LOWER(nusuario)').paginate(:page => params[:pagina], per_page: 20)
-    super(@usuarios)
-    #render layout: '/application'
-  end
- 
   def atributos_index
     [ :id,
       :nusuario,
       :nombre,
       :rol,
-      :oficina_id,
+      :territorial_id,
       :fincontrato,
       :email,
       :tema,
@@ -34,24 +23,65 @@ class UsuariosController < Msip::ModelosController
           :nombre,
           :descripcion,
           :rol,
-          :oficina_id] +
-        [ :etiqueta_ids =>  [] ] +
-        [ :email,
-          :tema,
-          :idioma,
-          :encrypted_password,
-          :fechacreacion_localizada,
-          :fechadeshabilitacion_localizada,
-          :failed_attempts,
-          :unlock_token,
-          :locked_at,
-          :fincontrato
-        ]
+          :territorial_id] +
+          [ :etiqueta_ids =>  [] ] +
+          [ :email,
+            :tema,
+            :idioma,
+            :encrypted_password,
+            :fechacreacion_localizada,
+            :fechadeshabilitacion_localizada,
+            :failed_attempts,
+            :unlock_token,
+            :locked_at,
+            :fincontrato
+          ]
     r
   end
 
+  # Autoriza en cada función 
+  def index
+    authorize! :read, ::Usuario
+    @registros= @usuarios = Usuario.order(
+      'LOWER(nusuario)').paginate(:page => params[:pagina], per_page: 20)
+    super(@usuarios)
+    #render layout: '/application'
+  end
+
+  def lista_params
+    [
+      :current_sign_in_at, 
+      :current_sign_in_ip, 
+      :descripcion, 
+      :email, 
+      :encrypted_password, 
+      :failed_attempts, 
+      :fechacreacion_localizada, 
+      :fechadeshabilitacion_localizada,
+      :fincontrato,
+      :id, 
+      :idioma, 
+      :last_sign_in_at, 
+      :last_sign_in_ip, 
+      :locked_at,
+      :nombre, 
+      :nusuario, 
+      :password, 
+      :oficina_id,
+      :remember_created_at, 
+      :reset_password_sent_at, 
+      :reset_password_token, 
+      :rol, 
+      :sign_in_count, 
+      :tema_id,
+      :unlock_token, 
+      :etiqueta_ids => []
+    ]
+  end
+
   def usuario_params
-    p = params.require(:usuario).permit(lista_params + [:fincontrato])
+    p = params.require(:usuario).permit(lista_params)
     return p
   end
+
 end
