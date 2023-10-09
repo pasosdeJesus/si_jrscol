@@ -67,7 +67,7 @@ class UsuariosController < Msip::ModelosController
       :nombre, 
       :nusuario, 
       :password, 
-      :oficina_id,
+      :territorial_id,
       :remember_created_at, 
       :reset_password_sent_at, 
       :reset_password_token, 

@@ -1,25 +1,24 @@
 # frozen_string_literal: true
 
-module Msip
-  module Admin
-    class TerritorialesController < Msip::Admin::BasicasController
+module Admin
+  class TerritorialesController < Msip::Admin::BasicasController
 
-      before_action :set_territorial, 
-        only: [:show, :edit, :update, :destroy]
-      load_and_authorize_resource class: ::Territorial
+    before_action :set_territorial, 
+      only: [:show, :edit, :update, :destroy]
+    load_and_authorize_resource class: ::Territorial
 
-      def atributos_index
-        [:id,
-         :nombre,
-         :observaciones,
-         :pais_id,
-         :departamento_id,
-         :municipio_id,
-         :clase_id,
-         :fechacreacion_localizada,
-         :habilitado
-        ]
-      end
+    def atributos_index
+      [:id,
+       :nombre,
+       :observaciones,
+       :pais_id,
+       :departamento_id,
+       :municipio_id,
+       :clase_id,
+       :fechacreacion_localizada,
+       :habilitado
+      ]
+    end
 
 
     def clase 

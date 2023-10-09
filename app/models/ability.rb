@@ -490,7 +490,7 @@ class Ability < Sivel2Sjr::Ability
           'objetivo',
           'observaciones',
           'objetivo_convenio_financiero',
-          'territorial',
+          'oficina',
           'organizaciones_sociales',
           'organizaciones_sociales_ids',
           'poblacion',
@@ -744,7 +744,7 @@ class Ability < Sivel2Sjr::Ability
         :numeroanexos,
         :numero_beneficiarios,
         :numero_madres_gestantes,
-        :territorial,
+        :oficina,
         :presponsables,
         :tipificacion,
         :telefono,
@@ -812,7 +812,7 @@ class Ability < Sivel2Sjr::Ability
           'caso_titular',
           'caso_telefono',
           'actividad_ids',
-          'actividad_territorial_nombres',
+          'actividad_oficina_nombres',
           'actividad_max_fecha',
           'actividad_min_fecha',
           'actividad_proyectofinanciero_ids',
@@ -899,7 +899,7 @@ class Ability < Sivel2Sjr::Ability
           'indicador_gifmm',
           'mes',
           'municipio_gifmm',
-          'territorial',
+          'oficina',
           'parte_rmrp',
           'sector_gifmm',
           'socio_implementador',
@@ -975,7 +975,8 @@ class Ability < Sivel2Sjr::Ability
           etiqueta: { id: usuario.etiqueta.map(&:id) }
 
       when Ability::ROLANALIPRENSA
-        can :manage, Cor1440Gen::Actividad, territorial_id: [1, usuario.territorial_id]
+        can :manage, Cor1440Gen::Actividad, 
+          territorial_id: [1, usuario.territorial_id]
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Informe
@@ -988,7 +989,8 @@ class Ability < Sivel2Sjr::Ability
 
         can [:new, :read], Cor1440Gen::Actividad
         can [:new, :read], Cor1440Gen::Actividadpf
-        can :manage, Cor1440Gen::Actividad, territorial_id: [1, usuario.territorial_id]
+        can :manage, Cor1440Gen::Actividad, 
+          territorial_id: [1, usuario.territorial_id]
         can :read, Cor1440Gen::Benefactividadpf
         can :read, Cor1440Gen::Proyectofinanciero
         can [:index, :read], Cor1440Gen::Rangoedadac
@@ -1002,9 +1004,13 @@ class Ability < Sivel2Sjr::Ability
         can :manage, Msip::Ubicacionpre
 
         can :manage, [Sivel2Gen::Acto, ::Actonino]
-        can :read, Sivel2Gen::Caso, casosjr: { territorial_id: usuario.territorial_id }
+        can :read, Sivel2Gen::Caso, 
+          casosjr: { territorial_id: usuario.territorial_id }
         can [:update, :create, :destroy], Sivel2Gen::Caso,
-          casosjr: { asesor: usuario.id, territorial_id:usuario.territorial_id }
+          casosjr: { 
+            asesor: usuario.id, 
+            territorial_id:usuario.territorial_id 
+          }
         can [:new, :solicitar], Sivel2Gen::Caso
 
         can :read, Jos19::Consactividadcaso
@@ -1012,7 +1018,8 @@ class Ability < Sivel2Sjr::Ability
 
       when Ability::ROLANALI
 
-        can :manage, Cor1440Gen::Actividad, territorial_id: [1, usuario.territorial_id]
+        can :manage, Cor1440Gen::Actividad, 
+          territorial_id: [1, usuario.territorial_id]
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Benefactividadpf
@@ -1032,8 +1039,8 @@ class Ability < Sivel2Sjr::Ability
         can :manage, [Sivel2Gen::Acto, ::Actonino]
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
         can [:new, :solicitar], Sivel2Gen::Caso
-        can [:update, :create, :destroy, :edit], 
-          Sivel2Gen::Caso, casosjr: { territorial_id: usuario.territorial_id }
+        can [:update, :create, :destroy, :edit], Sivel2Gen::Caso, 
+          casosjr: { territorial_id: usuario.territorial_id }
 
         can :read, Jos19::Consactividadcaso
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
@@ -1041,7 +1048,8 @@ class Ability < Sivel2Sjr::Ability
       when Ability::ROLCOOR
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
-        can :manage, Cor1440Gen::Actividad, territorial_id: [1, usuario.territorial_id]
+        can :manage, Cor1440Gen::Actividad, 
+          territorial_id: [1, usuario.territorial_id]
         can :read, Cor1440Gen::Benefactividadpf
         can :manage, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
@@ -1059,8 +1067,8 @@ class Ability < Sivel2Sjr::Ability
         can :manage, [Sivel2Gen::Acto, ::Actonino]
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
         can [:new, :solicitar], Sivel2Gen::Caso
-        can [:update, :create, :destroy, :poneretcomp], 
-          Sivel2Gen::Caso, casosjr: { territorial_id: usuario.territorial_id }
+        can [:update, :create, :destroy, :poneretcomp], Sivel2Gen::Caso,
+          casosjr: { territorial_id: usuario.territorial_id }
 
         can :read, Jos19::Consactividadcaso
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]

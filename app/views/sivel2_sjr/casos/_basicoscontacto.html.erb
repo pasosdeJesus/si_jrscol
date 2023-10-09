@@ -15,8 +15,8 @@
 
 <div class="row">
   <div class="col-md-6">
-    <% colus= current_usuario.territorial_id ? 
-      Usuario.where(territorial_id: current_usuario.territorial_id).
+    <% colus= current_usuario.oficina_id ? 
+      Usuario.where(oficina_id: current_usuario.oficina_id).
       order('LOWER(nusuario)') :
       Usuario.order('LOWER(nusuario)') %>
 
@@ -32,17 +32,17 @@
     <% end %>
   </div>
   <div class="col-md-6">
-    <% colof= current_usuario.territorial_id ? 
-      ::Territorial.habilitados.where(id: current_usuario.territorial_id) :
-      ::Territorial.habilitados %>
-    <%= s.association :territorial,
+    <% colof= current_usuario.oficina_id ? 
+      Msip::Oficina.habilitados.where(id: current_usuario.oficina_id) :
+      Msip::Oficina.habilitados %>
+    <%= s.association :oficina,
       collection: colof,
       include_blank: false,
       label_method: :nombre, 
       value_method: :id,
       input_html: {
         "data-toggle" => 'tooltip',
-        "title" => 'Territorial del SJR que tiene el caso'
+        "title" => 'Oficina del SJR que tiene el caso'
       } %>
   </div>
 </div>

@@ -24,12 +24,12 @@
         :as => :string %>
     </div>
     <div class='col-sm-2'>
-      <label for="actividad_territorial">
-        <%= @actividad.class.human_attribute_name(:territorial) %>
+      <label for="actividad_oficina">
+        <%= @actividad.class.human_attribute_name(:oficina) %>
       </label>
     </div>
     <div class='col-sm-4'>
-      <%= render partial: 'campo_territorial', locals: {f: f, con_label: false} %>
+      <%= render partial: 'campo_oficina', locals: {f: f, con_label: false} %>
     </div>
   </div>
 

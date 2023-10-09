@@ -141,8 +141,8 @@ module Cor1440Gen
 
     # FILTROS
    
-    scope :filtro_territorial, lambda { |ids|
-      where(territorial_id: ids.map(&:to_i))
+    scope :filtro_oficina, lambda { |ids|
+      where(oficina_id: ids.map(&:to_i))
     }
 
     scope :filtro_proyectofinanciero, lambda { |ids|
@@ -788,7 +788,7 @@ module Cor1440Gen
           'Nombre',
           'Fecha',
           'Lugar',
-          'Territorial',
+          'Oficina',
           'Convenios financiados',
           'Actividad(es) de convenio',
           'Área(s)',
@@ -857,7 +857,7 @@ module Cor1440Gen
             reg.nombre,
             reg.presenta('fecha'),
             reg.presenta('lugar'),
-            reg.presenta('territorial'),
+            reg.presenta('oficina'),
             reg.presenta('proyectofinanciero'),
             reg.presenta('actividadpf'),
             reg.presenta('proyecto'),
@@ -950,7 +950,7 @@ module Cor1440Gen
         'Área(s)',
         'Actividad(es) de marco lógico',
         'Convenios financiados',
-        'Territorial',
+        'Oficina',
         'Responsable',
         'Objetivo',
         'Resultado',
@@ -1098,7 +1098,7 @@ module Cor1440Gen
             reg.presenta('áreas_de_actividad'),
             reg.presenta('actividad_del_marco_lógico'),
             reg.presenta('convenio_financiado'),
-            reg.presenta('territorial'),
+            reg.presenta('oficina'),
             reg.presenta('responsable'),
             reg.presenta('objetivo'),
             reg.presenta('resultado'),
@@ -1248,7 +1248,7 @@ module Cor1440Gen
           'Área(s)',
           'Actividad(es) de convenio',
           'Convenios financiados',
-          'Territorial',
+          'Oficina',
           'Responsable',
           'Objetivo',
           'Resultado',
@@ -1270,7 +1270,7 @@ module Cor1440Gen
             reg.presenta('proyecto'),
             reg.presenta('actividadpf'),
             reg.presenta('proyectofinanciero'),
-            reg.presenta('territorial'),
+            reg.presenta('oficina'),
             reg.presenta('responsable'),
             reg.presenta('objetivo'),
             reg.presenta('resultado'),

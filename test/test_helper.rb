@@ -27,7 +27,7 @@ PRUEBA_ACTIVIDAD = {
   id: 1,
   nombre:'n',
   fecha:'2017-03-02',
-  territorial_id:1,
+  oficina_id:1,
   usuario_id:1,
   ubicacionpre_id: 1,
   resultado: 'x'

@@ -1,13 +1,13 @@
-<% if can? :read, ::Territorial %>
+<% if can? :read, Msip::Oficina %>
   <label>
-    Territorial
-    <%= f.input :busactividad_territorial_id,
-      collection: ::Territorial.habilitados,
+    Oficina
+    <%= f.input :busactividad_oficina_id,
+      collection: Msip::Oficina.habilitados,
       label: false,
       label_method: :nombre,
       value_method: :id,
       selected: Msip::ModeloHelper::poromision(
-        params, :busactividad_territorial_id
+        params, :busactividad_oficina_id
       ),
       input_html: { 
         class: 'chosen-select',
@@ -17,6 +17,6 @@
       wrapper_html: {
         style: "width: 10em"
       },
-      include_blank: '-- Territorial' %>
+      include_blank: '-- Oficina' %>
   </label>
 <% end %>

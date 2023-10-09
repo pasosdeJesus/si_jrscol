@@ -160,7 +160,7 @@ class Consgifmm < ActiveRecord::Base
       cor1440_gen_actividadpf.titulo AS actividadmarcologico_nombre,
       depgifmm.nombre AS departamento_gifmm,
       mungifmm.nombre AS municipio_gifmm,
-      (SELECT nombre FROM territorial WHERE id=cor1440_gen_actividad.territorial_id LIMIT 1) AS territorial,
+      (SELECT nombre FROM msip_oficina WHERE id=cor1440_gen_actividad.oficina_id LIMIT 1) AS oficina,
       cor1440_gen_actividad.nombre AS actividad_nombre,
       simp.socio_principal,
       (CASE WHEN simp.socio_principal='SJR Col' THEN 'Directa'

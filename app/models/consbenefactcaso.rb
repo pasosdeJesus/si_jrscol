@@ -53,21 +53,21 @@ class Consbenefactcaso < ActiveRecord::Base
   # @params ordenar_por Criterio de ordenamiento
   # @params pf_ids Lista con identificaciones de proyectos financieros o []
   # @params actividadpf_ids Lista con identificaciones de actividads de pfs o []
-  # @params territorial_ids Lista con identificación de las territorial o []
+  # @params oficina_ids Lista con identificación de las oficina o []
   # @params fechaini Fecha inicial en formato estándar o nil
   # @params fechafin Fecha final en formato estándar o nil
   # @params actividad_ids Lista de actividades a las cuales limitar
   #
   def self.crea_consulta(ordenar_por = nil, pf_ids, actividadpf_ids,
-                         territorial_ids, fechaini, fechafin, actividad_ids)
+                         oficina_ids, fechaini, fechafin, actividad_ids)
     if ARGV.include?("db:migrate")
       return
     end
 
     wherebe = "TRUE" 
-    if territorial_ids && territorial_ids.count > 0
-      wherebe << " AND ac.territorial_id IN "\
-        "(#{territorial_ids.map(&:to_i).join(',')})"
+    if oficina_ids && oficina_ids.count > 0
+      wherebe << " AND ac.oficina_id IN "\
+        "(#{oficina_ids.map(&:to_i).join(',')})"
     end
     if pf_ids && pf_ids.count > 0
       wherebe << " AND apf.proyectofinanciero_id IN "\
@@ -94,15 +94,15 @@ class Consbenefactcaso < ActiveRecord::Base
       CREATE MATERIALIZED VIEW consbenefactcaso2 AS 
         SELECT c1.persona_id,
         ARRAY_AGG(DISTINCT c1.actividad_id) AS actividad_ids,
-        ARRAY_AGG(DISTINCT c1.actividad_territorial_id) AS actividad_territorial_ids
+        ARRAY_AGG(DISTINCT c1.actividad_oficina_id) AS actividad_oficina_ids
         FROM (
           SELECT DISTINCT sub.persona_id,
             sub.actividad_id,
-            sub.actividad_territorial_id
+            sub.actividad_oficina_id
             FROM ( SELECT per.id AS persona_id,
               ac.id AS actividad_id,
               ac.fecha AS actividad_fecha,
-              ac.territorial_id AS actividad_territorial_id,
+              ac.oficina_id AS actividad_oficina_id,
               apf.proyectofinanciero_id AS actividad_proyectofinanciero_id,
               aapf.actividadpf_id AS actividad_actividadpf_id
               FROM msip_persona AS per
@@ -148,7 +148,7 @@ class Consbenefactcaso < ActiveRecord::Base
         END AS caso_titular,
         casosjr.telefono AS caso_telefono,
         c2.actividad_ids,
-        c2.actividad_territorial_ids
+        c2.actividad_oficina_ids
         FROM consbenefactcaso2 AS c2
         JOIN msip_persona AS persona ON c2.persona_id=persona.id
         INNER JOIN msip_tdocumento AS tdocumento ON
@@ -179,10 +179,10 @@ class Consbenefactcaso < ActiveRecord::Base
       #debugger
     end
     case atr
-    when 'actividad_territorial_nombres'
-      r = self.actividad_territorial_ids.
+    when 'actividad_oficina_nombres'
+      r = self.actividad_oficina_ids.
         select {|i| !i.nil? }.
-        map {|i| ::Territorial.find(i).presenta_nombre}.
+        map {|i| Msip::Oficina.find(i).presenta_nombre}.
         join(", ")
       r
     when 'actividad_ids'
@@ -231,9 +231,9 @@ class Consbenefactcaso < ActiveRecord::Base
         'Fecha inicial de act.', params['filtro']['busactividad_fechaini'], 
         'Fecha final de act.', params['filtro']['busactividad_fechafin'] ], style: estilo_base
       idof = (!params['filtro'] || 
-              !params['filtro']['busactividad_territorial_id'] || 
-              params['filtro']['busactividad_territorial_id'] == ''
-             ) ? nil : params['filtro']['busactividad_territorial_id']
+              !params['filtro']['busactividad_oficina_id'] || 
+              params['filtro']['busactividad_oficina_id'] == ''
+             ) ? nil : params['filtro']['busactividad_oficina_id']
       idpf = (!params['filtro'] || 
               !params['filtro']['busproyectofinanciero'] || 
               params['filtro']['busproyectofinanciero'] == ''
@@ -243,7 +243,7 @@ class Consbenefactcaso < ActiveRecord::Base
                params['filtro']['busactividadpf'] == ''
               ) ? nil : params['filtro']['busactividadpf']
       nof = idof.nil? ? '' :
-        ::Territorial.where(id: idof).
+        Msip::Oficina.where(id: idof).
         pluck(:nombre).join('; ')
       npf = idpf.nil? ? '' :
         Cor1440Gen::Proyectofinanciero.where(id: idpf).
@@ -253,12 +253,12 @@ class Consbenefactcaso < ActiveRecord::Base
         pluck(:titulo).join('; ')
 
       hoja.add_row [
-        'Territorial', nof,
+        'Oficina', nof,
         'Convenio financiero', npf, 
         'Actividad de marco lógico', naml], style: estilo_base
         hoja.add_row []
         l = [
-          'Territorial(es)',
+          'Oficina(s)',
           'Id. Persona',
           'Nombres',
           'Apellidos',
@@ -283,9 +283,9 @@ class Consbenefactcaso < ActiveRecord::Base
         hoja.add_row l, style: [estilo_encabezado] * numcol
 
         registros.each do |reg|
-          o = reg.presenta('actividad_territorial_nombres')
+          o = reg.presenta('actividad_oficina_nombres')
           l = [
-            reg.presenta('actividad_territorial_nombres'),
+            reg.presenta('actividad_oficina_nombres'),
             reg.persona_id.to_s,
             reg.presenta('persona_nombres'),
             reg.presenta('persona_apellidos'),

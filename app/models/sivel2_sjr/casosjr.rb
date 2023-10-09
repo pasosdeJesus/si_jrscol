@@ -23,8 +23,8 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
     foreign_key: 'llegada_idm', optional: true
   belongs_to :proteccion, class_name: "Sivel2Sjr::Proteccion", 
     foreign_key: "proteccion_id", validate: true, optional: true
-  belongs_to :territorial, class_name: "::Territorial", 
-    foreign_key: "territorial_id", validate: true, optional: true
+  belongs_to :oficina, class_name: "Msip::Oficina", 
+    foreign_key: "oficina_id", validate: true, optional: true
   belongs_to :salida, class_name: "Msip::Ubicacion", validate: true,
     foreign_key: "salida_id", optional: true
   belongs_to :salidam, class_name: 'Msip::Ubicacion', validate: true,
@@ -68,8 +68,8 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
   #_presence_of :fecharec
   validates :motivom, length: { maximum: 5000 }
   validates :memo1612, length: { maximum: 5000 }
-  validates :territorial, presence: true
-  #_presence_of :territorial
+  validates :oficina, presence: true
+  #_presence_of :oficina
 
 
   validate :fecharec_pasada

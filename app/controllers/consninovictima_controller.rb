@@ -10,7 +10,7 @@ class ConsninovictimaController < Heb412Gen::ModelosController
   def atributos_index
     [:fecharec,
      :caso_id,
-     :territorial,
+     :oficina,
      :fecha,
      :persona_id,
      :persona_nombres,
@@ -27,7 +27,7 @@ class ConsninovictimaController < Heb412Gen::ModelosController
     [
       'fechaini', 
       'fechafin', 
-      'territorial_id'
+      'oficina_id'
     ]
   end
 
@@ -53,10 +53,10 @@ class ConsninovictimaController < Heb412Gen::ModelosController
 
   def contar_registros
     # Parámetros
-    @contarb_territorialid = params[:filtro] && 
-      params[:filtro][:busterritorial_id] && 
-      params[:filtro][:busterritorial_id] != "" ?  
-      params[:filtro][:busterritorial_id].select{
+    @contarb_oficinaid = params[:filtro] && 
+      params[:filtro][:busoficina_id] && 
+      params[:filtro][:busoficina_id] != "" ?  
+      params[:filtro][:busoficina_id].select{
         |i| i != ''
       }.map(&:to_i) : []
 
@@ -90,7 +90,7 @@ class ConsninovictimaController < Heb412Gen::ModelosController
     end
 
     Consninovictima.crea_consulta(
-      nil, @contarb_territorialid, @contarb_fechaini, 
+      nil, @contarb_oficinaid, @contarb_fechaini, 
       @contarb_fechafin, @contarb_caso_ids
     )
   end

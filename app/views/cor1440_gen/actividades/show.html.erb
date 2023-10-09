@@ -4,7 +4,7 @@
     <b>Id:</b> <span id='actividad_id'><%= @actividad.id %></span> <br>
     <b>Fecha de realización:</b> <%= @actividad.fecha %><br>
 
-    <b>Territorial:</b> <%= @actividad.territorial.nombre if @actividad.territorial %> <br>
+    <b>Oficina:</b> <%= @actividad.oficina.nombre if @actividad.oficina %> <br>
     <b>Departamento:</b> <%= @actividad.presenta('departamento') %><br>
     <b>Objetivo:</b> <%= @actividad.objetivo || '' %><br>
   </div>

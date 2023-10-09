@@ -89,8 +89,8 @@ class Sivel2Gen::Caso < ActiveRecord::Base
     case atr.to_s
     when 'fecharec'
       casosjr.fecharec if casosjr && casosjr.fecharec
-    when 'territorial'
-      casosjr.territorial.nombre if casosjr && casosjr.territorial
+    when 'oficina'
+      casosjr.oficina.nombre if casosjr && casosjr.oficina
     when 'asesor'
       casosjr.usuario.nusuario if casosjr && casosjr.usuario
     when 'contacto'

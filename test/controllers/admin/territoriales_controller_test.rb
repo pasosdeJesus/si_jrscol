@@ -4,7 +4,6 @@ require_relative '../../models/territorial_test'
 module Admin
 
   class TerritorialesControllerTest < ActionController::TestCase
-    include Engine.routes.url_helpers
     include Devise::Test::ControllerHelpers
     include Rails.application.routes.url_helpers
 

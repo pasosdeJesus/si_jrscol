@@ -25,11 +25,11 @@ module Sivel2Sjr
         @migracion.fechaPep = nil
         @migracion.salvoNpi = nil
         @migracion.fechaNpi = nil
-        if current_usuario && current_usuario.territorial
-          @migracion.llegada_pais_id = current_usuario.territorial.pais_id
-          @migracion.llegada_departamento_id = current_usuario.territorial.departamento_id
-          @migracion.llegada_municipio_id = current_usuario.territorial.municipio_id
-          @migracion.llegada_clase_id = current_usuario.territorial.clase_id
+        if current_usuario && current_usuario.oficina
+          @migracion.llegada_pais_id = current_usuario.oficina.pais_id
+          @migracion.llegada_departamento_id = current_usuario.oficina.departamento_id
+          @migracion.llegada_municipio_id = current_usuario.oficina.municipio_id
+          @migracion.llegada_clase_id = current_usuario.oficina.clase_id
         end
         if @migracion.save
           h=@migracion.as_json

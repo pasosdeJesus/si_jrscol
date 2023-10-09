@@ -22,12 +22,12 @@ module Cor1440Gen
     # Genera consulta
     # @params ordenar_por Criterio de ordenamiento
     # @params pf_ids Lista con identificaciones de proyectos financieros o []
-    # @params territorial_ids Lista con identificación de las territorial o []
+    # @params oficina_ids Lista con identificación de las oficina o []
     # @params fechaini Fecha inicial en formato estándar o nil
     # @params fechafin Fecha final en formato estándar o nil
     #
     def self.crea_consulta(ordenar_por = nil, pf_ids, actividadpf_ids,
-                           territorial_ids, fechaini, fechafin, actividad_ids)
+                           oficina_ids, fechaini, fechafin, actividad_ids)
       if ARGV.include?("db:migrate")
         return
       end
@@ -55,7 +55,7 @@ module Cor1440Gen
       Benefactividadpf.connection.execute <<-SQL
       CREATE OR REPLACE VIEW cor1440_gen_benefext2 AS 
       SELECT a.fecha AS actividad_fecha,
-        o.nombre AS actividad_territorial,
+        o.nombre AS actividad_oficina,
         us.nusuario AS actividad_responsable,
         t.sigla AS persona_tipodocumento,
         p.numerodocumento AS persona_numerodocumento,
@@ -79,7 +79,7 @@ module Cor1440Gen
         p.id AS persona_id
         FROM cor1440_gen_benefext AS b 
         JOIN cor1440_gen_actividad AS a ON a.id=b.actividad_id
-        JOIN territorial AS o ON  o.id=a.territorial_id
+        JOIN msip_oficina AS o ON  o.id=a.oficina_id
         JOIN msip_persona AS p ON p.id=b.persona_id
         JOIN usuario AS us ON us.id=a.usuario_id
         LEFT JOIN msip_tdocumento AS t ON t.id=p.tdocumento_id
@@ -91,10 +91,10 @@ module Cor1440Gen
 
 
       wherebe = "TRUE" 
-      if territorial_ids && territorial_ids.count > 0
-        obof = ::Territorial.where(id: territorial_ids)
+      if oficina_ids && oficina_ids.count > 0
+        obof = Msip::Oficina.where(id: oficina_ids)
         lof = obof.pluck(:nombre).map {|o| "'#{Msip::SqlHelper.escapar(o)}'"}
-        wherebe << " AND be.actividad_territorial IN (#{lof.join(',')})"
+        wherebe << " AND be.actividad_oficina IN (#{lof.join(',')})"
       end
       if pf_ids && pf_ids.count > 0
         wherebe << " AND be.actividad_id IN 

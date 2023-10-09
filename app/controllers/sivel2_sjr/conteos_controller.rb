@@ -15,7 +15,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     pFaini = escapar_param(params, [:filtro, 'fechaini'])
     pFafin = escapar_param(params, [:filtro, 'fechafin'])
-    pTerritorial = escapar_param(params, [:filtro, 'territorial_id'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
     pContar = escapar_param(params, [:filtro, 'contar'])
     pDerecho = escapar_param(params, [:filtro, 'derecho'])
 
@@ -60,8 +60,8 @@ class Sivel2Sjr::ConteosController < ApplicationController
       @fechafin = pfechafin.strftime('%Y-%m-%d')
       where1 = consulta_and(where1, "respuesta.fechaatencion", @fechafin, "<=")
     end
-    if (pTerritorial != '') 
-      where1 = consulta_and(where1, "casosjr.territorial_id", pTerritorial)
+    if (pOficina != '') 
+      where1 = consulta_and(where1, "casosjr.oficina_id", pOficina)
     end
     if (pDerecho != '') 
       where1 = consulta_and(where1, "derecho_respuesta.derecho_id", 
@@ -69,7 +69,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
     end
 
 
-    que1 = agrega_tabla(que1, "casosjr.territorial_id AS territorial_id")
+    que1 = agrega_tabla(que1, "casosjr.oficina_id AS oficina_id")
     
     ActiveRecord::Base.connection.execute "DROP VIEW  IF EXISTS #{cons1}"
     ActiveRecord::Base.connection.execute "DROP VIEW  IF EXISTS #{cons2}"
@@ -217,7 +217,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     pFaini = escapar_param(params, [:filtro, 'fechaini'])
     pFafin = escapar_param(params, [:filtro, 'fechafin'])
-    pTerritorial = escapar_param(params, [:filtro, 'territorial_id'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
 
     where = ''
     where = consulta_and_sinap(
@@ -239,8 +239,8 @@ class Sivel2Sjr::ConteosController < ApplicationController
       where = consulta_and(where, "fechaexpulsion", @fechafin, "<=")
     end
 
-    if (pTerritorial != '')
-      where = consulta_and(where, 'casosjr.territorial_id', pTerritorial)
+    if (pOficina != '')
+      where = consulta_and(where, 'casosjr.oficina_id', pOficina)
     end
 
     whereex = consulta_and_sinap(
@@ -328,7 +328,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     pFaini = escapar_param(params, [:filtro, 'fechaini'])
     pFafin = escapar_param(params, [:filtro, 'fechafin'])
-    pTerritorial = escapar_param(params, [:filtro, 'territorial_id'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
 
     where = ''
     where = consulta_and_sinap(where, 'casosjr.caso_id', 'd1.caso_id')
@@ -345,8 +345,8 @@ class Sivel2Sjr::ConteosController < ApplicationController
       where = consulta_and(where, "casosjr.fecharec", @fechafin, "<=")
     end
 
-    if (pTerritorial != '')
-      where = consulta_and(where, 'casosjr.territorial_id', pTerritorial)
+    if (pOficina != '')
+      where = consulta_and(where, 'casosjr.oficina_id', pOficina)
     end
 
 
@@ -409,7 +409,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
     @opOrdenar = ['N. DESPLAZAMIENTOS', 'EDAD', 'SEXO']
     pFaini = escapar_param(params, [:filtro, 'fechaini'])
     pFafin = escapar_param(params, [:filtro, 'fechafin'])
-    pTerritorial = escapar_param(params, [:filtro, 'territorial_id'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
     pOrdenar = escapar_param(params, [:filtro, 'ordenar'])
     pSexo = escapar_param(params, [:filtro, 'bussexo'])
     pRangoedadId = escapar_param(params, [:filtro, 'busrangoedad_id'])
@@ -440,8 +440,8 @@ class Sivel2Sjr::ConteosController < ApplicationController
       where = consulta_and(where, "casosjr.fecharec", @fechafin, "<=")
     end
 
-    if (pTerritorial != '')
-      where = consulta_and(where, 'casosjr.territorial_id', pTerritorial)
+    if (pOficina != '')
+      where = consulta_and(where, 'casosjr.oficina_id', pOficina)
     end
 
     if (pSexo != '')
@@ -486,7 +486,7 @@ class Sivel2Sjr::ConteosController < ApplicationController
 
     pFaini = escapar_param(params, [:filtro, 'fechaini'])
     pFafin = escapar_param(params, [:filtro, 'fechafin'])
-    pTerritorial = escapar_param(params, [:filtro, 'territorial_id'])
+    pOficina = escapar_param(params, [:filtro, 'oficina_id'])
 
     where = 'TRUE '
     if (pFaini != '') 
@@ -501,8 +501,8 @@ class Sivel2Sjr::ConteosController < ApplicationController
       where = consulta_and(where, "casosjr.fecharec", @fechafin, "<=")
     end
 
-    if (pTerritorial != '')
-      where = consulta_and(where, 'casosjr.territorial_id', pTerritorial)
+    if (pOficina != '')
+      where = consulta_and(where, 'casosjr.oficina_id', pOficina)
     end
 
     c = ActiveRecord::Base.connection.select_all(

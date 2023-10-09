@@ -48,7 +48,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
   end
 
   # Genera conteo por caso/beneficiario y tipo de actividad de convenio
-  # #caso #act fechaact nom ap id gen edadfact rangoedad_fact etnia tipoac1 tipoac2 tipoac3 tipoac4 ... territorial asesoract 
+  # #caso #act fechaact nom ap id gen edadfact rangoedad_fact etnia tipoac1 tipoac2 tipoac3 tipoac4 ... oficina asesoract 
   #                 EDADES HOMBRES            EDADES MUJERES                    
   #                                 0-5 6-12  13-17 18-26 27-59 +60 0-5 6-12  13-17 18-26 27-59 +60         
   def index
@@ -168,7 +168,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
       hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
       hoja.add_row []
       l = [
-        'Territorial',
+        'Oficina',
         'Id Actividad',
         'Convenio Financiado', 
         'Socio Principal', 
@@ -253,7 +253,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
         #debugger
         #sp = reg.presenta('asistentes_vocacion_permanencia_ids')
         l = [
-          reg.territorial.to_s,
+          reg.oficina.to_s,
           reg.actividad_id,
           reg['conveniofinanciado_nombre'],
           reg.presenta('socio_principal'),

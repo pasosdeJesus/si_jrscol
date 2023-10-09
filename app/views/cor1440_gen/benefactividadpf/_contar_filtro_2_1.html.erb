@@ -1,13 +1,13 @@
-<% if can? :read, ::Territorial %>
-  <%= f.input :territorial_id,
-    collection: ::Territorial.all,
-    label: "Territorial",
+<% if can? :read, Msip::Oficina %>
+  <%= f.input :oficina_id,
+    collection: Msip::Oficina.all,
+    label: "Oficina",
     label_method: :nombre,
     value_method: :id,
-    selected: @contarb_territorialid,
+    selected: @contarb_oficinaid,
     input_html: { 
       class: 'chosen-select',
       multiple: true
     },
-    include_blank: '-- Territorial' %>
+    include_blank: '-- Oficina' %>
 <% end %>

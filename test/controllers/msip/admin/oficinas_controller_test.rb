@@ -13,8 +13,8 @@ module Msip
       setup do
         @current_usuario = ::Usuario.create(PRUEBA_USUARIO)
         sign_in @current_usuario
-        @oficina = ::Territorial.create(
-          ::TerritorialTest::PRUEBA_OFICINA)
+        @oficina = Msip::Oficina.create(
+          Msip::OficinaTest::PRUEBA_OFICINA)
         @controller = Msip::Admin::OficinasController.new 
       end
 
