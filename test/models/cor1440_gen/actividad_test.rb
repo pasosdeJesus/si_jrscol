@@ -41,11 +41,10 @@ module Cor1440Gen
 
       a.ubicacionpre_id = ubicacionpre.id
       a.resultado = "res"
-      
       assert a.valid?
-      
 
-      assert a.valid?
+      assert_equal 1, a.oficina_id
+      assert_equal 1, a.territorial_id
       a.destroy
     end
 

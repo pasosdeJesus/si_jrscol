@@ -25,7 +25,7 @@ class UnidadayudaTest < ActiveSupport::TestCase
 
   test "existente" do
     unidadayuda = ::Unidadayuda.where(id: 10).take
-    assert_equal(unidadayuda.nombre, "Medicamentos")
+    assert_equal("MEDICAMENTOS" , unidadayuda.nombre)
   end
 
 end

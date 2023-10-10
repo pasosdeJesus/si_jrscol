@@ -3,33 +3,6 @@ require_relative '../../test_helper'
 module Sivel2Sjr
   class MigracionTest < ActiveSupport::TestCase
 
-#    PRUEBA_CASO= {
-#      titulo: "ejemplo",
-#      fecha: "2021-04-14",
-#      memo: "Desplazamiento",
-#      created_at: "2021-04-14",
-#    }
-#
-#
-#    PRUEBA_PERSONA = {
-#      nombres: "Juan",
-#      apellidos: "Perez",
-#      sexo: 'M',
-#      anionac: 1980,
-#      pais_id: 170,
-#      tdocumento_id: 3,
-#      numerodocumento: 1,
-#      created_at: "2021-04-14",
-#    }
-#
-#    PRUEBA_CASOSJR = {
-#      caso_id: 0, # por llenar
-#      contacto_id: 0, # por llenar
-#      fecharec: "2021-04-14",
-#      asesor: 1,
-#      created_at: "2021-04-14",
-#    }
-#    
     PRUEBA_UBICACIONPRE1= {
       pais_id: 170,
       nombre: 'Colombia',

@@ -46,14 +46,16 @@ module Msip
         end
       else
         case basica
-        when "pais"
-          registro = modelo.create!(MODELO_PARAMS.merge({id: 1000, nombreiso_espanol: "iso"}))
         when "departamento"
           registro = modelo.create!(MODELO_PARAMS.merge({pais_id: 170}))
-        when "municipio"
-          registro = modelo.create!(MODELO_PARAMS.merge({departamento_id: 17}))
         when "clase"
           registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
+        when "municipio"
+          registro = modelo.create!(MODELO_PARAMS.merge({departamento_id: 17}))
+        when "oficina"
+          registro = modelo.create!(MODELO_PARAMS.merge({territorial_id: 1}))
+        when "pais"
+          registro = modelo.create!(MODELO_PARAMS.merge({id: 1000, nombreiso_espanol: "iso"}))
         when "tdocumento"
           registro = modelo.create!(MODELO_PARAMS.merge({sigla: 'TD'}))
         when "vereda"

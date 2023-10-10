@@ -30,7 +30,14 @@ module Msip
 
       test "should create oficina" do
         assert_difference('Oficina.count') do
-          post :create, params: {use_route: admin_oficinas_path, oficina: { nombre: 'prueba2', fechacreacion: '01-01-2021' }}
+          post :create, params: {
+            use_route: admin_oficinas_path, 
+            oficina: { 
+              nombre: 'prueba2', 
+              territorial_id: 1, 
+              fechacreacion: '01-01-2021' 
+            }
+          }
         end
       end
 

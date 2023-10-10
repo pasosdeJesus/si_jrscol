@@ -60,7 +60,7 @@ PRUEBA_AREA = {
 PRUEBA_ASESORHISTORICO = {
   casosjr_id: 1,
   usuario_id: 1,
-  territorial_id: 1,
+  oficina_id: 1,
   fechainicio: '2022-06-22',
   fechafin: '2022-06-23'
 }

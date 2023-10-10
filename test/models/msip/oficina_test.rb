@@ -7,6 +7,7 @@ module Msip
 
     PRUEBA_OFICINA = {
       nombre: "Oficina",
+      territorial_id: 1,
       fechacreacion: "2018-10-25",
       created_at: "2018-10-25",
     }
