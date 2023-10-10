@@ -49,7 +49,7 @@ INSERT INTO public.sectorgifmm (id, nombre, observaciones, fechacreacion, fechad
 -- Name: sectorgifmm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sectorgifmm_id_seq', 117, true);
+SELECT pg_catalog.setval('public.sectorgifmm_id_seq', 100, true);
 
 
 --
@@ -98,7 +98,7 @@ INSERT INTO public.agresionmigracion (id, nombre, observaciones, fechacreacion, 
 -- Name: agresionmigracion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.agresionmigracion_id_seq', 109, true);
+SELECT pg_catalog.setval('public.agresionmigracion_id_seq', 100, true);
 
 
 --
@@ -139,7 +139,7 @@ INSERT INTO public.autoridadrefugio (id, nombre, observaciones, fechacreacion, f
 -- Name: autoridadrefugio_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.autoridadrefugio_id_seq', 109, true);
+SELECT pg_catalog.setval('public.autoridadrefugio_id_seq', 100, true);
 
 
 --
@@ -183,7 +183,7 @@ INSERT INTO public.causaagresion (id, nombre, observaciones, fechacreacion, fech
 -- Name: causaagresion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.causaagresion_id_seq', 109, true);
+SELECT pg_catalog.setval('public.causaagresion_id_seq', 100, true);
 
 
 --
@@ -230,7 +230,7 @@ INSERT INTO public.causamigracion (id, nombre, observaciones, fechacreacion, fec
 -- Name: causamigracion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.causamigracion_id_seq', 109, true);
+SELECT pg_catalog.setval('public.causamigracion_id_seq', 100, true);
 
 
 --
@@ -299,7 +299,7 @@ INSERT INTO public.depgifmm (id, nombre, observaciones, fechacreacion, fechadesh
 -- Name: depgifmm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.depgifmm_id_seq', 109, true);
+SELECT pg_catalog.setval('public.depgifmm_id_seq', 100, true);
 
 
 --
@@ -339,7 +339,7 @@ INSERT INTO public.declaracionruv (id, nombre, observaciones, fechacreacion, fec
 -- Name: declaracionruv_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.declaracionruv_id_seq', 109, true);
+SELECT pg_catalog.setval('public.declaracionruv_id_seq', 100, true);
 
 
 --
@@ -381,7 +381,7 @@ INSERT INTO public.dificultadmigracion (id, nombre, observaciones, fechacreacion
 -- Name: dificultadmigracion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.dificultadmigracion_id_seq', 109, true);
+SELECT pg_catalog.setval('public.dificultadmigracion_id_seq', 100, true);
 
 
 --
@@ -423,7 +423,7 @@ INSERT INTO public.discapacidad (id, nombre, observaciones, fechacreacion, fecha
 -- Name: discapacidad_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.discapacidad_id_seq', 102, true);
+SELECT pg_catalog.setval('public.discapacidad_id_seq', 100, true);
 
 
 --
@@ -486,7 +486,7 @@ INSERT INTO public.espaciopart (id, nombre, observaciones, fechacreacion, fechad
 -- Name: espaciopart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.espaciopart_id_seq', 108, true);
+SELECT pg_catalog.setval('public.espaciopart_id_seq', 100, true);
 
 
 --
@@ -627,7 +627,7 @@ INSERT INTO public.indicadorgifmm (id, nombre, sectorgifmm_id, observaciones, fe
 -- Name: indicadorgifmm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.indicadorgifmm_id_seq', 113, true);
+SELECT pg_catalog.setval('public.indicadorgifmm_id_seq', 105, true);
 
 
 --
@@ -670,7 +670,7 @@ INSERT INTO public.frecuenciaentrega (id, nombre, observaciones, fechacreacion, 
 -- Name: frecuenciaentrega_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.frecuenciaentrega_id_seq', 109, true);
+SELECT pg_catalog.setval('public.frecuenciaentrega_id_seq', 100, true);
 
 
 --
@@ -712,7 +712,7 @@ INSERT INTO public.mecanismodeentrega (id, nombre, observaciones, fechacreacion,
 -- Name: mecanismodeentrega_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.mecanismodeentrega_id_seq', 109, true);
+SELECT pg_catalog.setval('public.mecanismodeentrega_id_seq', 100, true);
 
 
 --
@@ -754,7 +754,7 @@ INSERT INTO public.miembrofamiliar (id, nombre, observaciones, fechacreacion, fe
 -- Name: miembrofamiliar_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.miembrofamiliar_id_seq', 109, true);
+SELECT pg_catalog.setval('public.miembrofamiliar_id_seq', 100, true);
 
 
 --
@@ -794,7 +794,7 @@ INSERT INTO public.migracontactopre (id, nombre, observaciones, fechacreacion, f
 -- Name: migracontactopre_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.migracontactopre_id_seq', 109, true);
+SELECT pg_catalog.setval('public.migracontactopre_id_seq', 100, true);
 
 
 --
@@ -832,7 +832,7 @@ INSERT INTO public.modalidadentrega (id, nombre, observaciones, fechacreacion, f
 -- Name: modalidadentrega_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.modalidadentrega_id_seq', 109, true);
+SELECT pg_catalog.setval('public.modalidadentrega_id_seq', 100, true);
 
 
 --
@@ -1987,7 +1987,7 @@ INSERT INTO public.mungifmm (id, nombre, observaciones, fechacreacion, fechadesh
 -- Name: mungifmm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.mungifmm_id_seq', 99782, true);
+SELECT pg_catalog.setval('public.mungifmm_id_seq', 99773, true);
 
 
 --
@@ -2026,7 +2026,7 @@ INSERT INTO public.perfilmigracion (id, nombre, observaciones, fechacreacion, fe
 -- Name: perfilmigracion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.perfilmigracion_id_seq', 109, true);
+SELECT pg_catalog.setval('public.perfilmigracion_id_seq', 100, true);
 
 
 --
@@ -2065,13 +2065,14 @@ INSERT INTO public.territorial (id, nombre, observaciones, fechacreacion, fechad
 INSERT INTO public.territorial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, pais_id, departamento_id, municipio_id, clase_id, created_at, updated_at) VALUES (5, 'NARIÑO', NULL, '2013-05-13', NULL, 170, 38, 44, 7907, '2013-05-13 00:00:00', '2013-05-13 00:00:00');
 INSERT INTO public.territorial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, pais_id, departamento_id, municipio_id, clase_id, created_at, updated_at) VALUES (6, 'SOACHA', '', '2013-05-13', NULL, 170, 27, 1216, 4758, '2013-05-13 00:00:00', '2021-10-15 22:32:01.085637');
 INSERT INTO public.territorial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, pais_id, departamento_id, municipio_id, clase_id, created_at, updated_at) VALUES (7, 'NACIONAL', NULL, '2013-07-05', NULL, 170, 4, 24, 238, '2013-05-13 00:00:00', '2015-05-14 12:39:19.66094');
+INSERT INTO public.territorial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, pais_id, departamento_id, municipio_id, clase_id, created_at, updated_at) VALUES (8, 'SANTANDER', '', '2023-10-09', NULL, 170, 43, 27, NULL, '2023-10-09 00:00:00', '2023-10-09 00:00:00');
 
 
 --
 -- Name: territorial_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.territorial_id_seq', 1, false);
+SELECT pg_catalog.setval('public.territorial_id_seq', 102, true);
 
 
 --
@@ -2109,7 +2110,7 @@ INSERT INTO public.tipoproteccion (id, nombre, observaciones, fechacreacion, fec
 -- Name: tipoproteccion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.tipoproteccion_id_seq', 109, true);
+SELECT pg_catalog.setval('public.tipoproteccion_id_seq', 100, true);
 
 
 --
@@ -2147,7 +2148,7 @@ INSERT INTO public.tipotransferencia (id, nombre, observaciones, fechacreacion, 
 -- Name: tipotransferencia_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.tipotransferencia_id_seq', 109, true);
+SELECT pg_catalog.setval('public.tipotransferencia_id_seq', 100, true);
 
 
 --
@@ -2186,7 +2187,7 @@ INSERT INTO public.trivalentepositiva (id, nombre, fechacreacion, fechadeshabili
 -- Name: trivalentepositiva_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.trivalentepositiva_id_seq', 109, true);
+SELECT pg_catalog.setval('public.trivalentepositiva_id_seq', 100, true);
 
 
 --
@@ -2239,7 +2240,7 @@ INSERT INTO public.unidadayuda (id, nombre, observaciones, fechacreacion, fechad
 -- Name: unidadayuda_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.unidadayuda_id_seq', 109, true);
+SELECT pg_catalog.setval('public.unidadayuda_id_seq', 100, true);
 
 
 --
@@ -2277,7 +2278,7 @@ INSERT INTO public.viadeingreso (id, nombre, observaciones, fechacreacion, fecha
 -- Name: viadeingreso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.viadeingreso_id_seq', 109, true);
+SELECT pg_catalog.setval('public.viadeingreso_id_seq', 100, true);
 
 
 --

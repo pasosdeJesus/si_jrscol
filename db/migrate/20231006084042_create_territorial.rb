@@ -14,6 +14,10 @@ class CreateTerritorial < ActiveRecord::Migration[7.0]
       t.timestamps
     end
     cambiaCotejacion('territorial', 'nombre', 500, 'es_co_utf_8')
+    add_foreign_key :territorial, :msip_pais, column: :pais_id
+    add_foreign_key :territorial, :msip_departamento, column: :departamento_id
+    add_foreign_key :territorial, :msip_municipio, column: :municipio_id
+    add_foreign_key :territorial, :msip_clase, column: :clase_id
     execute <<-SQL
       INSERT INTO public.territorial (id, nombre, fechacreacion, fechadeshabilitacion, created_at, updated_at, observaciones, pais_id, departamento_id, municipio_id, clase_id) VALUES (1, 'SIN INFORMACIÓN', '2013-05-13', NULL, '2013-05-13', '2013-05-13', NULL, NULL, NULL, NULL, NULL);
       INSERT INTO public.territorial (id, nombre, fechacreacion, fechadeshabilitacion, created_at, updated_at, observaciones, pais_id, departamento_id, municipio_id, clase_id) VALUES (2, 'VALLE DEL CAUCA', '2013-05-13', NULL, '2013-05-13', '2018-06-20 22:09:05.965897', '', NULL, NULL, NULL, NULL);

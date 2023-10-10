@@ -1715,6 +1715,7 @@ CREATE TABLE public.msip_oficina (
     departamento_id integer,
     municipio_id integer,
     clase_id integer,
+    territorial_id integer,
     CONSTRAINT msip_oficina_fechadeshabilitacion_chequeo CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -2398,6 +2399,7 @@ CREATE TABLE public.usuario (
     fincontrato date,
     observadorffechaini date,
     observadorffechafin date,
+    territorial_id integer,
     CONSTRAINT usuario_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion))),
     CONSTRAINT usuario_rol_check CHECK ((rol >= 1))
 );
@@ -7384,31 +7386,31 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_os_0_5_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 7))) AS beneficiarios_os_0_5_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_os_6_12_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 8))) AS beneficiarios_os_6_12_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_os_13_17_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 9))) AS beneficiarios_os_13_17_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_os_18_26_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 10))) AS beneficiarios_os_18_26_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_os_27_59_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 11))) AS beneficiarios_os_27_59_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_os_60m_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 12))) AS beneficiarios_os_60m_fecha_salida,
     ( SELECT count(*) AS count
            FROM (public.sivel2_gen_victima victima
              JOIN public.msip_persona ON ((msip_persona.id = victima.persona_id)))
-          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'I'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_os_se_fecha_salida,
+          WHERE ((victima.caso_id = caso.id) AND (msip_persona.sexo = 'O'::bpchar) AND (victima.rangoedad_id = 6))) AS beneficiarios_os_se_fecha_salida,
     array_to_string(ARRAY( SELECT (((((((supracategoria.tviolencia_id)::text || ':'::text) || categoria.supracategoria_id) || ':'::text) || categoria.id) || ' '::text) || (categoria.nombre)::text)
            FROM public.sivel2_gen_categoria categoria,
             public.sivel2_gen_supracategoria supracategoria,
@@ -7439,11 +7441,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      JOIN public.sivel2_gen_victima vcontacto ON (((vcontacto.persona_id = contacto.id) AND (vcontacto.caso_id = caso.id))))
      LEFT JOIN public.sivel2_gen_etnia etnia ON ((vcontacto.etnia_id = etnia.id)))
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
-  WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
-           FROM public.sivel2_gen_conscaso
-          WHERE ((sivel2_gen_conscaso.fecharec >= '2023-06-01'::date) AND (sivel2_gen_conscaso.fecharec <= '2023-09-07'::date))
-          ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
-  ORDER BY conscaso.fecha, conscaso.caso_id
+  WHERE (true = false)
   WITH NO DATA;
 
 
@@ -14014,6 +14012,14 @@ ALTER TABLE ONLY public.sivel2_sjr_desplazamiento
 
 
 --
+-- Name: territorial fk_rails_02965341df; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.territorial
+    ADD CONSTRAINT fk_rails_02965341df FOREIGN KEY (clase_id) REFERENCES public.msip_clase(id);
+
+
+--
 -- Name: cor1440_gen_anexo_efecto fk_rails_037289a77c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14990,6 +14996,14 @@ ALTER TABLE ONLY public.msip_orgsocial_persona
 
 
 --
+-- Name: territorial fk_rails_7ce44ab810; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.territorial
+    ADD CONSTRAINT fk_rails_7ce44ab810 FOREIGN KEY (pais_id) REFERENCES public.msip_pais(id);
+
+
+--
 -- Name: sivel2_sjr_ayudasjr_derecho fk_rails_7d05004a64; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -15043,6 +15057,14 @@ ALTER TABLE ONLY public.mr519_gen_encuestapersona
 
 ALTER TABLE ONLY public.sivel2_gen_caso
     ADD CONSTRAINT fk_rails_850036942a FOREIGN KEY (ubicacion_id) REFERENCES public.msip_ubicacion(id);
+
+
+--
+-- Name: usuario fk_rails_88f7b7a50d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.usuario
+    ADD CONSTRAINT fk_rails_88f7b7a50d FOREIGN KEY (territorial_id) REFERENCES public.territorial(id);
 
 
 --
@@ -15422,6 +15444,14 @@ ALTER TABLE ONLY public.sivel2_sjr_motivosjr_derecho
 
 
 --
+-- Name: territorial fk_rails_c3df8352e6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.territorial
+    ADD CONSTRAINT fk_rails_c3df8352e6 FOREIGN KEY (municipio_id) REFERENCES public.msip_municipio(id);
+
+
+--
 -- Name: cor1440_gen_datointermedioti_pmindicadorpf fk_rails_c5ec912cc3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -15691,6 +15721,14 @@ ALTER TABLE ONLY public.sivel2_gen_combatiente
 
 ALTER TABLE ONLY public.cor1440_gen_valorcampoact
     ADD CONSTRAINT fk_rails_e36cf046d1 FOREIGN KEY (actividad_id) REFERENCES public.cor1440_gen_actividad(id);
+
+
+--
+-- Name: territorial fk_rails_e3b2049e4c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.territorial
+    ADD CONSTRAINT fk_rails_e3b2049e4c FOREIGN KEY (departamento_id) REFERENCES public.msip_departamento(id);
 
 
 --
@@ -17346,6 +17384,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230927001422'),
 ('20231005122005'),
 ('20231006084042'),
-('20231007095930');
+('20231007095930'),
+('20231009085621'),
+('20231009090231'),
+('20231009090632'),
+('20231009171450');
 
 

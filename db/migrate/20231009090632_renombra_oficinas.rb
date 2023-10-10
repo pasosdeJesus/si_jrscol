@@ -56,21 +56,35 @@ class RenombraOficinas < ActiveRecord::Migration[7.0]
         '2023-10-09', NULL, '2023-10-09', '2023-10-09', 
         '', 170, 47, 881, 12171);
     SQL
-    change_column :msip_oficina, :territorial_id, :integer, null: false
   end
   def down
-    change_column :msip_oficina, :territorial_id, :integer, null: true
+    change_column :usuario, :territorial_id, :integer, null: true
+    execute <<-SQL
+      DELETE FROM msip_oficina WHERE id>=8 AND id<=13;
+    SQL
     execute <<-SQL
       DELETE FROM territorial WHERE id=8;
-      DELETE FROM msip_oficina WHERE id>=8 AND id<=13;
+    SQL
+    execute <<-SQL
       UPDATE msip_oficina SET nombre='SOACHA' WHERE id=6;
+    SQL
+    execute <<-SQL
       UPDATE msip_oficina SET nombre='MAGDALENA MEDIO' WHERE id=3;
+    SQL
+    execute <<-SQL
       UPDATE msip_oficina SET nombre='CÚCUTA' WHERE id=4;
+    SQL
+    execute <<-SQL
       UPDATE msip_oficina SET nombre='NACIONAL' WHERE id=7;
+    SQL
+    execute <<-SQL
       UPDATE msip_oficina SET nombre='NARIÑO' WHERE id=5;
+    SQL
+    execute <<-SQL
       UPDATE msip_oficina SET nombre='VALLE' WHERE id=2;
+    SQL
+    execute <<-SQL
       UPDATE msip_oficina SET nombre='SIN INFORMACIÓN' WHERE id=1;
-      UPDATE msip_oficina SET territorial_id=NULL;
     SQL
   end
 end
