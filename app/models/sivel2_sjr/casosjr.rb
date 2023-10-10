@@ -56,7 +56,11 @@ class Sivel2Sjr::Casosjr < ActiveRecord::Base
   has_many :victimasjr, class_name: 'Sivel2Sjr::Victimasjr', validate: true,
     through: :victima
 
-  
+  attr_reader :territorial_id
+  def territorial_id
+    oficina_id.nil? ? 1 : oficina.territorial_id
+  end
+
   validates :asesor, presence: true
   #_presence_of :asesor
   validates :contacto, uniqueness: { 

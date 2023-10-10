@@ -16,20 +16,19 @@ module Cor1440Gen
 
     attr_accessor :rapidobenefcaso_id
 
-    validate :territorial_responsable_current_usuario
-    def territorial_responsable_current_usuario
-      if (current_usuario && current_usuario.territorial_id && 
-          responsable && responsable.territorial_id &&
-          responsable.territorial_id != current_usuario.territorial_id)
-        errors.add(:responsable, "Para editar responsable el " +
-                   "usuario actual debe estar en la misma territorial")
-      end
+    attr_reader :territorial_id
+    def territorial_id
+      self.oficina.territorial_id
+    end
+
+    attr_reader :territorial
+    def territorial
+      self.oficina.territorial
     end
 
     attr_accessor :controlador
-    attr_accessor :ubicacionpre_texto
-    attr_accessor :ubicacionpre_mundep_texto
 
+    attr_accessor :ubicacionpre_texto
     def ubicacionpre_texto
       if self.ubicacionpre
         self.ubicacionpre.nombre
@@ -38,6 +37,7 @@ module Cor1440Gen
       end
     end
 
+    attr_accessor :ubicacionpre_mundep_texto
     def ubicacionpre_mundep_texto
       if self.ubicacionpre
         self.ubicacionpre.nombre_sin_pais
@@ -50,6 +50,15 @@ module Cor1440Gen
     validates :proyecto, presence: true
     validates :resultado, presence: true
 
+    validate :territorial_responsable_current_usuario
+    def territorial_responsable_current_usuario
+      if (current_usuario && current_usuario.territorial_id && 
+          responsable && responsable.territorial_id &&
+          responsable.territorial_id != current_usuario.territorial_id)
+        errors.add(:responsable, "Para editar responsable el " +
+                   "usuario actual debe estar en la misma territorial")
+      end
+    end
 
     validate :valida_detallefinanciero_sin_repetidos
     def valida_detallefinanciero_sin_repetidos
@@ -150,6 +159,12 @@ module Cor1440Gen
             '(SELECT actividad_id '\
             ' FROM cor1440_gen_actividad_proyectofinanciero '\
             ' WHERE proyectofinanciero_id IN (?))', ids.map(&:to_i))
+    }
+
+    scope :filtro_territorial, lambda { |tid|
+      where(tid.count == 0 ? "TRUE" :
+            "oficina_id IN (SELECT id FROM msip_oficina "\
+            "WHERE msip_oficina.territorial_id IN (?))", tid)
     }
 
 

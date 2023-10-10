@@ -3,8 +3,10 @@
 console.log('Hola Mundo desde Webpacker')
 
 import Rails from "@rails/ujs";
-Rails.start();
-window.Rails = Rails
+if (typeof window.Rails == 'undefined') {
+  Rails.start();
+  window.Rails = Rails
+}
 
 import * as Turbo from '@hotwired/turbo'
 Turbo.session.drive = false
