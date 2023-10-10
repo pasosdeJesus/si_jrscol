@@ -24,5 +24,9 @@ class Msip::Oficina < ActiveRecord::Base
     association_foreign_key: "proyectofinanciero_id",
     join_table: 'sivel2_sjr_oficina_proyectofinanciero'
 
+  scope :filtro_territorial_id, lambda {|tid|
+    where(territorial_id: tid)
+  }
+
 end
 

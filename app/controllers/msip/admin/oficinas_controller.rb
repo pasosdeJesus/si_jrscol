@@ -12,6 +12,7 @@ module Msip
       def atributos_index
         [:id,
          :nombre,
+         :territorial_id,
          :observaciones,
          :pais_id,
          :departamento_id,
@@ -21,7 +22,7 @@ module Msip
          :habilitado
         ]
       end
-  
+
     end
   end
 end

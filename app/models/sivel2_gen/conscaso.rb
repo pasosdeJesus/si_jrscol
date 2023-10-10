@@ -1,7 +1,117 @@
-require 'sivel2_sjr/concerns/models/conscaso'
+require 'sivel2_gen/concerns/models/conscaso'
 
 class Sivel2Gen::Conscaso < ActiveRecord::Base
-  include Sivel2Sjr::Concerns::Models::Conscaso
+  include Sivel2Gen::Concerns::Models::Conscaso
+
+  has_one :casosjr, class_name: 'Sivel2Sjr::Casosjr',
+    foreign_key: "caso_id", primary_key: 'caso_id'
+
+  scope :filtro_apellidossp, lambda { |a|
+    joins(:casosjr).joins(:persona).
+      where('sivel2_sjr_casosjr.contacto_id = msip_persona.id ' +
+            'AND msip_persona.apellidos ILIKE \'%' +
+            ActiveRecord::Base.connection.quote_string(a) + '%\'')
+  }
+
+  scope :filtro_atenciones_fechafin, lambda { |fecha|
+    where('caso_id IN (SELECT casosjr_id FROM 
+              sivel2_sjr_actividad_casosjr JOIN cor1440_gen_actividad
+              ON sivel2_sjr_actividad_casosjr.actividad_id =
+                cor1440_gen_actividad.id
+              WHERE
+                cor1440_gen_actividad.fecha <= ?)', fecha)
+  }
+
+  scope :filtro_atenciones_fechaini, lambda { |fecha|
+    where('caso_id IN (SELECT casosjr_id FROM 
+              sivel2_sjr_actividad_casosjr JOIN cor1440_gen_actividad
+              ON sivel2_sjr_actividad_casosjr.actividad_id =
+                cor1440_gen_actividad.id
+              WHERE
+                cor1440_gen_actividad.fecha >= ?)', fecha)
+  }
+
+  scope :filtro_departamento_id, lambda { |id|
+    where('caso_id IN (SELECT caso_id
+                    FROM public.sivel2_sjr_migracion
+                    JOIN public.msip_ubicacionpre ON
+                    sivel2_sjr_migracion.salidaubicacionpre_id=msip_ubicacionpre.id
+                    WHERE msip_ubicacionpre.departamento_id = ?)', id)
+  }
+
+  scope :filtro_fecharecfin, lambda { |f|
+    where('sivel2_gen_conscaso.fecharec <= ?', f)
+  }
+
+  scope :filtro_fecharecini, lambda { |f|
+    where('sivel2_gen_conscaso.fecharec >= ?', f)
+  }
+
+  scope :filtro_nombressp, lambda { |a|
+    joins(:casosjr).joins(:persona).
+      where('sivel2_sjr_casosjr.contacto_id = msip_persona.id ' +
+            'AND msip_persona.nombres ILIKE \'%' +
+            ActiveRecord::Base.connection.quote_string(a) + '%\'')
+  }
+
+  scope :filtro_nusuario, lambda { |n|
+    where('sivel2_gen_conscaso.nusuario = ?', n)
+  }
+
+  scope :filtro_oficina_id, lambda { |id|
+    where('sivel2_sjr_casosjr.oficina_id = ?', id).
+      joins(:casosjr)
+  }
+
+  scope :filtro_statusmigratorio_id, lambda { |id|
+    where('sivel2_sjr_casosjr.estatusmigratorio_id = ?', id).
+      joins(:casosjr)
+  }
+
+  scope :filtro_territorial_id, lambda { |id|
+    where('msip_oficina.territorial_id = ?', id).
+      joins(:casosjr).joins("JOIN msip_oficina "\
+                            "ON msip_oficina.id=sivel2_sjr_casosjr.oficina_id")
+  }
+
+  scope :filtro_ultimaatencion_fechafin, lambda { |f|
+    where('sivel2_gen_conscaso.ultimaatencion_fecha <= ?', f)
+  }
+
+  scope :filtro_ultimaatencion_fechaini, lambda { |f|
+    where('sivel2_gen_conscaso.ultimaatencion_fecha >= ?', f)
+  }
+
+
+
+  scope :ordenar_por, lambda { |campo|
+    critord = ""
+    case campo.to_s
+    when /^codigo/
+      critord ="sivel2_gen_conscaso.caso_id asc"
+    when /^codigodesc/
+      critord = "sivel2_gen_conscaso.caso_id desc"
+    when /^fecharec/
+      critord = "sivel2_gen_conscaso.fecharec desc"
+    when /^fecharecasc/
+      critord = "sivel2_gen_conscaso.fecharec asc"
+    when /^fecha/
+      critord = "sivel2_gen_conscaso.fecha asc"
+    when /^fechadesc/
+      critord = "sivel2_gen_conscaso.fecha desc"
+    when /^ubicacion/
+      critord = "sivel2_gen_conscaso.ubicaciones asc"
+    when /^ubicaciondesc/
+      critord = "sivel2_gen_conscaso.ubicaciones desc"
+    when /^ultimaatencion_fecha/
+      critord = "sivel2_gen_conscaso.ultimaatencion_fecha desc"
+    when /^ultimaatencion_fechaasc/
+      critord = "sivel2_gen_conscaso.ultimaatencion_fecha asc"
+    else
+      raise(ArgumentError, "Ordenamiento invalido: #{ campo.inspect }")
+    end
+    order(critord + ', sivel2_gen_conscaso.caso_id')
+  }
 
    scope :filtro_expulsion_pais_id, lambda { |id|
     where('caso_id IN (SELECT caso_id FROM public.emblematica 
@@ -48,6 +158,9 @@ class Sivel2Gen::Conscaso < ActiveRecord::Base
   }
 
 
+  # Refresca vista materializa sivel2_gen_conscaso
+  # Si cambia la definición de la vista borre sivel2_gen_conscaso1 y
+  # sivel2_gen_conscaso para que esta función las genere modificadas
   def self.refresca_conscaso
     if !ActiveRecord::Base.connection.data_source_exists? 'sivel2_sjr_ultimaatencion_aux'
       ActiveRecord::Base.connection.execute(

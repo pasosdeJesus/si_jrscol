@@ -86,6 +86,7 @@ module Cor1440Gen
     def atributos_index
       [ :id,
         :fecha_localizada,
+        :territorial,
         :oficina,
         :responsable,
         :nombre,

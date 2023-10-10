@@ -22,6 +22,7 @@ module Sivel2Sjr
         # basicos
         :id,
         :fecharec,
+        :territorial,
         :oficina,
         :fecha,
         :memo,
@@ -63,6 +64,7 @@ module Sivel2Sjr
         :nombressp, 
         :numerodocumento,
         :nombres, 
+        :territorial_id, 
         :oficina_id, 
         :rangoedad_id, 
         :sexo, 
@@ -165,8 +167,7 @@ module Sivel2Sjr
       @caso.casosjr = Sivel2Sjr::Casosjr.new
       @caso.casosjr.fecharec = DateTime.now.strftime('%Y-%m-%d')
       @caso.casosjr.asesor = current_usuario.id
-      @caso.casosjr.oficina_id= current_usuario.oficina_id.nil? ?  
-        1 : current_usuario.oficina_id
+      @caso.casosjr.oficina_id= current_usuario.aproxoficina_id
       if params[:contacto] && 
           Msip::Persona.where(id: params[:contacto].to_i).count == 1
         per = Msip::Persona.find(params[:contacto])
@@ -373,7 +374,7 @@ module Sivel2Sjr
       @caso.casosjr.asesorfechaini = Date.today.to_s
       @caso.casosjr.asesor = params[:caso][:casosjr_attributes][:asesor].to_i
       @caso.save(validate: false)
-      @caso.casosjr.oficina_id = @caso.casosjr.usuario.oficina_id
+      @caso.casosjr.oficina_id = @caso.casosjr.usuario.aproxoficina_id
       @caso.save(validate: false)
       params[:caso][:casosjr_attributes][:oficina_id] = @caso.casosjr.oficina_id 
       cs = @caso.solicitud.where(
