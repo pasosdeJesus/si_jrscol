@@ -2,6 +2,8 @@ module Sivel2Sjr
   class Progestado < ActiveRecord::Base
     include Msip::Basica
 
+    self.table_name = "sivel2_sjr_progestado"
+
     has_many :progestado_respuesta, 
       class_name: "Sivel2Sjr::ProgestadoRespuesta",
       foreign_key: "progestado_id", validate: true, dependent: :destroy

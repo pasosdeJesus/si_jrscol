@@ -29,6 +29,40 @@ Rails.application.routes.draw do
     end
     resources :usuarios, path_names: { new: 'nuevo', edit: 'edita' } 
 
+    # De sivel2_sjr
+
+    #patch '/actos/agregar' => 'sivel2_sjr/actos#agregar' 
+    #get '/actos/eliminar' => 'sivel2_sjr/actos#eliminar'
+
+    get '/casos/lista' => 'sivel2_sjr/casos#lista'
+    get '/casos/mapaosm' => 'sivel2_sjr/casos#mapaosm'
+    get '/casos/nuevaubicacion' => 'sivel2_sjr/casos#nueva_ubicacion'
+    get '/casos/nuevavictima' => 'sivel2_sjr/casos#nueva_victima'
+    get '/casos/nuevopresponsable' => 'sivel2_sjr/casos#nuevo_presponsable'
+    get '/casos/busca' => 'sivel2_sjr/casos#busca'
+    get '/casos/filtro' => 'sivel2_sjr/casos#index', as: :casos_filtro
+    post '/casos/filtro' => 'sivel2_sjr/casos#index', as: :envia_casos_filtro
+
+    get '/conteos/personas' => 'sivel2_sjr/conteos#personas', as: :conteos_personas
+    post "/conteos/personas" => 'sivel2_sjr/conteos#personas', as: :post_conteos_personas
+    get '/conteos/respuestas' => 'sivel2_sjr/conteos#respuestas', as: :conteos_respuestas
+
+    get '/desplazamientos/nuevo' => 'sivel2_sjr/desplazamientos#nuevo'
+
+    get '/respuestas/nuevo' => 'sivel2_sjr/respuestas#nuevo'
+
+    #  get '/victimas' => 'victimas#index', as: :victimas
+    #  get '/victimas/nuevo' => 'victimas#nuevo'
+    get '/victimascolectivas/nuevo' => 'sivel2_sjr/victimascolectivas#nuevo'
+
+    get "/api/sivel2sjr/poblacion_sexo_rangoedadac" => 'sivel2_sjr/casos#poblacion_sexo_rangoedadac',
+      as: :sivel2sjr_poblacion_sexo_rangoedadac
+
+    resources :casos, path_names: { new: 'nuevo', edit: 'edita' }, 
+      controller: 'sivel2_sjr/casos'
+
+    # Fin de sivel2_sjr
+
     post '/beneficiarios/unificar' => 'msip/personas#unificar',
       as: :beneficiarios_unificar
     get '/beneficiarios/unificar' => 'msip/personas#unificar',
@@ -45,8 +79,8 @@ Rails.application.routes.draw do
 
     post "/actos/agregar" => 'sivel2_sjr/actos#agregar',
       as: :actos_agregar
-    get "/actos/eliminar" => 'sivel2_sjr/actos#eliminar',
-      as: :actos_eliminar
+    #get "/actos/eliminar" => 'sivel2_sjr/actos#eliminar',
+    #  as: :actos_eliminar
     patch "/actos/agregarpr" => 'sivel2_sjr/actos#nuevopr',
       as: :actos_nuevopr
 
@@ -119,7 +153,6 @@ Rails.application.routes.draw do
     # Evita error en prueba dificil
     get "/admin/oficinas" => "msip/admin/oficinas#index", as: :oficinas_path
 
-
     resources :actonino, only: [] do 
       member do
         delete '(:id)', to: "actosninos#destroy", as: "eliminar"
@@ -136,9 +169,14 @@ Rails.application.routes.draw do
           c = t[1].pluralize
           resources c.to_sym, 
             path_names: { new: 'nueva', edit: 'edita' }
+        elsif (t[0] == 'Sivel2Sjr') 
+          c = t[1].pluralize
+          resources c.to_sym, 
+            path_names: { new: 'nueva', edit: 'edita' }
         end
       end
     end
+
   end
 
   mount Jos19::Engine, at: rutarel, as: 'jos19'

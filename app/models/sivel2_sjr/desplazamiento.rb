@@ -6,6 +6,8 @@ module Sivel2Sjr
 
     include Msip::Modelo
 
+    self.table_name = "sivel2_sjr_desplazamiento"
+
     has_many :actosjr, class_name: "Sivel2Sjr::Actosjr", 
       validate: true
     accesores_ubicacionpre :destino

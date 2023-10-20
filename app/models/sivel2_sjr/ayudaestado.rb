@@ -2,6 +2,8 @@ module Sivel2Sjr
   class Ayudaestado < ActiveRecord::Base
     include Msip::Basica
 
+    self.table_name = "sivel2_sjr_ayudaestado"
+
     has_many :ayudaestado_respuesta, 
       class_name: "Sivel2Sjr::AyudaestadoRespuesta", 
       foreign_key: "ayudaestado_id", validate: true, dependent: :destroy

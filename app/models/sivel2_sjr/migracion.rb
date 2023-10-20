@@ -6,6 +6,8 @@ class Sivel2Sjr::Migracion < ActiveRecord::Base
 
   extend Msip::AccesoresUbicacionpre
 
+  self.table_name = "sivel2_sjr_migracion"
+
   accesores_ubicacionpre :destino
 
   accesores_ubicacionpre :llegada

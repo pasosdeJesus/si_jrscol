@@ -1,7 +1,7 @@
 <% if can?(:create, Sivel2Gen::Caso) %>
   <% if registro.caso.count == 0 %>
     <%= link_to 'Crear Caso',
-      sivel2_sjr.new_caso_path({contacto: registro.id}), 
+      main_app.new_caso_path({contacto: registro.id}), 
       :class => 'btn btn-sm' %>
   <% elsif registro.caso.count > 1 %>
     En varios casos: 

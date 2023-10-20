@@ -2,6 +2,8 @@ module Sivel2Sjr
   class Aspsicosocial < ActiveRecord::Base
     include Msip::Basica
 
+    self.table_name = "sivel2_sjr_aspsicosocial"
+
     has_many :aspsicosocial_respuesta, 
       class_name: "Sivel2Sjr::AspsicosocialRespuesta", 
       foreign_key: "aspsicosocial_id", validate: true, dependent: :destroy

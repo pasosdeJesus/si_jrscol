@@ -3,6 +3,8 @@ class Sivel2Sjr::Derecho < ActiveRecord::Base
 
   include Msip::Basica
 
+  self.table_name = "sivel2_sjr_derecho"
+
   has_and_belongs_to_many :respuesta, 
     class_name: "Sivel2Sjr::Respuesta", 
     foreign_key: "derecho_id", 

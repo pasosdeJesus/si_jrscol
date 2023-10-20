@@ -2,6 +2,8 @@ class Sivel2Sjr::Victimasjr < ActiveRecord::Base
 
   include Msip::Modelo
 
+  self.table_name = "sivel2_sjr_victimasjr"
+
   # Orden de esquema en base
   belongs_to :actividadoficio, 
     class_name: "Sivel2Gen::Actividadoficio", 

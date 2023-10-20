@@ -28,7 +28,7 @@ module Sivel2Sjr
         m.save!
         m.derecho_ids = progestado_params[:derecho_ids]
         m.save!
-        redirect_to sivel2_sjr.admin_progsestado_path #'/admin/progsestado'
+        redirect_to main_app.admin_progsestado_path #'/admin/progsestado'
       end
 
       def set_progestado

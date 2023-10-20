@@ -1011,6 +1011,7 @@ module Sivel2Sjr
       @caso = Sivel2Gen::Caso.find(params[:id].to_i)
       @caso.current_usuario = current_usuario
       @registro = @caso
+      debugger
       pcs = Sivel2Sjr::Casosjr.where(caso_id: params[:id].to_i)
       @casosjr = nil
       if pcs.count > 0

@@ -2,6 +2,8 @@ class Sivel2Sjr::ActividadCasosjr < ActiveRecord::Base
 
   include Msip::Modelo
 
+  self.table_name = "sivel2_sjr_actividad_casosjr"
+
   belongs_to :actividad, class_name: 'Cor1440Gen::Actividad',
     foreign_key: 'actividad_id', validate: true, optional: false
   belongs_to :casosjr, class_name: 'Sivel2Sjr::Casosjr',

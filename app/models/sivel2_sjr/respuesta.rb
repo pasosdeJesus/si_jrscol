@@ -3,6 +3,8 @@ module Sivel2Sjr
 
     include Msip::Modelo
 
+    self.table_name = "sivel2_sjr_respuesta"
+
     belongs_to :caso, class_name: "Sivel2Gen::Caso", 
       foreign_key: "caso_id", optional: false
 

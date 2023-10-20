@@ -4,6 +4,8 @@ module Sivel2Sjr
     include Msip::Localizacion
     include Msip::FormatoFechaHelper
 
+    self.table_name = "sivel2_sjr_anexo_desplazamiento"
+
     belongs_to :desplazamiento, foreign_key: "desplazamiento_id", validate: true, 
       class_name: "Sivel2Sjr::Desplazamiento", 
       inverse_of: :anexo_desplazamiento, optional: false
