@@ -1,8 +1,34 @@
-require 'sivel2_sjr/concerns/models/respuesta'
-
 module Sivel2Sjr
   class Respuesta < ActiveRecord::Base
-    include Sivel2Sjr::Concerns::Models::Respuesta
+
+    include Msip::Modelo
+
+    belongs_to :caso, class_name: "Sivel2Gen::Caso", 
+      foreign_key: "caso_id", optional: false
+
+    has_and_belongs_to_many :aslegal, 
+      class_name: "Sivel2Sjr::Aslegal", 
+      foreign_key: "respuesta_id", 
+      validate: true, 
+      association_foreign_key: "aslegal_id",
+      join_table: 'sivel2_sjr_aslegal_respuesta'
+    #accepts_nested_attributes_for :aslegal_respuesta, 
+    #  reject_if: :all_blank, update_only: true
+
+    has_and_belongs_to_many :aspsicosocial, 
+      class_name: "Sivel2Sjr::Aspsicosocial", 
+      foreign_key: "respuesta_id",
+      association_foreign_key: "aspsicosocial_id",
+      join_table: 'sivel2_sjr_aspsicosocial_respuesta'
+
+    has_and_belongs_to_many :ayudasjr, 
+      class_name: "Sivel2Sjr::Ayudasjr", 
+      foreign_key: "respuesta_id",
+      association_foreign_key: "ayudasjr_id",
+      join_table: 'sivel2_sjr_ayudasjr_respuesta'
+
+    #accepts_nested_attributes_for :derecho_respuesta, 
+    #  reject_if: :all_blank, update_only: true
 
     #accepts_nested_attributes_for :ayudaestado_respuesta, 
     #        reject_if: :all_blank, update_only: true

@@ -1,8 +1,20 @@
-require 'sivel2_sjr/concerns/models/consexpcaso'
+require 'sivel2_gen/concerns/models/consexpcaso'
 
 class Sivel2Gen::Consexpcaso < ActiveRecord::Base
-  include Sivel2Sjr::Concerns::Models::Consexpcaso
-  
+  include Sivel2Gen::Concerns::Models::Consexpcaso
+
+
+  belongs_to :casosjr, class_name: 'Sivel2Sjr::Casosjr',
+    primary_key: 'caso_id', foreign_key: 'caso_id', optional: false
+
+  has_many :victimasjr, through: :casosjr,
+    class_name: 'Sivel2Sjr::Victimasjr'
+
+  def self.consulta_consexpcaso 
+    "SELECT conscaso.*
+             FROM public.sivel2_gen_conscaso AS conscaso"
+  end
+
   def self.edad_familiar(tiempo, numfamiliar)
     "(SELECT #{tiempo} 
            FROM public.msip_persona AS persona, 
@@ -11,7 +23,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
   end
 
   def self.consulta_consexpcaso
-      c= "SELECT conscaso.caso_id,
+    c= "SELECT conscaso.caso_id,
         conscaso.fecharec AS fecharecepcion,
         conscaso.nusuario AS asesor,
         conscaso.oficina,
@@ -33,12 +45,12 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
           CAST(EXTRACT(MONTH FROM conscaso.fecharec) AS INTEGER),
           CAST(EXTRACT(DAY FROM conscaso.fecharec) AS INTEGER))
           AS contacto_edad_fecha_recepcion,"
-        [1, 2, 3, 4, 5].each do |num| 
-          c+= "msip_edad_de_fechanac_fecharef(" + 
-            edad_familiar('anionac', num) + ',' +
-            edad_familiar('mesnac', num) + ',' +
-            edad_familiar('dianac', num) + ',' +
-            "CAST(EXTRACT(YEAR FROM conscaso.fecharec) AS INTEGER),
+    [1, 2, 3, 4, 5].each do |num| 
+      c+= "msip_edad_de_fechanac_fecharef(" + 
+        edad_familiar('anionac', num) + ',' +
+        edad_familiar('mesnac', num) + ',' +
+        edad_familiar('dianac', num) + ',' +
+        "CAST(EXTRACT(YEAR FROM conscaso.fecharec) AS INTEGER),
             CAST(EXTRACT(MONTH FROM conscaso.fecharec) AS INTEGER),
             CAST(EXTRACT(DAY FROM conscaso.fecharec) AS INTEGER))
             AS familiar#{num}_edad_fecha_recepcion,
@@ -51,10 +63,10 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
             CAST(EXTRACT(MONTH FROM conscaso.ultimaatencion_fecha) AS INTEGER),
             CAST(EXTRACT(DAY FROM conscaso.ultimaatencion_fecha) AS INTEGER))
             AS familiar#{num}_edad_ultimaatencion,
-          "
-        end
-        convsexo = Msip::Persona::convencion_sexo
-        c+= "(SELECT nombre FROM public.sivel2_gen_rangoedad 
+      "
+    end
+    convsexo = Msip::Persona::convencion_sexo
+    c+= "(SELECT nombre FROM public.sivel2_gen_rangoedad 
           WHERE fechadeshabilitacion IS NULL 
           AND limiteinferior<=
             msip_edad_de_fechanac_fecharef(
@@ -288,18 +300,18 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
             vcontacto.etnia_id=etnia.id
         LEFT JOIN public.sivel2_sjr_ultimaatencion AS ultimaatencion ON
             ultimaatencion.caso_id = caso.id
-      "
+    "
   end
 
 
   # Retorna valores a campos de formularios incrustados en 
   # actividades que tengan el caso en el listado de casos
   def valores_campos_respuestafor_actividades(campo_id)
-      resp_ids = casosjr.actividad.joins(:respuestafor).
-        pluck('mr519_gen_respuestafor.id')
-      Mr519Gen::Valorcampo.joins(:respuestafor).
-        where('mr519_gen_respuestafor.id IN (?)', resp_ids).
-        where(campo_id: campo_id)
+    resp_ids = casosjr.actividad.joins(:respuestafor).
+      pluck('mr519_gen_respuestafor.id')
+    Mr519Gen::Valorcampo.joins(:respuestafor).
+      where('mr519_gen_respuestafor.id IN (?)', resp_ids).
+      where(campo_id: campo_id)
   end
 
   def resp_ultimaatencion(formulario_id, campo_id)
@@ -313,7 +325,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     r ? r : ''
   end
 
-  
+
   # Retorna cantidad de víctimas del caso caso_id
   # que tienen el sexo dado con edad entre inf y sup para la fecha dada
   # de la actividad con id actividad_id.
@@ -346,7 +358,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
            p.sexo='#{sexo[0]}') AS sub
         WHERE TRUE=TRUE 
         #{cond_edad}")
-    return   r[0]['count'].to_i
+                                            return   r[0]['count'].to_i
   end
 
   # Retorna cantidad de víctimas del caso caso_id
@@ -566,18 +578,18 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
 
     ## 5 Victimas
     cpersonasimple = [
-         'nombres', 'apellidos', 'sexo', 'anionac', 'mesnac', 'dianac',
-         'numerodocumento']
+      'nombres', 'apellidos', 'sexo', 'anionac', 'mesnac', 'dianac',
+      'numerodocumento']
     cpersonadoble = ['tdocumento', 'pais', 'departamento', 'municipio', 'clase']
     cvictimasimple = [ 'orientacionsexual']
     cvictimadoble = [ 'etnia', 'profesion', 'organizacion', 
                       'filiacion', 'vinculoestado']
     cvictimasjrbool = [
-         'cabezafamilia', 'tienesisben', 'asisteescuela',
-         'actualtrabajando']
+      'cabezafamilia', 'tienesisben', 'asisteescuela',
+      'actualtrabajando']
     cvictimasjrdoble = [
-         'maternidad', 'estadocivil', 'discapacidad', 'rolfamilia', 
-         'regimensalud', 'escolaridad']
+      'maternidad', 'estadocivil', 'discapacidad', 'rolfamilia', 
+      'regimensalud', 'escolaridad']
     especiales = ['actividadoficio', 'numeroanexos', 'numeroanexosconsen', 'edad_fecha_recepcion', 'edad_ultimaatencion']
     orientaciones = Msip::Persona::ORIENTACION_OPCIONES
     m = /familiar(.*)$/.match(atr.to_s)
@@ -855,119 +867,119 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
         'servicios y asesorias porque no se han especificado '\
         'acompañamiento psicosocial por beneficiario'
 
- 
+
     when 'beneficiarios_0_5_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_masculino], 0, 5)
+        convsexo[:sexo_masculino], 0, 5)
     when 'beneficiarios_6_12_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_masculino], 6, 12)
+        convsexo[:sexo_masculino], 6, 12)
     when 'beneficiarios_13_17_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_masculino], 13, 17)
+        convsexo[:sexo_masculino], 13, 17)
     when 'beneficiarios_18_26_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_masculino], 18, 26)
+        convsexo[:sexo_masculino], 18, 26)
     when 'beneficiarios_27_59_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_masculino], 27, 59)
+        convsexo[:sexo_masculino], 27, 59)
     when 'beneficiarios_60m_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_masculino], 60, nil)
+        convsexo[:sexo_masculino], 60, nil)
     when 'beneficiarios_se_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_masculino], nil, nil)
+        convsexo[:sexo_masculino], nil, nil)
     when 'beneficiarias_0_5_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_femenino], 0, 5)
+        convsexo[:sexo_femenino], 0, 5)
     when 'beneficiarias_6_12_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_femenino], 6, 12)
+        convsexo[:sexo_femenino], 6, 12)
     when 'beneficiarias_13_17_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_femenino], 13, 17)
+        convsexo[:sexo_femenino], 13, 17)
     when 'beneficiarias_18_26_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_femenino], 18, 26)
+        convsexo[:sexo_femenino], 18, 26)
     when 'beneficiarias_27_59_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_femenino], 27, 59)
+        convsexo[:sexo_femenino], 27, 59)
     when 'beneficiarias_60m_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_femenino], 60, nil)
+        convsexo[:sexo_femenino], 60, nil)
     when 'beneficiarias_se_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_femenino], nil, nil)
+        convsexo[:sexo_femenino], nil, nil)
     when 'beneficiarios_ss_0_5_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_sininformacion], 0, 5)
+        convsexo[:sexo_sininformacion], 0, 5)
     when 'beneficiarios_ss_6_12_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_sininformacion], 6, 12)
+        convsexo[:sexo_sininformacion], 6, 12)
     when 'beneficiarios_ss_13_17_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_sininformacion], 13, 17)
+        convsexo[:sexo_sininformacion], 13, 17)
     when 'beneficiarios_ss_18_26_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_sininformacion], 18, 26)
+        convsexo[:sexo_sininformacion], 18, 26)
     when 'beneficiarios_ss_27_59_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_sininformacion], 27, 59)
+        convsexo[:sexo_sininformacion], 27, 59)
     when 'beneficiarios_ss_60m_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_sininformacion], 60, nil)
+        convsexo[:sexo_sininformacion], 60, nil)
     when 'beneficiarios_ss_se_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_sininformacion], nil, nil)
+        convsexo[:sexo_sininformacion], nil, nil)
     when 'beneficiarios_os_0_5_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_intersexual], 0, 5)
+        convsexo[:sexo_intersexual], 0, 5)
     when 'beneficiarios_os_6_12_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_intersexual], 6, 12)
+        convsexo[:sexo_intersexual], 6, 12)
     when 'beneficiarios_os_13_17_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_intersexual], 13, 17)
+        convsexo[:sexo_intersexual], 13, 17)
     when 'beneficiarios_os_18_26_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_intersexual], 18, 26)
+        convsexo[:sexo_intersexual], 18, 26)
     when 'beneficiarios_os_27_59_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_intersexual], 27, 59)
+        convsexo[:sexo_intersexual], 27, 59)
     when 'beneficiarios_os_60m_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_intersexual], 60, nil)
+        convsexo[:sexo_intersexual], 60, nil)
     when 'beneficiarios_os_se_fecha_recepcion'
       self.class.poblacion_a_fecha(
         caso_id, fecharecepcion.year, fecharecepcion.month, fecharecepcion.day,
-       convsexo[:sexo_intersexual], nil, nil)
+        convsexo[:sexo_intersexual], nil, nil)
 
 
 
@@ -1078,12 +1090,12 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     when 'ultimaatencion_ac_juridica'
       r = ''
       if resp_ultimaatencion(14,140) != ''
-         r += resp_ultimaatencion(14,140) + ": " + 
-           resp_ultimaatencion(14,141) + '. '
+        r += resp_ultimaatencion(14,140) + ": " + 
+          resp_ultimaatencion(14,141) + '. '
       end
       if resp_ultimaatencion(14,142) != ''
-         r += resp_ultimaatencion(14,142) + ": " + 
-           resp_ultimaatencion(14,143) + '. '
+        r += resp_ultimaatencion(14,142) + ": " + 
+          resp_ultimaatencion(14,143) + '. '
       end
       r
     when 'ultimaatencion_as_juridica'
@@ -1194,12 +1206,12 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       end
     end
   end
-  
+
   def self.porsjrc
     "porsjrc"
   end
 
-end # module ClassMethods
+end
 
 
 

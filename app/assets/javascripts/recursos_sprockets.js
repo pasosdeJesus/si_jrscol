@@ -15,7 +15,6 @@
 //= require mr519_gen/motor
 //= require sivel2_gen/motor
 //= require sivel2_gen/mapaosm
-//= require sivel2_sjr/motor
 //= require cor1440_gen/motor
 //= require_tree .
 

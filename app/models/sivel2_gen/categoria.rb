@@ -1,8 +1,14 @@
-require 'sivel2_sjr/concerns/models/categoria'
+require 'sivel2_gen/concerns/models/categoria'
 
 class Sivel2Gen::Categoria < ActiveRecord::Base
-  include Sivel2Sjr::Concerns::Models::Categoria
-  
+  include Sivel2Gen::Concerns::Models::Categoria
+
+
+  has_many :actosjr, class_name: 'Sivel2Sjr::Actosjr',
+    through: :acto
+  has_many :casosjr, foreign_key: "categoriaref", validate: true,
+    class_name: 'Sivel2Sjr::Casosjr'
+
   has_and_belongs_to_many :desplazamiento, 
     class_name: 'Sivel2Sjr::Desplazamiento',
     foreign_key: :categoria_id, 

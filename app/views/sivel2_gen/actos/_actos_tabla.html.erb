@@ -1,0 +1,40 @@
+<table class="table table-striped" border='1'>
+  <thead>
+    <tr>
+      <th><%= Sivel2Sjr::Actosjr.human_attribute_name(:presponsable) %></th>
+      <th><%= Sivel2Sjr::Actosjr.human_attribute_name(:categoria) %></th>
+      <th><%= Sivel2Sjr::Actosjr.human_attribute_name(:victima) %></th>
+      <TH><%= Sivel2Sjr::Actosjr.human_attribute_name(:fecha) %></th>
+      <th>Causó <%= Sivel2Sjr::Actosjr.human_attribute_name(:desplazamiento) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if @caso && @caso.actosjr %>
+    <% @caso.actosjr.try(:each) do |actosjr| %>
+      <tr>
+        <td><%= actosjr.acto.presponsable.nombre %></td>
+        <td><%= actosjr.acto.categoria.nombre %></td>
+        <td><%= actosjr.acto.persona.nombres + ' ' + 
+          actosjr.acto.persona.apellidos 
+          %></td>
+        <td><%= actosjr.fecha %></td>
+        <td><%= actosjr.desplazamiento.fechaexpulsion if 
+            actosjr.desplazamiento 
+        %></td>
+        <td>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            '#',
+            :data => { 
+                :eliminaracto => "#{actosjr.acto_id}",
+            },
+            :class => 'btn btn-sm btn-danger eliminaracto' 
+          %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+
+

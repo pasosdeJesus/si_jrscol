@@ -1,0 +1,53 @@
+<%= f.simple_fields_for :victima, Sivel2Gen::Victima.
+  where(caso_id: @caso.id).
+  where(persona_id: @caso.casosjr.contacto.id) do |fvictima| %>
+  <%= fvictima.input :id, as: :hidden %> 
+  <%= fvictima.simple_fields_for :persona do |p| %>
+    <%= render 'msip/personas/persona_campos', f: p, fvictima: fvictima %>
+
+    <%= s.input :direccion, 
+      input_html: {
+      "data-toggle" => 'tooltip',
+      "title" => 'Registrar dirección completa, especificando calle, apto, barrio o finca'
+    } %>
+    <%= s.input :telefono, 
+      input_html: {
+      "data-toggle" => 'tooltip',
+      "title" => 'Registrar teléfono del solicitante sin símbolos de puntuación' 
+    } %>
+    <%= s.association :comosupo,
+      collection: Sivel2Sjr::Comosupo.habilitados,
+      include_blank: false,
+      label_method: :nombre, 
+      value_method: :id 
+    %>
+  
+  <%= render partial: 'contacto_campos2',
+    locals: { fvictima: fvictima, casosjr: s} %>
+  
+    <%= fvictima.simple_fields_for :victimasjr do |fvictimasjr| %>
+      <% (1..7).each do |i| %>
+        <%= render partial: 'victima_campos' + i.to_s, 
+          locals: { fvictima: fvictima, 
+                    fvictimasjr: fvictimasjr,
+                    persona: p }
+        %>
+      <% end %>
+    <% end %> <!-- simple_fields_for :victimasjr -->
+  
+    <%= s.input :concentimientosjr, 
+      boolean_style: :nested,
+      inline_label: Sivel2Sjr::Casosjr.human_attribute_name(:concentimientosjr),
+      input_html: {
+      "data-toggle" => 'tooltip',
+      "title" => 'Informar a la persona sobre el uso interno de la información en el SJR' 
+    } %>
+    <%= s.input :concentimientobd, 
+      boolean_style: :nested,
+      inline_label: Sivel2Sjr::Casosjr.human_attribute_name(:concentimientobd),
+      input_html: {
+      "data-toggle" => 'tooltip',
+      "title" => 'Informar a la persona sobre el uso de la información en el Banco de Datos de violencia sociopolítica del CINEP' 
+    } %>
+  <% end %> <!-- simple_fields_for :persona-->
+<% end %> <!-- simple_fields_for :victima -->

@@ -1,0 +1,63 @@
+<div class='control-group nested-fields'>
+  <div class="controls">
+    <%= f.association :pais,
+      collection: Msip::Pais.where(fechadeshabilitacion: nil).order(:nombre),
+      label_method: :nombre,
+      value_method: :id 
+    %>
+    <%= f.association :departamento,
+      collection: (Msip::Departamento.where(
+        pais_id: f.object.pais_id, 
+        fechadeshabilitacion: nil).order(:nombre)),
+      label_method: :nombre,
+      value_method: :id 
+    %>
+    <%= f.association :municipio,
+      collection: (Msip::Municipio.where(
+        departamento_id: f.object.departamento_id,
+        fechadeshabilitacion: nil).order(:nombre)),
+      label_method: :nombre,
+      value_method: :id 
+    %>
+    <%= f.association :clase,
+      collection: (Msip::Clase.where(
+        municipio_id: f.object.municipio_id,
+        fechadeshabilitacion: nil).order(:nombre)),
+      label_method: :nombre,
+      value_method: :id,
+      input_html: {
+        "data-toggle" => 'tooltip',
+        "title" => 'Si es zona urbana elegir centro poblado exacto de la lista de despliegue'
+      }
+    %>
+    <%= f.input :lugar,
+      input_html: {
+        "data-toggle" => 'tooltip',
+        "title" => 'Registre el barrio en caso de ubicación urbana y la vereda en caso rural'
+    }
+    %>
+      <%= f.input :sitio,
+        input_html: {
+          "data-toggle" => 'tooltip',
+          "title" => 'Registre dirección de casa en caso urbano y de la finca en caso rural'
+       }
+    %>
+      <%= f.input :latitud %>
+      <%= f.input :longitud %>
+      <%= f.association :tsitio,
+        collection: Msip::Tsitio.where(fechadeshabilitacion: nil).order(:nombre),
+        label_method: :nombre, 
+        value_method: :id,
+        include_blank: false,
+        input_html: {
+          "data-toggle" => 'tooltip',
+          "title" => 'Seleccione si el sitio registrado corresponde a urbano o rural'
+        }
+      %>
+      <%= f.input :id, as: :hidden %>
+      <%= link_to_remove_association "Eliminar " + 
+          Msip::Ubicacion.human_attribute_name(:Ubicacion), f, 
+          {class: 'btn btn-sm btn-danger', :'data-existing' => 'true'} 
+      %> 
+    </div>
+</div>

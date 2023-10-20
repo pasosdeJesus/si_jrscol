@@ -1,0 +1,32 @@
+<div class='control-group nested-fields'>
+  <div class="controls">
+    <%= f.input :id, as: :hidden %>
+    <%= f.input :fechaatencion, 
+      as: :string, 
+      input_html: {
+        "data-behaviour" => "datepicker",
+        "data-toggle" => 'tooltip',
+        "title" => 'La primera debe corresponder a la fecha inicial de recepción del caso.  Por cada sesión de atención posterior agregue una nueva respuesta institucional pulsando el botón azul “Añadir Respuesta” y diligencie la fecha correspondiente'
+      }
+    %>
+    <%= render 'respuesta_campos1', f: f %>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Respuesta del SJR</div>
+      <div class="panel-body">
+
+        <%= render 'respuesta_campos2', f: f %>
+        <%= render 'respuesta_campos3', f: f %>
+
+      </div> <!-- class: panel-body -->
+    </div> <!-- class: panel panel-default -->
+
+    <%= render 'respuesta_campos4', f: f %>
+    <%= render 'respuesta_campos5', f: f %>
+
+    <%= link_to_remove_association "Eliminar " + 
+      Sivel2Sjr::Respuesta.human_attribute_name(:sesionatencion), f, 
+      {class: 'btn btn-sm btn-danger', :'data-existing' => 'true'} 
+    %>
+  </div>
+</div>

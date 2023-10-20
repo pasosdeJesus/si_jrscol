@@ -1,4 +1,4 @@
-class Ability < Sivel2Sjr::Ability
+class Ability < Sivel2Gen::Ability
 
   ROLADMIN  = 1
   ROLINV    = 2
@@ -71,8 +71,26 @@ class Ability < Sivel2Sjr::Ability
 
   BASICAS_PROPIAS =  [
     ['Sivel2Sjr', 'accionjuridica'],
+    ['Sivel2Sjr', 'acreditacion'], 
+    ['Sivel2Sjr', 'aslegal'], 
+    ['Sivel2Sjr', 'aspsicosocial'], 
+    ['Sivel2Sjr', 'ayudaestado'], 
+    ['Sivel2Sjr', 'ayudasjr'], 
+    ['Sivel2Sjr', 'clasifdesp'], 
+    ['Sivel2Sjr', 'comosupo'], 
+    ['Sivel2Sjr', 'declaroante'],
+    ['Sivel2Sjr', 'derecho'],
+    ['Sivel2Sjr', 'idioma'],
+    ['Sivel2Sjr', 'inclusion'],
+    ['Sivel2Sjr', 'modalidadtierra'],
     ['Sivel2Sjr', 'motivosjr'],
+    ['Sivel2Sjr', 'personadesea'],
+    ['Sivel2Sjr', 'proteccion'],
+    ['Sivel2Sjr', 'progestado'],
     ['Sivel2Sjr', 'regimensalud'],
+    ['Sivel2Sjr', 'rolfamilia'],
+    ['Sivel2Sjr', 'statusmigratorio'],
+    ['Sivel2Sjr', 'tipodesp'],
     ['Msip', 'lineaorgsocial'],
     ['Msip', 'tipoanexo'],
     ['Msip', 'tipoorgsocial'],
@@ -106,7 +124,6 @@ class Ability < Sivel2Sjr::Ability
     Msip::Ability::BASICAS_PROPIAS +
       Cor1440Gen::Ability::BASICAS_PROPIAS +
       Sivel2Gen::Ability::BASICAS_PROPIAS +
-      Sivel2Sjr::Ability::BASICAS_PROPIAS +
       BASICAS_PROPIAS - [
         ['Msip', 'grupo'],
         ['Sivel2Gen', 'filiacion'],
@@ -138,8 +155,19 @@ class Ability < Sivel2Sjr::Ability
   def tablasbasicas_prio
     Msip::Ability::BASICAS_PRIO +
       Sivel2Gen::Ability::BASICAS_PRIO +
-      Sivel2Sjr::Ability::BASICAS_PRIO + 
       [
+        ['Sivel2Sjr', 'regimensalud'],
+        ['Sivel2Sjr', 'acreditacion'], 
+        ['Sivel2Sjr', 'clasifdesp'],
+        ['Sivel2Sjr', 'declaroante'], 
+        ['Sivel2Sjr', 'inclusion'],
+        ['Sivel2Sjr', 'modalidadtierra'], 
+        ['Sivel2Sjr', 'tipodesp'],
+        ['Sivel2Sjr', 'personadesea'], 
+        ['Sivel2Sjr', 'ayudaestado'],
+        ['Sivel2Sjr', 'derecho'], 
+        ['Sivel2Sjr', 'progestado'],
+        ['Sivel2Sjr', 'motivosjr'],
         ['', 'sectorgifmm'],
       ]
   end
@@ -925,7 +953,6 @@ class Ability < Sivel2Sjr::Ability
 
   def self.campos_plantillas
     Heb412Gen::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone.
-      merge(Sivel2Sjr::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone).
       merge(Cor1440Gen::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone).
       merge(Jos19::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone).
       merge(CAMPOS_PLANTILLAS_PROPIAS.clone)

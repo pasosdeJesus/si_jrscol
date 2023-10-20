@@ -1,0 +1,88 @@
+<% return if !f.object %>
+<tr class='nested-fields'>
+  <td>
+    <% if !f.object.casosjr_id %>
+      <% ph = 'Buscar No. Caso, contacto o identificacion del contacto' %>
+      <% ac = { list: 'fuente-listadocasos' } %>
+      <%= f.input :casosjr_id,  placeholder: ph,
+        label: false,
+        as: :string,
+        :input_html => ac %>
+    <% else %>
+      <%= link_to f.object.casosjr_id, sivel2_gen.caso_path(f.object.casosjr.caso), 
+        target: '_blank' %>
+    <% end %>
+  </td>
+  <td>
+    <span class="nombres">
+      <%= f.object.casosjr.contacto.nombres if f.object && f.object.casosjr && 
+        f.object.casosjr.contacto %>
+    </span>
+  </td>
+  <td>
+    <span class="apellidos">
+      <%= f.object.casosjr.contacto.apellidos if f.object && 
+        f.object.casosjr && f.object.casosjr.contacto %>
+    </span>
+  </td>
+  <td>
+    <span class="tipodocumento">
+      <%= f.object.casosjr.contacto.tdocumento.sigla if f.object && 
+        f.object.casosjr && f.object.casosjr.contacto && 
+        f.object.casosjr.contacto.tdocumento %>
+    </span>
+  </td>
+  <td>
+    <span class="numerodocumento">
+      <%= f.object.casosjr.contacto.numerodocumento if f.object && 
+        f.object.casosjr && f.object.casosjr.contacto %>
+    </span>
+  </td>
+  <td>
+    <% 
+        rangoedad = {'S' => {}, 'M' => {}, 'F' => {}}
+        Cor1440Gen::Rangoedadac.habilitados.all.each do |rac|
+          rangoedad['S'][rac.id] = 0
+          rangoedad['M'][rac.id] = 0
+          rangoedad['F'][rac.id] = 0
+        end
+        totsexo = {}
+        if f.object && 
+            f.object.casosjr && f.object.casosjr.caso && 
+            f.object.casosjr.caso.victima && f.object.actividad.fecha
+          Sivel2Sjr::RangoedadHelper.poblacion_por_sexo_rango(
+            f.object.casosjr.caso.id, f.object.actividad.fecha.year,
+            f.object.actividad.fecha.month,
+            f.object.actividad.fecha.day,
+            'Cor1440Gen::Rangoedadac', 
+            rangoedad, 
+            totsexo)
+        end 
+      %>
+    <% rangoedad.each do |sexo, pr|  %>
+      <% pr.each do |rangoedad_id, c| %>
+        <%= f.hidden_field 'rangoedad_' + sexo + '_' + rangoedad_id.to_s, value: c %>
+      <% end %>
+    <% end %>
+    <span class="fam_mujeres">
+      <%= totsexo['F'] %>
+    </span>
+  </td>
+  <td>
+    <span class="fam_hombres">
+      <%= totsexo['M'] %>
+    </span>
+  </td>
+  <td>
+    <span class="fam_sinsexo">
+      <%= totsexo['S'] %>
+    </span>
+  </td>
+  <td>
+    <%= f.input :id, as: :hidden %>
+    <%= link_to_remove_association "Eliminar", f, 
+      :class => 'btn btn-sm btn-danger' 
+    %>
+    <div><%= f.error_notification %></div>
+  </td>
+</tr>

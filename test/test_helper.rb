@@ -12,7 +12,7 @@ class ActiveSupport::TestCase
 
   if Msip::Tclase.all.count == 0
     load "#{Rails.root}/db/seeds.rb"
-    Sivel2Sjrcol::Application.load_tasks
+    SiJrscol::Application.load_tasks
     Rake::Task['msip:indices'].invoke
   end
 

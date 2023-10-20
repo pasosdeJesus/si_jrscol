@@ -1,0 +1,72 @@
+<div class="page-header">
+  <h1><%=t '.title', :default => @titulo_respuesta %></h1>
+</div>
+
+<%= simple_form_for :filtro, 
+  { remote: true, 
+    url: conteos_respuestas_path,
+    method: "get" } do |f| 
+%>
+  <div class="container">
+    <div class="row filtro-fila">
+      <div class="offset-sm-0 col-sm-3 offset-md-1 col-md-1">
+       Filtro 
+      </div>
+      <div class="offset-sm-0 col-sm-3">
+        <%= f.input :fechaini,
+          maxlength: 10, 
+          size: 10,
+          label: false,
+          placeholder: 'Fec. Atención Inicial',
+          input_html: {
+            "data-behaviour" => "datepicker",
+            "data-contarautomatico" => "" 
+          }
+        %>
+      </div>
+      <div class="offset-sm-0 col-sm-3">
+        <%= f.input :fechafin,
+          maxlength: 10, 
+          size: 10,
+          label: false,
+          placeholder: 'Fec. Atención Final',
+          input_html: {
+            "data-behaviour" => "datepicker",
+            "data-contarautomatico" => "" 
+          } %>
+      </div>
+      <div class="col-sm-3">
+        <%= f.input :oficina_id,
+          collection: Msip::Oficina.habilitados,
+          label_method: :nombre,
+          value_method: :id,
+          label: false,
+          include_blank: '-- Oficina',
+          input_html: { "data-contarautomatico" => "" } %>
+      </div>
+    </div>
+    <div class="row filtro-fila">
+      <div class="offset-sm-0 col-sm-2 offset-md-1 col-md-1">
+        Contar:
+      </div>
+      <div class="col-sm-4">
+        <%= f.input :contar,
+          collection: @pque.invert,
+          label: false,
+          include_blank: false,
+          input_html: { "data-contarautomatico" => "" }
+        %>
+      </div>
+    </div>
+    <div class="row filtro-fila">
+      <div class="offset-md-5 col-md-2">
+        <%= f.button :submit, 'Contar', class: 'btn btn-default',
+          'data-turbo' => false %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div id="resultado">
+  <%= render 'sivel2_sjr/conteos/resultado_respuestas' %>
+</div> <!-- id: resultado -->

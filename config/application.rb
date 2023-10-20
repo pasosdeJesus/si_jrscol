@@ -6,7 +6,7 @@ require 'rails/all'
 # limitado a :test, :development, o :production.
 Bundler.require(*Rails.groups)
 
-module Sivel2Sjrcol
+module SiJrscol
   class Application < Rails::Application
 
     config.load_defaults 7.0
@@ -31,7 +31,7 @@ module Sivel2Sjrcol
 
     config.active_record.schema_format = :sql
 
-    config.railties_order = [:main_app, Sivel2Sjr::Engine, 
+    config.railties_order = [:main_app, Jos19::Engine, 
                              Cor1440Gen::Engine, Sivel2Gen::Engine,
                              Heb412Gen::Engine, Mr519Gen::Engine, 
                              Msip::Engine, :all]

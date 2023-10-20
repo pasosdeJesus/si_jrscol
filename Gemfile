@@ -99,13 +99,8 @@ gem "cor1440_gen",
 
 # Motor de SIVeL 2
 gem "sivel2_gen",
-  git: "https://gitlab.com/pasosdeJesus/sivel2_gen.git", branch: "main"
-  #path: "../sivel2_gen"
-
-# Motor de SIVeL 2 - SJR
-gem "sivel2_sjr",
-  git: "https://gitlab.com/pasosdeJesus/sivel2_sjr.git", branch: "main"
-  #path: "../sivel2_sjr"
+  #git: "https://gitlab.com/pasosdeJesus/sivel2_gen.git", branch: "main"
+  path: "../sivel2_gen"
 
 gem "jos19",
   git: "https://gitlab.com/pasosdeJesus/jos19.git", branch: "main"

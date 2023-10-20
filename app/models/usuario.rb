@@ -1,14 +1,16 @@
-require 'sivel2_sjr/concerns/models/usuario'
+require 'sivel2_gen/concerns/models/usuario'
 
 class Usuario < ActiveRecord::Base
-  include Sivel2Sjr::Concerns::Models::Usuario
+  include Sivel2Gen::Concerns::Models::Usuario
+
+  belongs_to :oficina, foreign_key: "oficina_id", validate: true,
+    class_name: 'Msip::Oficina', optional: true
 
   belongs_to :territorial,
     class_name: '::Territorial',
     foreign_key: "territorial_id",
     validate: true,
     optional: true
-
 
   has_many :asesorhistorico,
     class_name: '::Asesorhistorico',
@@ -33,11 +35,14 @@ class Usuario < ActiveRecord::Base
     dependent: :destroy,
     class_name: 'Msip::EtiquetaPersona'
 
-  has_many :etiqueta_usuario, class_name: 'Sivel2Sjr::EtiquetaUsuario',
+  has_many :etiqueta_usuario, 
+    class_name: 'Sivel2Sjr::EtiquetaUsuario',
     dependent: :delete_all
 
-  has_many :etiqueta, class_name: 'Msip::Etiqueta',
+  has_many :etiqueta, 
+    class_name: 'Msip::Etiqueta',
     through: :etiqueta_usuario
+
 
   validate :rol_usuario
   def rol_usuario
@@ -62,6 +67,10 @@ class Usuario < ActiveRecord::Base
     end
   end
 
+  scope :filtro_oficina_id, lambda {|o|
+    where(oficina_id: o)
+  }
+
   scope :filtro_territorial_id, lambda {|o|
     where(territorial_id: o)
   }
@@ -81,7 +90,6 @@ class Usuario < ActiveRecord::Base
       Msip::Oficina.find(aproxoficina_id)
     end
   end
-
 
   def active_for_authentication?
     #logger.debug self.to_yaml

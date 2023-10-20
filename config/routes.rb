@@ -85,6 +85,8 @@ Rails.application.routes.draw do
     get "/casos/:id/solicitar" => "sivel2_sjr/casos#solicitar",
       as: :caso_solicitar
 
+    get '/casos/mapaosm' => 'sivel2_sjr/casos#mapaosm'
+
     get '/personas_casos' => 'sivel2_sjr/casos#personas_casos',
       as: :personas_casos
 
@@ -139,7 +141,6 @@ Rails.application.routes.draw do
     end
   end
 
-  mount Sivel2Sjr::Engine, at: rutarel, as: 'sivel2_sjr'
   mount Jos19::Engine, at: rutarel, as: 'jos19'
   mount Sivel2Gen::Engine, at: rutarel, as: 'sivel2_gen'
   mount Cor1440Gen::Engine, at: rutarel, as: 'cor1440_gen'

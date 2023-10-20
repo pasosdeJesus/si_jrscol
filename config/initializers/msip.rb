@@ -1,4 +1,4 @@
-require 'sivel2_sjr/version'
+require 'jos19/version'
 Msip.setup do |config|
   config.ruta_anexos = ENV.fetch('MSIP_RUTA_ANEXOS', 
                                  "#{Rails.root}/archivos/anexos")
@@ -8,5 +8,5 @@ Msip.setup do |config|
   if !ENV["HEROKU_POSTGRESQL_GREEN_URL"].nil?
     config.ruta_anexos = "#{Rails.root}/tmp/"
   end
-  config.titulo = "SI-JRSCOL #{Sivel2Sjr::VERSION}"
+  config.titulo = "SI-JRSCOL #{Jos19::VERSION}"
 end
