@@ -21,7 +21,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ayudasjr_params
-        params.require(:ayudasjr).permit(*atributos_form)
+        params.require(:sivel2_sjr_ayudasjr).permit(*atributos_form)
       end
 
       # Elimina un registro 

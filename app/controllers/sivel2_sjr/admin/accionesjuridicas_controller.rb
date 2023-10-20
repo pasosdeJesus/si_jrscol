@@ -25,7 +25,7 @@ module Sivel2Sjr
       end
   
       def accionjuridica_params
-        params.require(:accionjuridica).permit(*atributos_form)
+        params.require(:sivel2_sjr_accionjuridica).permit(*atributos_form)
       end
   
     end

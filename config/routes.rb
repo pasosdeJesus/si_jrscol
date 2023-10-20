@@ -171,11 +171,19 @@ Rails.application.routes.draw do
             path_names: { new: 'nueva', edit: 'edita' }
         elsif (t[0] == 'Sivel2Sjr') 
           c = t[1].pluralize
-          resources c.to_sym, 
-            path_names: { new: 'nueva', edit: 'edita' }
+          resources c.to_sym,
+            path_names: { new: "nueva", edit: "edita" },
+            controller: "/sivel2_sjr/admin/#{c}",
+            path: "#{c}"
+#          resources c.to_sym, 
+#            path_names: { new: "nueva", edit: "edita" },
+#            controller: "sivel2_sjr/#{c}"
         end
       end
+
     end
+
+
 
   end
 

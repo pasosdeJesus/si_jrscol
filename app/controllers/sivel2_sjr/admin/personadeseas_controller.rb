@@ -15,7 +15,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def personadesea_params
-        params.require(:personadesea).permit(*atributos_form)
+        params.require(:sivel2_sjr_personadesea).permit(*atributos_form)
       end
 
     end

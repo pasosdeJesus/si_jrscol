@@ -43,6 +43,8 @@ es:
     actividadareas: Subáreas de Actividades
     proyecto: Área de Actividad
     proyectos: Áreas de Actividad
+    proyectosfinancieros: Convenios financiados
+    proyectofinanciero: Convenio financiado
     sectorgifmm: Sector GIFMM
     sectorgifmm_id: Sector GIFMM
   activerecord:
@@ -163,6 +165,9 @@ es:
         rangoedadac_ultact: Rango de edad en actividad más reciente
       "cor1440_gen/financiador":
         nombregifmm: Nombre GIFMM
+      "cor1440_gen/mindicadorpf":
+        proyectofinanciero: Convenio financiado
+        proyectofinanciero_id: Convenio financiado
       "cor1440_gen/proyecto":
         financiador_ids: Financiador
         Proyecto: Área de Actividad
@@ -175,9 +180,14 @@ es:
         nombre: Nombre
         objetivopf: Objetivos
         oficina_ids: Oficinas
+        "{:oficina_ids=>[]}": Oficinas
         proyecto: Área de Actividad
         "{:proyecto_ids=>[]}": Área de actividad
         proyecto_ids: Área de actividad
+        Proyectofinanciero: Convenio financiado
+        proyectofinanciero: Convenio financiado
+        Proyectosfinancieros: Convenios financiados
+        proyectosfinancieros: Convenios financiados
         resultadopf: Resutados
       "declaracionruv":
         Declaracionruv: Declaración en el RUV
@@ -209,6 +219,7 @@ es:
         Orgsociales: Organizaciones Sociales
         Personas: Beneficiarios
         Proyectos: Convenios Financiados
+        proyectofinanciero: Convenios financiados que exportan/importan con la plantilla
         Plantillahcm: Plantilla para listado
         Plantillashcm: Plantillas para listado
       "heb412_gen/plantillahcr":
@@ -227,18 +238,11 @@ es:
       "modalidadentrega":
         Modalidadentrega: Modalidad de Entrega
         Modalidadesentrega: Modalidades de Entrega
-      "mungifmm":
-        Mungifmm: Municipio GIFMM
-        Munsgifmm: Municipios GIFMM
-      "perfilmigracion":
-        Perfilmigracion: Perfil de migración
-        Perfilesmigracion: Perfiles de migración
-      "sal7711_gen/articulo": 
-        texto: Resumen
-        fuenteprensa: Fuente de prensa
-      "sectorgifmm":
-        Sectorgifmm: Sector GIFMM
-        Sectoresgifmm: Sectores GIFMM
+      'mr519_gen/formulario':
+        caracterizacion: Caracterización en convenios financiados
+      "msip/persona":
+        proyectofinanciero_ids: Convenios financiados que caracterizan
+        proyectofinanciero: Convenios financiados que caracterizan
       "msip/claverespaldo":
         Claverespaldo: Clave para respaldo automático
         Clavesrespaldos: Claves para respaldos automáticos
@@ -300,15 +304,33 @@ es:
         Tiposanexo: Tipos de anexo
       "msip/ubicacion":
         Ubicacion: Ubicación
+      "mungifmm":
+        Mungifmm: Municipio GIFMM
+        Munsgifmm: Municipios GIFMM
+      "perfilmigracion":
+        Perfilmigracion: Perfil de migración
+        Perfilesmigracion: Perfiles de migración
+      "sal7711_gen/articulo": 
+        texto: Resumen
+        fuenteprensa: Fuente de prensa
+      "sectorgifmm":
+        Sectorgifmm: Sector GIFMM
+        Sectoresgifmm: Sectores GIFMM
       "sivel2_gen/anexo_victima":
         tipoanexo: Tipo de anexo
         tipoanexo_id: Tipo de anexo
       "sivel2_gen/caso": 
+        asesorhistorico: Asesores históricos
         fecha: F. Desp. Emblemático o Migración
+        fecharec: Fecha recepción
         etiqueta_ids: Etiquetas
         expulsion: Sitio Expulsión Emb.
+        id: Código
         llegada: Sitio Llegada Emb.
-        asesorhistorico: Asesores históricos
+        memo: Descripción
+        nusuario: Asesor JRS
+        statusmigratorio: Estatus migratorio
+        ultimaatencion_fecha: Fecha ult. atención
       "sivel2_gen/caso_presponsable": 
         presponsable: Presunto responsable
       "sivel2_gen/categoria": 
@@ -316,6 +338,8 @@ es:
       "sivel2_gen/presponsable": 
         presponsable: presunto responsable
         nombre_res1612: "Nombre para Res. 1612"
+      "sivel2_gen/victima":
+        edad: Edad en fecha de salida
       "sivel2_sjr/accionjuridica": 
         Accionjuridica: Acción jurídica
         Accionesjuridicas: Acciones jurídicas
@@ -330,29 +354,64 @@ es:
       "sivel2_sjr/aslegal": 
         Aslegal: Asesoría Jurídica
         Aslegales: Asesorías Jurídicas
-      "sivel2_sjr/ayudaestado": 
+      "sivel2_sjr/aspsicosocial":
+          Aspsicosocial: Asistencia psicosocial
+          Aspsicosociales: Asistencias psicosociales
+      "sivel2_sjr/ayudaestado":
+        Ayudaestado: Ayuda del Estado
+        Ayudasestado: Ayudas del Estado
         "{:derecho_ids=>[]}": Derechos relacionados
-      "sivel2_sjr/ayudasjr": 
+      "sivel2_sjr/ayudasjr":
+        Ayudasjr: Ayuda del JRS
+        Ayudassjr: Ayudas del JRS
         "{:derecho_ids=>[]}": Derechos relacionados
-      "sivel2_sjr/casosjr": 
+      "sivel2_sjr/casosjr":
+        comosupo: ¿Cómo supo del JRS?
+        contacto: Solicitante principal
+        concentimientobd: Consentimiento Informado compartir BD CINEP
+        concentimientosjr: Consentimiento Informado compartir JRS
+        direccion: Dirección actual
         docrefugiado: Número de salvoconducto
         estatus_refugio: Estatús del refugio
         fechadecrefugio: Fecha de declaración
+        fecharec: Fecha de recepción
         memo1612: Descripción para Resolución 1612
         ninosdelconflicto: En este caso ¿Hay niños, niñas o adolescentes víctimas de violencias relacionadas al conflicto armado?
+        proteccion: Necesidad de protección internacional
+        Refugio: Refugio
+        regionsjr: Oficina
+        statusmigratorio: Estatus migratorio
+        telefono: Teléfono
+        Ubicacion: Sitios geográficos
+        usuario: Asesor JRS
         tipoanexo: Tipo de anexo
       "sivel2_sjr/clasifdesp": 
         Clasifdesp: Clasificación de Desplazamiento
         Clasifdesps: Clasificaciones de Desplazamientos
+      "sivel2_sjr/comosupo":
+        Comosupo: ¿Cómo supo del JRS?
+        Comosupos: ¿Cómo supo del JRS?
       "sivel2_sjr/declaroante": 
         Declaroante: Declaro Ante
         Declaroantes: Declaro Ante
+      "sivel2_sjr/desplazamiento":
+        categoria: Antecedentes no individuales
+      "sivel2_sjr/emprendimiento":
+        Emprendimiento: Emprendimiento
+        Emprendimientos: Emprendimientos
+      "sivel2_sjr/estadocivil":
+        Estadocivil: Estado civil
+        Estadosciviles: Estado civil
+      "sivel2_sjr/idioma":
+        Idioma: Idioma
+        Idiomas: Idiomas
       "sivel2_sjr/inclusion":
         Inclusion: Inclusión en RUV
         Inclusiones: Inclusiones en RUV
         pospres: Posición al presentar junto con declaración
-      "sivel2_sjr/desplazamiento":
-        categoria: Antecedentes no individuales
+      "sivel2_sjr/maternidad":
+        Maternidad: Estado maternidad
+        Maternidades: Estados maternidad
       "sivel2_sjr/migracion":
         fechaPep: Fecha del PPT
         migracontactopre: Contacto previo con Colombia
@@ -360,6 +419,9 @@ es:
         perfilmigracion: Perfil de migración
         statusmigratorio: Estatus migratorio
         tipopep: Tipo de PPT
+      "sivel2_sjr/modalidadtierra":
+        Modalidadtierra: Modalidad de tenencia de la tierra
+        Modalidadestierra: Modalidades de tenencia de la tierra
       "sivel2_sjr/motivosjr": 
         Motivosjr: Servicio y Asesoria del JRS
         Motivossjr: Servicios y Asesorias del JRS
@@ -369,6 +431,18 @@ es:
         Personadeseas: Beneficiarios desean
       "sivel2_sjr/progestado": 
         "{:derecho_ids=>[]}": Derechos relacionados
+      "sivel2_sjr/presponsable":
+        Presponsable: Agente de persecución
+        Presponsables: Agentes de persecución
+      "sivel2_sjr/progestado":
+        Progestado: Programa del Estado
+        Progsestado: Programas del Estado
+      "sivel2_sjr/proteccion":
+        Proteccion: Necesidad de protección internacional
+        Protecciones: Necesidades de protección internacional
+      "sivel2_sjr/regimensalud":
+        Regimensalud: Régimen salud
+        Regimenessalud: Régimenes salud
       "sivel2_sjr/respuesta": 
         accionesder: Acciones del beneficiario frente a derechos vulnerados
         aslegal: Asesoría jurídica
@@ -400,8 +474,16 @@ es:
         turno: Turno próxima prorroga
         verifcper: Verificación compromisos beneficiario
         verifcsjr: Verificación compromisos JRS
-      "sivel2_sjr/statusmigratorio": 
+      "sivel2_sjr/rolfamilia":
+        Rolfamilia: Rol en familia
+        Rolesfamilia: Roles en familia
+      "sivel2_sjr/statusmigratorio":
         formupersona: Habilitado en formulario beneficiario
+        Statusmigratorio: Estatus migratorio
+        Statusmigratorios: Estatus migratorio
+      "sivel2_sjr/tipodesp":
+        Tipodesp: Tipo de desplazamiento
+        Tiposdesp: Tipos de desplazamiento
       "territorial":
         Territorial: Territorial
         Territoriales: Territoriales

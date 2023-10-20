@@ -2,7 +2,6 @@ require 'test_helper'
 
 module Sivel2Sjr
   class AccionesjuridicasControllerTest < ActionController::TestCase
-    include Engine.routes.url_helpers
     include Devise::Test::ControllerHelpers
     include Rails.application.routes.url_helpers
 
@@ -36,6 +35,7 @@ module Sivel2Sjr
     end
 
     test "should get edit" do
+      debugger
       get :edit, params: {use_route: admin_accionjuridica_path, id: @accionjuridica}
       assert_response :success
     end
@@ -45,8 +45,9 @@ module Sivel2Sjr
     end
 
     test "should destroy accionjuridica" do
+      debugger
       assert_difference('Accionjuridica.count', -1) do
-        delete :destroy, params: {use_route: admin_accionjuridica_path, id: @accionjuridica}
+        delete :destroy, params: {use_route: admin_accionjuridica_path, id: @accionjuridica.id}
       end
 
     end

@@ -15,7 +15,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def aspsicosocial_params
-        params.require(:aspsicosocial).permit(*atributos_form)
+        params.require(:sivel2_sjr_aspsicosocial).permit(*atributos_form)
       end
 
     end

@@ -36,7 +36,7 @@ module Sivel2Sjr
       end
 
       def progestado_params
-        params.require(:progestado).permit(*atributos_form)
+        params.require(:sivel2_sjr_progestado).permit(*atributos_form)
       end
 
     end

@@ -19,7 +19,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def rolfamilia_params
-        params.require(:rolfamilia).permit(*atributos_form)
+        params.require(:sivel2_sjr_rolfamilia).permit(*atributos_form)
       end
 
     end

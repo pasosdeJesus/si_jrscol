@@ -20,7 +20,7 @@ module Sivel2Sjr
 
       # Lista blanca de parametros
       def ayudaestado_params
-        params.require(:ayudaestado).permit(*atributos_form)
+        params.require(:sivel2_sjr_ayudaestado).permit(*atributos_form)
       end
 
     end

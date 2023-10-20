@@ -15,7 +15,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def declaroante_params
-        params.require(:declaroante).permit(*atributos_form)
+        params.require(:sivel2_sjr_declaroante).permit(*atributos_form)
       end
 
     end

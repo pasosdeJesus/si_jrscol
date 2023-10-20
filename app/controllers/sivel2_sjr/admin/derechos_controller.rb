@@ -19,7 +19,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def derecho_params
-        params.require(:derecho).permit(*atributos_form)
+        params.require(:sivel2_sjr_derecho).permit(*atributos_form)
       end
 
     end

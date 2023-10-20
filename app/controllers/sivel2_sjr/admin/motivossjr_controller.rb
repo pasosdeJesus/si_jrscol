@@ -28,7 +28,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def motivosjr_params
-        params.require(:motivosjr).permit(*atributos_form)
+        params.require(:sivel2_sjr_motivosjr).permit(*atributos_form)
       end
 
     end

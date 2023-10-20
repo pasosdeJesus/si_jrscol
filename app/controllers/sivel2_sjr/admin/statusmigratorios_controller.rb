@@ -29,7 +29,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def statusmigratorio_params
-        params.require(:statusmigratorio).permit(*atributos_form)
+        params.require(:sivel2_sjr_statusmigratorio).permit(*atributos_form)
       end
 
     end

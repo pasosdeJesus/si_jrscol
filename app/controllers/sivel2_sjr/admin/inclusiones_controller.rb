@@ -30,7 +30,7 @@ module Sivel2Sjr
 
       # No confiar en parametros de internet, sino solo los de lista blanca
       def inclusion_params
-        params.require(:inclusion).permit(*atributos_form)
+        params.require(:sivel2_sjr_inclusion).permit(*atributos_form)
       end
 
 

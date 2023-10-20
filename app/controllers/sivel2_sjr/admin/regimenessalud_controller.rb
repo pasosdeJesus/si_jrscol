@@ -13,7 +13,7 @@ module Sivel2Sjr
       end
 
       def regimensalud_params
-        params.require(:regimensalud).permit(*atributos_form)
+        params.require(:sivel2_sjr_regimensalud).permit(*atributos_form)
       end
 
     end

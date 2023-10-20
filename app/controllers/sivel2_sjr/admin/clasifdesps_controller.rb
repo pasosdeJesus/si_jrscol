@@ -14,7 +14,7 @@ module Sivel2Sjr
 
       # Lista blanca de parametros
       def clasifdesp_params
-        params.require(:clasifdesp).permit(*atributos_form)
+        params.require(:sivel2_sjr_clasifdesp).permit(*atributos_form)
       end
 
     end

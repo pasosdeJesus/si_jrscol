@@ -15,7 +15,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def comosupo_params
-        params.require(:comosupo).permit( *(atributos_index - ["id"]))
+        params.require(:sivel2_sjr_comosupo).permit( *(atributos_index - ["id"]))
       end
 
       helper_method :clase, :atributos_index
