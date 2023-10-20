@@ -1434,7 +1434,7 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso2 AS
                      LEFT JOIN public.cor1440_gen_actividad_proyectofinanciero apf ON ((apf.actividad_id = ac.id)))
                      LEFT JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = ac.id)))
                      LEFT JOIN public.cor1440_gen_actividadpf apf2 ON ((apf2.proyectofinanciero_id = apf.proyectofinanciero_id)))
-                  WHERE (true AND (ac.fecha <= '2023-06-30'::date))) sub) c1
+                  WHERE (true AND (ac.fecha >= '2023-01-01'::date) AND (ac.fecha <= '2023-06-30'::date))) sub) c1
   GROUP BY c1.persona_id
   WITH NO DATA;
 
@@ -1850,7 +1850,7 @@ CREATE MATERIALIZED VIEW public.consgifmm_exp AS
      LEFT JOIN public.depgifmm ON ((msip_departamento.deplocal_cod = depgifmm.id)))
      LEFT JOIN public.msip_municipio ON ((msip_ubicacionpre.municipio_id = msip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((msip_departamento.deplocal_cod * 1000) + msip_municipio.munlocal_cod) = mungifmm.id)))
-  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = '54632-1012-'::text))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['54072-1012-'::text, '54093-1023-'::text, '54097-1023-'::text, '54098-1163-'::text, '54119-1135-'::text, '54124-1135-'::text, '54131-1107-'::text, '54133-1122-'::text, '54145-1107-'::text, '54146-1107-'::text, '54147-1107-'::text, '54148-1107-'::text, '54149-1107-'::text, '54150-1107-'::text, '54151-1107-'::text, '54152-1107-'::text, '54159-995-'::text, '54171-1117-'::text, '54176-1013-'::text, '54208-992-'::text, '54209-992-'::text, '54210-992-'::text, '54224-992-'::text, '54225-992-'::text, '54226-992-'::text, '54227-992-'::text, '54228-992-'::text, '54232-1000-'::text, '54248-1091-'::text, '54315-992-'::text, '54402-1122-'::text, '54407-1106-'::text, '54412-992-'::text, '54450-1000-'::text, '54487-1108-'::text, '54506-1087-'::text, '54508-1092-'::text, '54510-1122-'::text, '54528-1108-'::text, '54552-991-'::text, '54707-1022-'::text, '54707-1020-'::text, '54889-987-'::text, '54906-988-'::text, '54916-987-'::text, '54981-995-'::text, '54991-987-'::text, '54998-995-'::text, '54142-993-'::text, '54142-1000-'::text, '54142-999-'::text, '54142-991-'::text, '54144-1025-'::text, '54155-1025-'::text, '54157-1025-'::text, '54163-1021-'::text, '54165-1003-'::text, '54165-1004-'::text, '54170-1023-'::text, '54173-1003-'::text, '54177-1012-'::text, '54200-1135-'::text, '54211-1001-'::text, '54217-995-'::text, '54221-1023-'::text, '54229-992-'::text, '54230-992-'::text, '54247-1107-'::text, '54282-1010-'::text, '54311-1012-'::text, '54313-1012-'::text, '54320-1012-'::text, '54331-1012-'::text, '54334-1012-'::text, '54339-1116-'::text, '54442-1090-'::text, '54443-1090-'::text, '54445-1093-'::text, '54446-1093-'::text, '54467-997-'::text, '54467-1003-'::text, '54467-1001-'::text, '54475-1004-'::text, '54488-1108-'::text, '54557-991-'::text, '54588-1108-'::text, '54636-1106-'::text, '54640-1106-'::text, '54721-1106-'::text, '54723-1106-'::text, '54725-1106-'::text, '54750-988-'::text, '54793-1108-'::text, '54838-991-'::text, '54838-994-'::text, '54246-1011-'::text, '54262-1092-'::text, '54262-1087-'::text, '54264-1092-'::text, '54264-1089-'::text, '54265-1001-'::text, '54267-992-'::text, '54268-992-'::text, '54269-992-'::text, '54270-992-'::text, '54271-992-'::text, '54272-992-'::text, '54273-992-'::text, '54274-992-'::text, '54275-992-'::text, '54277-1007-'::text, '54279-992-'::text, '54297-997-'::text, '54305-1122-'::text, '54307-1116-'::text, '54309-1115-'::text, '54309-1119-'::text, '54323-992-'::text, '54324-992-'::text, '54325-992-'::text, '54326-992-'::text, '54327-992-'::text, '54328-1023-'::text, '54329-992-'::text, '54330-1023-'::text, '54333-1012-'::text, '54335-1012-'::text, '54344-1107-'::text, '54352-1107-'::text, '54353-1107-'::text, '54356-1023-'::text, '54419-1106-'::text, '54420-1106-'::text, '54422-1106-'::text, '54424-1106-'::text, '54444-1090-'::text, '54447-1093-'::text, '54473-1119-'::text, '54482-1115-'::text, '54489-1108-'::text, '54496-1119-'::text, '54515-1021-'::text, '54516-1021-'::text, '54687-997-'::text, '54730-988-'::text, '54830-994-'::text, '54830-991-'::text, '53262-1108-'::text, '54342-1000-'::text, '54348-1000-'::text, '54357-1000-'::text, '54363-1006-'::text, '54366-1023-'::text, '54367-1000-'::text, '54372-1087-'::text, '54381-1016-'::text, '54387-1092-'::text, '54393-1107-'::text, '54411-992-'::text, '54413-992-'::text, '54414-992-'::text, '54415-992-'::text, '54416-992-'::text, '54417-992-'::text, '54418-992-'::text, '54426-1020-'::text, '54426-1022-'::text, '54439-992-'::text, '54514-1021-'::text, '54517-1021-'::text, '54518-1021-'::text, '54519-1021-'::text, '54520-1021-'::text, '54521-1021-'::text, '54531-1108-'::text, '54745-989-'::text, '54797-988-'::text, '54799-1027-'::text, '54806-1027-'::text, '55017-993-'::text, '55029-1016-'::text, '53274-1108-'::text, '53278-1108-'::text, '54670-779-'::text, '54798-993-'::text, '54673-779-'::text, '54505-1123-'::text, '54567-1108-'::text, '54578-1007-'::text, '54580-1001-'::text, '54586-1107-'::text, '54662-1106-'::text, '54828-1119-'::text, '54844-994-'::text, '54844-991-'::text, '54932-993-'::text, '54975-987-'::text, '55000-988-'::text, '54583-1010-'::text, '54610-1023-'::text, '54632-1012-'::text, '54637-1122-'::text, '54642-1001-'::text, '54663-1091-'::text, '54688-1106-'::text, '54746-988-'::text, '54792-992-'::text, '54843-781-'::text, '54848-1007-'::text, '54871-993-'::text, '54877-995-'::text, '54877-1121-'::text, '54979-991-'::text, '54996-994-'::text, '55087-991-'::text, '54600-1107-'::text, '54724-1022-'::text, '54724-1020-'::text, '54726-1106-'::text, '54803-1000-'::text, '54856-993-'::text, '54861-993-'::text, '54866-1005-'::text, '54872-993-'::text, '54876-1021-'::text, '54882-1008-'::text, '54883-1021-'::text, '54910-987-'::text, '54922-1006-'::text, '54926-1008-'::text, '54927-1005-'::text, '54928-1004-'::text, '54935-1026-'::text, '54936-1026-'::text, '54937-1008-'::text, '54937-1003-'::text, '54963-997-'::text, '55006-993-'::text, '55014-993-'::text, '55028-1178-'::text, '55031-993-'::text, '55035-1108-'::text, '55061-1001-'::text, '54635-1023-'::text, '54822-1026-'::text, '54847-1149-'::text, '54851-1033-'::text, '54860-987-'::text, '54862-987-'::text, '54874-1008-'::text, '54880-1007-'::text, '54880-1008-'::text, '54881-1007-'::text, '54884-988-'::text, '54885-1006-'::text, '54896-987-'::text, '54905-987-'::text, '54908-987-'::text, '54909-987-'::text, '54913-987-'::text, '54914-994-'::text, '54923-987-'::text, '54925-987-'::text, '54938-1023-'::text, '54946-1022-'::text, '54953-1020-'::text, '54956-1146-'::text, '54958-995-'::text, '55079-1009-'::text, '54929-1003-'::text, '54933-1117-'::text, '54950-1106-'::text, '54952-1107-'::text, '54961-781-'::text, '55036-1108-'::text, '54992-1106-'::text, '55010-987-'::text, '55021-1107-'::text, '55022-1107-'::text, '55023-1107-'::text, '55024-1107-'::text, '55025-1107-'::text, '55026-1107-'::text, '55027-1107-'::text, '55030-1119-'::text, '55039-1119-'::text, '55047-1116-'::text, '55070-780-'::text, '55033-1107-'::text, '55034-1107-'::text, '55040-1119-'::text, '55046-1119-'::text, '55048-1116-'::text, '55052-1107-'::text, '55053-1107-'::text, '55054-1122-'::text, '55062-1122-'::text, '55063-1091-'::text, '55071-780-'::text, '54897-987-'::text, '55041-1122-'::text, '55050-1119-'::text, '55051-1116-'::text, '55055-1122-'::text, '55056-1107-'::text, '55064-1107-'::text, '54891-987-'::text, '54920-987-'::text])))
   ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
 
@@ -2438,6 +2438,183 @@ CREATE VIEW public.cor1440_gen_benefext2 AS
      LEFT JOIN public.msip_ubicacionpre u ON ((u.id = a.ubicacionpre_id)))
      LEFT JOIN public.msip_departamento dep ON ((dep.id = u.departamento_id)))
      LEFT JOIN public.msip_municipio mun ON ((mun.id = u.municipio_id)));
+
+
+--
+-- Name: cor1440_gen_benefactividadpf; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
+ SELECT be.actividad_fecha,
+    be.actividad_oficina,
+    be.actividad_responsable,
+    be.persona_tipodocumento,
+    be.persona_numerodocumento,
+    be.persona_nombres,
+    be.persona_apellidos,
+    be.persona_sexo,
+    be.persona_dianac,
+    be.persona_mesnac,
+    be.persona_anionac,
+    be.persona_actividad_edad,
+    be.persona_actividad_perfil,
+    be.actividad_municipio,
+    be.actividad_id,
+    be.persona_caso_ids,
+    be.persona_id,
+    array_to_string(ARRAY( SELECT sub.nombre
+           FROM ( SELECT DISTINCT pf.id,
+                    pf.nombre
+                   FROM public.cor1440_gen_proyectofinanciero pf
+                  WHERE (pf.id IN ( SELECT apf.proyectofinanciero_id
+                           FROM public.cor1440_gen_actividad_proyectofinanciero apf
+                          WHERE (apf.actividad_id = be.actividad_id)))
+                  ORDER BY pf.id DESC) sub), '; '::text) AS actividad_proyectosfinancieros,
+    array_to_string(ARRAY( SELECT sub.nom
+           FROM ( SELECT DISTINCT apf.proyectofinanciero_id,
+                    (((apf.nombrecorto)::text || ': '::text) || (apf.titulo)::text) AS nom
+                   FROM public.cor1440_gen_actividadpf apf
+                  WHERE (apf.id IN ( SELECT aapf.actividadpf_id
+                           FROM public.cor1440_gen_actividad_actividadpf aapf
+                          WHERE (aapf.actividad_id = be.actividad_id)))
+                  ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml,
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1007))) AS "OE2.R6.A8.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1006))) AS "OE2.R6.A7.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1010))) AS "OE2.R6.A11.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1020))) AS "OE3.R4.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1021))) AS "OE3.R4.A2.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1022))) AS "OE3.R4.A3.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 986))) AS "OE1.R2.A0.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1037))) AS "OE1.R2.A0",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1032))) AS "OE1.R2.A0._9",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1056))) AS "OE1.R2.A0_10",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1057))) AS "OE2.R6.A0",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 990))) AS "OE1.R3.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 989))) AS "OE1.R2.A4.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 991))) AS "OE2.R2.A2.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 992))) AS "OE2.R2.A3.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 993))) AS "OE2.R2.A4.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 997))) AS "OE2.R4.A1",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1003))) AS "OE2.R6.A4.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 998))) AS "OE1.R5.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 999))) AS "OE2.R5.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1000))) AS "OE2.R6.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1001))) AS "OE2.R6.A2.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1016))) AS "OE3.R1. A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1004))) AS "OE2.R6.A5.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1005))) AS "OE2.R6.A6.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1011))) AS "OE2.R6.A12.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1012))) AS "OE2.R6.A13.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1013))) AS "OE2.R6.A14.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1023))) AS "OE3.R4.A4.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1026))) AS "OE1.R3.A2.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1027))) AS "OE1.R3.A3.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1028))) AS "OE1.R3.A4.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1029))) AS "OE1.R3.A5.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1033))) AS "OE1.R2.A5",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 987))) AS "OE1.R2.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 988))) AS "OE1.R2.A2.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 995))) AS "OE2.R3.A1.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1008))) AS "OE2.R6.A9",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1009))) AS "OE2.R6.A10.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1025))) AS "OE1.R2.A3.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 994))) AS "OE2.R2.A5.",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1175))) AS "OE1.R3.A6",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1177))) AS "OE1.R3.A8",
+    ( SELECT count(*) AS count
+           FROM public.cor1440_gen_actividad_actividadpf aapf
+          WHERE ((aapf.actividad_id = be.actividad_id) AND (aapf.actividadpf_id = 1176))) AS "OE1.R3.A7"
+   FROM public.cor1440_gen_benefext2 be
+  WHERE (true AND (be.actividad_id IN ( SELECT cor1440_gen_actividad_proyectofinanciero.actividad_id
+           FROM public.cor1440_gen_actividad_proyectofinanciero
+          WHERE (cor1440_gen_actividad_proyectofinanciero.proyectofinanciero_id = 263))) AND (be.actividad_fecha >= '2023-01-01'::date) AND (be.actividad_fecha <= '2023-06-30'::date))
+  WITH NO DATA;
 
 
 --
@@ -3522,16 +3699,16 @@ CREATE MATERIALIZED VIEW public.cres1 AS
  SELECT sub.actividad_id,
     sub.fecha,
     sub.oficina_id,
-    sub.derecho_id
+    sub.ayudaestado_id
    FROM ( SELECT DISTINCT a.id AS actividad_id,
             a.fecha,
             a.oficina_id,
-            json_array_elements_text(v.valorjson) AS derecho_id
+            json_array_elements_text(v.valorjson) AS ayudaestado_id
            FROM ((public.mr519_gen_valorcampo v
              JOIN public.cor1440_gen_actividad_respuestafor ar ON ((ar.respuestafor_id = v.respuestafor_id)))
              JOIN public.cor1440_gen_actividad a ON ((a.id = ar.actividad_id)))
-          WHERE (v.campo_id = 100)) sub
-  WHERE ((sub.derecho_id IS NOT NULL) AND (sub.derecho_id <> ''::text))
+          WHERE (v.campo_id = 103)) sub
+  WHERE ((sub.ayudaestado_id IS NOT NULL) AND (sub.ayudaestado_id <> ''::text))
   WITH NO DATA;
 
 
@@ -4491,13 +4668,13 @@ CREATE VIEW public.mcben1 AS
             ELSE 0
         END AS beneficiario,
     1 AS npersona,
-    'total'::text AS total
+    victimasjr.estadocivil_id
    FROM public.sivel2_gen_caso caso,
     public.sivel2_sjr_casosjr casosjr,
     public.sivel2_gen_victima victima,
     public.msip_persona persona,
     public.sivel2_sjr_victimasjr victimasjr
-  WHERE ((casosjr.fecharec >= '2023-03-01'::date) AND (casosjr.fecharec <= '2023-09-08'::date) AND (caso.id = victima.caso_id) AND (caso.id = casosjr.caso_id) AND (caso.id = victima.caso_id) AND (persona.id = victima.persona_id) AND (victima.id = victimasjr.victima_id) AND (victimasjr.fechadesagregacion IS NULL) AND (casosjr.oficina_id = 2) AND (victimasjr.actividadoficio_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 101, 102, 104, 105, 106, 107, 108, 109, 110, 111])) AND ((persona.anionac IS NULL) OR (persona.anionac = ANY (ARRAY[1900, 1901, 1903, 1910, 1911, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 20011]))) AND (victimasjr.cabezafamilia = ANY (ARRAY[false, true])) AND (victimasjr.estadocivil_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6])) AND (victima.etnia_id = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 2001, 2002, 2003])) AND ((((EXTRACT(year FROM casosjr.fecharec))::text || '-'::text) || lpad((EXTRACT(month FROM casosjr.fecharec))::text, 2, '0'::text)) = ANY (ARRAY['2003-10'::text, '2010-08'::text, '2011-02'::text, '2012-06'::text, '2012-07'::text, '2012-08'::text, '2012-09'::text, '2012-10'::text, '2012-11'::text, '2013-01'::text, '2013-02'::text, '2013-03'::text, '2013-04'::text, '2013-05'::text, '2013-06'::text, '2013-07'::text, '2013-08'::text, '2013-09'::text, '2013-10'::text, '2013-11'::text, '2013-12'::text, '2014-01'::text, '2014-02'::text, '2014-03'::text, '2014-04'::text, '2014-05'::text, '2014-06'::text, '2014-07'::text, '2014-08'::text, '2014-09'::text, '2014-10'::text, '2014-11'::text, '2015-01'::text, '2015-02'::text, '2015-03'::text, '2015-04'::text, '2015-05'::text, '2015-06'::text, '2015-07'::text, '2015-08'::text, '2015-09'::text, '2015-10'::text, '2015-11'::text, '2015-12'::text, '2016-01'::text, '2016-02'::text, '2016-03'::text, '2016-04'::text, '2016-05'::text, '2016-06'::text, '2016-07'::text, '2016-08'::text, '2016-09'::text, '2016-10'::text, '2016-11'::text, '2016-12'::text, '2017-01'::text, '2017-02'::text, '2017-03'::text, '2017-04'::text, '2017-05'::text, '2017-06'::text, '2017-07'::text, '2017-08'::text, '2017-09'::text, '2017-10'::text, '2017-11'::text, '2017-12'::text, '2018-01'::text, '2018-02'::text, '2018-03'::text, '2018-04'::text, '2018-05'::text, '2018-06'::text, '2018-07'::text, '2018-08'::text, '2018-09'::text, '2018-10'::text, '2018-11'::text, '2018-12'::text, '2019-01'::text, '2019-02'::text, '2019-03'::text, '2019-04'::text, '2019-05'::text, '2019-06'::text, '2019-07'::text, '2019-08'::text, '2019-09'::text, '2019-10'::text, '2019-11'::text, '2019-12'::text, '2020-01'::text, '2020-02'::text, '2020-03'::text, '2020-04'::text, '2020-05'::text, '2020-06'::text, '2020-07'::text, '2020-08'::text, '2020-09'::text, '2020-10'::text, '2020-11'::text, '2020-12'::text, '2021-01'::text, '2021-02'::text, '2021-03'::text, '2021-04'::text, '2021-05'::text, '2021-06'::text, '2021-07'::text, '2021-08'::text, '2021-09'::text, '2021-10'::text, '2021-11'::text, '2021-12'::text, '2022-01'::text, '2022-02'::text, '2022-03'::text, '2022-04'::text, '2022-05'::text, '2022-06'::text, '2022-07'::text, '2022-08'::text, '2022-09'::text, '2022-10'::text, '2022-11'::text, '2022-12'::text, '2023-01'::text, '2023-02'::text, '2023-03'::text, '2023-04'::text, '2023-05'::text, '2023-06'::text, '2023-07'::text, '2023-08'::text, '2023-09'::text, '25-08'::text, '26-08'::text, '26-12'::text, '32-08'::text, '33-07'::text])) AND (victimasjr.escolaridad_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) AND (victima.rangoedad_id = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) AND (victimasjr.regimensalud_id = ANY (ARRAY[0, 1, 2, 3])) AND (persona.sexo = ANY (ARRAY['H'::bpchar, 'I'::bpchar, 'M'::bpchar, 'S'::bpchar])) AND (persona.id = victima.persona_id));
+  WHERE ((caso.id = victima.caso_id) AND (caso.id = casosjr.caso_id) AND (caso.id = victima.caso_id) AND (persona.id = victima.persona_id) AND (victima.id = victimasjr.victima_id) AND (victimasjr.fechadesagregacion IS NULL) AND (victimasjr.actividadoficio_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 101, 102, 104, 105, 106, 107, 108, 109, 110, 111])) AND ((persona.anionac IS NULL) OR (persona.anionac = ANY (ARRAY[1900, 1901, 1903, 1910, 1911, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 20011]))) AND (victimasjr.cabezafamilia = ANY (ARRAY[false, true])) AND (victimasjr.estadocivil_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6])) AND (victima.etnia_id = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 2001, 2002, 2003])) AND ((((EXTRACT(year FROM casosjr.fecharec))::text || '-'::text) || lpad((EXTRACT(month FROM casosjr.fecharec))::text, 2, '0'::text)) = ANY (ARRAY['2003-10'::text, '2010-08'::text, '2011-02'::text, '2012-06'::text, '2012-07'::text, '2012-08'::text, '2012-09'::text, '2012-10'::text, '2012-11'::text, '2013-01'::text, '2013-02'::text, '2013-03'::text, '2013-04'::text, '2013-05'::text, '2013-06'::text, '2013-07'::text, '2013-08'::text, '2013-09'::text, '2013-10'::text, '2013-11'::text, '2013-12'::text, '2014-01'::text, '2014-02'::text, '2014-03'::text, '2014-04'::text, '2014-05'::text, '2014-06'::text, '2014-07'::text, '2014-08'::text, '2014-09'::text, '2014-10'::text, '2014-11'::text, '2015-01'::text, '2015-02'::text, '2015-03'::text, '2015-04'::text, '2015-05'::text, '2015-06'::text, '2015-07'::text, '2015-08'::text, '2015-09'::text, '2015-10'::text, '2015-11'::text, '2015-12'::text, '2016-01'::text, '2016-02'::text, '2016-03'::text, '2016-04'::text, '2016-05'::text, '2016-06'::text, '2016-07'::text, '2016-08'::text, '2016-09'::text, '2016-10'::text, '2016-11'::text, '2016-12'::text, '2017-01'::text, '2017-02'::text, '2017-03'::text, '2017-04'::text, '2017-05'::text, '2017-06'::text, '2017-07'::text, '2017-08'::text, '2017-09'::text, '2017-10'::text, '2017-11'::text, '2017-12'::text, '2018-01'::text, '2018-02'::text, '2018-03'::text, '2018-04'::text, '2018-05'::text, '2018-06'::text, '2018-07'::text, '2018-08'::text, '2018-09'::text, '2018-10'::text, '2018-11'::text, '2018-12'::text, '2019-01'::text, '2019-02'::text, '2019-03'::text, '2019-04'::text, '2019-05'::text, '2019-06'::text, '2019-07'::text, '2019-08'::text, '2019-09'::text, '2019-10'::text, '2019-11'::text, '2019-12'::text, '2020-01'::text, '2020-02'::text, '2020-03'::text, '2020-04'::text, '2020-05'::text, '2020-06'::text, '2020-07'::text, '2020-08'::text, '2020-09'::text, '2020-10'::text, '2020-11'::text, '2020-12'::text, '2021-01'::text, '2021-02'::text, '2021-03'::text, '2021-04'::text, '2021-05'::text, '2021-06'::text, '2021-07'::text, '2021-08'::text, '2021-09'::text, '2021-10'::text, '2021-11'::text, '2021-12'::text, '2022-01'::text, '2022-02'::text, '2022-03'::text, '2022-04'::text, '2022-05'::text, '2022-06'::text, '2022-07'::text, '2022-08'::text, '2022-09'::text, '2022-10'::text, '2022-11'::text, '2022-12'::text, '2023-01'::text, '2023-02'::text, '2023-03'::text, '2023-04'::text, '2023-05'::text, '2023-06'::text, '2023-07'::text, '2023-08'::text, '2023-09'::text, '2023-10'::text, '25-08'::text, '26-08'::text, '26-12'::text, '32-08'::text, '33-07'::text])) AND (victimasjr.escolaridad_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) AND (victima.rangoedad_id = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) AND (victimasjr.regimensalud_id = ANY (ARRAY[0, 1, 2, 3])) AND (persona.sexo = ANY (ARRAY['H'::bpchar, 'M'::bpchar, 'O'::bpchar, 'S'::bpchar])));
 
 
 --
@@ -4569,7 +4746,7 @@ CREATE VIEW public.mcben2 AS
     mcben1.contacto,
     mcben1.beneficiario,
     mcben1.npersona,
-    mcben1.total,
+    mcben1.estadocivil_id,
     ubicacion.departamento_id,
     departamento.nombre AS departamento_nombre,
     ubicacion.municipio_id,

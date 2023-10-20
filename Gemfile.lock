@@ -64,8 +64,10 @@ GIT
       msip
       rails
 
-PATH
-  remote: ../msip
+GIT
+  remote: https://gitlab.com/pasosdeJesus/msip.git
+  revision: e3834c2e2377fd8cbf1371e9f1bf06407d959c8c
+  branch: main
   specs:
     msip (2.2.0.beta4)
       cancancan (~> 3)
@@ -82,8 +84,10 @@ PATH
       twitter_cldr (~> 6)
       will_paginate (~> 3)
 
-PATH
-  remote: ../sivel2_gen
+GIT
+  remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
+  revision: 7f4448f16811cc58c2633bba7866d99d4aac54e6
+  branch: main
   specs:
     sivel2_gen (2.2.0.beta4)
       color
@@ -262,7 +266,7 @@ GEM
     mini_portile2 (2.8.4)
     minitest (5.20.0)
     msgpack (1.7.2)
-    net-imap (0.4.1)
+    net-imap (0.4.2)
       date
       net-protocol
     net-pop (0.1.2)
