@@ -58,6 +58,19 @@ class Sivel2Gen::Caso < ActiveRecord::Base
     end
   end
 
+  validate :oficina_en_territorial_del_usuario
+  def oficina_en_territorial_del_usuario
+    if (defined?(current_usuario) && current_usuario &&
+        current_usuario.rol &&
+        current_usuario.rol != Ability::ROLADMIN &&
+        current_usuario.rol != Ability::ROLDIR &&
+        casosjr.oficina_id &&
+        casosjr.oficina.territorial_id != current_usuario.territorial_id)
+      errors.add(:oficina,
+                 "Oficina debe ser de la territorial del usuario que diligencia")
+    end
+  end
+
   validate :ppt_y_numero
   def ppt_y_numero
     migracion.each do |m|

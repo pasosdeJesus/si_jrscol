@@ -105,24 +105,37 @@ module Sivel2Sjr
       end
     end
 
+    validate :oficina_en_territorial_del_usuario
+    def oficina_en_territorial_del_usuario
+      if (defined?(caso.current_usuario) && caso.current_usuario &&
+          caso.current_usuario.rol &&
+          caso.current_usuario.rol != Ability::ROLADMIN &&
+          caso.current_usuario.rol != Ability::ROLDIR &&
+          self.oficina_id &&
+          self.oficina.territorial_id != caso.current_usuario.territorial_id)
+        errors.add(:oficina,
+                   "Oficina debe ser de la territorial del usuario que diligencia")
+      end
+    end
+
     validate :rol_usuario
     def rol_usuario
       # current_usuario será nil cuando venga de validaciones por ejemplo
       # validate_presence_of :caso
       # que se hace desde acto
-      if (defined?(current_usuario) &&
-          current_usuario.rol != Ability::ROLADMIN &&
-          current_usuario.rol != Ability::ROLDIR &&
-          current_usuario.rol != Ability::ROLSIST &&
-          current_usuario.rol != Ability::ROLCOOR &&
-          current_usuario.rol != Ability::ROLANALI &&
-          current_usuario.rol != Ability::ROLOFICIALPF &&
-          current_usuario.rol != Ability::ROLGESTIONHUMANA) 
+      if (defined?(caso.current_usuario) &&
+          caso.current_usuario.rol != Ability::ROLADMIN &&
+          caso.current_usuario.rol != Ability::ROLDIR &&
+          caso.current_usuario.rol != Ability::ROLSIST &&
+          caso.current_usuario.rol != Ability::ROLCOOR &&
+          caso.current_usuario.rol != Ability::ROLANALI &&
+          caso.current_usuario.rol != Ability::ROLOFICIALPF &&
+          caso.current_usuario.rol != Ability::ROLGESTIONHUMANA) 
         errors.add(:id, "Rol de usuario no apropiado para editar")
       end
-      if (defined?(current_usuario) &&
-          current_usuario.rol == Ability::ROLSIST && 
-          (casosjr.asesor != current_usuario.id))
+      if (defined?(caso.current_usuario) &&
+          caso.current_usuario.rol == Ability::ROLSIST && 
+          (casosjr.asesor != caso.current_usuario.id))
         errors.add(:id, "Sistematizador solo puede editar sus casos")
       end
     end

@@ -15,8 +15,8 @@
 
 <div class="row">
   <div class="col-md-6">
-    <% colus= current_usuario.oficina_id ? 
-      Usuario.where(oficina_id: current_usuario.oficina_id).
+    <% colus= current_usuario.territorial_id ? 
+      Usuario.where(territorial_id: current_usuario.territorial_id).
       order('LOWER(nusuario)') :
       Usuario.order('LOWER(nusuario)') %>
 
@@ -34,7 +34,7 @@
   <div class="col-md-6">
     <% colof= current_usuario.territorial_id ? 
       Msip::Oficina.habilitados.where(
-        territorial_id: current_usuario.territorial_id
+        territorial_id: [1, current_usuario.territorial_id]
       ) : Msip::Oficina.habilitados %>
     <%= s.association :oficina,
       collection: colof,

@@ -951,7 +951,7 @@ class Ability < Sivel2Gen::Ability
 
   }
 
-  def self.campos_plantillas
+  def campos_plantillas
     Heb412Gen::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone.
       merge(Cor1440Gen::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone).
       merge(Jos19::Ability::CAMPOS_PLANTILLAS_PROPIAS.clone).
@@ -1032,11 +1032,11 @@ class Ability < Sivel2Gen::Ability
 
         can :manage, [Sivel2Gen::Acto, ::Actonino]
         can :read, Sivel2Gen::Caso, 
-          casosjr: { territorial_id: usuario.territorial_id }
+          casosjr: { territorial_id: [1, usuario.territorial_id] }
         can [:update, :create, :destroy], Sivel2Gen::Caso,
           casosjr: { 
             asesor: usuario.id, 
-            territorial_id:usuario.territorial_id 
+            territorial_id: [1, usuario.territorial_id]
           }
         can [:new, :solicitar], Sivel2Gen::Caso
 
@@ -1067,7 +1067,7 @@ class Ability < Sivel2Gen::Ability
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
         can [:new, :solicitar], Sivel2Gen::Caso
         can [:update, :create, :destroy, :edit], Sivel2Gen::Caso, 
-          casosjr: { territorial_id: usuario.territorial_id }
+          casosjr: { territorial_id: [1, usuario.territorial_id] }
 
         can :read, Jos19::Consactividadcaso
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
@@ -1095,7 +1095,7 @@ class Ability < Sivel2Gen::Ability
         can [:fichaimp, :ficahpdf, :read], Sivel2Gen::Caso
         can [:new, :solicitar], Sivel2Gen::Caso
         can [:update, :create, :destroy, :poneretcomp], Sivel2Gen::Caso,
-          casosjr: { territorial_id: usuario.territorial_id }
+          casosjr: { territorial_id: [1, usuario.territorial_id] }
 
         can :read, Jos19::Consactividadcaso
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]

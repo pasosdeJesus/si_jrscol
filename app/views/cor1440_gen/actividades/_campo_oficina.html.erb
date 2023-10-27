@@ -1,0 +1,18 @@
+<% if defined? con_label %>
+  <% l = con_label ? nil : false %>
+<% else %>
+  <% l = nil %>
+<% end %>
+<% col = Msip::Oficina.where(
+  territorial_id: [1, current_usuario.territorial_id]
+) %>
+<%= f.association :oficina,
+  collection: Msip::ModeloHelper.coleccion_basica(
+    col, f.object.oficina_id || 1
+  ),
+  label_method: :presenta_nombre, 
+  value_method: :id,
+  include_blank: false,
+  label: l,
+  input_html: { class: 'chosen-select' }
+%>

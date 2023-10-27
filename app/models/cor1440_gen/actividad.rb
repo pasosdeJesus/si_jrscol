@@ -53,10 +53,20 @@ module Cor1440Gen
     validate :territorial_responsable_current_usuario
     def territorial_responsable_current_usuario
       if (current_usuario && current_usuario.territorial_id && 
+          current_usuario.rol != Ability::ROLADMIN &&
+          current_usuario.rol != Ability::ROLDIR &&
           responsable && responsable.territorial_id &&
           responsable.territorial_id != current_usuario.territorial_id)
         errors.add(:responsable, "Para editar responsable el " +
                    "usuario actual debe estar en la misma territorial")
+      end
+      if (current_usuario && current_usuario.territorial_id && 
+          current_usuario.rol != Ability::ROLADMIN &&
+          current_usuario.rol != Ability::ROLDIR &&
+          oficina && oficina.territorial_id &&
+          current_usuario.territorial_id != oficina.territorial_id)
+        errors.add(:oficina, "La oficina de la actividad debe ser " +
+                   "de la misma territorial del usuario")
       end
     end
 
