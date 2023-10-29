@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 01143acd4513a9eb6ca30a00e73415e25373fc0a
+  revision: 87b9cbd23c2cf7356b64a469706769895db27f0a
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -345,7 +345,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     raindrops (0.20.1)
-    rake (13.0.6)
+    rake (13.1.0)
     rdoc (6.5.0)
       psych (>= 4.0.0)
     redcarpet (3.6.0)
