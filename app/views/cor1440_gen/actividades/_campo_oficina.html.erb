@@ -3,9 +3,13 @@
 <% else %>
   <% l = nil %>
 <% end %>
-<% col = Msip::Oficina.where(
-  territorial_id: [1, current_usuario.territorial_id]
-) %>
+<% if current_usuario.rol == Ability::ROLADMIN || 
+    current_usuario.rol == Ability::ROLDIR %>
+  <% lterr = Territorial.habilitados.pluck(:id) %>
+<% else%>
+  <% lterr = [1, current_usuario.territorial_id] %>
+<% end %>
+<% col = Msip::Oficina.where( territorial_id: lterr) %>
 <%= f.association :oficina,
   collection: Msip::ModeloHelper.coleccion_basica(
     col, f.object.oficina_id || 1
