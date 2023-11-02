@@ -47,10 +47,10 @@ class Sivel2Gen::Caso < ActiveRecord::Base
   validate :beneficiarios_con_ultimoperfilorgsocial
   def beneficiarios_con_ultimoperfilorgsocial
     victima.each do |v|
-      if v.persona.ultimoperfilorgsocial_id.nil?
+      if !v._destroy && v.persona.ultimoperfilorgsocial_id.nil?
         errors.add(:persona, "Falta perfil poblacional de #{v.persona.presenta_nombre}")
       end
-      if [10, 11, 12].include?(v.persona.ultimoperfilorgsocial_id) && 
+      if !v._destroy && [10, 11, 12].include?(v.persona.ultimoperfilorgsocial_id) && 
           v.persona.ultimoestatusmigratorio_id.nil?
         errors.add(:persona, "Falta estatus migratorio de #{v.persona.presenta_nombre}")
       end
