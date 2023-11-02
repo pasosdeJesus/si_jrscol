@@ -182,6 +182,48 @@ module Msip
     end
 
 
+    # Usa remplazar anterior al uso de turbo en sivel2_gen
+    def remplazar_sivel2_gen
+      @persona = Msip::Persona.find(params[:persona_id].to_i)
+      @victima = Sivel2Gen::Victima.find(params[:victima_id].to_i)
+      @personaant = @victima.persona
+      @caso = @victima.caso
+      @caso.current_usuario = current_usuario
+      @victima.persona = @persona
+      if !remplazar_antes_salvar_v
+        return
+      end
+      if Sivel2Gen::Victima.where(persona_id: @persona.id).
+          where(caso_id: @caso.id).count == 0
+        @victima.save!
+      else
+        puts "Ya existe esa persona en el caso"
+        render json: "Ya existe esa persona en el caso",
+          status: :unprocessable_entity
+        return 
+      end
+      if !remplazar_despues_salvar_v
+        return
+      end
+      if (@personaant.nombres == 'N' && 
+          @personaant.apellidos == 'N') ||
+         (@personaant.nombres == '' && @personaant.apellidos == '')
+        if !remplazar_antes_destruir_p
+          return
+        end
+        begin
+          @personaant.destroy
+        rescue e
+        end
+      end
+      respond_to do |format|
+        format.html { 
+          render('/msip/personas/remplazar', layout: false) 
+          return
+        }
+      end
+    end
+
     def datos_complementarios(oj)
       return oj.merge(
         ultimoestatusmigratorio_id: @persona.ultimoestatusmigratorio_id,
@@ -421,7 +463,6 @@ module Msip
     def unificar_dos_personas_en_casos(
       p1, p2, current_usuario, cadpersona, ep, menserror
     )
-      debugger
       loop do
         cc1 = Sivel2Sjr::Casosjr.where(contacto_id: p1.id).pluck(:caso_id)
         cc2 = Sivel2Sjr::Casosjr.where(contacto_id: p2.id).pluck(:caso_id)
