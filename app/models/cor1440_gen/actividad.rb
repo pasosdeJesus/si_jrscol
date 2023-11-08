@@ -111,6 +111,29 @@ module Cor1440Gen
       end 
     end
 
+    validate :valida_asistentes
+    def valida_asistentes
+      self.asistencia.each do |a|
+        docerr = []
+        if !a.valid?
+          a.errors.messages.each do |l,lm|
+            docerr += lm
+          end
+        end
+        if !a.persona.valid?
+          a.persona.errors.messages.each do |l,lm|
+            docerr += lm
+          end
+        end
+        if docerr.count > 0
+          errors.add(
+            :actividad_asistencia_attributes,
+            "Problemas validando asistente #{a.id}: #{docerr.join("; ")}"
+          )
+        end
+      end
+    end
+
     # Validación de perfil poblacional en asistente
     # no siempre detecta problema
     validate :valida_asistentes_con_perfil

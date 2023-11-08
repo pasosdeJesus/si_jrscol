@@ -1004,6 +1004,7 @@ class Ability < Sivel2Gen::Ability
       when Ability::ROLANALIPRENSA
         can :manage, Cor1440Gen::Actividad, 
           territorial_id: [1, usuario.territorial_id]
+        can :manage, Cor1440Gen::Asistencia
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Informe
@@ -1018,6 +1019,7 @@ class Ability < Sivel2Gen::Ability
         can [:new, :read], Cor1440Gen::Actividadpf
         can :manage, Cor1440Gen::Actividad, 
           territorial_id: [1, usuario.territorial_id]
+        can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Benefactividadpf
         can :read, Cor1440Gen::Proyectofinanciero
         can [:index, :read], Cor1440Gen::Rangoedadac
@@ -1049,6 +1051,7 @@ class Ability < Sivel2Gen::Ability
           territorial_id: [1, usuario.territorial_id]
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
+        can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Benefactividadpf
         can :read, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
@@ -1077,6 +1080,7 @@ class Ability < Sivel2Gen::Ability
         can [:read, :new], Cor1440Gen::Actividadpf
         can :manage, Cor1440Gen::Actividad, 
           territorial_id: [1, usuario.territorial_id]
+        can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Benefactividadpf
         can :manage, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
@@ -1104,6 +1108,7 @@ class Ability < Sivel2Gen::Ability
         can :manage, Cor1440Gen::Actividad
         can :manage, Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Benefactividadpf
+        can :manage, Cor1440Gen::Asistencia
         can :manage, Cor1440Gen::Mindicadorpf
         can :manage, Cor1440Gen::Proyectofinanciero
 
@@ -1130,6 +1135,7 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Actividad
         can :read, Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Benefactividadpf
+        can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Mindicadorpf
         can :read, Cor1440Gen::Proyectofinanciero
 
@@ -1158,6 +1164,7 @@ class Ability < Sivel2Gen::Ability
       when Ability::ROLADMIN, Ability::ROLDIR
         can :manage, Cor1440Gen::Actividad
         can :manage, Cor1440Gen::Actividadpf
+        can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Benefactividadpf
         can :manage, Cor1440Gen::Informe
         can :manage, Cor1440Gen::Mindicadorpf

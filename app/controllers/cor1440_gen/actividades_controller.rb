@@ -231,6 +231,7 @@ module Cor1440Gen
       end
     end
 
+
     # Genera conteo de beneficiarios por actividad de marco lógico desde 
     # desde actividad
     def programa_generacion_listado_int50(params, extension, campoid, 
@@ -368,46 +369,16 @@ module Cor1440Gen
         return
       end
 
-      # Deben eliminarse asistentes creados con AJAX
+      # Si un asistente no tiene ultimoperfilsocial ponerle
+      # el de la asistencia
       if params[:actividad][:asistencia_attributes]
-        porelim = []
-        params[:actividad][:asistencia_attributes].each do |l, v|
-          if Cor1440Gen::Asistencia.where(id: v[:id].to_i).count == 0 ||
-              !v[:persona_attributes] || 
-              !v[:persona_attributes][:id] || v[:persona_attributes][:id] == "" ||
-              Msip::Persona.where(id: v[:persona_attributes][:id].to_i).count == 0
-            next
+        params[:actividad][:asistencia_attributes].each do |l, a|
+          if a && a[:persona_attributes] && 
+              (a[:persona_attributes][:id] == ""  ||
+              Msip::Persona.where(id: a[:persona_attributes][:id].to_i, ultimoperfilorgsocial_id: nil).count == 1 )
+            params[:actividad][:asistencia_attributes][l.to_s][:persona_attributes][:ultimoperfilorgsocial_id] =
+              a[:perfilorgsocial_id]
           end
-          asi = Cor1440Gen::Asistencia.find(v[:id].to_i)
-          #Solo esto al eliminar asistencia que existia produce:
-          #Couldn't find Cor1440Gen::Asistencia with ID=84 for Cor1440Gen::Actividad with ID=287
-          if v['_destroy'] == "1" || v['_destroy'] == "true"
-            asi.actividad.asistencia_ids -= [asi.id]
-            asi.actividad.save(validate: false)
-            asi.destroy
-            # Quitar de los parámetros
-            porelim.push(l)  
-            next
-          end
-          per = Msip::Persona.find(v[:persona_attributes][:id].to_i)
-          if asi.persona_id != per.id && asi.persona.nombres == 'N' && 
-              asi.persona.apellidos == 'N'
-            # Era nueva asistencia cuya nueva persona se remplazó tras 
-            # autocompletar. Dejar asignada la remplazada y borrar la vacia
-            op = asi.persona
-            asi.persona_id = per.id
-            if asi.valid?
-              asi.save
-              op.destroy
-            else
-              flash.alert = asi.errors.messages.to_s
-              resp_error(asi.errors.messages.to_s)
-              return false
-            end
-          end
-        end
-        porelim.each do |l|
-          params[:actividad][:asistencia_attributes].delete(l)
         end
       end
 
@@ -562,25 +533,15 @@ module Cor1440Gen
 
 
     def update
-      update_cor1440_gen
 
-      # Pone ultimoperfil cuando no hay
-      @registro.asistencia.each do |asi|
-        if asi.persona.ultimoperfilorgsocial_id.nil? && 
-            !asi.perfilorgsocial_id.nil?
-          asi.persona.ultimoperfilorgsocial_id = asi.perfilorgsocial_id
-          if asi.persona.valid?
-            asi.persona.save
-          end
-        end
-      end
+      update_cor1440_gen
 
       if @registro.valid?
         # Actualizar último perfil cuando corresponda y se pueda
         @registro.asistencia.each do |asi|
           mf = Cor1440Gen::Asistencia.joins(:actividad).
             where(persona_id: asi.persona_id).maximum(:fecha)
-          if asi.actividad.fecha >= mf && 
+          if (mf.nil? || asi.actividad.fecha >= mf) && 
               asi.persona.ultimoperfilorgsocial_id.to_i != 
               asi.perfilorgsocial_id.to_i
             asi.persona.ultimoperfilorgsocial_id = asi.perfilorgsocial_id
@@ -603,7 +564,9 @@ module Cor1440Gen
 
 
     def lista_params
-      lista_params_cor1440_gen  + 
+      l = lista_params_cor1440_gen;
+      l[-1][:asistencia_attributes][-1][:persona_attributes] << :ultimoperfilorgsocial_id;
+      l + 
         [
           :covid,
           :rapidobenefcaso_id, 

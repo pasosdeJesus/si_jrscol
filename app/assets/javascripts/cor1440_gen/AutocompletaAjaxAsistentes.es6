@@ -71,7 +71,7 @@ export default class Cor1440GenAutocompletaAjaxAsistentes {
         if (correo != null) {
           correo.value = resp.correo
         }
-        const caso_ids = divcp.querySelector('[class=llena_caso_ids]')
+        const caso_ids = divcp.querySelector('.llena_caso_ids')
         let enlaces_casos = ''
         resp.caso_ids.forEach( numc => {
           enlaces_casos += 

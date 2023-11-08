@@ -11,5 +11,6 @@ module Cor1440Gen
       class_name: "Msip::Perfilorgsocial",
       optional: false
 
+    validates :perfilorgsocial, presence: true
   end
 end

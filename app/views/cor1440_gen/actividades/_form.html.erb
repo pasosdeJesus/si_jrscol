@@ -140,7 +140,11 @@
            name='actividad[bitacora_cambio]' 
            type='hidden'>
     <% idact = @actividad.id.to_s %>
-    <%= f.button :submit, :class => 'btn btn-primary', 'data-turbo' => false %>
+    <%= f.button :submit, :class => 'btn btn-primary', 
+      data: {
+        turbo: false,
+        disable_with: false
+      } %>
     <%= render partial: 'form_btncancelar' %>
   </div>
 <% end %>
