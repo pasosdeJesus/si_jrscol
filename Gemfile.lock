@@ -25,8 +25,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: b3e2b684096ac95fc03c1b15eceae8f46ab6ef28
-  branch: main
+  revision: 39794671e27b7900e579c0f0a91ba2fbb4ea1a93
+  branch: asis_sin_turbo
   specs:
     cor1440_gen (2.2.0.beta4)
       devise
