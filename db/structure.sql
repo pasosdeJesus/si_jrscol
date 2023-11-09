@@ -3970,6 +3970,39 @@ ALTER SEQUENCE public.discapacidad_id_seq OWNED BY public.discapacidad.id;
 
 
 --
+-- Name: docidsecundario; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.docidsecundario (
+    id bigint NOT NULL,
+    persona_id integer NOT NULL,
+    tdocumento_id integer NOT NULL,
+    numero character varying(100) NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: docidsecundario_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.docidsecundario_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: docidsecundario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.docidsecundario_id_seq OWNED BY public.docidsecundario.id;
+
+
+--
 -- Name: sivel2_sjr_migracion; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -9894,6 +9927,13 @@ ALTER TABLE ONLY public.discapacidad ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: docidsecundario id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.docidsecundario ALTER COLUMN id SET DEFAULT nextval('public.docidsecundario_id_seq'::regclass);
+
+
+--
 -- Name: espaciopart id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -11084,6 +11124,14 @@ ALTER TABLE ONLY public.dificultadmigracion
 
 ALTER TABLE ONLY public.discapacidad
     ADD CONSTRAINT discapacidad_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: docidsecundario docidsecundario_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.docidsecundario
+    ADD CONSTRAINT docidsecundario_pkey PRIMARY KEY (id);
 
 
 --
@@ -14189,6 +14237,14 @@ ALTER TABLE ONLY public.sivel2_sjr_desplazamiento
 
 
 --
+-- Name: docidsecundario fk_rails_017bea13f4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.docidsecundario
+    ADD CONSTRAINT fk_rails_017bea13f4 FOREIGN KEY (persona_id) REFERENCES public.msip_persona(id);
+
+
+--
 -- Name: territorial fk_rails_02965341df; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14858,6 +14914,14 @@ ALTER TABLE ONLY public.cor1440_gen_actividad_proyectofinanciero
 
 ALTER TABLE ONLY public.sal7711_gen_bitacora
     ADD CONSTRAINT fk_rails_52d9d2f700 FOREIGN KEY (usuario_id) REFERENCES public.usuario(id);
+
+
+--
+-- Name: docidsecundario fk_rails_53955c3cba; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.docidsecundario
+    ADD CONSTRAINT fk_rails_53955c3cba FOREIGN KEY (tdocumento_id) REFERENCES public.msip_tdocumento(id);
 
 
 --
@@ -17565,6 +17629,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231009085621'),
 ('20231009090231'),
 ('20231009090632'),
-('20231009171450');
+('20231009171450'),
+('20231108094709');
 
 
