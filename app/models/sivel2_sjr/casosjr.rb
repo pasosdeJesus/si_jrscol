@@ -123,7 +123,7 @@ module Sivel2Sjr
       # current_usuario será nil cuando venga de validaciones por ejemplo
       # validate_presence_of :caso
       # que se hace desde acto
-      if (defined?(caso.current_usuario) &&
+      if (defined?(caso.current_usuario) && !caso.current_usuario.nil? &&
           caso.current_usuario.rol != Ability::ROLADMIN &&
           caso.current_usuario.rol != Ability::ROLDIR &&
           caso.current_usuario.rol != Ability::ROLSIST &&
@@ -133,7 +133,7 @@ module Sivel2Sjr
           caso.current_usuario.rol != Ability::ROLGESTIONHUMANA) 
         errors.add(:id, "Rol de usuario no apropiado para editar")
       end
-      if (defined?(caso.current_usuario) &&
+      if (defined?(caso.current_usuario) && !caso.current_usuario.nil? &&
           caso.current_usuario.rol == Ability::ROLSIST && 
           (casosjr.asesor != caso.current_usuario.id))
         errors.add(:id, "Sistematizador solo puede editar sus casos")
