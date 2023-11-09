@@ -160,6 +160,13 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :docidsecundario, only: [] do 
+      member do
+        delete '(:id)', to: "docsidsecundario#destroy", as: "eliminar"
+        post '/' => "docsidsecundario#create", as: "crear"
+      end
+    end
+
     root "msip/hogar#index"
 
     namespace :admin do

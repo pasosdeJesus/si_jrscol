@@ -14,6 +14,7 @@ module Msip
         :dianac,
         :familiares
       ] + [ 
+        :docsidsecundario,
         :ultimoperfilorgsocial_id,
         :ultimoestatusmigratorio_id,
         :ppt,
@@ -59,7 +60,7 @@ module Msip
         :detallefinanciero_ids, 
         :etiqueta_ids,
       ] + [
-        :caracterizaciones
+        :caracterizaciones,
       ] + [
         :etiqueta_ids => []
       ]
@@ -114,6 +115,11 @@ module Msip
       else
         super(c)
       end
+    end
+
+
+    def datos_boton_envio
+      { disable_with: false }
     end
 
     # Están listas @persona, @victima, @personaant, @caso
@@ -678,7 +684,15 @@ module Msip
           :usuario_id,
           :_destroy
         ]
+      ] + [ 
+        docidsecundario_attributes:  [
+          :tdocumento_id, 
+          :numero,
+          :id,
+          :_destroy
+        ]
       ]
+
     end
 
     def validaciones(registro)

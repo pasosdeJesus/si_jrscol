@@ -14,6 +14,16 @@ module Msip
       validate: true, class_name: 'Sivel2Sjr::Statusmigratorio', 
       optional: true
 
+    has_many :docidsecundario, 
+      foreign_key: "persona_id",
+      validate: true,
+      dependent: :destroy, 
+      class_name: '::Docidsecundario',
+      inverse_of: :persona
+    accepts_nested_attributes_for :docidsecundario, 
+      allow_destroy: true, 
+      reject_if: :all_blank
+
     has_many :casosjr, class_name: 'Sivel2Sjr::Casosjr',
       foreign_key: "contacto_id"
 

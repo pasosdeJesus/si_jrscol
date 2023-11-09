@@ -1,0 +1,46 @@
+<%= turbo_frame_tag "docidsecundario_#{f.index}", 
+  class: 'div-tabla-fila nested-fields',
+  data: { controller: "msip--sindocaut" } do %>
+  <div class="div-tabla-celda">
+    <% debugger %>
+    <% s = render partial: 'msip/modelos/msip_campo_aut',
+      locals: {
+        f: f, 
+        atr: :tdocumento,
+        clase: @registro.class.to_s,
+        opciones: { etiqueta: false },
+        atributos_internos: {
+          "data-action": "change->msip--sindocaut#cambia_tdocumento"
+        }
+      } %>
+    <%= s %>
+  </div>
+  <div class="div-tabla-celda">
+
+    <%= f.input :id,
+      as: :hidden,
+      input_html: {
+        "data-msip--sindocaut-target": "id"
+      } %>
+    <%= f.input :numero,
+      label: false,
+      input_html: {
+        "data-msip--sindocaut-target": "numerodocumento"
+      }
+    %>
+  </div>
+  <div class="div-tabla-celda">
+    <%= f.submit "Eliminar",
+      formaction: main_app.eliminar_docidsecundario_path(
+        id: f.object.id, index: f.index
+      ),
+      formmethod: :delete,
+      formnovalidate: true,
+      class: 'btn btn-sm btn-danger',
+      data: {
+        turbo_frame: "docidsecundario_#{f.index}",
+        turbo_method: :delete,
+        disable_with: false
+      } %>
+  </div>
+<% end %>

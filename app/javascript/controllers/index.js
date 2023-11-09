@@ -31,5 +31,8 @@ application.register("res1612", Res1612Controller)
 import RespuestacasoController from "./respuestacaso_controller"
 application.register("respuestacaso", RespuestacasoController)
 
+import Sivel2Gen__EdadController from "./sivel2_gen/edad_controller"
+application.register("sivel2-gen--edad", Sivel2Gen__EdadController)
+
 import VisibuemController from "./visibuem_controller"
 application.register("visibuem", VisibuemController)

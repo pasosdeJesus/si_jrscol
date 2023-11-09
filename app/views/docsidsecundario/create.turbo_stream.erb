@@ -1,0 +1,18 @@
+<%= simple_form_for @persona, url: msip.personas_path do |f| %>
+  <%= f.simple_fields_for :docidsecundario,
+    child_index: params[:index] do |subf| %>
+    <%= turbo_stream.replace "agregar-docidsecundario" do %>
+      <%= f.submit "Agregar documento de identidad secundario",
+        formaction: crear_docidsecundario_path(
+          subf.index.to_i + 1
+        ),
+        formmethod: :post,
+        formnovalidate: true,
+        class: 'btn btn-sm btn-primary',
+        id: "agregar-docidsecundario" %>
+    <% end %>
+    <%= turbo_stream.append "docsidsecundario_marco" do %>
+      <%= render "msip/personas/docidsecundario_campos", f: subf %>
+    <% end %>
+  <% end %>
+<% end %>

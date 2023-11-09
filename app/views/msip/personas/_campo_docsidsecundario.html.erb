@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-header">
+    Documentos de identidad secundarios
+  </div>
+  <div class="card-body">
+
+    <div class="div-tabla">
+      <div id="docsidsecundario_marco" class="div-tabla-cuerpo">
+        <div class="div-tabla-fila">
+          <div class="div-tabla-celda-encabezado">Tipo de documento</div> 
+          <div class="div-tabla-celda-encabezado">Número</div>
+          <div class="div-tabla-celda-encabezado">Acciones</div>
+        </div>
+        <%= f.simple_fields_for :docidsecundario, 
+          child_index: params[:index] do |subf| %>
+          <%= render partial: 'docidsecundario_campos', locals: {f: subf} %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="enlace-agregar-docidsecundario">
+      <%= f.submit "Agregar documento de identidad secundario",
+        formaction: main_app.crear_docidsecundario_path(
+          index: @persona.docidsecundario.size
+        ),
+        formmethod: :post,
+        formnovalidate: true,
+        class: 'btn btn-sm btn-primary',
+        name: "agregar-docidsecundario",
+        id: "agregar-docidsecundario",
+        data:  {
+          disable_with: false
+        } %>
+    </div>
+  </div>
+</div>

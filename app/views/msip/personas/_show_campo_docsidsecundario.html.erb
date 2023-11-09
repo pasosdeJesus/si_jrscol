@@ -1,0 +1,17 @@
+<table border="1" class="table">
+  <thead>
+    <tr>
+      <th>Tipo de documento</th>
+      <th>Número</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @registro.docidsecundario.each do |d| %>
+      <tr>
+        <td><%= d.tdocumento.sigla %></td>
+        <td><%= d.numero %></td>
+      </tr>
+    <% end%>
+  </tbody>
+</table>
+

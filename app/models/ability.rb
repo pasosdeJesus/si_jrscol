@@ -1030,6 +1030,7 @@ class Ability < Sivel2Gen::Ability
         can :read, ::Territorial
         can [:read, :index], Msip::Orgsocial
         can :manage, Msip::Persona
+        can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
         can :manage, [Sivel2Gen::Acto, ::Actonino]
@@ -1064,6 +1065,7 @@ class Ability < Sivel2Gen::Ability
         can :read, ::Territorial
         can [:read, :index], Msip::Orgsocial
         can :manage, Msip::Persona
+        can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
         can :manage, [Sivel2Gen::Acto, ::Actonino]
@@ -1093,6 +1095,7 @@ class Ability < Sivel2Gen::Ability
         can :read, ::Territorial
         can [:new, :create, :read, :index, :edit, :update], Msip::Orgsocial
         can :manage, Msip::Persona
+        can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
         can :manage, [Sivel2Gen::Acto, ::Actonino]
@@ -1123,6 +1126,7 @@ class Ability < Sivel2Gen::Ability
         can :manage, Msip::Orgsocial
         can :manage, Msip::Sectororgsocial
         can :manage, Msip::Persona
+        can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Caso
@@ -1150,6 +1154,7 @@ class Ability < Sivel2Gen::Ability
         can :read, Msip::Orgsocial
         can :read, Msip::Sectororgsocial
         can :read, Msip::Persona
+        can :read, ::Docidsecundario
         can :read, Msip::Ubicacionpre
 
         can :read, Sivel2Gen::Caso
@@ -1185,6 +1190,7 @@ class Ability < Sivel2Gen::Ability
         can :manage, Msip::Orgsocial
         can :manage, Msip::Sectororgsocial
         can :manage, Msip::Persona
+        can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
         can :manage, Sivel2Gen::Caso

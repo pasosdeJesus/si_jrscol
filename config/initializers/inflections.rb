@@ -49,6 +49,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'depgifmm', 'depsgifmm'
   inflect.irregular 'dificultadmigracion', 'dificultadesmigracion'
   inflect.irregular 'discapacidad', 'discapacidades'
+  inflect.irregular 'docidsecundario', 'docsidsecundario'
   inflect.irregular 'emprendimientorespuesta', 'emprendimientorespuesta'
   inflect.irregular 'espaciopart', 'espaciospart'
   inflect.irregular 'indicadorgifmm', 'indicadoresgifmm'

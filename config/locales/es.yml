@@ -240,9 +240,6 @@ es:
         Modalidadesentrega: Modalidades de Entrega
       'mr519_gen/formulario':
         caracterizacion: Caracterización en convenios financiados
-      "msip/persona":
-        proyectofinanciero_ids: Convenios financiados que caracterizan
-        proyectofinanciero: Convenios financiados que caracterizan
       "msip/claverespaldo":
         Claverespaldo: Clave para respaldo automático
         Clavesrespaldos: Claves para respaldos automáticos
@@ -287,7 +284,10 @@ es:
         Perfilesorgsocial: Perfiles poblacionales
       "msip/persona":
         detallefinanciero_ids: Detalles financieros en los que aparece
+        docsidsecundario: Documentos de identidad secundarios
         etiqueta_ids: Etiqueta(s)
+        proyectofinanciero_ids: Convenios financiados que caracterizan
+        proyectofinanciero: Convenios financiados que caracterizan
         ppt: Número de PPT
         ultimoestatusmigratorio: Último estatus migratorio
         ultimoestatusmigratorio_id: Último estatus migratorio
