@@ -15,5 +15,44 @@ class Docidsecundario < ActiveRecord::Base
     class_name: 'Msip::Tdocumento', 
     optional: false
 
-  validates :numero, presence: true
+  validates :tdocumento, presence: {
+    message: "No puede dejar en blanco el tipo de documento"
+  }
+  validates :tdocumento, uniqueness: { 
+    scope: :persona_id,
+    message: "No puede repetir tipo de documento"
+  }, allow_blank: false
+  validates :numero, presence: {
+    message: "No puede dejar en blanco el número de documento"
+  }, allow_blank: false
+
+  validate :vformatonumdoc
+  def vformatonumdoc
+    if tdocumento && tdocumento.formatoregex != "" &&
+        !(numero =~ Regexp.new("^#{tdocumento.formatoregex}$"))
+      menserr = "Número de documento con formato errado."
+      if tdocumento.ayuda
+        menserr += " #{tdocumento.ayuda}"
+      end
+      errors.add(:numero, menserr)
+    end
+  end
+
+  validate :norepetido
+  def norepetido
+    if !tdocumento_id.nil? && !numero.nil?
+      otrosec = Docidsecundario.where(tdocumento_id: tdocumento_id).
+        where(numero: numero)
+      if otrosec.count > 1 || (otrosec.count == 1 && otrosec.take.id != self.id)
+        errors.add(:numero, "Repetido con documento secundario de persona(s): #{otrosec.pluck(:persona_id).join(", ")}")
+      end
+      otroprin = Msip::Persona.where(tdocumento_id: tdocumento_id).
+        where(numerodocumento: numero)
+      if otroprin.count >= 1
+        errors.add(:numero, "Repetido con documento principal de persona(s): #{otroprin.pluck(:id).join(", ")}")
+      end
+    end
+  end
+
+
 end
