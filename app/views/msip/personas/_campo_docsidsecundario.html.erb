@@ -21,6 +21,7 @@
     <div class="enlace-agregar-docidsecundario">
       <%= f.submit "Agregar documento de identidad secundario",
         formaction: main_app.crear_docidsecundario_path(
+          id: @persona.id.to_i,
           index: @persona.docidsecundario.size
         ),
         formmethod: :post,

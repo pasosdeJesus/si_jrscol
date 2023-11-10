@@ -20,7 +20,7 @@ class Docidsecundario < ActiveRecord::Base
   }
   validates :tdocumento, uniqueness: { 
     scope: :persona_id,
-    message: "No puede repetir tipo de documento"
+    message: "No puede repetir tipo de documento con otro doc. identidad secundario"
   }, allow_blank: false
   validates :numero, presence: {
     message: "No puede dejar en blanco el número de documento"
@@ -54,5 +54,11 @@ class Docidsecundario < ActiveRecord::Base
     end
   end
 
+  validate :tdoc_norepetido_princ
+  def tdoc_norepetido_princ
+    if !tdocumento_id.nil? && persona.tdocumento_id == tdocumento_id
+      errors.add(:tdocumento_id, "No puede repetir tipo de documento con el doc. identidad principal")
+    end
+  end
 
 end
