@@ -167,12 +167,15 @@ module Cor1440Gen
           pid = pp[8..].to_i
           if pid > 0 && params[pp] == "true" &&
               Msip::Persona.where(id: pid).count == 1
+            op = Msip::Persona.find(pid)
+            vs = Sivel2Gen::Victima.where(persona_id: op.id).take.victimasjr
             nr =Cor1440Gen::Asistencia.create(
               persona_id: pid,
               actividad_id: @registro.id,
               externo: false,
               orgsocial_id: nil,
-              perfilorgsocial_id: nil
+              perfilorgsocial_id: op.ultimoperfilorgsocial_id,
+              discapacidad: vs.discapacidad_id != 6
             )
             nr.save(validate: false)
           end
@@ -185,12 +188,15 @@ module Cor1440Gen
           where('sivel2_sjr_victimasjr.fechadesagregacion IS NULL').
           pluck(:persona_id)
         personas.each do |p|
+          op = Msip::Persona.find(p)
+          vs = Sivel2Gen::Victima.where(persona_id: p).take.victimasjr
           nr = Cor1440Gen::Asistencia.create(
             persona_id: p,
             actividad_id: @registro.id,
             externo: false,
             orgsocial_id: nil,
-            perfilorgsocial_id: nil
+            perfilorgsocial_id: op.ultimoperfilorgsocial_id,
+            discapacidad: vs.discapacidad_id != 6
           )
           nr.save(validate: false)
         end
@@ -458,7 +464,8 @@ module Cor1440Gen
           listaret << {
             id: v.victima.persona_id, 
             nombre: v.victima.persona.presenta_nombre,
-            ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id
+            ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id,
+            discapacidad_en_casos: v.discapacidad_id != 6
           }
         end
       end
@@ -509,7 +516,8 @@ module Cor1440Gen
         asistencia = Cor1440Gen::Asistencia.create(
           actividad_id: act.id,
           persona_id: dp[:id],
-          perfilorgsocial_id: dp[:ultimoperfilorgsocial_id]
+          perfilorgsocial_id: dp[:ultimoperfilorgsocial_id],
+          discapacidad: dp[:discapacidad_en_casos]
         )
         if !asistencia.save(validate: false)
           resp_error 'No pudo crear asistencia' 
@@ -566,6 +574,7 @@ module Cor1440Gen
     def lista_params
       l = lista_params_cor1440_gen;
       l[-1][:asistencia_attributes][-1][:persona_attributes] << :ultimoperfilorgsocial_id;
+      l[-1][:asistencia_attributes].insert(0, :discapacidad)
       l + 
         [
           :covid,

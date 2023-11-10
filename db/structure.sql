@@ -1364,7 +1364,8 @@ CREATE TABLE public.cor1440_gen_asistencia (
     rangoedadac_id integer,
     externo boolean,
     orgsocial_id integer,
-    perfilorgsocial_id integer
+    perfilorgsocial_id integer,
+    discapacidad boolean DEFAULT false
 );
 
 
@@ -17630,6 +17631,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231009090231'),
 ('20231009090632'),
 ('20231009171450'),
-('20231108094709');
+('20231108094709'),
+('20231109184942');
 
 

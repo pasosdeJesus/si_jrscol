@@ -1,0 +1,17 @@
+<div class="div-tabla-celda">
+  <%= fasistencia.input :discapacidad,
+    collection: [["No", false], ["Si", true]],
+    label: false,
+    allow_blank: false,
+    input_html: { style: 'width: 3em' } %>
+</div>
+<div class="div-tabla-celda">
+  <%= fasistencia.association :perfilorgsocial,
+    collection: Msip::Perfilorgsocial.habilitados,
+    label_method: :nombre,
+    value_method: :id,
+    input_html: { style: 'width: 6em' },
+    label: false
+  %>
+</div>
+

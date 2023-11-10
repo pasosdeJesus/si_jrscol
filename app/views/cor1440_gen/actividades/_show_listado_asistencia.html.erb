@@ -9,6 +9,7 @@ Población beneficiaria: <%= personas.uniq.count  %>
       <th colspan="2">Identificación</th>
       <th>Sexo</th>
       <th>Edad</th>
+      <th>Discapacidad</th>
       <th>Perfil</th>
       <th>Caso asociado</th>
     </tr>
@@ -46,6 +47,9 @@ Población beneficiaria: <%= personas.uniq.count  %>
               @registro.fecha.month, @registro.fecha.day)
             %>
           <% end %>
+        </td>
+        <td>
+          <%= asistencia.discapacidad ? "Si"  :  "No" %>
         </td>
         <td>
           <%= asistencia.perfilorgsocial.nombre if asistencia.perfilorgsocial %>
