@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: b3e2b684096ac95fc03c1b15eceae8f46ab6ef28
+  revision: c88e1ddd9de1607574554da6e2569c77f2cdcde0
   branch: main
   specs:
     cor1440_gen (2.2.0.beta4)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 30d8cbf33e5ffe40981c27494d5f4017f527f8ab
+  revision: 69bc34f6d7ed90cfe3fe00e0e21e94bffeb6e360
   branch: main
   specs:
     heb412_gen (2.2.0.beta4)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: f2a86d2d8436567bfbede62d508fc856576cf9f6
+  revision: 68b5a28a7cfab4a40e176adc39fbefdb443b919e
   branch: main
   specs:
     jos19 (2.2.0.beta4)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 43e4dfbf40204a240bfac5366aa9bc785e7579b3
+  revision: b03de0034224fc0588279ee418e06a0f9efc8272
   branch: main
   specs:
     mr519_gen (2.2.0.beta4)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 87b9cbd23c2cf7356b64a469706769895db27f0a
+  revision: 4ffea3e4d1707c813321172d84e8d9ee29ec70d7
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 4bc4f64d820651833ec02cacd11cc432e4a9a8b5
+  revision: aee211eb40416cd0a539c7e0d7298cbf6217485c
   branch: main
   specs:
     sivel2_gen (2.2.0.beta4)
@@ -169,7 +169,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bcrypt (3.1.19)
+    bcrypt (3.1.20)
     bindex (0.8.1)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
@@ -204,10 +204,10 @@ GEM
     colorize (1.1.0)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
-    cuprite (0.14.3)
+    cuprite (0.15)
       capybara (~> 3.0)
-      ferrum (~> 0.13.0)
-    date (3.3.3)
+      ferrum (~> 0.14.0)
+    date (3.3.4)
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
@@ -226,7 +226,7 @@ GEM
       railties (>= 3.2)
     erubi (1.12.0)
     execjs (2.9.1)
-    ferrum (0.13)
+    ferrum (0.14)
       addressable (~> 2.5)
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
@@ -238,7 +238,7 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
-    irb (1.8.3)
+    irb (1.9.0)
       rdoc
       reline (>= 0.3.8)
     jbuilder (2.11.5)
@@ -247,8 +247,8 @@ GEM
     jsbundling-rails (1.2.1)
       railties (>= 6.0.0)
     kgio (2.11.4)
-    libxml-ruby (4.1.1)
-    loofah (2.21.4)
+    libxml-ruby (4.1.2)
+    loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -266,17 +266,17 @@ GEM
     mini_portile2 (2.8.5)
     minitest (5.20.0)
     msgpack (1.7.2)
-    net-imap (0.4.3)
+    net-imap (0.4.5)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.1)
+    net-protocol (0.2.2)
       timeout
     net-smtp (0.4.0)
       net-protocol
-    nio4r (2.5.9)
-    nokogiri (1.15.4)
+    nio4r (2.6.0)
+    nokogiri (1.15.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     odf-report (0.7.3)
@@ -297,10 +297,10 @@ GEM
       rails (>= 3.2)
     psych (5.1.1.1)
       stringio
-    public_suffix (5.0.3)
+    public_suffix (5.0.4)
     puma (6.4.0)
       nio4r (~> 2.0)
-    racc (1.7.2)
+    racc (1.7.3)
     rack (2.2.8)
     rack-test (2.1.0)
       rack (>= 1.3)
@@ -346,11 +346,11 @@ GEM
       zeitwerk (~> 2.5)
     raindrops (0.20.1)
     rake (13.1.0)
-    rdoc (6.5.0)
+    rdoc (6.6.0)
       psych (>= 4.0.0)
     redcarpet (3.6.0)
     regexp_parser (2.8.2)
-    reline (0.3.9)
+    reline (0.4.0)
       io-console (~> 0.5)
     responders (3.1.1)
       actionpack (>= 5.2)
@@ -392,12 +392,12 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.3.0)
       railties (>= 6.0.0)
-    stringio (3.0.8)
+    stringio (3.0.9)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     thor (1.3.0)
     tilt (2.3.0)
-    timeout (0.4.0)
+    timeout (0.4.1)
     ttfunk (1.7.0)
     turbo-rails (1.5.0)
       actionpack (>= 6.0.0)

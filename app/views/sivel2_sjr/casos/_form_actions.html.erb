@@ -9,10 +9,13 @@
          id='caso_bitacora_cambio' 
          name='caso[bitacora_cambio]' 
          type='hidden'>
-  <%= f.button :submit, 'Validar y Guardar', {
+  <%= f.button :submit, "Validar y Guardar",
     class: 'btn btn-primary',
     onclick: 'window.sivel2_detenerEnviarCada60()',
-    'data-turbo' => false } %>
+    data: {
+      disable_with: false,
+      turbo: false
+    } %>
 
   <%= render partial: 'form_btncancelar' %>
 </div> <!-- form-action -->

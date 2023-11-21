@@ -995,6 +995,8 @@ class Ability < Sivel2Gen::Ability
       can :read, Msip::Ubicacionpre
       can :mundep, Msip::Ubicacionpre
 
+      can :manage, Sivel2Gen::AnexoCaso
+
       case usuario.rol
       when Ability::ROLINV
         #cannot :buscar, Sivel2Gen::Caso

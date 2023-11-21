@@ -1221,6 +1221,7 @@ module Sivel2Sjr
         ] + otros_params_respuesta,
         :anexo_caso_attributes => [
           :fecha_localizada,
+          :fecha,
           :id, 
           :caso_id,
           :_destroy,

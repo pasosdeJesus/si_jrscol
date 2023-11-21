@@ -8,8 +8,7 @@ if (typeof window.Rails == 'undefined') {
   window.Rails = Rails
 }
 
-import * as Turbo from '@hotwired/turbo'
-Turbo.session.drive = false
+import * as Turbo from '@hotwired/turbo-rails'
 
 import './jquery'
 import '../../vendor/assets/javascripts/jquery-ui'
