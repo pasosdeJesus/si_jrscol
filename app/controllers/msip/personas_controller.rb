@@ -658,7 +658,7 @@ module Msip
         :pais_id,
         :departamento_id,
         :municipio_id,
-        :clase_id,
+        :centropoblado_id,
         :numerodocumento,
         :tdocumento_id,
         :ultimoperfilorgsocial_id,

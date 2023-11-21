@@ -10,7 +10,7 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
 
-  if Msip::Tclase.all.count == 0
+  if Msip::Tcentropoblado.all.count == 0
     load "#{Rails.root}/db/seeds.rb"
     SiJrscol::Application.load_tasks
     Rake::Task['msip:indices'].invoke
@@ -266,7 +266,7 @@ PRUEBA_UBICACION = {
   pais_id: 862, # VENEZUELA
   departamento_id: 1, # DISTRITO CAPITAL
   municipio_id: 25, # BOLIVARIANO LIBERTADOR
-  clase_id: 217, # CARACAS
+  centropoblado_id: 217, # CARACAS
   created_at: "2014-11-06",
 }
 
@@ -275,7 +275,7 @@ PRUEBA_UBICACIONPRE = {
   pais_id: 170,
   departamento_id: 56,
   municipio_id: 594,
-  clase_id: 13064,
+  centropoblado_id: 13064,
   lugar: nil,
   sitio: nil,
   tsitio_id: nil,
@@ -290,7 +290,7 @@ PRUEBA_UBICACIONPRE2 = {
   pais_id: 100, # BULGARIA
   departamento_id: 20,
   municipio_id: nil,
-  clase_id: nil,
+  centropoblado_id: nil,
   nombre: "IMAGINA / BULGARIA",
   latitud: 0.1,
   longitud: 0.2,

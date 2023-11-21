@@ -22,7 +22,7 @@ module Msip
 #      pais_id: 170,
 #      departamento_id: 17,
 #      municipio_id: 1152,
-#      clase_id: 2626,
+#      centropoblado_id: 2626,
 #      tdocumento_id: 1,
 #      numerodocumento: '123',
 #      nacionalde: 170

@@ -37,7 +37,7 @@ ubicación) a ubicacionpre con:
         mi = Sivel2Sjr::Migracion.find(mp[:id].to_i)
         mi.salidaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
           mp[:salida_pais_id], mp[:salida_departamento_id],
-          mp[:salida_municipio_id], mp[:salida_clase_id],
+          mp[:salida_municipio_id], mp[:salida_centropoblado_id],
           mp[:salida_lugar], mp[:salida_sitio], mp[:salida_tsitio_id],
           mp[:salida_latitud], mp[:salida_longitud]
         )
@@ -48,7 +48,7 @@ Y en lista blanca de parámetros agregar:
           :salida_pais_id,
           :salida_departamento_id,
           :salida_municipio_id,
-          :salida_clase_id,
+          :salida_centropoblado_id,
           :salida_latitud,
           :salida_longitud,
           :salida_lugar,
@@ -74,7 +74,7 @@ En vistas donde se deben incrustar las 2 filas del control usar:
       campomunicipio: :salida_municipio,
       campomunicipio_etiqueta: 'Municipio de salida',
       idresto: 'restosalida',
-      campocentropoblado: :salida_clase,
+      campocentropoblado: :salida_centropoblado,
       campocentropoblado_etiqueta: 'Centro poblado de salida',
       campolugar: :salida_lugar,
       campolugar_etiqueta: 'Barrio o vereda de salida',

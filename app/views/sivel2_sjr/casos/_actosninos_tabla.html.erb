@@ -64,7 +64,7 @@
                 collection: Msip::Ubicacionpre.where(pais_id: 170).
                 where('departamento_id IS NOT NULL').
                 where('municipio_id IS NOT NULL').
-                where('clase_id IS NULL').
+                where('centropoblado_id IS NULL').
                 where('lugar IS NULL').
                 where('sitio IS NULL').order(:nombre),
                 include_blank: true,

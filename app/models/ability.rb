@@ -202,7 +202,7 @@ class Ability < Sivel2Gen::Ability
     'pais',
     'departamento',
     'municipio',
-    'clase',
+    'centropoblado',
     'mesnac',
     'maternidad',
     'numeroanexos',
@@ -226,7 +226,7 @@ class Ability < Sivel2Gen::Ability
     'pais', 
     'departamento',
     'municipio',
-    'clase',
+    'centropoblado',
     'longitud',
     'latitud',
     'lugar',
@@ -252,11 +252,11 @@ class Ability < Sivel2Gen::Ability
     'salida_pais',
     'salida_departamento',
     'salida_municipio',
-    'salida_clase',
+    'salida_centropoblado',
     'llegada_pais',
     'llegada_departamento',
     'llegada_municipio',
-    'llegada_clase',
+    'llegada_centropoblado',
     'viadeingreso',
     'causamigracion',
     'pagoingreso',
@@ -959,7 +959,7 @@ class Ability < Sivel2Gen::Ability
   end
 
   def initialize(usuario = nil)
-    can :read, [Msip::Pais, Msip::Departamento, Msip::Municipio, Msip::Clase]
+    can :read, [Msip::Pais, Msip::Departamento, Msip::Municipio, Msip::Centropoblado]
     if !usuario || usuario.fechadeshabilitacion
       return
     end

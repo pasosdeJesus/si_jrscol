@@ -303,7 +303,7 @@ import {
       ],
       selectors: [
         [
-          'text/Msip::Tclase eliminado.'
+          'text/Msip::Tcentropoblado eliminado.'
         ]
       ]
     }, frame, timeout);

@@ -157,12 +157,12 @@ import {
         const targetPage = page;
         await scrollIntoViewIfNeeded([
             [
-                'div.clase_municipio span'
+                'div.centropoblado_municipio span'
             ]
         ], targetPage, timeout);
         const element = await waitForSelectors([
             [
-                'div.clase_municipio span'
+                'div.centropoblado_municipio span'
             ]
         ], targetPage, { timeout, visible: true });
         await element.click({
@@ -391,7 +391,7 @@ import {
           ],
           selectors: [
             [
-              'text/Msip::Clase eliminado.'
+              'text/Msip::Centropoblado eliminado.'
             ]
           ]
         }, frame, timeout);

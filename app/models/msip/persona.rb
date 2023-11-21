@@ -117,7 +117,7 @@ module Msip
       self.pais_id.nil? &&
       self.departamento_id.nil? &&
       self.municipio_id.nil? &&
-      self.clase_id.nil? &&
+      self.centropoblado_id.nil? &&
       self.ultimoperfilorgsocial_id.nil? &&
       self.ultimoestatusmigratorio_id.nil? &&
       self.ppt.nil?

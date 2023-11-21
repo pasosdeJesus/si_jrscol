@@ -10,7 +10,7 @@ document.addEventListener('change',
       var md = document.getElementById('caso_migracion_attributes_' + m[1] +
         '_destino_municipio_id').parentElement;
       var cd = document.getElementById('caso_migracion_attributes_' + m[1] +
-        '_destino_clase_id').parentElement;
+        '_destino_centropoblado_id').parentElement;
       var fd = document.getElementById('caso_migracion_attributes_' + m[1] +
         '_fechaendestino').parentElement;
       if (event.target.checked) {

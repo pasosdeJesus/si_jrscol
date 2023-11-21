@@ -19,7 +19,7 @@ module Sivel2Sjr
       pais_id: 862,
       departamento_id: 1,
       municipio_id: 25,
-      clase_id: 217,
+      centropoblado_id: 217,
       nombre: 'Venezuela / Distrito Capital / Bolivariano Libertador / Caracas',
       latitud: 2.1,
       longitud: 2.2,
@@ -67,8 +67,8 @@ module Sivel2Sjr
       assert_nil migracion.salida_departamento
       assert_nil migracion.salida_municipio_id
       assert_nil migracion.salida_municipio
-      assert_nil migracion.salida_clase_id
-      assert_nil migracion.salida_clase
+      assert_nil migracion.salida_centropoblado_id
+      assert_nil migracion.salida_centropoblado
       assert_equal 'lugar1', migracion.salida_lugar
       assert_equal 'sitio1', migracion.salida_sitio
       assert_equal 1.1, migracion.salida_latitud
@@ -81,8 +81,8 @@ module Sivel2Sjr
       assert_equal 1, migracion.llegada_departamento.id
       assert_equal 25, migracion.llegada_municipio_id
       assert_equal 25, migracion.llegada_municipio.id
-      assert_equal 217, migracion.llegada_clase_id
-      assert_equal 217, migracion.llegada_clase.id
+      assert_equal 217, migracion.llegada_centropoblado_id
+      assert_equal 217, migracion.llegada_centropoblado.id
       assert_equal 'lugar2', migracion.llegada_lugar
       assert_equal 'sitio2', migracion.llegada_sitio
       assert_equal 2.1, migracion.llegada_latitud

@@ -41,14 +41,14 @@ $(document).on('cocoon:after-insert', '#migracion',
     opais = '[id^=caso_migracion_attributes_][id$=_llegada_pais_id]'
     odep = '[id^=caso_migracion_attributes_][id$=_llegada_departamento_id]'
     omun = '[id^=caso_migracion_attributes_][id$=_llegada_municipio_id]'
-    oclas = '[id^=caso_migracion_attributes_][id$=_llegada_clase_id]'
+    ocp = '[id^=caso_migracion_attributes_][id$=_llegada_centropoblado_id]'
     if(id_ofi != 1){
       $.getJSON("../../admin/oficinas/"+ id_ofi +".json", function(o){
         cu = 'chosen:updated'
         $(opais).val(o.pais_id).trigger(cu)
         $(odep).val(o.departamento_id).trigger(cu)
         $(omun).val(o.municipio_id).trigger(cu)
-        $(oclas).val(o.clase_id).trigger(cu)
+        $(ocp).val(o.centropoblado_id).trigger(cu)
       });
     }
 

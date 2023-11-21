@@ -48,7 +48,7 @@ module Msip
         case basica
         when "departamento"
           registro = modelo.create!(MODELO_PARAMS.merge({pais_id: 170}))
-        when "clase"
+        when "centropoblado"
           registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
         when "municipio"
           registro = modelo.create!(MODELO_PARAMS.merge({departamento_id: 17}))
@@ -77,7 +77,7 @@ module Msip
 
       #No autenticado
 
-      if basica[1] == "clase" || basica[1] == "municipio" || basica[1] == "departamento" || basica[1] == "pais"
+      if basica[1] == "centropoblado" || basica[1] == "municipio" || basica[1] == "departamento" || basica[1] == "pais"
         test "sin autenticar debe presentar el index de #{basica[1]}" do
           get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
           assert_response :ok
@@ -147,7 +147,7 @@ module Msip
 
       # Autenticado como operador sin grupo
 
-      if basica[1] == "clase" || basica[1] == "municipio" || basica[1] == "departamento" || basica[1] == "pais"
+      if basica[1] == "centropoblado" || basica[1] == "municipio" || basica[1] == "departamento" || basica[1] == "pais"
         test "operador sin grupo debe presentar el index de #{basica[1]}" do
           skip
           sign_in @ope_sin_grupo
@@ -233,7 +233,7 @@ module Msip
 
       # Autenticado como operador con grupo Analista de Casos
 
-      if basica[1] == "clase" || basica[1] == "municipio" || basica[1] == "departamento" || basica[1] == "pais"
+      if basica[1] == "centropoblado" || basica[1] == "municipio" || basica[1] == "departamento" || basica[1] == "pais"
         test "operador analista debe presentar el index de #{basica[1]}" do
           skip
           sign_in @ope_analista

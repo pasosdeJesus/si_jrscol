@@ -390,7 +390,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     victimasjrc = Sivel2Sjr::Victimasjr.where(victima_id: victimac.id)[0]
 
     ## 3 primeras ubicaciones
-    cubidob = ['pais', 'departamento', 'municipio', 'clase', 'tsitio']
+    cubidob = ['pais', 'departamento', 'municipio', 'centropoblado', 'tsitio']
     cubisim = ['longitud', 'latitud', 'sitio', 'lugar']
     cubi = /ubicacion(.*)$/.match(atr.to_s)
     ubicaciones = Sivel2Gen::Caso.find(caso_id).ubicacion
@@ -580,7 +580,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     cpersonasimple = [
       'nombres', 'apellidos', 'sexo', 'anionac', 'mesnac', 'dianac',
       'numerodocumento']
-    cpersonadoble = ['tdocumento', 'pais', 'departamento', 'municipio', 'clase']
+    cpersonadoble = ['tdocumento', 'pais', 'departamento', 'municipio', 'centropoblado']
     cvictimasimple = [ 'orientacionsexual']
     cvictimadoble = [ 'etnia', 'profesion', 'organizacion', 
                       'filiacion', 'vinculoestado']
@@ -1000,8 +1000,8 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       contacto.departamento ? contacto.departamento.nombre : ''
     when 'contacto_municipio'
       contacto.municipio ? contacto.municipio.nombre : ''
-    when 'contacto_clase'
-      contacto.clase ? contacto.clase.nombre : ''
+    when 'contacto_centropoblado'
+      contacto.centropoblado ? contacto.centropoblado.nombre : ''
     when 'telefono'
       casosjr.telefono ? casosjr.telefono : ''
     when 'direccion'

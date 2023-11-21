@@ -479,19 +479,19 @@ module Sivel2Sjr
             mi = Sivel2Sjr::Migracion.find(mp[:id].to_i)
             mi.salidaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
               mp[:salida_pais_id], mp[:salida_departamento_id],
-              mp[:salida_municipio_id], mp[:salida_clase_id],
+              mp[:salida_municipio_id], mp[:salida_centropoblado_id],
               mp[:salida_lugar], mp[:salida_sitio], mp[:salida_tsitio_id],
               mp[:salida_latitud], mp[:salida_longitud]
             )
             mi.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
               mp[:llegada_pais_id], mp[:llegada_departamento_id],
-              mp[:llegada_municipio_id], mp[:llegada_clase_id],
+              mp[:llegada_municipio_id], mp[:llegada_centropoblado_id],
               mp[:llegada_lugar], mp[:llegada_sitio], mp[:llegada_tsitio_id],
               mp[:llegada_latitud], mp[:llegada_longitud]
             )
             mi.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
               mp[:destino_pais_id], mp[:destino_departamento_id],
-              mp[:destino_municipio_id], mp[:destino_clase_id],
+              mp[:destino_municipio_id], mp[:destino_centropoblado_id],
               mp[:destino_lugar], mp[:destino_sitio], mp[:destino_tsitio_id],
               mp[:destino_latitud], mp[:destino_longitud]
             )
@@ -504,19 +504,19 @@ module Sivel2Sjr
           de = Sivel2Sjr::Desplazamiento.find(dp[:id].to_i)
           de.expulsionubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
             dp[:expulsion_pais_id], dp[:expulsion_departamento_id],
-            dp[:expulsion_municipio_id], dp[:expulsion_clase_id],
+            dp[:expulsion_municipio_id], dp[:expulsion_centropoblado_id],
             dp[:expulsion_lugar], dp[:expulsion_sitio], dp[:expulsion_tsitio_id],
             dp[:expulsion_latitud], dp[:expulsion_longitud]
           )
           de.llegadaubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
             dp[:llegada_pais_id], dp[:llegada_departamento_id],
-            dp[:llegada_municipio_id], dp[:llegada_clase_id],
+            dp[:llegada_municipio_id], dp[:llegada_centropoblado_id],
             dp[:llegada_lugar], dp[:llegada_sitio], dp[:llegada_tsitio_id],
             dp[:llegada_latitud], dp[:llegada_longitud]
           )
           de.destinoubicacionpre_id = Msip::Ubicacionpre::buscar_o_agregar(
             dp[:destino_pais_id], dp[:destino_departamento_id],
-            dp[:destino_municipio_id], dp[:destino_clase_id],
+            dp[:destino_municipio_id], dp[:destino_centropoblado_id],
             dp[:destino_lugar], dp[:destino_sitio], dp[:destino_tsitio_id],
             dp[:destino_latitud], dp[:destino_longitud]
           )
@@ -671,7 +671,7 @@ module Sivel2Sjr
           :causaRefugio_id,
           :causamigracion_id,
           :concepto_pago,
-          :destino_clase_id,
+          :destino_centropoblado_id,
           :destino_departamento_id,
           :destino_municipio_id,
           :destino_pais_id,
@@ -686,7 +686,7 @@ module Sivel2Sjr
           :fechasalida,
           :fechaendestino,
           :id,
-          :llegada_clase_id,
+          :llegada_centropoblado_id,
           :llegada_departamento_id,
           :llegada_municipio_id,
           :llegada_pais_id,
@@ -716,7 +716,7 @@ module Sivel2Sjr
           :salida_pais_id,
           :salida_departamento_id,
           :salida_municipio_id,
-          :salida_clase_id,
+          :salida_centropoblado_id,
           :salida_latitud,
           :salida_longitud,
           :salida_lugar,
@@ -752,7 +752,7 @@ module Sivel2Sjr
           :declaracionruv_id,
           :declaro, 
           :descripcion, 
-          :destino_clase_id,
+          :destino_centropoblado_id,
           :destino_departamento_id,
           :destino_latitud,
           :destino_longitud,
@@ -761,7 +761,7 @@ module Sivel2Sjr
           :destino_pais_id,
           :destino_sitio,
           :destino_tsitio_id,
-          :expulsion_clase_id,
+          :expulsion_centropoblado_id,
           :expulsion_departamento_id,
           :expulsion_latitud,
           :expulsion_longitud,
@@ -789,7 +789,7 @@ module Sivel2Sjr
           :modalidadtierra_id,
           :tipodesp_id, 
           :inmaterialesperdidos,
-          :llegada_clase_id,
+          :llegada_centropoblado_id,
           :llegada_departamento_id,
           :llegada_latitud,
           :llegada_longitud,
@@ -1102,7 +1102,7 @@ module Sivel2Sjr
             :pais_id, 
             :departamento_id, 
             :municipio_id, 
-            :clase_id, 
+            :centropoblado_id, 
             :mesnac, 
             :nacionalde, 
             :numerodocumento, 
@@ -1135,7 +1135,7 @@ module Sivel2Sjr
         ], 
         :ubicacion_attributes => [
           :id, 
-          :clase_id, 
+          :centropoblado_id, 
           :departamento_id, 
           :municipio_id, 
           :pais_id, 

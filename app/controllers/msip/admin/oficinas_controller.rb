@@ -17,7 +17,7 @@ module Msip
          :pais_id,
          :departamento_id,
          :municipio_id,
-         :clase_id,
+         :centropoblado_id,
          :fechacreacion_localizada,
          :habilitado
         ]

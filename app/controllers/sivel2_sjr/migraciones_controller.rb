@@ -29,7 +29,7 @@ module Sivel2Sjr
           @migracion.llegada_pais_id = current_usuario.oficina.pais_id
           @migracion.llegada_departamento_id = current_usuario.oficina.departamento_id
           @migracion.llegada_municipio_id = current_usuario.oficina.municipio_id
-          @migracion.llegada_clase_id = current_usuario.oficina.clase_id
+          @migracion.llegada_centropoblado_id = current_usuario.oficina.centropoblado_id
         end
         if @migracion.save
           h=@migracion.as_json

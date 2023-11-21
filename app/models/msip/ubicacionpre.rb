@@ -26,7 +26,7 @@ module Msip
 #    end
 
 #    def clase_id
-#      self.clase_id
+#      self.centropoblado_id
 #    end
 
   end
