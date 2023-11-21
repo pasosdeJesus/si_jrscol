@@ -985,6 +985,7 @@ class Ability < Sivel2Gen::Ability
     can :nuevo, Sivel2Sjr::Respuesta
 
     if !usuario.nil? && !usuario.rol.nil? then
+      can :read, Msip::Oficina
       can :read, Msip::Persona
       can :read, Msip::Tdocumento
 
