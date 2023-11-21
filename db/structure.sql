@@ -1715,7 +1715,7 @@ CREATE TABLE public.msip_oficina (
     pais_id integer,
     departamento_id integer,
     municipio_id integer,
-    clase_id integer,
+    centropoblado_id integer,
     territorial_id integer,
     CONSTRAINT msip_oficina_fechadeshabilitacion_chequeo CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
@@ -4702,7 +4702,7 @@ CREATE VIEW public.mcben1 AS
             ELSE 0
         END AS beneficiario,
     1 AS npersona,
-    victimasjr.estadocivil_id
+    victimasjr.actividadoficio_id
    FROM public.sivel2_gen_caso caso,
     public.sivel2_sjr_casosjr casosjr,
     public.sivel2_gen_victima victima,
@@ -4780,20 +4780,20 @@ CREATE VIEW public.mcben2 AS
     mcben1.contacto,
     mcben1.beneficiario,
     mcben1.npersona,
-    mcben1.estadocivil_id,
+    mcben1.actividadoficio_id,
     ubicacion.departamento_id,
     departamento.nombre AS departamento_nombre,
     ubicacion.municipio_id,
     municipio.nombre AS municipio_nombre,
-    ubicacion.centropoblado_id AS clase_id,
-    clase.nombre AS clase_nombre,
+    ubicacion.centropoblado_id,
+    centropoblado.nombre AS centropoblado_nombre,
     ultimodesplazamiento.fechaexpulsion
    FROM (((((public.mcben1
      LEFT JOIN public.ultimodesplazamiento ON ((mcben1.caso_id = ultimodesplazamiento.caso_id)))
      LEFT JOIN public.msip_ubicacionpre ubicacion ON ((ultimodesplazamiento.expulsionubicacionpre_id = ubicacion.id)))
      LEFT JOIN public.msip_departamento departamento ON ((ubicacion.departamento_id = departamento.id)))
      LEFT JOIN public.msip_municipio municipio ON ((ubicacion.municipio_id = municipio.id)))
-     LEFT JOIN public.msip_centropoblado clase ON ((ubicacion.centropoblado_id = clase.id)));
+     LEFT JOIN public.msip_centropoblado centropoblado ON ((ubicacion.centropoblado_id = centropoblado.id)));
 
 
 --
@@ -9395,7 +9395,7 @@ CREATE TABLE public.territorial (
     pais_id integer,
     departamento_id integer,
     municipio_id integer,
-    clase_id integer,
+    centropoblado_id integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -13188,10 +13188,10 @@ CREATE INDEX msip_persona_tdocumento_id_idx ON public.msip_persona USING btree (
 
 
 --
--- Name: msip_ubicacionpre_clase_id_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: msip_ubicacionpre_centropoblado_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX msip_ubicacionpre_clase_id_idx ON public.msip_ubicacionpre USING btree (centropoblado_id);
+CREATE INDEX msip_ubicacionpre_centropoblado_id_idx ON public.msip_ubicacionpre USING btree (centropoblado_id);
 
 
 --
@@ -13216,10 +13216,10 @@ CREATE INDEX msip_ubicacionpre_pais_id_departamento_id_idx ON public.msip_ubicac
 
 
 --
--- Name: msip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_id; Type: INDEX; Schema: public; Owner: -
+-- Name: msip_ubicacionpre_pais_id_departamento_id_municipio_id_centropo; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX msip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_id ON public.msip_ubicacionpre USING btree (pais_id, departamento_id, municipio_id, centropoblado_id);
+CREATE INDEX msip_ubicacionpre_pais_id_departamento_id_municipio_id_centropo ON public.msip_ubicacionpre USING btree (pais_id, departamento_id, municipio_id, centropoblado_id);
 
 
 --
@@ -14242,7 +14242,7 @@ ALTER TABLE ONLY public.docidsecundario
 --
 
 ALTER TABLE ONLY public.territorial
-    ADD CONSTRAINT fk_rails_02965341df FOREIGN KEY (clase_id) REFERENCES public.msip_centropoblado(id);
+    ADD CONSTRAINT fk_rails_02965341df FOREIGN KEY (centropoblado_id) REFERENCES public.msip_centropoblado(id);
 
 
 --
@@ -14498,7 +14498,7 @@ ALTER TABLE ONLY public.cor1440_gen_caracterizacionpf
 --
 
 ALTER TABLE ONLY public.msip_oficina
-    ADD CONSTRAINT fk_rails_1e27fc6829 FOREIGN KEY (clase_id) REFERENCES public.msip_centropoblado(id);
+    ADD CONSTRAINT fk_rails_1e27fc6829 FOREIGN KEY (centropoblado_id) REFERENCES public.msip_centropoblado(id);
 
 
 --
@@ -17635,6 +17635,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231109184942'),
 ('20231120094041'),
 ('20231120175125'),
-('20231121135551');
+('20231121135551'),
+('20231121154749');
 
 
