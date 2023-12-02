@@ -18,12 +18,12 @@ module Cor1440Gen
 
     attr_reader :territorial_id
     def territorial_id
-      self.oficina.territorial_id
+      self.oficina ? self.oficina.territorial_id : nil
     end
 
     attr_reader :territorial
     def territorial
-      self.oficina.territorial
+      self.oficina ? self.oficina.territorial : nil
     end
 
     attr_accessor :controlador
