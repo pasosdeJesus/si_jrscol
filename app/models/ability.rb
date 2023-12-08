@@ -174,7 +174,8 @@ class Ability < Sivel2Gen::Ability
 
   if !ActiveRecord::Base.connection.data_source_exists?(
       'sivel2_gen_consexpcaso') &&
-     ActiveRecord::Base.connection.data_source_exists?('sivel2_gen_caso')
+     ActiveRecord::Base.connection.data_source_exists?('sivel2_gen_caso') &&
+     (!Rake || !defined?(Rake.application) || !Rake.application.top_level_tasks == ["db:migrate"])
     Sivel2Gen::Consexpcaso.crea_consexpcaso(nil)
   end
 

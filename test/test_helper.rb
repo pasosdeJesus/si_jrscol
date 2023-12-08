@@ -283,18 +283,21 @@ PRUEBA_UBICACIONPRE = {
   longitud: nil,
   created_at: "2021-12-08",
   updated_at: "2021-12-08",
-  nombre_sin_pais: "BARRANCOMINAS / BARRANCOMINAS / GUAINÍA"
+  nombre_sin_pais: "BARRANCOMINAS / BARRANCOMINAS / GUAINÍA",
+  fechacreacion: "2023-12-07"
 }
 
 PRUEBA_UBICACIONPRE2 = {
   pais_id: 100, # BULGARIA
-  departamento_id: 20,
+  departamento_id: nil,
   municipio_id: nil,
   centropoblado_id: nil,
+  lugar: "IMAGINA",
   nombre: "IMAGINA / BULGARIA",
   latitud: 0.1,
   longitud: 0.2,
   nombre_sin_pais: "IMAGINA",
+  fechacreacion: "2023-12-07"
 }
 
 # Usuario para ingresar y hacer pruebas

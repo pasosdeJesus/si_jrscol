@@ -88,4 +88,6 @@ Rails.application.configure do
 
   default_url_options[:host] = "https://colombiajrs.info/"
 
+  config.web_console.permissions = ENV.fetch("WEB_CONSOLE_PERMISSIONS", "").
+    split(",") 
 end

@@ -32,9 +32,12 @@ module Msip
 
       u = Msip::Ubicacionpre.create(
         pais_id: 170,
-        nombre: "x",
+        nombre: "x - por generar",
+        lugar: "x",
+        fechacreacion: "2023-12-07"
       )
       u.save
+      assert u.valid?
 
       assert u.poner_nombre_estandar
       idu = Msip::Ubicacionpre.buscar_o_agregar(
@@ -50,9 +53,12 @@ module Msip
       u = Msip::Ubicacionpre.create(
         pais_id: 170,
         departamento_id: 11,
-        nombre: "x",
+        nombre: "x - por completar",
+        lugar: "x",
+        fechacreacion: "2023-12-07"
       )
       u.save
+      assert u.valid?
 
       assert u.poner_nombre_estandar
 
@@ -71,6 +77,7 @@ module Msip
         departamento_id: 11,
         municipio_id: 1013,
         nombre: "x",
+        lugar: "x",
       )
       u.save
 
@@ -92,6 +99,7 @@ module Msip
         municipio_id: 1013,
         centropoblado_id: 1248,
         nombre: "x",
+        lugar: "x",
       )
       # no ponemos tsitio_id porque hasta centros poblados por convención
       # se han puesto en nil (tal vez porque podrían ser urbano o
@@ -191,27 +199,32 @@ module Msip
       u = Ubicacionpre.create(PRUEBA_UBICACIONPRE2)
       u.poner_nombre_estandar
 
-      assert_equal("Cesar / Bulgaria", u.nombre)
-      assert_equal("Cesar", u.nombre_sin_pais)
+      assert_equal("IMAGINA / Bulgaria", u.nombre)
+      assert_equal("IMAGINA", u.nombre_sin_pais)
     end
 
     test "nomenclatura" do
       assert_equal [nil, nil],
-        Ubicacionpre.nomenclatura(nil, nil, nil, nil, nil, nil)
+        Ubicacionpre.nomenclatura(nil, nil, nil, nil, nil, nil, nil)
       assert_equal ["a", nil],
-        Ubicacionpre.nomenclatura("a", nil, nil, nil, nil, nil)
+        Ubicacionpre.nomenclatura("a", nil, nil, nil, nil, nil, nil)
       assert_equal ["b / a", "b"],
-        Ubicacionpre.nomenclatura("a", "b", nil, nil, nil, nil)
+        Ubicacionpre.nomenclatura("a", "b", nil, nil, nil, nil, nil)
       assert_equal ["c / b / a", "c / b"],
-        Ubicacionpre.nomenclatura("a", "b", "c", nil, nil, nil)
+        Ubicacionpre.nomenclatura("a", "b", "c", nil, nil, nil, nil)
       assert_equal ["b / a", "b"],
-        Ubicacionpre.nomenclatura("a", "b", nil, "d", nil, nil)
+        Ubicacionpre.nomenclatura("a", "b", nil, "d", nil, nil, nil)
       assert_equal ["d / c / b / a", "d / c / b"],
-        Ubicacionpre.nomenclatura("a", "b", "c", "d", nil, nil)
+        Ubicacionpre.nomenclatura("a", "b", "c", "d", nil, nil, nil)
+      assert_equal ["Vereda v / m / d / p", "Vereda v / m / d"],
+        Ubicacionpre.nomenclatura("p", "d", "m", nil, "v", nil, nil)
+      assert_equal ["Vereda v / m / d / p", "Vereda v / m / d"],
+        Ubicacionpre.nomenclatura("p", "d", "m", "c", "v", nil, nil)
+
       assert_equal ["e / d / c / b / a", "e / d / c / b"],
-        Ubicacionpre.nomenclatura("a", "b", "c", "d", "e", nil)
+        Ubicacionpre.nomenclatura("a", "b", "c", "d", nil, "e", nil)
       assert_equal ["e / c / b / a", "e / c / b"],
-        Ubicacionpre.nomenclatura("a", "b", "c", "", "e", nil)
+        Ubicacionpre.nomenclatura("a", "b", "c", "", nil, "e", nil)
     end
 
     test "buscar o agregar" do
@@ -219,13 +232,13 @@ module Msip
         170, nil, nil, nil, nil, nil, nil, nil, nil, false
       )
 
-      assert_nil u
+      assert_equal 1, u
     end
 
-    # test "existe" do
-    #  ubicacionpre = Ubicacionpre.where(
-    #    pais_id: 170, departamento_id: nil, municipio_id: nil, centropoblado_id: nil)
-    #  assert_equal 1, ubicacionpre.count
-    # end
+    test "existe" do
+      ubicacionpre = Ubicacionpre.where(
+        pais_id: 170, departamento_id: nil, municipio_id: nil, centropoblado_id: nil)
+      assert_equal 1, ubicacionpre.count
+    end
   end
 end
