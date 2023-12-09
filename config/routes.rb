@@ -124,13 +124,6 @@ Rails.application.routes.draw do
     get '/personas_casos' => 'sivel2_sjr/casos#personas_casos',
       as: :personas_casos
 
-    get '/ubicacionespre' => 'msip/ubicacionespre#index',
-      as: :ubicacionespre
-    get '/ubicacionespre_mundep' => 'msip/ubicacionespre#mundep',
-      as: :ubicacionespre_mundep
-    get '/ubicacionespre_lugar' => 'msip/ubicacionespre#lugar',
-      as: :ubicacionespre_lugar
-
     get '/actividadespf/nueva' => 'cor1440_gen/actividadespf#new',
       as: :nueva_actividadespf
 
@@ -153,6 +146,13 @@ Rails.application.routes.draw do
     # Evita error en prueba dificil
     get "/admin/oficinas" => "msip/admin/oficinas#index", as: :oficinas_path
 
+    #get '/ubicacionespre_mundep' => 'msip/admin/ubicacionespre#mundep',
+    #  as: :ubicacionespre_mundep
+
+    get '/ubicacionespre_lugar' => 'msip/admin/ubicacionespre#lugar',
+      as: :ubicacionespre_lugar
+
+
     resources :actonino, only: [] do 
       member do
         delete '(:id)', to: "actosninos#destroy", as: "eliminar"
@@ -170,6 +170,8 @@ Rails.application.routes.draw do
     root "msip/hogar#index"
 
     namespace :admin do
+
+
       ab = ::Ability.new
       ab.tablasbasicas.each do |t|
         if (t[0] == "") 
