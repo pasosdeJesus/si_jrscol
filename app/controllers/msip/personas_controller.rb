@@ -81,6 +81,7 @@ module Msip
         c = Msip::Persona.all
       end
       if params[:term]
+        #debugger
         term = Sivel2Gen::Caso.connection.quote_string(params[:term])
         consNomvic = term.downcase.strip #sin_tildes
         consNomvic.gsub!(/ +/, ":* & ")
@@ -91,9 +92,11 @@ module Msip
           "to_tsquery('spanish', '#{consNomvic}')";
 
         partes = [
-          'nombres',
-          'apellidos',
-          'COALESCE(numerodocumento::TEXT, \'\')'
+          "nombres",
+          "apellidos",
+          "COALESCE(numerodocumento::TEXT, '')",
+          "ARRAY_TO_STRING(ARRAY(SELECT COALESCE(d2.numero::TEXT, '') "\
+          "  FROM docidsecundario AS d2 WHERE d2.persona_id=persona.id), ' ')"
         ]
         s = "";
         l = " persona.id ";
@@ -104,10 +107,13 @@ module Msip
           l += sepl + "char_length(#{p})";
           seps = " || ' ' || ";
         end
-        qstring = "SELECT TRIM(#{s}) AS value, #{l} AS id " +
-          "FROM public.msip_persona AS persona " +
+        qstring = "SELECT TRIM(#{s}) AS value, #{l} AS id "\
+          "FROM public.msip_persona AS persona "\
+          "JOIN public.msip_tdocumento AS tdocumento "\
+          "  ON persona.tdocumento_id=tdocumento.id "\
           "WHERE #{where} ORDER BY 1 LIMIT 20"
         r = ActiveRecord::Base.connection.select_all qstring
+        #debugger
         respond_to do |format|
           format.json { render :json, inline: r.to_json }
           format.html { render :json, inline: 'No responde con parametro term' }

@@ -263,6 +263,38 @@ $_$;
 
 
 --
+-- Name: docidsecundario_actualiza_buscable_trigger(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.docidsecundario_actualiza_buscable_trigger() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+        begin
+          UPDATE msip_persona SET
+            numerodocumento = numerodocumento 
+            WHERE id = new.persona_id; -- Lanza otro trigger
+          RETURN new;
+        end
+        $$;
+
+
+--
+-- Name: docidsecundario_elimina_buscable_trigger(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.docidsecundario_elimina_buscable_trigger() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+        begin
+          UPDATE msip_persona SET
+            numerodocumento = numerodocumento 
+            WHERE id = old.persona_id; -- Lanza otro trigger
+          RETURN old;
+        end
+        $$;
+
+
+--
 -- Name: es_unaccent(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -407,14 +439,17 @@ CREATE FUNCTION public.msip_nombre_vereda() RETURNS character varying
 CREATE FUNCTION public.msip_persona_buscable_trigger() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
-      begin
-        new.buscable := to_tsvector('spanish', 
-          es_unaccent(new.nombres) ||
-          ' ' || es_unaccent(new.apellidos) || 
-          ' ' || COALESCE(new.numerodocumento::TEXT, ''));
-        return new;
-      end
-      $$;
+        begin
+          new.buscable := to_tsvector('spanish', 
+            es_unaccent(new.nombres) ||
+            ' ' || es_unaccent(new.apellidos) || 
+            ' ' || new.numerodocumento::TEXT ||
+            ' ' || ARRAY_TO_STRING(ARRAY(SELECT d2.numero::TEXT
+              FROM docidsecundario AS d2 WHERE d2.persona_id=new.id), ' ')
+            );
+          return new;
+        end
+        $$;
 
 
 --
@@ -13523,6 +13558,20 @@ CREATE TRIGGER cor1440_gen_recalcular_tras_cambiar_persona AFTER UPDATE ON publi
 
 
 --
+-- Name: docidsecundario docidsecundario_actualiza_buscable; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER docidsecundario_actualiza_buscable AFTER INSERT OR UPDATE ON public.docidsecundario FOR EACH ROW EXECUTE FUNCTION public.docidsecundario_actualiza_buscable_trigger();
+
+
+--
+-- Name: docidsecundario docidsecundario_elimina_buscable; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER docidsecundario_elimina_buscable AFTER DELETE ON public.docidsecundario FOR EACH ROW EXECUTE FUNCTION public.docidsecundario_elimina_buscable_trigger();
+
+
+--
 -- Name: msip_persona_trelacion msip_eliminar_familiar; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -17613,6 +17662,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231205205549'),
 ('20231205205600'),
 ('20231208160043'),
-('20231208162022');
+('20231208162022'),
+('20231210020428');
 
 
