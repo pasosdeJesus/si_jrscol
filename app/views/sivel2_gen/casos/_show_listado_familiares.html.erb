@@ -2,19 +2,19 @@
   <thead class="thead-light">
     <tr>
       <th colspan="2">Nombre</th>
-      <th colspan="2">Identificación</th>
+      <th colspan="2">Identificación(es)</th>
       <th>Relación con contacto</th>
       <th>Perfil</th>
-      <th>PPT</th>
     </tr>
   </thead>
   <tbody id="victima">
     <% @registro.victima.each do |victima| %>
+      <% colad = 1 + victima.persona.docidsecundario.count %>
       <tr>
-        <td>
+        <td rowspan="<%= colad %>">
           <%= victima.persona.nombres if victima.persona.nombres %>
         </td>
-        <td>
+        <td rowspan="<%= colad %>">
           <%= victima.persona.apellidos if victima.persona.apellidos %>
         </td>
         <td>
@@ -23,7 +23,7 @@
         <td>
           <%= victima.persona.numerodocumento if victima.persona.numerodocumento %>
         </td>
-        <td>
+        <td rowspan="<%= colad %>">
           <% if @registro.casosjr.contacto_id.to_i != victima.persona.id %>
             <% rol = Sivel2Sjr::Victimasjr.find(victima.id).rolfamilia %>
             <%= rol ? rol.nombre : '' %>
@@ -31,15 +31,17 @@
             -
           <% end %>
         </td>
-        <td>
+        <td rowspan="<%= colad %>">
           <%= victima.persona.ultimoperfilorgsocial_id ? 
             victima.persona.ultimoperfilorgsocial.nombre : '' %>
         </td>
-        <td>
-          <%= victima.persona.ppt ? victima.persona.ppt : '' %>
-        </td>
-
       </tr>
+      <% victima.persona.docidsecundario.each do |ds| %>
+        <tr>
+          <td><%= ds.tdocumento.sigla %></td>
+          <td><%= ds.numero %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
