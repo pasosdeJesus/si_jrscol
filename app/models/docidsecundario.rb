@@ -24,7 +24,10 @@ class Docidsecundario < ActiveRecord::Base
   }, allow_blank: false
   validates :numero, presence: {
     message: "No puede dejar en blanco el número de documento"
-  }, allow_blank: false
+  }, allow_blank: false, uniqueness: {
+    scope: :tdocumento,
+    message: "Tipo y número de documento repetido"
+  }
 
   validate :vformatonumdoc
   def vformatonumdoc
