@@ -1,6 +1,7 @@
 <table class="tablalistadovictima table table-striped  table-bordered table-sm  ">
   <thead class="thead-light">
     <tr>
+      <th>Id</th>
       <th colspan="2">Nombre</th>
       <th colspan="2">Identificación(es)</th>
       <th>Relación con contacto</th>
@@ -11,6 +12,11 @@
     <% @registro.victima.each do |victima| %>
       <% colad = 1 + victima.persona.docidsecundario.count %>
       <tr>
+        <td rowspan="<%= colad %>">
+          <%= link_to victima.persona_id, 
+            msip.persona_path(victima.persona_id),
+            target: "_blank" %>
+        </td>
         <td rowspan="<%= colad %>">
           <%= victima.persona.nombres if victima.persona.nombres %>
         </td>

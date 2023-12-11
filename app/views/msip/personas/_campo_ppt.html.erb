@@ -5,7 +5,10 @@
 <% end %>
 <%= f.input :ppt,
   wrapper_html: {
-    'data-persona-ppt-target': 'ppt',
     style: estiloext
-  } 
+  },
+  input_html: {
+    "data-action": "change->persona-ppt#cambia_ppt",
+    "data-persona-ppt-target": "ppt"
+  }
 %>

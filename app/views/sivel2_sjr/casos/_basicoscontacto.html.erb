@@ -72,7 +72,7 @@
   where(caso_id: @caso.id).
   where(persona_id: @caso.casosjr.contacto.id) do |fvictima| %>
   <%= fvictima.simple_fields_for :persona do |fpersona| %>
-    <div class='campos-persona-con-victima-id'>
+    <div class='campos-persona-con-victima-id' data-controller='persona-ppt'>
       <%= fvictima.input :id, as: :hidden %> 
       <%= render partial: 'msip/personas/persona_campos', 
         locals: {f: fpersona, fvictima: fvictima} %>

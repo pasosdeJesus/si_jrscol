@@ -22,7 +22,7 @@
             <h5>DATOS BÁSICOS DEL INTEGRANTE DEL GRUPO FAMILIAR</h5>
           </a>
           <div class="collapse multi-collapse campos_persona" id="basicosfamiliar-<%=fp.object.id%>">
-            <div class='campos-persona-con-victima-id'>
+            <div class='campos-persona-con-victima-id' data-controller='persona-ppt'>
               <%= f.input :id, as: :hidden %> 
               <%= fvictimasjr.input :victima_id, as: :hidden %> 
               <%= fvictimasjr.input :id, as: :hidden %> 

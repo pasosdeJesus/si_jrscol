@@ -49,6 +49,10 @@ INSERT INTO public.msip_oficina (id, nombre, fechacreacion, fechadeshabilitacion
 UPDATE msip_oficina SET territorial_id=1 WHERE id=1;
 
 
+INSERT INTO msip_tdocumento (id, nombre, sigla, formatoregex, 
+  fechacreacion, fechadeshabilitacion, created_at, 
+  updated_at, observaciones, ayuda) VALUES (16, 'PERMISO POR PROTECCIÓN TEMPORAL', 'PPT', '[0-9]*', '2023-12-10', NULL, NULL, NULL, NULL, 'Solo dígitos. Por ejemplo 323948');
+
 INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (13, 'COMUNIDAD DE ACOGIDA', 'Usado en reporte GIFMM', '2020-09-10', NULL, '2020-09-10 00:00:00', '2020-09-10 00:00:00');
 INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (4, 'FAMILIAR DE DEFENSOR/A O DE LÍDER SOCIAL', NULL, '2009-09-11', '2022-11-22', '2018-07-24 00:00:00', '2018-07-24 00:00:00');
 INSERT INTO public.msip_perfilorgsocial (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (10, 'MIGRANTE CON VOCACIÓN DE PERMANENCIA', 'Corresponde a un perfil de migración y es usado en reporte GIFMM', '2020-09-10', NULL, '2020-09-10 00:00:00', '2020-09-10 00:00:00');

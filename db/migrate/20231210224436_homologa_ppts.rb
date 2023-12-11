@@ -6,7 +6,7 @@ class HomologaPpts < ActiveRecord::Migration[7.0]
     puts "Id,Sigla,Número de documento,PPT,Razón por la que fue descartado"
     Msip::Persona.where.not(ppt: nil).where("TRIM(ppt)<>''").each do |p|
       prob = ""
-      if p.ppt.strip.match(/^[0-9]+$/)
+      if p.ppt && p.ppt.strip.match(/^[0-9]+$/)
         if p.ppt.strip != p.numerodocumento
           if Msip::Persona.where(tdocumento_id: 16).
               where(numerodocumento: p.ppt.strip).count == 0

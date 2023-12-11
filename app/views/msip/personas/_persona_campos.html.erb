@@ -46,7 +46,8 @@ end %>
       label_method: :nombre,
       value_method: :id,
       input_html: {
-        'data-action': 'change->msip--sindocaut#cambia_tdocumento'
+        'data-action': 'change->msip--sindocaut#cambia_tdocumento persona-ppt#cambia_tdocumento',
+        'data-persona-ppt-target': 'tdocumentoId'
       }
     %>
   </div>
@@ -65,6 +66,8 @@ end %>
   end %>
   <% acd['data-msip--cancelar-vacio-es-eliminar-target']='determinador' %>
   <% acd['data-msip--sindocaut-target']='numerodocumento' %>
+  <% acd['data-persona-ppt-target']='numerodocumento' %>
+  <% acd['data-action'] = 'change->persona-ppt#cambia_numerodocumento' %>
   <div class="col-md-6">
     <%= f.input :numerodocumento, placeholder: phd,
       :input_html => acd %>
@@ -174,7 +177,7 @@ end %>
   </div>
 </div>
 
-<div class="row" data-controller='visibuem persona-ppt'>
+<div class="row" data-controller='visibuem'>
   <div class="col-md-4">
     <%= render partial: "msip/personas/campo_ultimoperfilorgsocial_id",
       locals: { f: f }

@@ -1185,7 +1185,7 @@ CREATE TABLE public.msip_persona (
     buscable tsvector,
     ultimoperfilorgsocial_id integer,
     ultimoestatusmigratorio_id integer,
-    ppt character varying(32),
+    ppt_obsoleto character varying(32),
     CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
     CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
     CONSTRAINT persona_sexo_check CHECK (('MHSO'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
@@ -12620,6 +12620,20 @@ CREATE INDEX index_cor1440_gen_datointermedioti_on_mindicadorpf_id ON public.cor
 
 
 --
+-- Name: index_docidsecundario_on_persona_id_and_tdocumento_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_docidsecundario_on_persona_id_and_tdocumento_id ON public.docidsecundario USING btree (persona_id, tdocumento_id);
+
+
+--
+-- Name: index_docidsecundario_on_tdocumento_id_and_numero; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_docidsecundario_on_tdocumento_id_and_numero ON public.docidsecundario USING btree (tdocumento_id, numero);
+
+
+--
 -- Name: index_heb412_gen_doc_on_tdoc_type_and_tdoc_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -17665,6 +17679,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231208162022'),
 ('20231210020428'),
 ('20231210213752'),
-('20231210224436');
+('20231210224436'),
+('20231211082951'),
+('20231211155412');
 
 

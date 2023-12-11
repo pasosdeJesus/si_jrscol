@@ -53,7 +53,6 @@ module Msip
                     message: "Tipo y número de documento repetido" 
       }
 
-    validates :ppt, length: { maximum: 32}
     
     validates :sexo, inclusion: { 
       in: %w(H M O), message: "No puede tener sexo 'S'"
@@ -80,12 +79,63 @@ module Msip
       self.dianac = p[2].to_i
     end
 
+    attr_accessor :ppt
+    validates :ppt, length: { maximum: 32}
+    def ppt
+      if tdocumento_id == 16
+        return self.numerodocumento
+      end
+      if docidsecundario.where(tdocumento_id: 16).count == 1
+        ds = docidsecundario.where(tdocumento_id: 16).take
+        return ds.numero
+      end
+      return nil
+    end
+
+    def ppt=(valor)
+      if valor.nil? || valor.to_s.strip == '' || valor.to_i == 0
+        return
+      end
+      if tdocumento_id.nil? || tdocumento_id == 16
+        self[:tdocumento_id] = 16
+        self[:numerodocumento] = valor
+        if self.docidsecundario.where(tdocumento_id: 16).count >= 1
+          self.docidsecundario.where(tdocumento_id: 16).delete_all
+        end
+      elsif docidsecundario.where(tdocumento_id: 16).count == 1
+        ds = docidsecundario.where(tdocumento_id: 16).take
+        ds.numero = valor
+      else
+        ds = Docidsecundario.new(
+          tdocumento_id: 16,
+          numero: valor,
+          persona_id: self.id
+        )
+        #if ds.valid?
+        #  ds.save
+        #else
+        #  puts "** Problema guardando ppt como secundario"
+        #end
+        docidsecundario << ds
+      end
+    end
+
+    # Modifican
+
+    def apellidos=(valc)
+      self[:apellidos] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  */, '').sub(/  *$/, '')
+    end
+
     def nombres=(valc)
       self[:nombres] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  */, '').sub(/  *$/, '')
     end
 
-    def apellidos=(valc)
-      self[:apellidos] = valc.to_s.upcase.sub(/  */, ' ').sub(/^  */, '').sub(/  *$/, '')
+    def numerodocumento=(valor)
+      if tdocumento_id == 16 && 
+          self.docidsecundario.where(tdocumento_id: 16).count >= 1
+        self.docidsecundario.where(tdocumento_id: 16).delete_all
+      end
+      self[:numerodocumento] = valor
     end
 
     after_create :arreglar_sindocumento

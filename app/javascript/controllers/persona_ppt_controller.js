@@ -10,19 +10,41 @@ export default class extends Controller {
   // data-persona-ppt-target="ppt"
 
   static targets = [ 
-    "ppt"
+    "ppt",
+    "tdocumentoId",
+    "numerodocumento"
   ]
 
   connect() {
     console.log('conectado controlador persona_ppt_controller')
   }
 
+  cambia_numerodocumento(e) {
+    if (this.tdocumentoIdTarget.value == 16) { //PPT 
+      this.pptTarget.value = this.numerodocumentoTarget.value
+    }
+  }
+
+  cambia_ppt(e) {
+    if (this.tdocumentoIdTarget.value == 16) { //PPT 
+      this.numerodocumentoTarget.value = this.pptTarget.value 
+    }
+  }
+
+  cambia_tdocumento(e) {
+    if (e.target.value == 16) { //PPT 
+      if (this.pptTarget.value != '') {
+        this.numerodocumentoTarget.value = this.pptTarget.value 
+      }
+    }
+  }
+
   cambia_ultimoestatusmigratorio(e) {
 
     if (e.target.value == '1') {
-      this.pptTarget.style.display = 'block'
+      this.pptTarget.parentNode.style.display = 'block'
     } else {
-      this.pptTarget.style.display = 'none'
+      this.pptTarget.parentNode.style.display = 'none'
     }
 
   }
