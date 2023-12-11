@@ -204,7 +204,7 @@ PRUEBA_PERSONA = {
   mesnac: 6,
   dianac: 15,
   ultimoperfilorgsocial_id: 13,
-  ultimoestatusmigratorio_id: 2
+  ultimoestatusmigratorio_id: 7
 }
 
 PRUEBA_PERSONA2 = {
