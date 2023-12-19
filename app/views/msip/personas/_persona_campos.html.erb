@@ -4,14 +4,12 @@
 <% # f con formulario persona  %>
 <% # fvictima con formulario victima %>
 
-<% phn = 'N'
-acn = {
-  list: 'fuente-victimas' 
-}
-
-if (!f.object.nombres || f.object.nombres == 'N' || f.object.nombres == '')
-  phn = 'Buscar'
-end %>
+<% phn = 'N' %>
+<% acn = { list: 'fuente-victimas' } %>
+<% if (!f.object.nombres || f.object.nombres == 'N' || 
+    f.object.nombres == '') %>
+  <% phn = 'Buscar' %>
+<% end %>
 <% acn['data-msip--cancelar-vacio-es-eliminar-target']='determinador' %>
 <div class="row">
   <div class="col-md-6">
@@ -111,37 +109,84 @@ end %>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-6">
-    <% @anios = *(1900..Date.today.year) %>
-    <%= f.input :anionac, 
-      collection: @anios %>
-  </div>
-  <div class="col-md-6">
-    <%= fvictima.input :edadactual %>
-  </div>
-</div>
+<div data-controller="sivel2-gen--edad">
 
-<div class="row">
-  <div class="col-md-6">
-    <%= f.input :mesnac, collection: @meses %>
+  <div class="row">
+    <div class="col-md-6">
+      <% @anios = *(1900..Date.today.year) %>
+      <%= f.input :anionac, 
+        collection: @anios,
+        input_html:{
+          data: { 
+            action: "change->sivel2-gen--edad#actualizarEdad",
+            "sivel2-gen--edad-target": "anionac"
+          }
+        }
+      %>
+    </div>
+    <div class="col-md-6">
+      <%= fvictima.input :edadactual,
+        input_html: {
+          data: { 
+            action: "change->sivel2-gen--edad#blanquearFechanac",
+            "sivel2-gen--edad-target": "edadactual"
+          },
+        },
+        as: :integer
+      %>
+    </div>
   </div>
-  <div class="col-sm-6">
-    <%= fvictima.association :rangoedad,
-      collection: Sivel2Gen::Rangoedad.habilitados,
-      include_blank: false,
-      label_method: :nombre, 
-      value_method: :id 
-    %>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-md-6">
-    <%= f.input :dianac, collection: @dias %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= f.input :mesnac, 
+        collection: @meses,
+        input_html:{
+          data: { 
+            action: "change->sivel2-gen--edad#actualizarEdad",
+            "sivel2-gen--edad-target": "mesnac"
+          }
+        }
+      %>
+    </div>
+    <div class="col-sm-6">
+      <%= fvictima.association :rangoedad,
+        collection: Sivel2Gen::Rangoedad.habilitados,
+        include_blank: false,
+        label_method: :nombre, 
+        value_method: :id,
+        input_html: {
+          data: { 
+            action: "change->sivel2-gen--edad#blanquearFechanac",
+            "sivel2-gen--edad-target": "rangoedad"
+          }
+        }
+      %>
+    </div>
   </div>
-  <div class="col-md-6">
-    <%= fvictima.input :edad, as: :integer %>
+
+  <div class="row">
+    <div class="col-md-6">
+      <%= f.input :dianac, 
+        collection: @dias,
+        input_html:{
+          data: { 
+            action: "change->sivel2-gen--edad#actualizarEdad",
+            "sivel2-gen--edad-target": "dianac"
+          }
+        }
+      %>
+    </div>
+    <div class="col-md-6">
+      <%= fvictima.input :edad, as: :integer,
+        input_html: {
+          data: { 
+            action: "change->sivel2-gen--edad#actualizarEdad",
+            "sivel2-gen--edad-target": "edad"
+          }
+        }
+      %>
+    </div>
   </div>
 </div>
 
