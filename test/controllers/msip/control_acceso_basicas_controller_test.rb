@@ -137,10 +137,6 @@ module Msip
       end
 
       test "sin autenticar no debe dejar destruir un registro de #{basica[1]}" do
-        if basica[1] == "ubicacionpre"
-          debugger
-        end
-
         reg = crear_registro(modelo, basica[1])
         ruta1 = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}" + "/" + reg.id.to_s
         assert_raise CanCan::AccessDenied do
