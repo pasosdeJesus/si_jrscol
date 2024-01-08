@@ -46,10 +46,10 @@ module Msip
         end
       else
         case basica
-        when "departamento"
-          registro = modelo.create!(MODELO_PARAMS.merge({pais_id: 170}))
         when "centropoblado"
           registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
+        when "departamento"
+          registro = modelo.create!(MODELO_PARAMS.merge({pais_id: 170}))
         when "municipio"
           registro = modelo.create!(MODELO_PARAMS.merge({departamento_id: 17}))
         when "oficina"
@@ -58,6 +58,8 @@ module Msip
           registro = modelo.create!(MODELO_PARAMS.merge({id: 1000, nombreiso_espanol: "iso"}))
         when "tdocumento"
           registro = modelo.create!(MODELO_PARAMS.merge({sigla: 'TD'}))
+        when "ubicacionpre"
+          registro = modelo.create!(MODELO_PARAMS.merge({pais_id: 170}))
         when "vereda"
           registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
         else
@@ -135,6 +137,10 @@ module Msip
       end
 
       test "sin autenticar no debe dejar destruir un registro de #{basica[1]}" do
+        if basica[1] == "ubicacionpre"
+          debugger
+        end
+
         reg = crear_registro(modelo, basica[1])
         ruta1 = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}" + "/" + reg.id.to_s
         assert_raise CanCan::AccessDenied do
