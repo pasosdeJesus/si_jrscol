@@ -564,3 +564,6 @@ INSERT INTO public.msip_etiqueta (id, nombre, observaciones, fechacreacion, fech
 INSERT INTO public.msip_etiqueta (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (12, 'COMPARTIR CON SJR LATINOAMÉRICA', '', '2001-01-01', NULL, NULL, NULL);
 INSERT INTO public.msip_etiqueta (id, nombre, observaciones, fechacreacion, fechadeshabilitacion, created_at, updated_at) VALUES (13, 'COMPARTIR CON BANCO DE DATOS CINEP COLOMBIA', '', '2001-01-01', NULL, NULL, NULL);
 
+
+
+

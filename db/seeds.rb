@@ -2,7 +2,7 @@ conexion = ActiveRecord::Base.connection();
 
 # De motores
 Msip::carga_semillas_sql(conexion, 'msip', :datos)
-motor = ['sivel2_gen', 'sivel2_sjr', 'cor1440_gen', nil]
+motor = ['sivel2_gen', 'cor1440_gen', nil]
 motor.each do |m|
   puts "#{m} cambios"
   Msip::carga_semillas_sql(conexion, m, :cambios)
