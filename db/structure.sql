@@ -1060,6 +1060,348 @@ CREATE TABLE public.causaref (
 
 
 --
+-- Name: msip_departamento_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.msip_departamento_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: msip_departamento; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_departamento (
+    deplocal_cod integer,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    latitud double precision,
+    longitud double precision,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    pais_id integer NOT NULL,
+    id integer DEFAULT nextval('public.msip_departamento_id_seq'::regclass) NOT NULL,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    codiso character varying(6),
+    catiso character varying(64),
+    codreg integer,
+    ultvigenciaini date,
+    ultvigenciafin date,
+    svgruta character varying,
+    svgcdx integer,
+    svgcdy integer,
+    svgcdancho integer,
+    svgcdalto integer,
+    svgrotx double precision,
+    svgroty double precision,
+    CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: msip_municipio_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.msip_municipio_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: msip_municipio; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_municipio (
+    munlocal_cod integer,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    latitud double precision,
+    longitud double precision,
+    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    departamento_id integer,
+    id integer DEFAULT nextval('public.msip_municipio_id_seq'::regclass) NOT NULL,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    codreg integer,
+    ultvigenciaini date,
+    ultvigenciafin date,
+    tipomun character varying(32),
+    svgruta character varying,
+    svgcdx integer,
+    svgcdy integer,
+    svgcdancho integer,
+    svgcdalto integer,
+    svgrotx double precision,
+    svgroty double precision,
+    CONSTRAINT municipio_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: msip_pais; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_pais (
+    id integer NOT NULL,
+    nombre character varying(200) COLLATE public.es_co_utf_8,
+    nombreiso_espanol character varying(200),
+    latitud double precision,
+    longitud double precision,
+    alfa2 character varying(2),
+    alfa3 character varying(3),
+    codiso integer,
+    div1 character varying(100),
+    div2 character varying(100),
+    div3 character varying(100),
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    nombreiso_ingles character varying(512),
+    nombreiso_frances character varying(512),
+    ultvigenciaini date,
+    ultvigenciafin date,
+    svgruta character varying,
+    svgcdx integer,
+    svgcdy integer,
+    svgcdancho integer,
+    svgcdalto integer,
+    svgrotx double precision,
+    svgroty double precision
+);
+
+
+--
+-- Name: msip_ubicacionpre; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.msip_ubicacionpre (
+    id bigint NOT NULL,
+    nombre character varying(2000) NOT NULL COLLATE public.es_co_utf_8,
+    pais_id integer NOT NULL,
+    departamento_id integer,
+    municipio_id integer,
+    centropoblado_id integer,
+    lugar character varying(500),
+    sitio character varying(500),
+    tsitio_id integer,
+    latitud double precision,
+    longitud double precision,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    nombre_sin_pais character varying(500),
+    vereda_id integer,
+    observaciones character varying(5000),
+    fechacreacion date DEFAULT now() NOT NULL,
+    fechadeshabilitacion date
+);
+
+
+--
+-- Name: sivel2_gen_victima_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_gen_victima_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_gen_victima; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_gen_victima (
+    persona_id integer NOT NULL,
+    caso_id integer NOT NULL,
+    hijos integer,
+    profesion_id integer DEFAULT 22 NOT NULL,
+    rangoedad_id integer DEFAULT 6 NOT NULL,
+    filiacion_id integer DEFAULT 10 NOT NULL,
+    sectorsocial_id integer DEFAULT 15 NOT NULL,
+    organizacion_id integer DEFAULT 16 NOT NULL,
+    vinculoestado_id integer DEFAULT 38 NOT NULL,
+    organizacionarmada integer DEFAULT 35 NOT NULL,
+    anotaciones character varying(1000),
+    etnia_id integer DEFAULT 1 NOT NULL,
+    iglesia_id integer DEFAULT 1,
+    orientacionsexual character(1) DEFAULT 'S'::bpchar NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id integer DEFAULT nextval('public.sivel2_gen_victima_id_seq'::regclass) NOT NULL,
+    CONSTRAINT victima_hijos_check CHECK (((hijos IS NULL) OR ((hijos >= 0) AND (hijos <= 100)))),
+    CONSTRAINT victima_orientacionsexual_check CHECK (((orientacionsexual = 'B'::bpchar) OR (orientacionsexual = 'G'::bpchar) OR (orientacionsexual = 'H'::bpchar) OR (orientacionsexual = 'I'::bpchar) OR (orientacionsexual = 'L'::bpchar) OR (orientacionsexual = 'O'::bpchar) OR (orientacionsexual = 'S'::bpchar) OR (orientacionsexual = 'T'::bpchar)))
+);
+
+
+--
+-- Name: sivel2_sjr_casosjr; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_casosjr (
+    caso_id integer NOT NULL,
+    fecharec date NOT NULL,
+    asesor integer NOT NULL,
+    oficina_id integer DEFAULT 1,
+    direccion character varying(1000),
+    telefono character varying(1000),
+    detcomosupo character varying(5000),
+    contacto_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    comosupo_id integer DEFAULT 1,
+    fechasalida date,
+    salida_id integer,
+    fechallegada date,
+    llegada_id integer,
+    categoriaref integer,
+    observacionesref character varying(5000),
+    concentimientosjr boolean,
+    concentimientobd boolean,
+    proteccion_id integer,
+    estatusmigratorio_id integer DEFAULT 0,
+    memo1612 character varying(5000),
+    estatus_refugio character varying(5000),
+    fechadecrefugio date,
+    docrefugiado character varying(128),
+    fechasalidam date,
+    salidam_id integer,
+    fechallegadam date,
+    llegadam_id integer,
+    motivom character varying(5000),
+    asesorfechaini date,
+    ninosdelconflicto boolean
+);
+
+
+--
+-- Name: sivel2_sjr_desplazamiento_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sivel2_sjr_desplazamiento_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sivel2_sjr_desplazamiento; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_desplazamiento (
+    caso_id integer NOT NULL,
+    fechaexpulsion date NOT NULL,
+    fechallegada date NOT NULL,
+    clasifdesp_id integer DEFAULT 0 NOT NULL,
+    tipodesp_id integer DEFAULT 0 NOT NULL,
+    descripcion character varying(5000),
+    otrosdatos character varying(1000),
+    declaro character(1),
+    hechosdeclarados character varying(5000),
+    fechadeclaracion date,
+    departamentodecl integer,
+    municipiodecl integer,
+    declaroante_id integer DEFAULT 0,
+    inclusion_id integer DEFAULT 1,
+    acreditacion_id integer DEFAULT 0,
+    retornado boolean,
+    reubicado boolean,
+    connacionalretorno boolean,
+    acompestado boolean,
+    connacionaldeportado boolean,
+    oficioantes character varying(5000),
+    modalidadtierra_id integer DEFAULT 0,
+    materialesperdidos character varying(5000),
+    inmaterialesperdidos character varying(5000),
+    protegiorupta boolean,
+    documentostierra character varying(5000),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    id integer DEFAULT nextval('public.sivel2_sjr_desplazamiento_id_seq'::regclass) NOT NULL,
+    expulsionubicacionpre_id integer,
+    llegadaubicacionpre_id integer,
+    establecerse boolean,
+    destinoubicacionpre_id integer,
+    declaracionruv_id integer,
+    CONSTRAINT desplazamiento_declaro_check CHECK (((declaro = 'S'::bpchar) OR (declaro = 'N'::bpchar) OR (declaro = 'R'::bpchar)))
+);
+
+
+--
+-- Name: cmunex; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cmunex AS
+ SELECT ( SELECT msip_pais.nombre
+           FROM public.msip_pais
+          WHERE (msip_pais.id = ubicacion.pais_id)) AS pais,
+    ( SELECT msip_departamento.nombre
+           FROM public.msip_departamento
+          WHERE (msip_departamento.id = ubicacion.departamento_id)) AS departamento,
+    ( SELECT msip_municipio.nombre
+           FROM public.msip_municipio
+          WHERE (msip_municipio.id = ubicacion.municipio_id)) AS municipio,
+        CASE
+            WHEN (casosjr.contacto_id = victima.persona_id) THEN 1
+            ELSE 0
+        END AS contacto,
+        CASE
+            WHEN (casosjr.contacto_id <> victima.persona_id) THEN 1
+            ELSE 0
+        END AS beneficiario,
+    1 AS npersona
+   FROM public.sivel2_sjr_desplazamiento desplazamiento,
+    public.msip_ubicacionpre ubicacion,
+    public.sivel2_gen_victima victima,
+    public.sivel2_sjr_casosjr casosjr
+  WHERE ((casosjr.caso_id = desplazamiento.caso_id) AND (desplazamiento.caso_id = victima.caso_id) AND (desplazamiento.expulsionubicacionpre_id = ubicacion.id));
+
+
+--
+-- Name: cmunrec; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.cmunrec AS
+ SELECT ( SELECT msip_pais.nombre
+           FROM public.msip_pais
+          WHERE (msip_pais.id = ubicacion.pais_id)) AS pais,
+    ( SELECT msip_departamento.nombre
+           FROM public.msip_departamento
+          WHERE (msip_departamento.id = ubicacion.departamento_id)) AS departamento,
+    ( SELECT msip_municipio.nombre
+           FROM public.msip_municipio
+          WHERE (msip_municipio.id = ubicacion.municipio_id)) AS municipio,
+        CASE
+            WHEN (casosjr.contacto_id = victima.persona_id) THEN 1
+            ELSE 0
+        END AS contacto,
+        CASE
+            WHEN (casosjr.contacto_id <> victima.persona_id) THEN 1
+            ELSE 0
+        END AS beneficiario,
+    1 AS npersona
+   FROM public.sivel2_sjr_desplazamiento desplazamiento,
+    public.msip_ubicacionpre ubicacion,
+    public.sivel2_gen_victima victima,
+    public.sivel2_sjr_casosjr casosjr
+  WHERE ((casosjr.caso_id = desplazamiento.caso_id) AND (desplazamiento.caso_id = victima.caso_id) AND (desplazamiento.llegadaubicacionpre_id = ubicacion.id));
+
+
+--
 -- Name: cor1440_gen_actividad; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1215,44 +1557,9 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso2 AS
                      LEFT JOIN public.cor1440_gen_actividad_proyectofinanciero apf ON ((apf.actividad_id = ac.id)))
                      LEFT JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = ac.id)))
                      LEFT JOIN public.cor1440_gen_actividadpf apf2 ON ((apf2.proyectofinanciero_id = apf.proyectofinanciero_id)))
-                  WHERE (true AND (ac.fecha >= '2023-01-01'::date) AND (ac.fecha <= '2023-06-30'::date))) sub) c1
+                  WHERE (true AND (ac.fecha >= '2023-07-01'::date) AND (ac.fecha <= '2023-12-31'::date))) sub) c1
   GROUP BY c1.persona_id
   WITH NO DATA;
-
-
---
--- Name: msip_pais; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_pais (
-    id integer NOT NULL,
-    nombre character varying(200) COLLATE public.es_co_utf_8,
-    nombreiso_espanol character varying(200),
-    latitud double precision,
-    longitud double precision,
-    alfa2 character varying(2),
-    alfa3 character varying(3),
-    codiso integer,
-    div1 character varying(100),
-    div2 character varying(100),
-    div3 character varying(100),
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    nombreiso_ingles character varying(512),
-    nombreiso_frances character varying(512),
-    ultvigenciaini date,
-    ultvigenciafin date,
-    svgruta character varying,
-    svgcdx integer,
-    svgcdy integer,
-    svgcdancho integer,
-    svgcdalto integer,
-    svgrotx double precision,
-    svgroty double precision
-);
 
 
 --
@@ -1320,85 +1627,6 @@ CREATE TABLE public.sivel2_gen_caso (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     ubicacion_id integer
-);
-
-
---
--- Name: sivel2_gen_victima_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_gen_victima_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_gen_victima; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_gen_victima (
-    persona_id integer NOT NULL,
-    caso_id integer NOT NULL,
-    hijos integer,
-    profesion_id integer DEFAULT 22 NOT NULL,
-    rangoedad_id integer DEFAULT 6 NOT NULL,
-    filiacion_id integer DEFAULT 10 NOT NULL,
-    sectorsocial_id integer DEFAULT 15 NOT NULL,
-    organizacion_id integer DEFAULT 16 NOT NULL,
-    vinculoestado_id integer DEFAULT 38 NOT NULL,
-    organizacionarmada integer DEFAULT 35 NOT NULL,
-    anotaciones character varying(1000),
-    etnia_id integer DEFAULT 1 NOT NULL,
-    iglesia_id integer DEFAULT 1,
-    orientacionsexual character(1) DEFAULT 'S'::bpchar NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id integer DEFAULT nextval('public.sivel2_gen_victima_id_seq'::regclass) NOT NULL,
-    CONSTRAINT victima_hijos_check CHECK (((hijos IS NULL) OR ((hijos >= 0) AND (hijos <= 100)))),
-    CONSTRAINT victima_orientacionsexual_check CHECK (((orientacionsexual = 'B'::bpchar) OR (orientacionsexual = 'G'::bpchar) OR (orientacionsexual = 'H'::bpchar) OR (orientacionsexual = 'I'::bpchar) OR (orientacionsexual = 'L'::bpchar) OR (orientacionsexual = 'O'::bpchar) OR (orientacionsexual = 'S'::bpchar) OR (orientacionsexual = 'T'::bpchar)))
-);
-
-
---
--- Name: sivel2_sjr_casosjr; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_casosjr (
-    caso_id integer NOT NULL,
-    fecharec date NOT NULL,
-    asesor integer NOT NULL,
-    oficina_id integer DEFAULT 1,
-    direccion character varying(1000),
-    telefono character varying(1000),
-    detcomosupo character varying(5000),
-    contacto_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    comosupo_id integer DEFAULT 1,
-    fechasalida date,
-    salida_id integer,
-    fechallegada date,
-    llegada_id integer,
-    categoriaref integer,
-    observacionesref character varying(5000),
-    concentimientosjr boolean,
-    concentimientobd boolean,
-    proteccion_id integer,
-    estatusmigratorio_id integer DEFAULT 0,
-    memo1612 character varying(5000),
-    estatus_refugio character varying(5000),
-    fechadecrefugio date,
-    docrefugiado character varying(128),
-    fechasalidam date,
-    salidam_id integer,
-    fechallegadam date,
-    llegadam_id integer,
-    motivom character varying(5000),
-    asesorfechaini date,
-    ninosdelconflicto boolean
 );
 
 
@@ -1583,93 +1811,6 @@ CREATE TABLE public.detallefinanciero_persona (
 
 
 --
--- Name: msip_departamento_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.msip_departamento_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: msip_departamento; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_departamento (
-    deplocal_cod integer,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    latitud double precision,
-    longitud double precision,
-    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    pais_id integer NOT NULL,
-    id integer DEFAULT nextval('public.msip_departamento_id_seq'::regclass) NOT NULL,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    codiso character varying(6),
-    catiso character varying(64),
-    codreg integer,
-    ultvigenciaini date,
-    ultvigenciafin date,
-    svgruta character varying,
-    svgcdx integer,
-    svgcdy integer,
-    svgcdancho integer,
-    svgcdalto integer,
-    svgrotx double precision,
-    svgroty double precision,
-    CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: msip_municipio_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.msip_municipio_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: msip_municipio; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_municipio (
-    munlocal_cod integer,
-    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
-    latitud double precision,
-    longitud double precision,
-    fechacreacion date DEFAULT ('now'::text)::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    departamento_id integer,
-    id integer DEFAULT nextval('public.msip_municipio_id_seq'::regclass) NOT NULL,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8,
-    codreg integer,
-    ultvigenciaini date,
-    ultvigenciafin date,
-    tipomun character varying(32),
-    svgruta character varying,
-    svgcdx integer,
-    svgcdy integer,
-    svgcdancho integer,
-    svgcdalto integer,
-    svgrotx double precision,
-    svgroty double precision,
-    CONSTRAINT municipio_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
 -- Name: msip_oficina_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1699,32 +1840,6 @@ CREATE TABLE public.msip_oficina (
     centropoblado_id integer,
     territorial_id integer,
     CONSTRAINT msip_oficina_fechadeshabilitacion_chequeo CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: msip_ubicacionpre; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_ubicacionpre (
-    id bigint NOT NULL,
-    nombre character varying(2000) NOT NULL COLLATE public.es_co_utf_8,
-    pais_id integer NOT NULL,
-    departamento_id integer,
-    municipio_id integer,
-    centropoblado_id integer,
-    lugar character varying(500),
-    sitio character varying(500),
-    tsitio_id integer,
-    latitud double precision,
-    longitud double precision,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    nombre_sin_pais character varying(500),
-    vereda_id integer,
-    observaciones character varying(5000),
-    fechacreacion date DEFAULT now() NOT NULL,
-    fechadeshabilitacion date
 );
 
 
@@ -2487,7 +2602,7 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                           WHERE (aapf.actividad_id = be.actividad_id)))
                   ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND ((be.actividad_oficina)::text = 'Soacha'::text) AND (be.actividad_fecha >= '2023-07-01'::date) AND (be.actividad_fecha <= '2023-12-31'::date))
+  WHERE (true AND (be.actividad_fecha >= '2023-07-01'::date) AND (be.actividad_fecha <= '2023-12-31'::date))
   WITH NO DATA;
 
 
@@ -3877,61 +3992,6 @@ ALTER SEQUENCE public.docidsecundario_id_seq OWNED BY public.docidsecundario.id;
 
 
 --
--- Name: sivel2_sjr_desplazamiento_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sivel2_sjr_desplazamiento_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sivel2_sjr_desplazamiento; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_desplazamiento (
-    caso_id integer NOT NULL,
-    fechaexpulsion date NOT NULL,
-    fechallegada date NOT NULL,
-    clasifdesp_id integer DEFAULT 0 NOT NULL,
-    tipodesp_id integer DEFAULT 0 NOT NULL,
-    descripcion character varying(5000),
-    otrosdatos character varying(1000),
-    declaro character(1),
-    hechosdeclarados character varying(5000),
-    fechadeclaracion date,
-    departamentodecl integer,
-    municipiodecl integer,
-    declaroante_id integer DEFAULT 0,
-    inclusion_id integer DEFAULT 1,
-    acreditacion_id integer DEFAULT 0,
-    retornado boolean,
-    reubicado boolean,
-    connacionalretorno boolean,
-    acompestado boolean,
-    connacionaldeportado boolean,
-    oficioantes character varying(5000),
-    modalidadtierra_id integer DEFAULT 0,
-    materialesperdidos character varying(5000),
-    inmaterialesperdidos character varying(5000),
-    protegiorupta boolean,
-    documentostierra character varying(5000),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    id integer DEFAULT nextval('public.sivel2_sjr_desplazamiento_id_seq'::regclass) NOT NULL,
-    expulsionubicacionpre_id integer,
-    llegadaubicacionpre_id integer,
-    establecerse boolean,
-    destinoubicacionpre_id integer,
-    declaracionruv_id integer,
-    CONSTRAINT desplazamiento_declaro_check CHECK (((declaro = 'S'::bpchar) OR (declaro = 'N'::bpchar) OR (declaro = 'R'::bpchar)))
-);
-
-
---
 -- Name: sivel2_sjr_migracion; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4636,7 +4696,7 @@ CREATE VIEW public.mcben1 AS
     public.sivel2_gen_victima victima,
     public.msip_persona persona,
     public.sivel2_sjr_victimasjr victimasjr
-  WHERE ((caso.id = victima.caso_id) AND (caso.id = casosjr.caso_id) AND (caso.id = victima.caso_id) AND (persona.id = victima.persona_id) AND (victima.id = victimasjr.victima_id) AND (victimasjr.fechadesagregacion IS NULL) AND (victimasjr.actividadoficio_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 101, 102, 104, 105, 106, 107, 108, 109, 110, 111])) AND ((persona.anionac IS NULL) OR (persona.anionac = ANY (ARRAY[1900, 1901, 1903, 1910, 1911, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 20011]))) AND (victimasjr.cabezafamilia = ANY (ARRAY[false, true])) AND (victimasjr.estadocivil_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6])) AND (victima.etnia_id = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 2001, 2002, 2003])) AND ((((EXTRACT(year FROM casosjr.fecharec))::text || '-'::text) || lpad((EXTRACT(month FROM casosjr.fecharec))::text, 2, '0'::text)) = ANY (ARRAY['2003-10'::text, '2010-08'::text, '2011-02'::text, '2012-06'::text, '2012-07'::text, '2012-08'::text, '2012-09'::text, '2012-10'::text, '2012-11'::text, '2013-01'::text, '2013-02'::text, '2013-03'::text, '2013-04'::text, '2013-05'::text, '2013-06'::text, '2013-07'::text, '2013-08'::text, '2013-09'::text, '2013-10'::text, '2013-11'::text, '2013-12'::text, '2014-01'::text, '2014-02'::text, '2014-03'::text, '2014-04'::text, '2014-05'::text, '2014-06'::text, '2014-07'::text, '2014-08'::text, '2014-09'::text, '2014-10'::text, '2014-11'::text, '2015-01'::text, '2015-02'::text, '2015-03'::text, '2015-04'::text, '2015-05'::text, '2015-06'::text, '2015-07'::text, '2015-08'::text, '2015-09'::text, '2015-10'::text, '2015-11'::text, '2015-12'::text, '2016-01'::text, '2016-02'::text, '2016-03'::text, '2016-04'::text, '2016-05'::text, '2016-06'::text, '2016-07'::text, '2016-08'::text, '2016-09'::text, '2016-10'::text, '2016-11'::text, '2016-12'::text, '2017-01'::text, '2017-02'::text, '2017-03'::text, '2017-04'::text, '2017-05'::text, '2017-06'::text, '2017-07'::text, '2017-08'::text, '2017-09'::text, '2017-10'::text, '2017-11'::text, '2017-12'::text, '2018-01'::text, '2018-02'::text, '2018-03'::text, '2018-04'::text, '2018-05'::text, '2018-06'::text, '2018-07'::text, '2018-08'::text, '2018-09'::text, '2018-10'::text, '2018-11'::text, '2018-12'::text, '2019-01'::text, '2019-02'::text, '2019-03'::text, '2019-04'::text, '2019-05'::text, '2019-06'::text, '2019-07'::text, '2019-08'::text, '2019-09'::text, '2019-10'::text, '2019-11'::text, '2019-12'::text, '2020-01'::text, '2020-02'::text, '2020-03'::text, '2020-04'::text, '2020-05'::text, '2020-06'::text, '2020-07'::text, '2020-08'::text, '2020-09'::text, '2020-10'::text, '2020-11'::text, '2020-12'::text, '2021-01'::text, '2021-02'::text, '2021-03'::text, '2021-04'::text, '2021-05'::text, '2021-06'::text, '2021-07'::text, '2021-08'::text, '2021-09'::text, '2021-10'::text, '2021-11'::text, '2021-12'::text, '2022-01'::text, '2022-02'::text, '2022-03'::text, '2022-04'::text, '2022-05'::text, '2022-06'::text, '2022-07'::text, '2022-08'::text, '2022-09'::text, '2022-10'::text, '2022-11'::text, '2022-12'::text, '2023-01'::text, '2023-02'::text, '2023-03'::text, '2023-04'::text, '2023-05'::text, '2023-06'::text, '2023-07'::text, '2023-08'::text, '2023-09'::text, '2023-10'::text, '2023-11'::text, '2023-12'::text, '25-08'::text, '26-08'::text, '26-12'::text, '32-08'::text, '33-07'::text])) AND (victimasjr.escolaridad_id = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) AND (victima.rangoedad_id = ANY (ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) AND (victimasjr.regimensalud_id = ANY (ARRAY[0, 1, 2, 3])) AND (persona.sexo = ANY (ARRAY['H'::bpchar, 'M'::bpchar, 'O'::bpchar, 'S'::bpchar])) AND (persona.id = victima.persona_id));
+  WHERE ((caso.id = victima.caso_id) AND (caso.id = casosjr.caso_id) AND (caso.id = victima.caso_id) AND (persona.id = victima.persona_id) AND (victima.id = victimasjr.victima_id) AND (victimasjr.fechadesagregacion IS NULL) AND (persona.id = victima.persona_id));
 
 
 --
