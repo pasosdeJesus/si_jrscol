@@ -5,7 +5,7 @@ console.log('Hola Mundo desde Webpacker')
 import Rails from "@rails/ujs";
 if (typeof window.Rails == 'undefined') {
   Rails.start();
-  window.Rails = Rails
+  window.Rails = Rails;
 }
 
 import * as Turbo from '@hotwired/turbo-rails'
