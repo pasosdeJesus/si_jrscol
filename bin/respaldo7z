@@ -5,4 +5,4 @@
 # Usa la clave más reciente de la tabla Msip::Claverespaldo
 
 f=`date +%Y-%m-%d`
-fecharep=$f bin/railsp runner -e production lib/guiones/respaldo7z.rb
+fecharep=$f bin/railsp runner -e production scripts/respaldo7z.rb

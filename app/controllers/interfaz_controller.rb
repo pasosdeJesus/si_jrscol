@@ -1,4 +1,4 @@
-require 'sivel2_gen/application_controller'
+#require 'sivel2_gen/application_controller'
 class InterfazController < ApplicationController
 
   # No requiere autorización 

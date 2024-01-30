@@ -47,6 +47,8 @@ gem "prawnto_2", ">= 0.3.1", :require => "prawnto"
 
 gem "prawn-table"
 
+gem "rack", "~> 2"
+
 gem "rails", "~> 7.1"
 
 gem "rails-i18n"
