@@ -5,14 +5,16 @@ module Sivel2Sjr
 
     PRUEBA_UBICACIONPRE1= {
       pais_id: 170,
-      nombre: 'Colombia',
+      nombre: 'lugar1 / Colombia',
+      lugar: "lugar1",
       created_at: "2021-04-14",
       updated_at: "2021-04-14"
     }
 
     PRUEBA_UBICACIONPRE2= {
       pais_id: 862,
-      nombre: 'Venezuela',
+      nombre: 'lugar 2 / Venezuela',
+      lugar: "lugar2",
       created_at: "2021-04-14",
       updated_at: "2021-04-14"
     }

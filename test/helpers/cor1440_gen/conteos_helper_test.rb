@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "cor1440_gen/conteos_helper"
+#require "cor1440_gen/conteos_helper"
 
 # Lo copiamos y moficamos de cor1440_gen porque en JRS-Col
 # los rangos de edad en actividad son diferentes a los de Cor1440Gen
