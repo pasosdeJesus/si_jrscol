@@ -1539,9 +1539,9 @@ CREATE TABLE public.msip_persona (
 --
 
 CREATE MATERIALIZED VIEW public.consbenefactcaso2 AS
- SELECT c1.persona_id,
-    array_agg(DISTINCT c1.actividad_id) AS actividad_ids,
-    array_agg(DISTINCT c1.actividad_oficina_id) AS actividad_oficina_ids
+ SELECT persona_id,
+    array_agg(DISTINCT actividad_id) AS actividad_ids,
+    array_agg(DISTINCT actividad_oficina_id) AS actividad_oficina_ids
    FROM ( SELECT DISTINCT sub.persona_id,
             sub.actividad_id,
             sub.actividad_oficina_id
@@ -1558,7 +1558,7 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso2 AS
                      LEFT JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = ac.id)))
                      LEFT JOIN public.cor1440_gen_actividadpf apf2 ON ((apf2.proyectofinanciero_id = apf.proyectofinanciero_id)))
                   WHERE (true AND (ac.fecha >= '2023-07-01'::date) AND (ac.fecha <= '2023-12-31'::date))) sub) c1
-  GROUP BY c1.persona_id
+  GROUP BY persona_id
   WITH NO DATA;
 
 
@@ -2465,9 +2465,9 @@ ALTER SEQUENCE public.cor1440_gen_asistencia_id_seq OWNED BY public.cor1440_gen_
 --
 
 CREATE VIEW public.cor1440_gen_benefext AS
- SELECT DISTINCT sub.actividad_id,
-    sub.persona_id,
-    sub.persona_actividad_perfil
+ SELECT DISTINCT actividad_id,
+    persona_id,
+    persona_actividad_perfil
    FROM ( SELECT ac.id AS actividad_id,
             asis.persona_id,
             COALESCE(porg.nombre) AS persona_actividad_perfil
@@ -2568,23 +2568,23 @@ CREATE VIEW public.cor1440_gen_benefext2 AS
 --
 
 CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
- SELECT be.actividad_fecha,
-    be.actividad_oficina,
-    be.actividad_responsable,
-    be.persona_tipodocumento,
-    be.persona_numerodocumento,
-    be.persona_nombres,
-    be.persona_apellidos,
-    be.persona_sexo,
-    be.persona_dianac,
-    be.persona_mesnac,
-    be.persona_anionac,
-    be.persona_actividad_edad,
-    be.persona_actividad_perfil,
-    be.actividad_municipio,
-    be.actividad_id,
-    be.persona_caso_ids,
-    be.persona_id,
+ SELECT actividad_fecha,
+    actividad_oficina,
+    actividad_responsable,
+    persona_tipodocumento,
+    persona_numerodocumento,
+    persona_nombres,
+    persona_apellidos,
+    persona_sexo,
+    persona_dianac,
+    persona_mesnac,
+    persona_anionac,
+    persona_actividad_edad,
+    persona_actividad_perfil,
+    actividad_municipio,
+    actividad_id,
+    persona_caso_ids,
+    persona_id,
     array_to_string(ARRAY( SELECT sub.nombre
            FROM ( SELECT DISTINCT pf.id,
                     pf.nombre
@@ -2602,7 +2602,7 @@ CREATE MATERIALIZED VIEW public.cor1440_gen_benefactividadpf AS
                           WHERE (aapf.actividad_id = be.actividad_id)))
                   ORDER BY apf.proyectofinanciero_id DESC) sub), '; '::text) AS actividad_actividadesml
    FROM public.cor1440_gen_benefext2 be
-  WHERE (true AND (be.actividad_fecha >= '2023-07-01'::date) AND (be.actividad_fecha <= '2023-12-31'::date))
+  WHERE (true AND (actividad_fecha >= '2023-07-01'::date) AND (actividad_fecha <= '2023-12-31'::date))
   WITH NO DATA;
 
 
@@ -3580,10 +3580,10 @@ ALTER SEQUENCE public.cor1440_gen_valorcampotind_id_seq OWNED BY public.cor1440_
 --
 
 CREATE VIEW public.cor1440_gen_vista_asist_rangoe_sexo AS
- SELECT sub2.actividad_id,
-    sub2.rangoedadac_id,
-    sub2.sexo,
-    count(sub2.persona_id) AS cuenta
+ SELECT actividad_id,
+    rangoedadac_id,
+    sexo,
+    count(persona_id) AS cuenta
    FROM ( SELECT sub.actividad_id,
             sub.persona_id,
             sub.sexo,
@@ -3596,8 +3596,8 @@ CREATE VIEW public.cor1440_gen_vista_asist_rangoe_sexo AS
                      JOIN public.msip_persona p ON ((p.id = asi.persona_id)))
                      JOIN public.cor1440_gen_actividad a ON ((a.id = asi.actividad_id)))) sub
              JOIN public.cor1440_gen_rangoedadac re ON ((((re.id = 7) AND (sub.edad IS NULL)) OR ((re.id <> 7) AND (re.limiteinferior <= sub.edad) AND ((re.limitesuperior IS NULL) OR (sub.edad <= re.limitesuperior))))))) sub2
-  GROUP BY sub2.actividad_id, sub2.rangoedadac_id, sub2.sexo
-  ORDER BY sub2.actividad_id, sub2.rangoedadac_id, sub2.sexo;
+  GROUP BY actividad_id, rangoedadac_id, sexo
+  ORDER BY actividad_id, rangoedadac_id, sexo;
 
 
 --
@@ -3605,16 +3605,16 @@ CREATE VIEW public.cor1440_gen_vista_asist_rangoe_sexo AS
 --
 
 CREATE VIEW public.cor1440_gen_vista_resumentpob AS
- SELECT sub.actividad_id,
-    sub.tpob
+ SELECT actividad_id,
+    tpob
    FROM ( SELECT a.id AS actividad_id,
             array_to_string(ARRAY( SELECT (((((((((cor1440_gen_actividad_rangoedadac.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.fr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.mr)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.s)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_actividad_rangoedadac.i)::text, '0'::text))
                    FROM public.cor1440_gen_actividad_rangoedadac
                   WHERE (cor1440_gen_actividad_rangoedadac.actividad_id = a.id)
                   ORDER BY cor1440_gen_actividad_rangoedadac.rangoedadac_id), ' | '::text) AS tpob
            FROM public.cor1440_gen_actividad a) sub
-  WHERE (sub.tpob <> ''::text)
-  ORDER BY sub.actividad_id;
+  WHERE (tpob <> ''::text)
+  ORDER BY actividad_id;
 
 
 --
@@ -3622,12 +3622,12 @@ CREATE VIEW public.cor1440_gen_vista_resumentpob AS
 --
 
 CREATE VIEW public.cor1440_gen_vista_tpoblacion_de_asist AS
- SELECT sub.actividad_id,
-    sub.rangoedadac_id,
-    COALESCE(sub.fn, (0)::bigint) AS f,
-    COALESCE(sub.mn, (0)::bigint) AS m,
-    COALESCE(sub.sn, (0)::bigint) AS s,
-    COALESCE(sub.inum, (0)::bigint) AS i
+ SELECT actividad_id,
+    rangoedadac_id,
+    COALESCE(fn, (0)::bigint) AS f,
+    COALESCE(mn, (0)::bigint) AS m,
+    COALESCE(sn, (0)::bigint) AS s,
+    COALESCE(inum, (0)::bigint) AS i
    FROM ( SELECT DISTINCT v.actividad_id,
             v.rangoedadac_id,
             ( SELECT i.cuenta
@@ -3654,16 +3654,16 @@ CREATE VIEW public.cor1440_gen_vista_tpoblacion_de_asist AS
 --
 
 CREATE MATERIALIZED VIEW public.cor1440_gen_vista_resumentpob2 AS
- SELECT sub.actividad_id,
-    sub.tpob
+ SELECT actividad_id,
+    tpob
    FROM ( SELECT a.id AS actividad_id,
             array_to_string(ARRAY( SELECT (((((((((cor1440_gen_vista_tpoblacion_de_asist.rangoedadac_id)::text || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.f)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.m)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.s)::text, '0'::text)) || ' '::text) || COALESCE((cor1440_gen_vista_tpoblacion_de_asist.i)::text, '0'::text))
                    FROM public.cor1440_gen_vista_tpoblacion_de_asist
                   WHERE (cor1440_gen_vista_tpoblacion_de_asist.actividad_id = a.id)
                   ORDER BY cor1440_gen_vista_tpoblacion_de_asist.rangoedadac_id), ' | '::text) AS tpob
            FROM public.cor1440_gen_actividad a) sub
-  WHERE (sub.tpob <> ''::text)
-  ORDER BY sub.actividad_id
+  WHERE (tpob <> ''::text)
+  ORDER BY actividad_id
   WITH NO DATA;
 
 
@@ -3685,10 +3685,10 @@ CREATE TABLE public.mr519_gen_valorcampo (
 --
 
 CREATE MATERIALIZED VIEW public.cres1 AS
- SELECT sub.actividad_id,
-    sub.fecha,
-    sub.oficina_id,
-    sub.ayudaestado_id
+ SELECT actividad_id,
+    fecha,
+    oficina_id,
+    ayudaestado_id
    FROM ( SELECT DISTINCT a.id AS actividad_id,
             a.fecha,
             a.oficina_id,
@@ -3697,7 +3697,7 @@ CREATE MATERIALIZED VIEW public.cres1 AS
              JOIN public.cor1440_gen_actividad_respuestafor ar ON ((ar.respuestafor_id = v.respuestafor_id)))
              JOIN public.cor1440_gen_actividad a ON ((a.id = ar.actividad_id)))
           WHERE (v.campo_id = 103)) sub
-  WHERE ((sub.ayudaestado_id IS NOT NULL) AND (sub.ayudaestado_id <> ''::text))
+  WHERE ((ayudaestado_id IS NOT NULL) AND (ayudaestado_id <> ''::text))
   WITH NO DATA;
 
 
@@ -4046,26 +4046,26 @@ CREATE TABLE public.sivel2_sjr_migracion (
 --
 
 CREATE VIEW public.emblematica1 AS
- SELECT sub.caso_id,
-    sub.fecha,
-    sub.despomigracion,
-    sub.despomigracion_id,
-    sub.expulsionubicacionpre_id,
-    sub.expulsionpais_id,
-    sub.expulsionpais,
-    sub.expulsiondepartamento_id,
-    sub.expulsiondepartamento,
-    sub.expulsionmunicipio_id,
-    sub.expulsionmunicipio,
-    sub.expulsionubicacionpre,
-    sub.llegadaubicacionpre_id,
-    sub.llegadapais_id,
-    sub.llegadapais,
-    sub.llegadadepartamento_id,
-    sub.llegadadepartamento,
-    sub.llegadamunicipio_id,
-    sub.llegadamunicipio,
-    sub.llegadaubicacionpre
+ SELECT caso_id,
+    fecha,
+    despomigracion,
+    despomigracion_id,
+    expulsionubicacionpre_id,
+    expulsionpais_id,
+    expulsionpais,
+    expulsiondepartamento_id,
+    expulsiondepartamento,
+    expulsionmunicipio_id,
+    expulsionmunicipio,
+    expulsionubicacionpre,
+    llegadaubicacionpre_id,
+    llegadapais_id,
+    llegadapais,
+    llegadadepartamento_id,
+    llegadadepartamento,
+    llegadamunicipio_id,
+    llegadamunicipio,
+    llegadaubicacionpre
    FROM (( SELECT caso.id AS caso_id,
             caso.fecha,
             'desplazamiento'::text AS despomigracion,
@@ -4129,7 +4129,7 @@ CREATE VIEW public.emblematica1 AS
              LEFT JOIN public.msip_departamento departamentol ON ((ubicacionprel.departamento_id = departamentol.id)))
              LEFT JOIN public.msip_municipio municipiol ON ((ubicacionprel.municipio_id = municipiol.id)))
           ORDER BY migracion.id)) sub
-  ORDER BY sub.caso_id;
+  ORDER BY caso_id;
 
 
 --
@@ -4137,8 +4137,8 @@ CREATE VIEW public.emblematica1 AS
 --
 
 CREATE VIEW public.emblematica AS
- SELECT caso.id AS caso_id,
-    caso.fecha,
+ SELECT id AS caso_id,
+    fecha,
     ( SELECT emblematica1.despomigracion
            FROM public.emblematica1
           WHERE (emblematica1.caso_id = caso.id)
@@ -5662,11 +5662,11 @@ UNION
 --
 
 CREATE MATERIALIZED VIEW public.msip_mundep AS
- SELECT msip_mundep_sinorden.idlocal,
-    msip_mundep_sinorden.nombre,
-    to_tsvector('spanish'::regconfig, public.unaccent(msip_mundep_sinorden.nombre)) AS mundep
+ SELECT idlocal,
+    nombre,
+    to_tsvector('spanish'::regconfig, public.unaccent(nombre)) AS mundep
    FROM public.msip_mundep_sinorden
-  ORDER BY (msip_mundep_sinorden.nombre COLLATE public.es_co_utf_8)
+  ORDER BY (nombre COLLATE public.es_co_utf_8)
   WITH NO DATA;
 
 
@@ -6389,15 +6389,15 @@ ALTER SEQUENCE public.mungifmm_id_seq OWNED BY public.mungifmm.id;
 --
 
 CREATE MATERIALIZED VIEW public.napellidos AS
- SELECT (r.p).nombre AS apellido,
-    count((r.p).caso) AS frec
+ SELECT (p).nombre AS apellido,
+    count((p).caso) AS frec
    FROM ( SELECT public.divarr_concod(string_to_array(btrim((msip_persona.apellidos)::text), ' '::text), sivel2_gen_victima.caso_id) AS p
            FROM public.msip_persona,
             public.sivel2_gen_victima
           WHERE (sivel2_gen_victima.persona_id = msip_persona.id)
           ORDER BY (public.divarr_concod(string_to_array(btrim((msip_persona.apellidos)::text), ' '::text), sivel2_gen_victima.caso_id))) r
-  GROUP BY (r.p).nombre
-  ORDER BY (count((r.p).caso))
+  GROUP BY (p).nombre
+  ORDER BY (count((p).caso))
   WITH NO DATA;
 
 
@@ -6406,15 +6406,15 @@ CREATE MATERIALIZED VIEW public.napellidos AS
 --
 
 CREATE MATERIALIZED VIEW public.nhombres AS
- SELECT (r.p).nombre AS nombre,
-    count((r.p).caso) AS frec
+ SELECT (p).nombre AS nombre,
+    count((p).caso) AS frec
    FROM ( SELECT public.divarr_concod(string_to_array((msip_persona.nombres)::text, ' '::text), sivel2_gen_victima.caso_id) AS p
            FROM public.msip_persona,
             public.sivel2_gen_victima
           WHERE ((sivel2_gen_victima.persona_id = msip_persona.id) AND (msip_persona.sexo = 'M'::bpchar))
           ORDER BY (public.divarr_concod(string_to_array((msip_persona.nombres)::text, ' '::text), sivel2_gen_victima.caso_id))) r
-  GROUP BY (r.p).nombre
-  ORDER BY (count((r.p).caso))
+  GROUP BY (p).nombre
+  ORDER BY (count((p).caso))
   WITH NO DATA;
 
 
@@ -6423,15 +6423,15 @@ CREATE MATERIALIZED VIEW public.nhombres AS
 --
 
 CREATE MATERIALIZED VIEW public.nmujeres AS
- SELECT (r.p).nombre AS nombre,
-    count((r.p).caso) AS frec
+ SELECT (p).nombre AS nombre,
+    count((p).caso) AS frec
    FROM ( SELECT public.divarr_concod(string_to_array(btrim((msip_persona.nombres)::text), ' '::text), sivel2_gen_victima.caso_id) AS p
            FROM public.msip_persona,
             public.sivel2_gen_victima
           WHERE ((sivel2_gen_victima.persona_id = msip_persona.id) AND (msip_persona.sexo = 'F'::bpchar))
           ORDER BY (public.divarr_concod(string_to_array(btrim((msip_persona.nombres)::text), ' '::text), sivel2_gen_victima.caso_id))) r
-  GROUP BY (r.p).nombre
-  ORDER BY (count((r.p).caso))
+  GROUP BY (p).nombre
+  ORDER BY (count((p).caso))
   WITH NO DATA;
 
 
@@ -7198,17 +7198,17 @@ CREATE VIEW public.sivel2_gen_conscaso1 AS
 --
 
 CREATE MATERIALIZED VIEW public.sivel2_gen_conscaso AS
- SELECT sivel2_gen_conscaso1.caso_id,
-    sivel2_gen_conscaso1.contacto,
-    sivel2_gen_conscaso1.fecharec,
-    sivel2_gen_conscaso1.oficina,
-    sivel2_gen_conscaso1.nusuario,
-    sivel2_gen_conscaso1.fecha,
-    sivel2_gen_conscaso1.expulsion,
-    sivel2_gen_conscaso1.llegada,
-    sivel2_gen_conscaso1.ultimaatencion_fecha,
-    sivel2_gen_conscaso1.memo,
-    to_tsvector('spanish'::regconfig, public.unaccent(((((((((((((((((((sivel2_gen_conscaso1.caso_id || ' '::text) || sivel2_gen_conscaso1.contacto) || ' '::text) || replace((sivel2_gen_conscaso1.fecharec)::text, '-'::text, ' '::text)) || ' '::text) || (sivel2_gen_conscaso1.oficina)::text) || ' '::text) || (sivel2_gen_conscaso1.nusuario)::text) || ' '::text) || replace((sivel2_gen_conscaso1.fecha)::text, '-'::text, ' '::text)) || ' '::text) || COALESCE(sivel2_gen_conscaso1.expulsion, ''::text)) || ' '::text) || COALESCE(sivel2_gen_conscaso1.llegada, ''::text)) || ' '::text) || replace(COALESCE((sivel2_gen_conscaso1.ultimaatencion_fecha)::text, ''::text), '-'::text, ' '::text)) || ' '::text) || sivel2_gen_conscaso1.memo))) AS q
+ SELECT caso_id,
+    contacto,
+    fecharec,
+    oficina,
+    nusuario,
+    fecha,
+    expulsion,
+    llegada,
+    ultimaatencion_fecha,
+    memo,
+    to_tsvector('spanish'::regconfig, public.unaccent(((((((((((((((((((caso_id || ' '::text) || contacto) || ' '::text) || replace((fecharec)::text, '-'::text, ' '::text)) || ' '::text) || (oficina)::text) || ' '::text) || (nusuario)::text) || ' '::text) || replace((fecha)::text, '-'::text, ' '::text)) || ' '::text) || COALESCE(expulsion, ''::text)) || ' '::text) || COALESCE(llegada, ''::text)) || ' '::text) || replace(COALESCE((ultimaatencion_fecha)::text, ''::text), '-'::text, ' '::text)) || ' '::text) || memo))) AS q
    FROM public.sivel2_gen_conscaso1
   WITH NO DATA;
 
