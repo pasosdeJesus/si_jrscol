@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 3519bebab3cc88355c52f566c0d0b5eb624e0514
+  revision: 50a2836788e5093e71070e89600631e455ffac32
   branch: main
   specs:
     msip (2.2.0.beta4)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: c65c500abc78419d2fdd8acc2c5294b5a62ec425
+  revision: ea666e4e0d49241a222f3f87faa2fd958ca5ca73
   branch: main
   specs:
     sivel2_gen (2.2.0.beta4)
@@ -232,9 +232,9 @@ GEM
     devise-i18n (1.12.0)
       devise (>= 4.9.0)
     docile (1.4.0)
-    dotenv (3.0.0)
-    dotenv-rails (3.0.0)
-      dotenv (= 3.0.0)
+    dotenv (3.0.2)
+    dotenv-rails (3.0.2)
+      dotenv (= 3.0.2)
       railties (>= 6.1)
     drb (2.2.0)
       ruby2_keywords
@@ -312,7 +312,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-    pg (1.5.4)
+    pg (1.5.5)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
