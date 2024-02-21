@@ -111,8 +111,8 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
         AS contacto_rangoedad_ultimaatencion,
 
         (SELECT COUNT(*) FROM 
-          public.sivel2_gen_victima AS victima JOIN public.msip_persona ON
-            msip_persona.id=victima.persona_id
+          public.sivel2_gen_victima AS victima 
+          JOIN public.msip_persona ON msip_persona.id=victima.persona_id
           WHERE victima.caso_id=caso.id AND msip_persona.sexo='#{convsexo[:sexo_masculino]}'
           AND rangoedad_id='7') AS beneficiarios_0_5_fecha_salida,
         (SELECT COUNT(*) FROM 
@@ -296,8 +296,8 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
             tdocumento.id=contacto.tdocumento_id
         JOIN public.sivel2_gen_victima AS vcontacto ON 
             vcontacto.persona_id = contacto.id AND vcontacto.caso_id = caso.id
-        LEFT JOIN public.sivel2_gen_etnia AS etnia ON
-            vcontacto.etnia_id=etnia.id
+        LEFT JOIN public.msip_etnia AS etnia ON
+            contacto.etnia_id=etnia.id
         LEFT JOIN public.sivel2_sjr_ultimaatencion AS ultimaatencion ON
             ultimaatencion.caso_id = caso.id
     "
@@ -579,10 +579,10 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     ## 5 Victimas
     cpersonasimple = [
       'nombres', 'apellidos', 'sexo', 'anionac', 'mesnac', 'dianac',
-      'numerodocumento']
+      'numerodocumento', 'etnia']
     cpersonadoble = ['tdocumento', 'pais', 'departamento', 'municipio', 'centropoblado']
     cvictimasimple = [ 'orientacionsexual']
-    cvictimadoble = [ 'etnia', 'profesion', 'organizacion', 
+    cvictimadoble = [ 'profesion', 'organizacion', 
                       'filiacion', 'vinculoestado']
     cvictimasjrbool = [
       'cabezafamilia', 'tienesisben', 'asisteescuela',
@@ -1013,7 +1013,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
       Sivel2Gen::AnexoVictima.where(
         victima_id: victimac.id, tipoanexo_id: 11).count
     when 'contacto_etnia'
-      victimac.etnia ? victimac.etnia.nombre : ''
+      contacto.etnia ? contacto.etnia.nombre : ''
     when 'contacto_orientacionsexual'
       if victimac.orientacionsexual
         orientaciones.each do |ori|

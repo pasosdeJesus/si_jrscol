@@ -43,6 +43,7 @@ module Msip
         :numerodocumento,
         :fechanac,
         :sexo,
+        :etnia,
         :municipio,
         :actividad_ids,
         :actividadcasobeneficiario_ids,
@@ -661,6 +662,7 @@ module Msip
 
     def lista_params
       atributos_form + [
+        :etnia_id,
         :pais_id,
         :departamento_id,
         :municipio_id,

@@ -55,10 +55,10 @@ module GifmmHelper
       v = c.victima.where(persona_id: p.id).take
       (v.victimasjr.fechadesagregacion.nil? || 
        v.victimasjr.fechadesagregacion > fecha) &&
-      v.etnia
+      v.persona.etnia
     }
     if ce
-      r = ce.victima.where(persona_id: p.id).take.etnia.nombre
+      r = ce.victima.where(persona_id: p.id).take.persona.etnia.nombre
     end
     r
   end
