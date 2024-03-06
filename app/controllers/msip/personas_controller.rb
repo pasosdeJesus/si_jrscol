@@ -8,6 +8,10 @@ module Msip
 
     include Jos19::Concerns::Controllers::PersonasController
 
+    def registrar_en_bitacora
+      true
+    end
+
     def atributos_comunes
       a = atributos_show_msip - [
         :mesnac, 
