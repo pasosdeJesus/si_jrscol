@@ -5,6 +5,11 @@ require 'msip/concerns/controllers/usuarios_controller'
 class UsuariosController < Msip::ModelosController
   include Msip::Concerns::Controllers::UsuariosController
 
+
+  def registrar_en_bitacora
+    true
+  end
+
   def atributos_index
     [ :id,
       :nusuario,
@@ -18,6 +23,14 @@ class UsuariosController < Msip::ModelosController
       :created_at_localizada ]
   end
 
+  def atributos_show
+    ad = []
+    if current_usuario.rol == Ability::ROLADMIN
+      ad = [ :bitacora_ingresos_salidas ]
+    end
+    atributos_index + ad
+  end
+  
   def atributos_form
     r = [ :nusuario,
           :nombre,
