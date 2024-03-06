@@ -1,0 +1,30 @@
+<div class="accordion" id="acordeon-bitacoraingresos">
+  <%= item_acordeon_bs(
+    'acordeon-bitacoraingresos', 'bitacoraingresos', 
+    "Expandir / colapsar bitácora de ingresos/salidas"\
+    "<!-- (#{@registro.class}) -->".html_safe,
+    false, {"clase_accordion-body" => 'table-responsive',
+            "estilo_accordion-body" => 'overflow-x:scroll'
+    }) do %>
+    <table class="table .table-striped">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Ip</th>
+          <th>Operación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% Msip::Bitacora.where(modelo: "").where(
+          operacion: ["ingreso", "salida"]).where(
+            usuario_id: @registro.id).order("fecha DESC").each do |br| %>
+            <tr>
+              <td> <%= br.fecha %> </td>
+              <td> <%= br.ip %> </td>
+              <td> <%= br.operacion %> </td>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
