@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: d73942a5e1586be251efff6c8cd02b9ec7b85821
+  revision: ab7d1e2791b4815441704bf17485162a82c5a5db
   branch: main
   specs:
     cor1440_gen (2.2.0.beta4)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: efb0a43506f8cf5bc327ace436feaf0c32260d98
+  revision: 54915abcbb7255f4399e44dcb76b05337dc0a212
   branch: main
   specs:
     heb412_gen (2.2.0.beta4)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 257869ab3ba9ff0ec262a63309abac3e333f6769
+  revision: db9aa814bfffe7a1a4636c65bda68eda7a3e3ecd
   branch: main
   specs:
     mr519_gen (2.2.0.beta4)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: de7c6e64be94c8fb2f18952cdb7565b5b9c15fb4
+  revision: 7a2d3cd4ebed30061cdd26559561778fe2f211b3
   branch: main
   specs:
     msip (2.2.0.beta5)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 70b746f3b10f0077adc73c1a09c22d76ec3a3ee8
+  revision: 0ddea6019616b4586cb2bb45746e2ca8ace87970
   branch: main
   specs:
     sivel2_gen (2.2.0.beta4)
@@ -196,7 +196,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    caxlsx (4.0.0)
+    caxlsx (4.1.0)
       htmlentities (~> 4.3, >= 4.3.4)
       marcel (~> 1.0)
       nokogiri (~> 1.10, >= 1.10.4)
@@ -312,7 +312,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.9.0)
-    pg (1.5.5)
+    pg (1.5.6)
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
@@ -327,7 +327,7 @@ GEM
     puma (6.4.2)
       nio4r (~> 2.0)
     racc (1.7.3)
-    rack (2.2.8)
+    rack (2.2.8.1)
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.1.0)
