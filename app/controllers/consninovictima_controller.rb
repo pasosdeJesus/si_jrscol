@@ -107,7 +107,7 @@ class ConsninovictimaController < Heb412Gen::ModelosController
       registros = index_reordenar(registros)
     end
     case plant.id
-    when 55
+    when 56
       registros = Consninovictima::vista_reporte_excel(
         plant, registros, narch, parsimp, extension, params)
 

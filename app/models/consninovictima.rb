@@ -129,6 +129,7 @@ class Consninovictima < ActiveRecord::Base
         persona.sexo AS persona_sexo,
         actonino.fecha,
         ubicacionpre.municipio_id,
+        municipio.nombre || ' / ' || departamento.nombre AS municipio_departamento,
         actonino.categoria_id,
         actonino.presponsable_id
         FROM actonino
@@ -143,6 +144,8 @@ class Consninovictima < ActiveRecord::Base
           ON actonino.ubicacionpre_id=ubicacionpre.id
         JOIN msip_municipio AS municipio
           ON ubicacionpre.municipio_id=municipio.id
+        JOIN msip_departamento AS departamento
+          ON municipio.departamento_id=departamento.id
         ORDER BY persona_nombres, persona_apellidos
     SQL
 
@@ -153,27 +156,10 @@ class Consninovictima < ActiveRecord::Base
 
   def presenta(atr)
     case atr.to_s
-    when 'caso_ids'
-      self.casod_ids.join(", ")
-    when 'persona_id'
+    when 'personas_ids'
       self.persona.id
     else
-      m =/^(.*)_enlace$/.match(atr.to_s)
-      if m && !self[m[1]].nil? && !self[m[1]+"_ids"].nil?
-        if self[m[1]].to_i == 0
-          r = "0"
-        else
-          bids = self[m[1]+"_ids"].join(',')
-          r="<a href='#{rails.application.routes.url_helpers.msip_path +
-          'actividades?filtro[busid]=' + bids}'"\
-          " target='_blank'>"\
-          "#{self[m[1]]}"\
-          "</a>".html_safe
-        end
-        return r.html_safe
-      else
-        presenta_gen(atr)
-      end
+      presenta_gen(atr)
     end
   end
 
@@ -197,56 +183,50 @@ class Consninovictima < ActiveRecord::Base
     #, fg_color: 'FF0000', bg_color: '00FF00'
 
     lt.add_worksheet do |hoja|
-      hoja.add_row ['Reporte de beneficiarios con casos y actividades'], 
+      hoja.add_row ['VIOLENCIAS EN CONTRA DE NNA EN EL MARCO DEL CONFLICTO ARMADO'], 
         height: 30, style: estilo_titulo
       hoja.add_row []
-      hoja.add_row [
-        'Fecha inicial de act.', params['filtro']['busactividad_fechaini'], 
-        'Fecha final de act.', params['filtro']['busactividad_fechafin'] ], style: estilo_base
-      idof = (!params['filtro'] || 
-              !params['filtro']['busactividad_oficina_id'] || 
-              params['filtro']['busactividad_oficina_id'] == ''
-             ) ? nil : params['filtro']['busactividad_oficina_id']
-      idpf = (!params['filtro'] || 
-              !params['filtro']['busproyectofinanciero'] || 
-              params['filtro']['busproyectofinanciero'] == ''
-             ) ? nil : params['filtro']['busproyectofinanciero']
-      idaml = (!params['filtro'] || 
-               !params['filtro']['busactividadpf'] || 
-               params['filtro']['busactividadpf'] == ''
-              ) ? nil : params['filtro']['busactividadpf']
-      nof = idof.nil? ? '' :
-        Msip::Oficina.where(id: idof).
-        pluck(:nombre).join('; ')
-      npf = idpf.nil? ? '' :
-        Cor1440Gen::Proyectofinanciero.where(id: idpf).
-        pluck(:nombre).join('; ')
-      naml = idaml.nil? ? '' :
-        Cor1440Gen::Actividadpf.where(id: idaml).
-        pluck(:titulo).join('; ')
+#      hoja.add_row [
+#        'Fecha inicial de act.',
+#        params['filtro']['busactividad_fechaini'],
+#        'Fecha final de act.',
+#        params['filtro']['busactividad_fechafin'] ], style: estilo_base
+#      idof = (!params['filtro'] || 
+#              !params['filtro']['busactividad_oficina_id'] || 
+#              params['filtro']['busactividad_oficina_id'] == ''
+#             ) ? nil : params['filtro']['busactividad_oficina_id']
+#      idpf = (!params['filtro'] ||
+#              !params['filtro']['busproyectofinanciero'] || 
+#              params['filtro']['busproyectofinanciero'] == ''
+#             ) ? nil : params['filtro']['busproyectofinanciero']
+#      idaml = (!params['filtro'] || 
+#               !params['filtro']['busactividadpf'] || 
+#               params['filtro']['busactividadpf'] == ''
+#              ) ? nil : params['filtro']['busactividadpf']
+#      nof = idof.nil? ? '' :
+#        Msip::Oficina.where(id: idof).
+#        pluck(:nombre).join('; ')
+#      npf = idpf.nil? ? '' :
+#        Cor1440Gen::Proyectofinanciero.where(id: idpf).
+#        pluck(:nombre).join('; ')
+#      naml = idaml.nil? ? '' :
+#        Cor1440Gen::Actividadpf.where(id: idaml).
+#        pluck(:titulo).join('; ')
 
-      hoja.add_row [
-        'Oficina', nof,
-        'Convenio financiero', npf, 
-        'Actividad de marco lógico', naml], style: estilo_base
+      #hoja.add_row [
+      #  'Oficina', nof,
+      #  'Convenio financiero', npf, 
+      #  'Actividad de marco lógico', naml], style: estilo_base
         hoja.add_row []
         l = [
-          'Oficina(s)',
-          'Id. Persona',
-          'Nombres',
-          'Apellidos',
-          'Tipo de documento',
-          'Número de documento',
-          'Sexo',
-          'Fecha de nacimiento',
-          'Edad actual',
-          'País',
-          'Último perfil',
-          'Id. Caso',
-          'Fecha de recepción',
-          'Titular',
-          'Teléfono',
-          'Id. Actividades'
+          "Fecha de ocurrencia",
+          "Municipio de ocurrencia",
+          "Edad al momento de ocurrencia",
+          "Sexo",
+          "Categoria",
+          "Presunto Responsable",
+          "Id NNA",
+          "Id Caso"
         ]
         numcol = l.length
         colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
@@ -256,24 +236,15 @@ class Consninovictima < ActiveRecord::Base
         hoja.add_row l, style: [estilo_encabezado] * numcol
 
         registros.each do |reg|
-          o = reg.presenta('actividad_oficina_nombres')
           l = [
-            reg.presenta('actividad_oficina_nombres'),
-            reg.persona_id.to_s,
-            reg.presenta('persona_nombres'),
-            reg.presenta('persona_apellidos'),
-            reg.presenta('persona_tdocumento'),
-            reg.presenta('persona_numerodocumento'),
+            reg.presenta('fecha'),
+            reg.presenta('municipio_departamento'),
+            reg.presenta('persona_edad_hecho'),
             reg.presenta('persona_sexo'),
-            reg.presenta('persona_fechanac'),
-            reg.presenta('persona_edad_actual'),
-            reg.presenta('persona_paisnac'),
-            reg.presenta('persona_ultimoperfilorgsocial'),
-            reg.presenta('caso_id'),
-            reg.presenta('caso_fecharec'),
-            reg.presenta('caso_titular'),
-            reg.presenta('caso_telefono'),
-            reg.presenta('caso_ids')
+            reg.presenta('categoria'),
+            reg.presenta('presponsable'),
+            reg.persona_id,
+            reg.presenta('caso_id')
           ]
           hoja.add_row l, style: estilo_base
         end

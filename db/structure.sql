@@ -2047,9 +2047,10 @@ CREATE MATERIALIZED VIEW public.consninovictima AS
     persona.sexo AS persona_sexo,
     actonino.fecha,
     ubicacionpre.municipio_id,
+    (((municipio.nombre)::text || ' / '::text) || (departamento.nombre)::text) AS municipio_departamento,
     actonino.categoria_id,
     actonino.presponsable_id
-   FROM (((((((public.actonino
+   FROM ((((((((public.actonino
      JOIN public.msip_persona persona ON ((actonino.persona_id = persona.id)))
      JOIN public.sivel2_gen_caso caso ON ((actonino.caso_id = caso.id)))
      JOIN public.sivel2_sjr_casosjr casosjr ON ((casosjr.caso_id = caso.id)))
@@ -2057,6 +2058,7 @@ CREATE MATERIALIZED VIEW public.consninovictima AS
      JOIN public.sivel2_gen_presponsable presponsable ON ((actonino.presponsable_id = presponsable.id)))
      JOIN public.msip_ubicacionpre ubicacionpre ON ((actonino.ubicacionpre_id = ubicacionpre.id)))
      JOIN public.msip_municipio municipio ON ((ubicacionpre.municipio_id = municipio.id)))
+     JOIN public.msip_departamento departamento ON ((municipio.departamento_id = departamento.id)))
   ORDER BY persona.nombres, persona.apellidos
   WITH NO DATA;
 
@@ -16927,6 +16929,7 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240307123248'),
 ('20240221015729'),
 ('20240221002426'),
 ('20240220233356'),

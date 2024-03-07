@@ -939,6 +939,16 @@ class Ability < Sivel2Gen::Ability
       ruta: '/consgifmm'
     },
 
+    'Consninovictima' => {
+      solo_multiple: true,
+      campos: [
+          'caso_id',
+      ],
+      controlador: '::Consninovictima',
+      ruta: '/ninosvictimas'
+    },
+
+
     'Proyecto' => {
       campos: 
         CAMPOS_PROYECTOS_FINANCIEROS_BAS+
