@@ -439,7 +439,6 @@ PRUEBA_VICTIMA = {
   vinculoestado_id: 1,
   organizacionarmada: 1,
   anotaciones: 'a',
-  etnia_id: 1,
   iglesia_id: 1,
   orientacionsexual: 'H'
 }
