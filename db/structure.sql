@@ -16929,7 +16929,9 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240312182320'),
 ('20240307123248'),
+('20240305165644'),
 ('20240221015729'),
 ('20240221002426'),
 ('20240220233356'),

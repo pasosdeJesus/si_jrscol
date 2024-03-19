@@ -142,7 +142,7 @@ module Msip
     def arreglar_sindocumento
       if self.tdocumento_id == 11
         self.numerodocumento = Msip::PersonasController.
-          mejora_nuevo_numerodocumento_sindoc(self.id)
+          mejora_nuevo_numerodocumento_sindoc(self.numerodocumento, self.id)
       end
     end
 
