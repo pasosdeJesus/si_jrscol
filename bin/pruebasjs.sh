@@ -30,7 +30,7 @@ if (test ! -f .env) then {
 } fi;
 . ./.env
 
-if (test ! -d tests/puppeteer) then {
+if (test ! -d test/puppeteer) then {
   echo "No hay pruebas puppeteer"
   exit 0;
 } fi;
