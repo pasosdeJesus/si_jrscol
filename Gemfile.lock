@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 3ff638da9fa36d2404d96022f9c893753b6fe992
+  revision: 00d275ebf69abb6ad7280b8706713c64820f790c
   branch: v2.2
   specs:
     msip (2.2.0.beta5)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 7b6cf8ce3e075885b5abb37d87862465342f53e8
+  revision: 027c2472145c114a9d2d869b419f005daeca55e7
   branch: v2.2
   specs:
     sivel2_gen (2.2.0.beta4)
@@ -220,7 +220,7 @@ GEM
       capybara (~> 3.0)
       ferrum (~> 0.14.0)
     date (3.3.4)
-    debug (1.9.1)
+    debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
     devise (4.9.3)
@@ -323,7 +323,7 @@ GEM
       rails (>= 3.2)
     psych (5.1.2)
       stringio
-    public_suffix (5.0.4)
+    public_suffix (5.0.5)
     puma (6.4.2)
       nio4r (~> 2.0)
     racc (1.7.3)
@@ -377,7 +377,7 @@ GEM
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
     raindrops (0.20.1)
-    rake (13.1.0)
+    rake (13.2.1)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
     redcarpet (3.6.0)
@@ -402,7 +402,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.18.1)
+    selenium-webdriver (4.19.0)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)

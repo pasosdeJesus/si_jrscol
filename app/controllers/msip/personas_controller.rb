@@ -86,13 +86,8 @@ module Msip
         c = Msip::Persona.all
       end
       if params[:term]
-        #debugger
-        term = Sivel2Gen::Caso.connection.quote_string(params[:term])
-        consNomvic = term.downcase.strip #sin_tildes
-        consNomvic.gsub!(/ +/, ":* & ")
-        if consNomvic.length > 0
-          consNomvic += ":*"
-        end
+        consNomvic = Msip::SqlHelper.cadena_a_palabras_tsquery(params[:term])
+        puts "OJO consNomvic=#{consNomvic}"
         where = " persona.buscable @@ "\
           "to_tsquery('spanish', '#{consNomvic}')";
 
