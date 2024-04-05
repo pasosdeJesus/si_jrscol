@@ -153,7 +153,7 @@ module Msip
       if tdocumento && tdocumento.sigla
         ip = tdocumento.sigla + ":" + ip
       end
-      r = nombres + " " + apellidos + 
+      r = nombres.to_s + " " + apellidos.to_s + 
         " (" + ip + ")"
       return r
     end
