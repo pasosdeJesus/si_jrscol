@@ -19,6 +19,7 @@ module Msip
         :familiares
       ] + [ 
         :docsidsecundario,
+        :ultimadiscapacidad_id,
         :ultimoperfilorgsocial_id,
         :ultimoestatusmigratorio_id,
         :ppt,

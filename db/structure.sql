@@ -1528,6 +1528,7 @@ CREATE TABLE public.msip_persona (
     ultimoestatusmigratorio_id integer,
     ppt_obsoleto character varying(32),
     etnia_id integer DEFAULT 1 NOT NULL,
+    ultimadiscapacidad_id integer DEFAULT 7 NOT NULL,
     CONSTRAINT persona_check CHECK (((dianac IS NULL) OR (((dianac >= 1) AND (((mesnac = 1) OR (mesnac = 3) OR (mesnac = 5) OR (mesnac = 7) OR (mesnac = 8) OR (mesnac = 10) OR (mesnac = 12)) AND (dianac <= 31))) OR (((mesnac = 4) OR (mesnac = 6) OR (mesnac = 9) OR (mesnac = 11)) AND (dianac <= 30)) OR ((mesnac = 2) AND (dianac <= 29))))),
     CONSTRAINT persona_mesnac_check CHECK (((mesnac IS NULL) OR ((mesnac >= 1) AND (mesnac <= 12)))),
     CONSTRAINT persona_sexo_check CHECK (('MHSO'::text ~~ (('%'::text || (sexo)::text) || '%'::text)))
@@ -15769,6 +15770,14 @@ ALTER TABLE ONLY public.msip_ubicacionpre
 
 
 --
+-- Name: msip_persona fk_rails_c11683a4fd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.msip_persona
+    ADD CONSTRAINT fk_rails_c11683a4fd FOREIGN KEY (ultimadiscapacidad_id) REFERENCES public.discapacidad(id);
+
+
+--
 -- Name: sivel2_sjr_motivosjr_derecho fk_rails_c31c559a22; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -16927,6 +16936,11 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240418231104'),
+('20240418222925'),
+('20240418222423'),
+('20240417143616'),
+('20240416151439'),
 ('20240319141612'),
 ('20240312182320'),
 ('20240307123248'),

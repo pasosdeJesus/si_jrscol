@@ -289,6 +289,8 @@ es:
         proyectofinanciero_ids: Convenios financiados que caracterizan
         proyectofinanciero: Convenios financiados que caracterizan
         ppt: Número de PPT
+        ultimadiscapacidad_id: Discapacidad
+        ultimadiscapacidad: Discapacidad
         ultimoestatusmigratorio: Último estatus migratorio
         ultimoestatusmigratorio_id: Último estatus migratorio
         ultimoperfilorgsocial: Último perfil poblacional

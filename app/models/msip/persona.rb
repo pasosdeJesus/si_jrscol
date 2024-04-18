@@ -6,8 +6,17 @@ module Msip
     include Sivel2Gen::Concerns::Models::Persona
     include Cor1440Gen::Concerns::Models::Persona
 
-    belongs_to :ultimoperfilorgsocial, foreign_key: 'ultimoperfilorgsocial_id',
-      validate: true, class_name: 'Msip::Perfilorgsocial', optional: false
+    belongs_to :ultimadiscapacidad, 
+      foreign_key: 'ultimadiscapacidad_id',
+      validate: true, 
+      class_name: '::Discapacidad', 
+      optional: false
+
+    belongs_to :ultimoperfilorgsocial, 
+      foreign_key: 'ultimoperfilorgsocial_id',
+      validate: true, 
+      class_name: 'Msip::Perfilorgsocial', 
+      optional: false
 
     belongs_to :ultimoestatusmigratorio, 
       foreign_key: 'ultimoestatusmigratorio_id',
