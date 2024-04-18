@@ -1,0 +1,32 @@
+<% col = Cor1440Gen::Actividadpf.all %>
+<% if params && params[:filtro] && params[:filtro][:busproyectofinanciero] %>
+  <% col = col.where(
+    'proyectofinanciero_id IN (?)', 
+    params[:filtro][:busproyectofinanciero].map(&:to_i))
+  %>
+<% end %>
+<% sel = [] %>
+<% if params && params[:filtro] && 
+    params[:filtro][:busactividadpf] %>
+  <% sel = params[:filtro][:busactividadpf] %>
+<% end %>
+<% multiple = true %>
+<% if defined?(sencillo) && sencillo %>
+  <% multiple =  false %>
+<% end %>
+<%= f.input :busactividadpf,
+  collection: col.order(:titulo),
+  include_blank: true,
+  label_method: :presenta_nombre,
+  value_method: :id,
+  label: false,
+  selected: sel,
+  input_html: {
+    class: 'tom-select',
+    multiple: multiple,
+    'data-enviarautomatico' => ''
+  },
+  wrapper_html: {
+    style: 'width: 12em'
+  }
+%>

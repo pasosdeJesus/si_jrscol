@@ -80,6 +80,9 @@ FileUtils.chdir(RAIZ_AP) do
 
     puts "\n== Enlaza controladores stimulus de motores =="
     system! "bin/rails msip:stimulus_motores"
+    if File.exist?("node_modules/tom-select/dist/css/tom-select.bootstrap5.css.map")
+      FileUtils.cp( "node_modules/tom-select/dist/css/tom-select.bootstrap5.css.map", "public/assets")
+    end
 
     puts "\n== Crea recursos CSS y Javascript =="
     system! "RAILS_ENV=#{ENV["RAILS_ENV"]} bin/rails assets:precompile --trace"

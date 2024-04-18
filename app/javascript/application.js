@@ -23,6 +23,18 @@ import 'popper.js'              // Dialogos emergentes usados por bootstrap
 import * as bootstrap from 'bootstrap'              // Maquetacion y elementos de diseño
 
 import 'chosen-js/chosen.jquery';       // Cuadros de seleccion potenciados
+
+import TomSelect from 'tom-select';
+window.TomSelect = TomSelect; 
+window.configuracionTomSelect = {
+  create: false,
+  diacritics: true, //no sensitivo a acentos
+  sortField: {
+    field: "text",
+    direction: "asc"
+  }
+}
+
 import 'bootstrap-datepicker'
 import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js'
 
@@ -36,6 +48,9 @@ Apex.chart = {
   locales: [apexes],
   defaultLocale: 'es',
 }
+
+import Msip__Motor from "./controllers/msip/motor.js"
+window.Msip__Motor=Msip__Motor
 
 import "./caso_m"
 
@@ -103,6 +118,11 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
     {'sin_eventos_recalcular_poblacion': 1})
   sivel2_sjr_prepara_eventos_unicos(root)
   msip_registra_cambios_para_bitacora(root)
+
+  debugger
+  document.querySelectorAll('.tom-select').forEach((el)=>{
+    new TomSelect(el, window.configuracionTomSelect);
+  });
 
   window.AutocompletaAjaxRapidobenefcaso.iniciar()
 
