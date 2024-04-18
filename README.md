@@ -13,20 +13,20 @@ Disponible en <https://docs.google.com/document/d/1qxJOBzbG_lQPN0nfhlJ1QyeRO4a9h
 * PostgreSQL >= 14.5 con extension unaccent
 
 Ver detalles en
-<https://github.com/pasosdeJesus/msip/blob/main/doc/requisitos.md>
+<https://gitlab.com/pasosdeJesus/msip/-/blob/main/doc/requisitos.md>
 
 
 ### Configuración e instalación
 Aplican las mismas instrucciones de SIVeL 2
-<https://github.com/pasosdeJesus/sivel2>
+<https://gitlab.com/pasosdeJesus/sivel2>
 
 ### Arquitectura
 Se ha desarrollado sobre:
-* [msip](https://github.com/pasosdeJesus/msip)
-* [mr519_gen](https://github.com/pasosdeJesus/mr519_gen)
-* [heb412_gen](https://github.com/pasosdeJesus/heb412_gen)
-* [sivel2_gen](https://github.com/pasosdeJesus/sivel2_gen)
-* [sivel2_sjr](https://github.com/pasosdeJesus/sivel2_sjr)
-* [cor1440_gen](https://github.com/pasosdeJesus/cor1440_gen)
+* [msip](https://gitlab.com/pasosdeJesus/msip)
+* [mr519_gen](https://gitlab.com/pasosdeJesus/mr519_gen)
+* [heb412_gen](https://gitlab.com/pasosdeJesus/heb412_gen)
+* [sivel2_gen](https://gitlab.com/pasosdeJesus/sivel2_gen)
+* [sivel2_sjr](https://gitlab.com/pasosdeJesus/sivel2_sjr)
+* [cor1440_gen](https://gitlab.com/pasosdeJesus/cor1440_gen)
 
 
