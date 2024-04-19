@@ -128,37 +128,21 @@ document.addEventListener('turbo:load', (e) => {
  /* Lo que debe ejecutarse cada vez que turbo cargue una página,
  * tener cuidado porque puede dispararse el evento turbo varias
  * veces consecutivas al cargar una página.
+ *
+ * Ha resultado un método no confiable es mejor definir
+ * el controlador stimulus app/controllers/inicializa_controller.js
+ * y en el método `connect` poner lo que debe ejecutarse
+ * cada vez que se cargue body de una página.
  */
   
   console.log('Escuchador turbo:load')
-  iniciarAplicacionJs(e)
+  msip_ejecutarAlCargarPagina(window)
 })
 
+
 document.addEventListener('turbo:frame-load', (e) => {
-  console.log('Escuchador turbo:frame-load')
   document.body.style.cursor = 'default'
 })
 
-document.addEventListener('DOMContentLoaded', (e) => {
-  console.log('Escuchador DOMContentLoaded')
-  document.removeEventListener('DOMContentLoaded', iniciarAplicacionJs)
-
-  iniciarAplicacionJs(e)
-})
-document.addEventListener('turbo:render', (e) => {
-  console.log('Escuchador turbo:render')
-  // El documento podría estar en e.target
-  iniciarAplicacionJs(e)
-})
-
-function iniciarAplicacionJs(evento) {
-  document.querySelectorAll('.tom-select').forEach((el)=>{
-    if (typeof el.tomselect == "undefined") {
-      new TomSelect(el, window.configuracionTomSelect);
-    }
-  });
-
-  msip_ejecutarAlCargarPagina(window)
-}
 
 import "./controllers"
