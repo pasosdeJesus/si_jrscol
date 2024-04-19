@@ -1,4 +1,4 @@
-/* eslint no-console:0 */
+
 
 console.log('Hola Mundo desde Webpacker')
 
@@ -119,11 +119,6 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
   sivel2_sjr_prepara_eventos_unicos(root)
   msip_registra_cambios_para_bitacora(root)
 
-  debugger
-  document.querySelectorAll('.tom-select').forEach((el)=>{
-    new TomSelect(el, window.configuracionTomSelect);
-  });
-
   window.AutocompletaAjaxRapidobenefcaso.iniciar()
 
 })
@@ -136,13 +131,34 @@ document.addEventListener('turbo:load', (e) => {
  */
   
   console.log('Escuchador turbo:load')
-
-  msip_ejecutarAlCargarPagina(window)
+  iniciarAplicacionJs(e)
 })
 
 document.addEventListener('turbo:frame-load', (e) => {
+  console.log('Escuchador turbo:frame-load')
   document.body.style.cursor = 'default'
 })
 
+document.addEventListener('DOMContentLoaded', (e) => {
+  console.log('Escuchador DOMContentLoaded')
+  document.removeEventListener('DOMContentLoaded', iniciarAplicacionJs)
+
+  iniciarAplicacionJs(e)
+})
+document.addEventListener('turbo:render', (e) => {
+  console.log('Escuchador turbo:render')
+  // El documento podría estar en e.target
+  iniciarAplicacionJs(e)
+})
+
+function iniciarAplicacionJs(evento) {
+  document.querySelectorAll('.tom-select').forEach((el)=>{
+    if (typeof el.tomselect == "undefined") {
+      new TomSelect(el, window.configuracionTomSelect);
+    }
+  });
+
+  msip_ejecutarAlCargarPagina(window)
+}
 
 import "./controllers"
