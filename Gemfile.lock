@@ -25,10 +25,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 87af761c48274648b7d8256abf1d0414456fc141
+  revision: 3130a63dcc1dc85dcc7627d2f919d7ad81a51f66
   branch: v2.2
   specs:
-    cor1440_gen (2.2.0.beta5)
+    cor1440_gen (2.2.0.beta6)
       devise
       heb412_gen
       kt-paperclip
@@ -38,10 +38,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 2e06349b0ac7443685dfda1f31928e4992d20c20
+  revision: 3b40ccd9efd5d844e58a26c640bd2b6e17cf03e3
   branch: v2.2
   specs:
-    heb412_gen (2.2.0.beta5)
+    heb412_gen (2.2.0.beta6)
       mr519_gen
       msip
       redcarpet
@@ -49,27 +49,27 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 49352be348a7f484c28e511d5d5fbb0326bb3ce0
+  revision: ab0f84c009bc16a299230e278f2d2e5711e46b3f
   branch: v2.2
   specs:
-    jos19 (2.2.0.beta5)
+    jos19 (2.2.0.beta6)
       rails (>= 7.0.4)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 62ab6861c6758732f9c5769039489167a2740b93
+  revision: 12c0ac5d90a125ce885ba5133646d357050e753a
   branch: v2.2
   specs:
-    mr519_gen (2.2.0.beta5)
+    mr519_gen (2.2.0.beta6)
       msip
       rails
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: cf180d0a4a9c6e2df0f9682894d344dc4e80ece2
+  revision: 36cf49d8dfee4295d7b6300d469d1cf378c6bfdc
   branch: v2.2
   specs:
-    msip (2.2.0.beta5)
+    msip (2.2.0.beta6)
       cancancan (~> 3)
       devise (~> 4)
       devise-i18n (~> 1)
@@ -86,10 +86,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 3b2bfaa4063b8eee5d513c0a107f82c573fe6d01
+  revision: b54647b55e604eac19d4cb45b8d9882d750a1483
   branch: v2.2
   specs:
-    sivel2_gen (2.2.0.beta5)
+    sivel2_gen (2.2.0.beta6)
       color
       devise
       rails
@@ -254,7 +254,7 @@ GEM
     irb (1.12.0)
       rdoc
       reline (>= 0.4.2)
-    jbuilder (2.11.5)
+    jbuilder (2.12.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jsbundling-rails (1.3.0)
@@ -402,7 +402,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.19.0)
+    selenium-webdriver (4.20.1)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -437,7 +437,7 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
-    twitter_cldr (6.12.0)
+    twitter_cldr (6.12.1)
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)
       tzinfo
