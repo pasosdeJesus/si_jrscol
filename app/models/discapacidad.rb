@@ -4,6 +4,6 @@ class Discapacidad < ActiveRecord::Base
   has_many :persona,
     class_name: 'Msip::Persona',
     validate: true,
-    foreign_key: :discapacidad_id
+    foreign_key: :ultimadiscapacidad_id
 
 end
