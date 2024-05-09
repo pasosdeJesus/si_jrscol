@@ -112,6 +112,9 @@ es:
         persona_apellidos: Apellidos
         persona_edad_hecho: Edad al momento del Hecho
         presponsable: Presunto responsable
+      "consultabd": 
+        consultabd: Consulta SQL a la base de datos
+        Consultabd: Consulta SQL a la base de datos
       "cor1440_gen/actividad":
         nombre: 'Nombre (*)'
         fecha_localizada: 'Fecha (*)'

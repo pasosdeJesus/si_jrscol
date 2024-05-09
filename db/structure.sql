@@ -2065,6 +2065,70 @@ CREATE MATERIALIZED VIEW public.consninovictima AS
 
 
 --
+-- Name: consultabd; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.consultabd AS
+ SELECT row_number() OVER () AS numfila,
+    id,
+    nombre,
+    nombreiso_espanol,
+    latitud,
+    longitud,
+    alfa2,
+    alfa3,
+    codiso,
+    div1,
+    div2,
+    div3,
+    fechacreacion,
+    fechadeshabilitacion,
+    created_at,
+    updated_at,
+    observaciones,
+    nombreiso_ingles,
+    nombreiso_frances,
+    ultvigenciaini,
+    ultvigenciafin,
+    svgruta,
+    svgcdx,
+    svgcdy,
+    svgcdancho,
+    svgcdalto,
+    svgrotx,
+    svgroty
+   FROM ( SELECT msip_pais.id,
+            msip_pais.nombre,
+            msip_pais.nombreiso_espanol,
+            msip_pais.latitud,
+            msip_pais.longitud,
+            msip_pais.alfa2,
+            msip_pais.alfa3,
+            msip_pais.codiso,
+            msip_pais.div1,
+            msip_pais.div2,
+            msip_pais.div3,
+            msip_pais.fechacreacion,
+            msip_pais.fechadeshabilitacion,
+            msip_pais.created_at,
+            msip_pais.updated_at,
+            msip_pais.observaciones,
+            msip_pais.nombreiso_ingles,
+            msip_pais.nombreiso_frances,
+            msip_pais.ultvigenciaini,
+            msip_pais.ultvigenciafin,
+            msip_pais.svgruta,
+            msip_pais.svgcdx,
+            msip_pais.svgcdy,
+            msip_pais.svgcdancho,
+            msip_pais.svgcdalto,
+            msip_pais.svgrotx,
+            msip_pais.svgroty
+           FROM public.msip_pais) s
+  WITH NO DATA;
+
+
+--
 -- Name: cor1440_gen_actividad_actividadtipo; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -16938,6 +17002,7 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240509173622'),
 ('20240423143517'),
 ('20240418231104'),
 ('20240418222925'),

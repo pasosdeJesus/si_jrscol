@@ -65,6 +65,8 @@ gem "simple_form"
 
 gem "sprockets-rails"
 
+gem "sql-parser"
+
 gem "stimulus-rails"
 
 gem "turbo-rails", "~> 1.0"

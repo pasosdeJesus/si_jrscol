@@ -42,6 +42,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'claverespaldo', 'clavesrespaldos'
   inflect.irregular 'consbenefactcaso', 'consbenefactcaso'
   inflect.irregular 'consgifmm', 'consgifmm'
+  inflect.irregular 'consultabd', 'consultabd'
   inflect.irregular 'consninovictima', 'consninovictima'
   inflect.irregular 'detallefinanciero', 'detallesfinancieros'
   inflect.irregular 'declaracionruv', 'declaracionesruv'

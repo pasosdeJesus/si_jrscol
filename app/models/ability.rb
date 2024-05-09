@@ -1213,6 +1213,8 @@ class Ability < Sivel2Gen::Ability
         can :read, Jos19::Consactividadcaso
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
+        can :read, ::Consultabd
+        can :read, Msip::Bitacora
         can :manage, Usuario
 
         can :manage, :tablasbasicas

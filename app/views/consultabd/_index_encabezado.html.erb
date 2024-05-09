@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row filtro-fila">
+    <div class="offset-sm-0 col-sm-4 offset-md-1 col-md-1">
+      Consulta SQL:
+    </div>
+    <div class="offset-sm-0 col-sm-8">
+      <%= f.input :consultasql, 
+        label: false,
+        as: :text, 
+        input_html: {
+          value: Msip::ModeloHelper::poromision(params, :consultasql),
+          'data-enviarautomatico': ''
+        }
+      %>
+    </div>
+  </div> <!-- row -->
+
+  <div class="row filtro-fila">
+    <div class="offset-md-2 col-md-3">
+      Cuenta de registros: <%= @registros.count %>
+    </div>
+    <div class="offset-md-2 col-md-3">
+      <%= f.button :submit, 'Consultar', class: 'btn btn-default',
+        'data-turbo' => false %>
+    </div>
+  </div>
+</div>
