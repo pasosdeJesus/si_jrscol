@@ -22,11 +22,22 @@ puts "Enviando correo de prueba mediante mailer.mail."
 mailer.mail(from: ENV.fetch('SMTP_USUARIO'), to: 'vtamara@pasosdeJesus.org', 
             subject: 'correo de prueba', body: "Juan 8:32").deliver
 
-puts "Enviando correo de prueba mediante NotificacionMailer."
+puts "Enviando correo de prueba mediante NotificacionMailer a outlook."
 begin
   NotificacionMailer.with(
     resultado: "Probando correo",
     correo_depuracion: 'vtamara@cinep.org.co'
+  ).
+  notificar_mantenimiento.deliver_now
+rescue => e
+  puts "** No se pudo enviar correo (#{e.to_s})"
+end
+
+puts "Enviando correo de prueba mediante NotificacionMailer a gmail."
+begin
+  NotificacionMailer.with(
+    resultado: "Probando correo",
+    correo_depuracion: 'pasosdeJesus2@gmail.com'
   ).
   notificar_mantenimiento.deliver_now
 rescue => e
