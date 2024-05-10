@@ -40,7 +40,7 @@
                      Cor1440Gen::Proyectofinanciero.
                      where("DATE(fechacierre) > ?", Date.today).
                      where("fechainicio < ?", Date.today),
-                     "id", "nombre"), class: "chosen-select",
+                     "id", "nombre"), class: "tom-select",
                     include_blank: true,
                     "data-respuestacaso-target": "proyectofinanciero_id"
                   ) %>
