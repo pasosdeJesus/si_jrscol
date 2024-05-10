@@ -18,9 +18,8 @@ instala-gemas:
 	doas /tmp/i.sh
 
 erd:  # Antes de esto instalar graphviz con doas pkg_add graphviz
-	(cd test/dummy; \
-	bundle exec erd)
-	mv test/dummy/erd.pdf doc/
+	bundle exec erd
+	mv erd.pdf doc/
 	pdftoppm doc/erd.pdf doc/erd
 	convert doc/erd-1.ppm doc/erd.png
 	rm doc/erd-1.ppm
