@@ -111,6 +111,7 @@ $(document).on('cocoon:after-remove', '#actividad_proyectofinanciero', (e, objet
 
 $(document).on('cocoon:after-insert', '#filas_detallefinanciero', (e, objetivo) ->
   $('.chosen-select').chosen()
+  window.Msip__Motor.configurarElementosTomSelect()
   actualiza_opciones_convenioactividad()
   # Tras agregar fila a detalle financiero refrescar beneficiarios posibles
   jrs_refresca_posibles_beneficiarios_asistentes()

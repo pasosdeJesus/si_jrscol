@@ -35,9 +35,7 @@ $(document).on('cocoon:after-insert', '#desplazamiento',
       language: 'es',
     })
     $('.chosen-select').chosen()
-    document.querySelectorAll('.tom-select').forEach((el)->
-      new window.TomSelect(el, window.configuracionTomSelect);
-    );
+    window.Msip__Motor.configurarElementosTomSelect()
 
     // Poner ids para expandir/contraer ubicaciones
     // Debe estar en sincronia con
