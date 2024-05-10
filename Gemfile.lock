@@ -24,6 +24,19 @@ GIT
     cocoon (1.2.11)
 
 GIT
+  remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
+  revision: a3bb370218cc51453d2116ebd0574099cb044222
+  branch: v2.2
+  specs:
+    cor1440_gen (2.2.0.beta6)
+      devise
+      heb412_gen
+      kt-paperclip
+      mr519_gen
+      msip
+      rails
+
+GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
   revision: a1fc7175523cb4770453cd701fcc6d3dea75e0f2
   branch: v2.2
@@ -52,28 +65,9 @@ GIT
       rails
 
 GIT
-  remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 10e191722f9a0357887708c4a2702b3eb8e8f020
+  remote: https://gitlab.com/pasosdeJesus/msip.git
+  revision: e2149325d99cf05838a1d076ee280a53f30c4cca
   branch: v2.2
-  specs:
-    sivel2_gen (2.2.0.beta6)
-      color
-      devise
-      rails
-
-PATH
-  remote: ../cor1440_gen-2.2
-  specs:
-    cor1440_gen (2.2.0.beta6)
-      devise
-      heb412_gen
-      kt-paperclip
-      mr519_gen
-      msip
-      rails
-
-PATH
-  remote: ../msip-2.2
   specs:
     msip (2.2.0.beta6)
       cancancan (~> 3)
@@ -89,6 +83,16 @@ PATH
       stimulus-rails (~> 1)
       twitter_cldr (~> 6)
       will_paginate (~> 3)
+
+GIT
+  remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
+  revision: 10e191722f9a0357887708c4a2702b3eb8e8f020
+  branch: v2.2
+  specs:
+    sivel2_gen (2.2.0.beta6)
+      color
+      devise
+      rails
 
 GEM
   remote: https://rubygems.org/

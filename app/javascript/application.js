@@ -136,7 +136,10 @@ document.addEventListener('turbo:load', (e) => {
  */
   
   console.log('Escuchador turbo:load')
-  //msip_ejecutarAlCargarPagina(window)
+
+  // Si la siguiente no funciona podría deberse a que se
+  // ejecuta este evento antes de que carguen recursos javascript de sprockets
+  msip_ejecutarAlCargarPagina(window)
 })
 
 
