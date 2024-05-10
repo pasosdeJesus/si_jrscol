@@ -392,14 +392,16 @@ module Cor1440Gen
       if params[:actividad][:detallefinanciero_attributes]
         porelimd = []
         params[:actividad][:detallefinanciero_attributes].each do |l, v|
-          det = ::Detallefinanciero.find(v[:id].to_i)
-          if v['_destroy'] == "1" || v['_destroy'] == "true"
-            det.persona_ids = []
-            det.actividad.detallefinanciero_ids -= [det.id]
-            det.actividad.save(validate: false)
-            det.destroy
-            # Quitar de los parámetros
-            porelimd.push(l)  
+          if (::Detallefinanciero.where(id: v[:id].to_i).count == 1)
+            det = ::Detallefinanciero.find(v[:id].to_i)
+            if v['_destroy'] == "1" || v['_destroy'] == "true"
+              det.persona_ids = []
+              det.actividad.detallefinanciero_ids -= [det.id]
+              det.actividad.save(validate: false)
+              det.destroy
+              # Quitar de los parámetros
+              porelimd.push(l)  
+            end
           end
         end
         porelimd.each do |l|
