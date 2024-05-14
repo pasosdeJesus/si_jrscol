@@ -109,6 +109,8 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
       r.prop('disabled', true)
     })
 
+  Msip__Motor.configurarElementosTomSelect()
+
   msip_prepara_eventos_comunes(root)
   heb412_gen_prepara_eventos_comunes(root)
   mr519_gen_prepara_eventos_comunes(root)
