@@ -84,30 +84,30 @@ gem "will_paginate" # Listados en páginas
 # lógico y no alfabetico como las gemas anteriores)
 
 gem "msip", # Motor generico
-  git: "https://gitlab.com/pasosdeJesus/msip.git", branch: "v2.2"
+  git: "https://gitlab.com/pasosdeJesus/msip.git", branch: "tomselect"
   #ref: "76a5fc04d1c6d26e52d4f15e1e0c68b499f96db2" 
   #path: "../msip-2.2"
 
 gem "mr519_gen", # Motor de gestion de formularios y encuestas
-  git: "https://gitlab.com/pasosdeJesus/mr519_gen.git", branch: "v2.2"
+  git: "https://gitlab.com/pasosdeJesus/mr519_gen.git", branch: "tomselect"
   #path: "../mr519_gen-2.2"
 
 gem "heb412_gen",  # Motor de nube y llenado de plantillas
-  git: "https://gitlab.com/pasosdeJesus/heb412_gen.git", branch: "v2.2"
+  git: "https://gitlab.com/pasosdeJesus/heb412_gen.git", branch: "tomselect"
   #path: "../heb412_gen-2.2"
 
 # Motor Cor1440_gen
 gem "cor1440_gen",
-  git: "https://gitlab.com/pasosdeJesus/cor1440_gen.git", branch: "v2.2"
+  git: "https://gitlab.com/pasosdeJesus/cor1440_gen.git", branch: "tomselect"
   #path: "../cor1440_gen-2.2"
 
 # Motor de SIVeL 2
 gem "sivel2_gen",
-  git: "https://gitlab.com/pasosdeJesus/sivel2_gen.git", branch: "v2.2"
+  git: "https://gitlab.com/pasosdeJesus/sivel2_gen.git", branch: "tomselect"
   #path: "../sivel2_gen-2.2"
 
 gem "jos19",
-  git: "https://gitlab.com/pasosdeJesus/jos19.git", branch: "v2.2"
+  git: "https://gitlab.com/pasosdeJesus/jos19.git", branch: "tomselect"
   #path: "../jos19"
 
   gem "debug" # Depurar

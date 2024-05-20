@@ -109,8 +109,6 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
       r.prop('disabled', true)
     })
 
-  Msip__Motor.configurarElementosTomSelect()
-
   msip_prepara_eventos_comunes(root)
   heb412_gen_prepara_eventos_comunes(root)
   mr519_gen_prepara_eventos_comunes(root)
@@ -131,10 +129,13 @@ document.addEventListener('turbo:load', (e) => {
  * tener cuidado porque puede dispararse el evento turbo varias
  * veces consecutivas al cargar una página.
  *
- * Ha resultado un método no confiable es mejor definir
+ * Ha resultado un método no confiable es más confiable 
  * el controlador stimulus app/controllers/inicializa_controller.js
  * y en el método `connect` poner lo que debe ejecutarse
  * cada vez que se cargue body de una página.
+ * Aunque ese podría ejecutarse antes de que termine de
+ * ejecutarse este app/javascript/application (y que se inicialicen
+ * recurso sprockets).
  */
   
   console.log('Escuchador turbo:load')
