@@ -34,6 +34,8 @@ class Consultabd < ActiveRecord::Base
               * FROM (
               #{econsultasql}
               #{w} ) AS s ;")
+
+   Consultabd.reset_column_information
   end # def crea_consulta
 
   def self.refresca_consulta(consultasql, ip_remota, usuario_id, url, params)

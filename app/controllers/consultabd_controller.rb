@@ -19,7 +19,8 @@ class ConsultabdController < Heb412Gen::ModelosController
   end
 
   def columnas_posibles
-    [ :numfila ]
+    r = Consultabd.columns.map(&:name)
+    r
   end
 
   # Genera listado
