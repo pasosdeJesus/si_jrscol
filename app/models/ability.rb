@@ -948,6 +948,14 @@ class Ability < Sivel2Gen::Ability
       ruta: '/ninosvictimas'
     },
 
+    'Consultabd' => {
+      solo_multiple: true,
+      campos: [
+          'numfila',
+      ],
+      controlador: '::Consultabd',
+      ruta: '/consultabd'
+    },
 
     'Proyecto' => {
       campos: 
