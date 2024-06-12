@@ -22,8 +22,6 @@ window.AutocompletaAjaxCampotexto = AutocompletaAjaxCampotexto // Requerido por 
 import 'popper.js'              // Dialogos emergentes usados por bootstrap
 import * as bootstrap from 'bootstrap'              // Maquetacion y elementos de diseño
 
-import 'chosen-js/chosen.jquery';       // Cuadros de seleccion potenciados
-
 import TomSelect from 'tom-select';
 window.TomSelect = TomSelect; 
 window.configuracionTomSelect = {

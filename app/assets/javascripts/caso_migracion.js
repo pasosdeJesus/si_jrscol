@@ -34,7 +34,7 @@ $(document).on('cocoon:after-insert', '#migracion',
       todayHighlight: true,
       language: 'es',
     })
-    $('.chosen-select').chosen()
+    Msip__Motor.configurarElementosTomSelect()
 
     // Que el lugar de llegada en migración sea la ubicación de la oficina
     id_ofi = $('#caso_casosjr_attributes_oficina_id').val()
@@ -44,11 +44,14 @@ $(document).on('cocoon:after-insert', '#migracion',
     ocp = '[id^=caso_migracion_attributes_][id$=_llegada_centropoblado_id]'
     if(id_ofi != 1){
       $.getJSON("../../admin/oficinas/"+ id_ofi +".json", function(o){
-        cu = 'chosen:updated'
-        $(opais).val(o.pais_id).trigger(cu)
-        $(odep).val(o.departamento_id).trigger(cu)
-        $(omun).val(o.municipio_id).trigger(cu)
-        $(ocp).val(o.centropoblado_id).trigger(cu)
+        $(opais).val(o.pais_id)
+        Msip__Motor.configurarElementoTomSelect(document.querySelector(opais))
+        $(odep).val(o.departamento_id)
+        Msip__Motor.configurarElementoTomSelect(document.querySelector(odep))
+        $(omun).val(o.municipio_id)
+        Msip__Motor.configurarElementoTomSelect(document.querySelector(omun))
+        $(ocp).val(o.centropoblado_id)
+        Msip__Motor.configurarElementoTomSelect(document.querySelector(ocp))
       });
     }
 

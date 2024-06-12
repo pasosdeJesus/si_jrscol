@@ -1005,7 +1005,7 @@ class Ability < Sivel2Gen::Ability
 
     if !usuario.nil? && !usuario.rol.nil? then
       can :read, Msip::Oficina
-      can :read, Msip::Persona
+      can :read, Msip::Ability::lista_modelos_persona
       can :read, Msip::Tdocumento
 
       can :read, Heb412Gen::Plantilladoc
@@ -1051,7 +1051,7 @@ class Ability < Sivel2Gen::Ability
 
         can :read, ::Territorial
         can [:read, :index], Msip::Orgsocial
-        can :manage, Msip::Persona
+        can :manage, Msip::Ability::lista_modelos_persona
         can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
@@ -1086,7 +1086,7 @@ class Ability < Sivel2Gen::Ability
 
         can :read, ::Territorial
         can [:read, :index], Msip::Orgsocial
-        can :manage, Msip::Persona
+        can :manage, Msip::Ability::lista_modelos_persona
         can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
@@ -1116,7 +1116,7 @@ class Ability < Sivel2Gen::Ability
 
         can :read, ::Territorial
         can [:new, :create, :read, :index, :edit, :update], Msip::Orgsocial
-        can :manage, Msip::Persona
+        can :manage, Msip::Ability::lista_modelos_persona
         can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
@@ -1147,7 +1147,7 @@ class Ability < Sivel2Gen::Ability
 
         can :manage, Msip::Orgsocial
         can :manage, Msip::Sectororgsocial
-        can :manage, Msip::Persona
+        can :manage, Msip::Ability::lista_modelos_persona
         can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 
@@ -1175,7 +1175,7 @@ class Ability < Sivel2Gen::Ability
 
         can :read, Msip::Orgsocial
         can :read, Msip::Sectororgsocial
-        can :read, Msip::Persona
+        can :read, Msip::Ability::lista_modelos_persona
         can :read, ::Docidsecundario
         can :read, Msip::Ubicacionpre
 
@@ -1211,7 +1211,7 @@ class Ability < Sivel2Gen::Ability
 
         can :manage, Msip::Orgsocial
         can :manage, Msip::Sectororgsocial
-        can :manage, Msip::Persona
+        can :manage, Msip::Ability::lista_modelos_persona
         can :manage, ::Docidsecundario
         can :manage, Msip::Ubicacionpre
 

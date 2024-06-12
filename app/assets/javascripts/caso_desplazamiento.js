@@ -34,7 +34,6 @@ $(document).on('cocoon:after-insert', '#desplazamiento',
       todayHighlight: true,
       language: 'es',
     })
-    $('.chosen-select').chosen()
     window.Msip__Motor.configurarElementosTomSelect()
 
     // Poner ids para expandir/contraer ubicaciones

@@ -46,7 +46,7 @@
           input_html: {
             "data-toggle" => 'tooltip',
             'data-placeholder' => "Vía de ingerso...",
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
       </div>
       <div class="col-md-6">
@@ -59,7 +59,7 @@
           input_html: {
             "data-toggle" => 'tooltip',
             'data-placeholder' => "Causa de la migración...",
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
         <% if f.object && f.object.causamigracion_id && 
             f.object.causamigracion_id == 11 %>
@@ -85,7 +85,7 @@
           label: false,
           input_html: {
             "data-toggle" => 'tooltip',
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
       </div>
       <div class="col-md-6">
@@ -134,7 +134,7 @@
             "data-toggle" => 'tooltip',
             'data-placeholder' => "Accidentes o dificultades...",
             multiple: true,
-            class: 'chosen-select'
+            class: 'tom-select'
           } %>
       </div>
     </div>
@@ -151,7 +151,7 @@
             "data-toggle" => 'tooltip',
             'data-placeholder' => "Agresiones durante la migración...",
             multiple: true,
-            class: 'chosen-select'
+            class: 'tom-select'
           } %>
         <% if f.object && f.object.agresionmigracion_ids && 
             f.object.agresionmigracion_ids.include?(13) %>
@@ -182,7 +182,7 @@
             "data-toggle" => 'tooltip',
             'data-placeholder' => "Presuntas causas...",
             multiple: true,
-            class: 'chosen-select'
+            class: 'tom-select'
           } %>
         <% if f.object && f.object.causaagresion_ids && 
             f.object.causaagresion_ids.include?(8) %>
@@ -254,7 +254,7 @@
           value_method: :id,
           label: false,
           input_html: {
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
         <!--%= f.input :perfilmig, as: :check_boxes, collection: ['Pendular', 'En transito', 'Con vocación de permanencia'], wrapper: :custom_collection_inline %-->
       </div>
@@ -298,7 +298,7 @@
           label_method: :nombre,
           value_method: :id,
           input_html: {
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
       </div>
       <div class="offset-md-0 col-md-6">
@@ -307,7 +307,7 @@
           label_method: :nombre,
           value_method: :id,
           input_html: {
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
       </div>
     </div> <!-- row -->
@@ -324,7 +324,7 @@
             "data-toggle" => 'tooltip',
             'data-placeholder' => "Agresiones...",
             multiple: true,
-            class: 'chosen-select'
+            class: 'tom-select'
           } %>
       </div>
       <div class="offset-md-0 col-md-6">
@@ -351,7 +351,7 @@
             "data-toggle" => 'tooltip',
             'data-placeholder' => "Presuntas causas...",
             multiple: true,
-            class: 'chosen-select'
+            class: 'tom-select'
           } %>
         <% if f.object && f.object.causaagrpais_ids && 
             f.object.causaagrpais_ids.include?(8) %>
@@ -390,7 +390,7 @@
           input_html: {
             "data-toggle" => 'tooltip',
             "title" => 'Elegir de la lista el Nivel Protección Internacional que requiere el solicitante',
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
       </div>
       <% npiotroest = f.object.proteccion && f.object.proteccion_id == 7 ? 
@@ -432,7 +432,7 @@
             input_html: {
               "data-toggle" => 'tooltip',
               'data-placeholder' => "Autoridad...",
-              class: 'chosen-select' 
+              class: 'tom-select' 
             } %>
           <% autotraest = f.object.autoridadrefugio && f.object.autoridadrefugio_id == 5 ? 
             '' : 'display:none' %>
@@ -468,7 +468,7 @@
             "data-toggle" => 'tooltip',
             placeholder: 'Causa del refugio',
             'data-placeholder' => "Causa del refugio...",
-            class: 'chosen-select' 
+            class: 'tom-select' 
           } %>
         </div>
       </div> <!-- row -->
@@ -484,7 +484,7 @@
             input_html: {
               "data-toggle" => 'tooltip',
               'data-placeholder' => "Tipo de protección...",
-              class: 'chosen-select' 
+              class: 'tom-select' 
             } %>
         </div>
         <div class="offset-md-0 col-md-6">
@@ -497,7 +497,7 @@
             input_html: {
               "data-toggle" => 'tooltip',
               'data-placeholder' => "Integrantes del grupo familiar...",
-              class: 'chosen-select' 
+              class: 'tom-select' 
             } %>
           <% miemest = f.object.miembrofamiliar && f.object.miembrofamiliar_id == 6 ? 
             '' : 'display:none' %>

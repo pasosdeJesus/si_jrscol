@@ -71,7 +71,8 @@ $(document).on('change', 'select[id^=caso_migracion_attributes_][id$=causamigrac
          .attr("value", nuevasop[o]).text(nuevasop_text[o]))
       )
       $('#' + miselectid).val('')
-      $('#' + miselectid).trigger('chosen:updated')
+      em = document.querySelector('#' + miselectid)
+      Msip__Motor.refrescarElementoTomSelect(em)
   )
 
 @calcula_pfapf_seleccionadas = () ->
@@ -110,7 +111,6 @@ $(document).on('cocoon:after-remove', '#actividad_proyectofinanciero', (e, objet
 )
 
 $(document).on('cocoon:after-insert', '#filas_detallefinanciero', (e, objetivo) ->
-  $('.chosen-select').chosen()
   window.Msip__Motor.configurarElementosTomSelect()
   actualiza_opciones_convenioactividad()
   # Tras agregar fila a detalle financiero refrescar beneficiarios posibles
@@ -119,7 +119,7 @@ $(document).on('cocoon:after-insert', '#filas_detallefinanciero', (e, objetivo) 
 
 $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes_][id$=convenioactividad]', (e, res) ->
   $(e.target).attr('disabled', true)
-  $(e.target).trigger('chosen:updated')
+  Msip__Motor.configurarElementoTomSelect(e.target)
 )
 $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes_][id$=_modalidadentrega_id]', (e, res) ->
   valor = +$(this).val()
@@ -294,14 +294,14 @@ $(document).on('change', 'select[id^=actividad_detallefinanciero_attributes][id$
       if datos.respuesta == true
         elenm.val(datos.numeromeses)
         elenm.prop('disabled', 'disabled');
-        elenm.trigger('chosen:updated')
+        Msip__Motor.configurarElementoTomSelect(elenm)
         msip_remplaza_opciones_select(elena.attr('id'), datos.asistencias, true);
       else
          elenm.removeAttr('disabled');
          elenm.val("")
-         elenm.trigger('chosen:updated')
+         Msip__Motor.configurarElementoTomSelect(elenm)
          elena.empty()
-         elena.trigger('chosen:updated')
+         Msip__Motor.configurarElementoTomSelect(elena)
     )
 
 

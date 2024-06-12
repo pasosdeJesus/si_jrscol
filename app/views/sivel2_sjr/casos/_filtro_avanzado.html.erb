@@ -44,10 +44,13 @@
       <div class="offset-sm-0 col-sm-4 offset-md-0 col-md-3">
         <%= f.input :tdocumento,
           collection: Msip::Tdocumento.habilitados,
-          label_method: :nombre,
-          value_method: :id,
+          include_blank: '-- Tipo de documento',
+          input_html: {
+            class: 'tom-select'
+          },
           label: false,
-          include_blank: '-- Tipo de documento'
+          label_method: :nombre,
+          value_method: :id
         %>
       </div>
       <div class="offset-sm-0 col-sm-4 offset-md-1 col-md-3">
@@ -104,10 +107,13 @@
       <div class="offset-sm-0 col-sm-3">
         <%= f.input :territorial_id,
           collection: ::Territorial.habilitados,
-          label_method: :nombre,
-          value_method: :id,
+          include_blank: '-- Territorial',
+          input_html: {
+            class: 'tom-select'
+          },
           label: false,
-          include_blank: '-- Territorial'
+          label_method: :nombre,
+          value_method: :id
         %>
       </div>
       <div class="offset-sm-0 col-sm-4">
@@ -116,6 +122,9 @@
           label_method: :nombre,
           value_method: :id,
           label: false,
+          input_html: {
+            class: 'tom-select'
+          },
           include_blank: '-- Oficina'
         %>
       </div>
@@ -137,10 +146,13 @@
       <div class="offset-sm-0 col-sm-7">
         <%= f.input :usuario_id,
           collection: ::Usuario.order(:nombre).all,
-          label_method: :nombre,
-          value_method: :id,
+          include_blank: '-- Asesor',
+          input_html: {
+            class: 'tom-select'
+          },
           label: false,
-          include_blank: '-- Asesor'
+          label_method: :nombre,
+          value_method: :id
         %>
       </div>
       <div class="offset-sm-0 col-sm-1 text-center">
@@ -339,17 +351,23 @@
       <div class="offset-sm-0 col-sm-4 col-md-3">
         <%= f.input :sexo, 
           collection: Msip::Persona::sexo_opciones,
-          label: false,
-          include_blank: '-- Sexo'
+          include_blank: '-- Sexo',
+          input_html: {
+            class: 'tom-select'
+          },
+          label: false
         %>
       </div>
       <div class="offset-sm-0 col-sm-4 offset-md-1 col-md-3">
         <%= f.input :rangoedad_id, 
           collection: Sivel2Gen::Rangoedad.habilitados,
+          include_blank: '-- Rango de Edad',
+          input_html: {
+            class: 'tom-select'
+          },
           label: false,
           label_method: :nombre,
-          value_method: :id,
-          include_blank: '-- Rango de Edad'
+          value_method: :id
         %>
 
       </div>
@@ -367,12 +385,15 @@
         <%= f.input :categoria_id,
           collection: Sivel2Gen::Categoria.habilitados.joins(:supracategoria).
             reorder('sivel2_gen_supracategoria.tviolencia_id', :id),
+          include_blank: true,
+          input_html: {
+            class: 'tom-select'
+          },
+          label: false,
           label_method: lambda {|t| 
             t.supracategoria.tviolencia_id + 
                                 t.id.to_s + ' ' + t.nombre},
-          value_method: :id,
-          label: false,
-          include_blank: true
+          value_method: :id
         %>
       </div>
       <div class="offset-sm-0 col-sm-1 text-center">
@@ -395,10 +416,13 @@
       <div class="offset-sm-0 col-sm-2">
         <%= f.input :etiqueta1,
           collection: Msip::Etiqueta.habilitados,
-          label_method: :nombre,
-          value_method: :id,
+          include_blank: '-- Etiqueta 1',
+          input_html: {
+            class: 'tom-select'
+          },
           label: false,
-          include_blank: '-- Etiqueta 1'
+          label_method: :nombre,
+          value_method: :id
         %>
       </div>
       <div class="offset-sm-1 col-sm-1">
@@ -411,10 +435,13 @@
       <div class="offset-sm-0 col-sm-2">
         <%= f.input :etiqueta2,
           collection: Msip::Etiqueta.habilitados,
-          label_method: :nombre,
-          value_method: :id,
+          include_blank: '-- Etiqueta 1',
+          input_html: {
+            class: 'tom-select'
+          },
           label: false,
-          include_blank: '-- Etiqueta 1'
+          label_method: :nombre,
+          value_method: :id
         %>
       </div>
       <div class="offset-sm-0 col-sm-1 text-center">
@@ -534,8 +561,11 @@
         %>
         <%= f.input :dispresenta,
           collection: oppres,
-          label: false,
-          include_blank: false
+          include_blank: false,
+          input_html: {
+            class: 'tom-select'
+          },
+          label: false
         %>
       </div>
       <div class="col-sm-3">
@@ -556,8 +586,11 @@
         <div class="offset-sm-1 col-sm-4">
           <%= f.input :disgenera,
             collection: @plantillas,
-            label: false,
-            include_blank: false
+            include_blank: false,
+            input_html: {
+              class: 'tom-select'
+            },
+            label: false
           %>
         </div>
         <div class="col-sm-2">

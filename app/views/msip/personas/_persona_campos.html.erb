@@ -190,35 +190,26 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-6">
-    <%= f.association :pais,
-      collection: Msip::Pais.habilitados,
-      label_method: :nombre,
-      value_method: :id %>
+<div data-controller="msip--geodep">
+  <div class="row">
+    <div class="col-md-6">
+      <%= render partial: "msip/personas/campo_pais", 
+        locals: { f: f} %>
+    </div>
+    <div class="col-md-6">
+      <%= render partial: "msip/personas/campo_departamento", 
+        locals: { f: f} %>
+    </div>
   </div>
-  <div class="col-md-6">
-    <%= f.association :departamento,
-      collection: (Msip::Departamento.habilitados.where(
-        pais_id: f.object.pais_id)),
-       label_method: :nombre,
-       value_method: :id %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <%= f.association :municipio, 
-      collection: (Msip::Municipio.habilitados.
-                   where(departamento_id: f.object.departamento_id)), 
-    label_method: :nombre, value_method: :id %>
-  </div>
-  <div class="col-md-6">
-    <%= f.association :centropoblado,
-      collection: (Msip::Centropoblado.habilitados.where(
-        municipio_id: f.object.municipio_id)),
-       as: :hidden,
-       label_method: :nombre,
-       value_method: :id %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= render partial: "msip/personas/campo_municipio", 
+        locals: { f: f} %>
+    </div>
+    <div class="col-md-6">
+      <%= render partial: "msip/personas/campo_centropoblado", 
+        locals: { f: f} %>
+    </div>
   </div>
 </div>
 
