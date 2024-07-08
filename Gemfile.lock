@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 3b0791fc56cd29a938c105a3944d4b42accc3078
+  revision: 7e967dace4a9f680e70be72b1613de7ff9c9850f
   branch: tomselect
   specs:
     cor1440_gen (2.2.0.beta6)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 7d5b5398976eee45bb1adfc5fb58493e7cb4bbc5
+  revision: a6fe20558f67d4127e43ee2e63f193cb2a5dabd0
   branch: tomselect
   specs:
     heb412_gen (2.2.0.beta6)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 6e357a1c4bb1c831065346f9e65104a14836899f
+  revision: 14342a0ec2d49c66746d0fbdc188d087ccc43a41
   branch: tomselect
   specs:
     jos19 (2.2.0.beta6)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: e654824cfb1babed5a9df00c5dc719d2651cc162
+  revision: c3523f67ba6c6828d6de1b3606a744fee5c38c1d
   branch: tomselect
   specs:
     mr519_gen (2.2.0.beta6)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 28e9da0c30dd36482318d9687f77c9e56f9f7bd9
+  revision: 049ed9053e9ffcc312f07da347b31d53d878032a
   branch: tomselect
   specs:
     msip (2.2.0.beta6)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 8e783e876ae21d8cff9b0c0775cf3ca977872057
+  revision: 010ef7cb738932ba09d24dab36cc744d01d0690a
   branch: tomselect
   specs:
     sivel2_gen (2.2.0.beta6)
@@ -171,8 +171,8 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
-    addressable (2.8.6)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     andand (1.3.3)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
@@ -257,7 +257,7 @@ GEM
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
-    irb (1.13.2)
+    irb (1.14.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jbuilder (2.12.0)
@@ -267,6 +267,7 @@ GEM
       railties (>= 6.0.0)
     kgio (2.11.4)
     libxml-ruby (5.0.3)
+    logger (1.6.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -279,10 +280,10 @@ GEM
     matrix (0.4.2)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0604)
+    mime-types-data (3.2024.0702)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
-    minitest (5.24.0)
+    minitest (5.24.1)
     msgpack (1.7.2)
     mutex_m (0.2.0)
     net-imap (0.4.14)
@@ -329,7 +330,7 @@ GEM
       rails (>= 3.2)
     psych (5.1.2)
       stringio
-    public_suffix (5.1.1)
+    public_suffix (6.0.0)
     puma (6.4.2)
       nio4r (~> 2.0)
     racc (1.8.0)
@@ -393,7 +394,7 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.3.0)
+    rexml (3.3.1)
       strscan
     rspreadsheet (0.5.3)
       andand (>= 1.3)
@@ -409,8 +410,9 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.21.1)
+    selenium-webdriver (4.22.0)
       base64 (~> 0.2)
+      logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -439,7 +441,7 @@ GEM
     terrapin (1.0.1)
       climate_control
     thor (1.3.1)
-    tilt (2.3.0)
+    tilt (2.4.0)
     timeout (0.4.1)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
@@ -540,4 +542,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.5.11
+   2.5.14
