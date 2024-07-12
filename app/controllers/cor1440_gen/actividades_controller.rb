@@ -6,7 +6,7 @@ module Cor1440Gen
     #no más include Sivel2Sjr::Concerns::Controllers::ActividadesController
     include Cor1440Gen::Concerns::Controllers::ActividadesController
 
-    before_action :set_actividad, 
+    before_action :set_actividad,
       only: [:show, :edit, :update, :destroy],
       exclude: [:contar, :poblacion_sexo_rangoedadac, :contar_beneficiarios]
     load_and_authorize_resource class: Cor1440Gen::Actividad
@@ -105,7 +105,10 @@ module Cor1440Gen
     end
 
     def atributos_form
-      atributos_show - [:id, :poblacion] + [:observaciones]
+      a = atributos_show- [:id, :poblacion] + [:observaciones]
+      a.map do |e|
+        e == :fecha_localizada ? :fecha : e
+      end
     end
 
     # Elementos de la presentacion de una actividad

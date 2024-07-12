@@ -16,11 +16,11 @@ module Msip
   
       def atributos_index
         [
-          "id", 
-          "nombre", 
-          "observaciones", 
-          "fechacreacion_localizada", 
-          "habilitado"
+          :id, 
+          :nombre, 
+          :observaciones, 
+          :fechacreacion_localizada, 
+          :habilitado
         ]
       end
   

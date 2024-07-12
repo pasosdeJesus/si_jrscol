@@ -22,6 +22,14 @@ module Admin
       ]
     end
 
+    def atributos_form
+      a = atributos_index - [:id]
+      return a.map do |e|
+        e == :fechacreacion_localizada ? :fechacreacion : 
+          (e == :habilitado ? :fechadeshabilitacion : e)
+      end
+    end
+
     def genclase
       'F'
     end

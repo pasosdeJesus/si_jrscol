@@ -197,7 +197,7 @@
   ruta = "api/sivel2sjr/poblacion_sexo_rangoedadac"
   #debugger
   msip_ajax_recibe_json(root, ruta,
-    {caso_id: pl[1], fecha: $('#actividad_fecha_localizada').val() }, 
+    {caso_id: pl[1], fecha: $('#actividad_fecha').val() }, 
     sivel2_sjr_completa_rangosedadac)
   return
 
@@ -369,14 +369,7 @@
 
   # Al cambiar fecha del hecho cambiar fecha de salida si no se ha 
   # llenado refugio y cambiar fecha de antecedentes/causas
-  # Método para detectar cambios en datepicker de
-  # http://stackoverflow.com/questions/17009354/detect-change-to-selected-date-with-bootstrap-datepicker
-  $('#caso_fecha').datepicker({
-    format: 'yyyy-mm-dd'
-    autoclose: true
-    todayHighlight: true
-    language: 'es'
-  }).on('changeDate', (ev) ->
+  $('#caso_fecha').on('change', (ev) ->
     vss=$('#caso_casosjr_attributes_salida_id').val()
     vfl=$('#caso_casosjr_attributes_fechallegada').val()
     vsl=$('#caso_casosjr_attributes_llegada_id').val()
@@ -392,7 +385,7 @@
   )
 
   # Al cambiar fecha de expulsión desplazamiento verificar que no esté repetida
-  $(document).on('changeDate', 'input[id^=caso_desplazamiento][id$=_fechaexpulsion]', (e) ->
+  $(document).on('change', 'input[id^=caso_desplazamiento][id$=_fechaexpulsion]', (e) ->
     idb = $(this).attr('id')
     fb = $(this).val()
     lcg = $('#desplazamiento .control-group[style!="display: none;"]')

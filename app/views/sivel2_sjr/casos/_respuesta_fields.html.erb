@@ -4,7 +4,7 @@
     <%= f.input :fechaatencion, 
       as: :string, 
       input_html: {
-        "data-behaviour" => "datepicker",
+        type: "date",
         "data-toggle" => 'tooltip',
         "title" => 'La primera debe corresponder a la fecha inicial de recepción del caso.  Por cada sesión de atención posterior agregue una nueva respuesta institucional pulsando el botón azul “Añadir Respuesta” y diligencie la fecha correspondiente'
       }

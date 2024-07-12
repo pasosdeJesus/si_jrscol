@@ -28,12 +28,6 @@ msip_ubicacionpre_expandible_registra(
 
 $(document).on('cocoon:after-insert', '#desplazamiento',
   function (e, desplazamiento) {
-    $('[data-behaviour~=datepicker]').datepicker({
-      format: 'yyyy-mm-dd',
-      autoclose: true,
-      todayHighlight: true,
-      language: 'es',
-    })
     window.Msip__Motor.configurarElementosTomSelect()
 
     // Poner ids para expandir/contraer ubicaciones

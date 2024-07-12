@@ -20,7 +20,7 @@ $(document).on('focusin',
 // Otros casos de cambio en listados de casos y asistencia ya
 // cubiertos en el motor de sivel2_sjr
 $(document).on('change', 
-  '[id=actividad_fecha_localizada]', 
+  '[id=actividad_fecha]', 
   function (e) {
     jrs_recalcula_poblacion()
   }
@@ -28,12 +28,6 @@ $(document).on('change',
 
 $(document).on('cocoon:after-insert', '#migracion', 
   function (e) {
-    $('[data-behaviour~=datepicker]').datepicker({
-      format: 'yyyy-mm-dd',
-      autoclose: true,
-      todayHighlight: true,
-      language: 'es',
-    })
     Msip__Motor.configurarElementosTomSelect()
 
     // Que el lugar de llegada en migración sea la ubicación de la oficina

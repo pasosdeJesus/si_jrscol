@@ -12,16 +12,16 @@
 
   <div class='row'> <!-- 1 -->
     <div class='col-sm-2'>
-      <label for="actividad_fecha_localizada">
-        <%= @actividad.class.human_attribute_name(:fecha_localizada) %>
+      <label for="actividad_fecha">
+        <%= @actividad.class.human_attribute_name(:fecha) %>
       </label>
     </div>
     <div class='col-sm-4'>
-      <%= f.input :fecha_localizada, 
+      <%= f.input :fecha, 
         label: false,
-        input_html: { "data-behaviour" => "datepicker" }, 
+        input_html: { type: "date" }, 
         class: 'form-control',
-        :as => :string %>
+        as: :string %>
     </div>
     <div class='col-sm-2'>
       <label for="actividad_oficina">

@@ -1,6 +1,6 @@
 <%= s.input :fechasalida, 
   input_html: { 
-    "data-behaviour" => "datepicker",
+    type: "date",
     value: s.object.fechasalida || @caso.fecha,
     "data-toggle" => 'tooltip',
     "title" => 'Si este refugio corresponde al refugio emblemático, esta fecha debe ser la misma registrada en datos básicos como "fecha de desplazamiento emblemático"'
@@ -22,7 +22,7 @@
   as: :string, 
   label: "Fecha de Llegada",
   input_html: {
-    "data-behaviour" => "datepicker",
+    type: "date",
     "data-toggle" => 'tooltip',
     "title" => 'Registrar la fecha de llegada del refugio emblemático'
   }

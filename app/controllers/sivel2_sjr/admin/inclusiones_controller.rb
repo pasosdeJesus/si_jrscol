@@ -27,6 +27,14 @@ module Sivel2Sjr
         ]
       end
 
+      def atributos_form
+        a = atributos_index - [:id]
+        return a.map do |e|
+          e == :fechacreacion_localizada ? :fechacreacion : 
+            (e == :habilitado ? :fechadeshabilitacion : e)
+        end
+      end
+
 
       # No confiar en parametros de internet, sino solo los de lista blanca
       def inclusion_params

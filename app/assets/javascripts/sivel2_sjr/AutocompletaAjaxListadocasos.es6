@@ -37,7 +37,7 @@ export default class Sivel2SjrAutocompletaAjaxListadocasos {
     root.sivel2_sjr_autocompleta_contacto_actividad_divcp = divcp
     ruta = "api/sivel2sjr/poblacion_sexo_rangoedadac"
     msip_ajax_recibe_json(root, ruta,
-      {caso_id: pl[1], fecha: $('#actividad_fecha_localizada').val() }, 
+      {caso_id: pl[1], fecha: $('#actividad_fecha').val() }, 
       sivel2_sjr_completa_rangosedadac)
     return
     window.Rails.ajax({

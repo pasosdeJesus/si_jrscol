@@ -139,8 +139,9 @@
   <div class="col-md-6">
     <%= f.input :fechadeclaracion,
       input_html: {
-      "data-behaviour" => "datepicker",
-      value: f.object.fechadeclaracion || '' },
+        type: "date",
+        value: f.object.fechadeclaracion || '' 
+      },
       as: :string %>
 
     <%= f.association :declaroante,

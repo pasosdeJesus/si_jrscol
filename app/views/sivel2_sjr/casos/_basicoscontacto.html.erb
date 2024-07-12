@@ -6,7 +6,7 @@
     <%= s.input :fecharec, 
       as: :string, 
       input_html: {
-        "data-behaviour" => "datepicker",
+        type: "date",
         "data-toggle" => 'tooltip',
         "title" => 'Fecha inicial de atención al caso'
       } %>
@@ -57,7 +57,7 @@
     <%= f.input :fecha,
       as: :string, 
       input_html: {
-        "data-behaviour" => "datepicker",
+        type: "date",
         "data-toggle" => 'tooltip',
         "title" => 'Fecha en la que el solicitante sufrió el ' + 
         'desplazamiento principal'

@@ -33,9 +33,6 @@ window.configuracionTomSelect = {
   }
 }
 
-import 'bootstrap-datepicker'
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js'
-
 var L = require('leaflet');
 var mc= require('leaflet.markercluster');
 

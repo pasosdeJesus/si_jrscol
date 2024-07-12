@@ -36,7 +36,7 @@ module Msip
         :id, 
         :habilitado
       ] + [
-        :fechadeshabilitacion_localizada
+        :fechadeshabilitacion
       ]
       a[a.index(:grupoper_id)] = :grupoper
       return a

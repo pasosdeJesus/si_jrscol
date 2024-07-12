@@ -34,7 +34,7 @@
             label: false,
             placeholder: 'Inicial',
             input_html: {
-              "data-behaviour" => "datepicker",
+              type: "date",
               value: (params[:reporterepetido] ? 
                       params[:reporterepetido][:fechaini] :
                       Msip::FormatoFechaHelper.fecha_estandar_local(fpred)
@@ -49,7 +49,7 @@
             label: false,
             placeholder: 'Final',
             input_html: {
-              "data-behaviour" => "datepicker",
+              type: "date",
               value: params[:reporterepetido] ? 
                 params[:reporterepetido][:fechafin] : ''
             }

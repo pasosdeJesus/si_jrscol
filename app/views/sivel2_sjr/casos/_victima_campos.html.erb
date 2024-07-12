@@ -63,7 +63,7 @@
           <div class="collapse multi-collapse" id="gestiondelmiembro-<%=fp.object.id%>">
             <%= fvictimasjr.input :fechadesagregacion, 
               input_html: { 
-                "data-behaviour" => "datepicker",
+                type: "date",
                 "data-toggle" => 'tooltip',
                 title: 'Sólo se llena si el beneficiario sale del grupo familiar y se registra la fecha en la que salió del grupo familiar (sin eliminar al beneficiario del grupo familiar que queda como información histórica)'
               },
