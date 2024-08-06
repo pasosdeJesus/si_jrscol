@@ -295,7 +295,6 @@ module Sivel2Gen
                 "array_to_string(array(SELECT DISTINCT actividad_id FROM cor1440_gen_asistencia WHERE persona_id=msip_persona.id), ';') AS actividades"
         ])
 
-      puts res.to_sql
       arr = ActiveRecord::Base.connection.select_all(res.to_sql)
       @validaciones << { 
         titulo: 'Beneficiarios con nombres o apellidos muy cortos',
@@ -314,6 +313,15 @@ module Sivel2Gen
       validar_sin_casosjr
       validar_sivel2_sjr
       validar_sin_derechovulnerado
+      val2 = []
+      Msip::AnexosController.validar_existencia_archivo(val2)
+      @validaciones << {
+        titulo: val2[0][:titulo],
+        encabezado: ["Ignorar"] + val2[0][:encabezado],
+        cuerpo: val2[0][:cuerpo].map { |f| 
+          [[0,0], [f[0], f[0]], [f[1], f[1]]]
+        }
+      }
       #validar_sivel2_gen
     end # def validar_interno
 
