@@ -283,7 +283,6 @@ module Msip
 
 
     def reporterepetidos
-
       @validaciones = []
       benef = Msip::Persona.all
       puts "OJO 1 benef.count=#{benef.count}"

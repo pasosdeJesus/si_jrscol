@@ -9,6 +9,7 @@ class Ability < Sivel2Gen::Ability
   ROLANALIPRENSA  = 7
   ROLOFICIALPF = 8
   ROLGESTIONHUMANA = 9
+  ROLLECTURA = 10
 
   ROLES = [
     ["Administrador", ROLADMIN],
@@ -19,7 +20,8 @@ class Ability < Sivel2Gen::Ability
     ["Sistematizador", ROLSIST],
     ["Analista de Prensa", ROLANALIPRENSA],
     ["Oficial de Proyectos", ROLOFICIALPF],
-    ["Gestión Humana", ROLGESTIONHUMANA]
+    ["Gestión Humana", ROLGESTIONHUMANA],
+    ["Solo lectura", ROLLECTURA]
   ]
 
   ROLES_CA = [
@@ -67,6 +69,9 @@ class Ability < Sivel2Gen::Ability
     'Ver todas las actividades y proyectos. ' +
     'Ver beneficiarios. ' +
     'Ver documentos en nube. ', # ROLGESTIONHUMANA
+    'Ver casos, actividades, proyectos y beneficiarios, ' + 
+    'todos los reportes de estos y ' +
+    'descargar anexos pero no escribir ', # ROLLECTURA
   ]
 
   BASICAS_PROPIAS =  [
@@ -1070,7 +1075,7 @@ class Ability < Sivel2Gen::Ability
 
       when Ability::ROLANALI
 
-        can :manage, Cor1440Gen::Actividad, 
+        can :manage, Cor1440Gen::Actividad,
           territorial_id: [1, usuario.territorial_id]
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
@@ -1187,6 +1192,37 @@ class Ability < Sivel2Gen::Ability
 
         can [:create, :read, :write, :update], Usuario
         cannot :crearadmin, Usuario
+
+      when Ability::ROLLECTURA
+        can :read, Cor1440Gen::Actividad
+        can :read, Cor1440Gen::Actividadpf
+        can :read, Cor1440Gen::Benefactividadpf
+        can :read, Cor1440Gen::Asistencia
+        can :read, Cor1440Gen::Mindicadorpf
+        can :read, Cor1440Gen::Proyectofinanciero
+
+        can :read, Heb412Gen::Doc
+        can :read, Heb412Gen::Plantilladoc
+        can :read, Heb412Gen::Plantillahcm
+        can :read, Heb412Gen::Plantillahcr
+
+        can :read, Mr519Gen::Formulario
+        can :read, Mr519Gen::Encuestausuario
+
+        can :read, Msip::Orgsocial
+        can [:read, :reporterepetidos], Msip::Persona
+        can :read, Msip::Sectororgsocial
+        can :read, Msip::Ability::lista_modelos_persona
+        can :read, ::Docidsecundario
+        can :read, Msip::Ubicacionpre
+
+        can :read, Sivel2Gen::Caso
+        can :read, [Sivel2Gen::Acto, ::Actonino]
+
+        can :read, Jos19::Consactividadcaso
+        can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
+
+        can [:read], Usuario
 
       when Ability::ROLADMIN, Ability::ROLDIR
         can :manage, Cor1440Gen::Actividad
