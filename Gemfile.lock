@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/kreeti/kt-paperclip.git
-  revision: 254b5fe1c4e93964265183e554bca57614e51f06
+  revision: f35ca58fad8ae4681b26240adc4eb43d2b0d767f
   specs:
     kt-paperclip (7.2.2)
       activemodel (>= 4.2.0)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 6a046cea9b3cbd6b0890a56812b3e1291512fae7
+  revision: 7a713d5f1121ec53e51da6e116558926e6f07af0
   branch: tomselect
   specs:
     msip (2.2.0.beta6)
@@ -328,6 +328,7 @@ GEM
     prawnto_2 (0.3.1)
       prawn (>= 1.0.0)
       rails (>= 3.2)
+    prism (0.30.0)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -517,6 +518,7 @@ DEPENDENCIES
   prawn
   prawn-table
   prawnto_2 (>= 0.3.1)
+  prism
   puma (>= 4.3.3)
   rack (~> 2)
   rails (~> 7.1)
