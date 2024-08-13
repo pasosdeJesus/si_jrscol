@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row filtro-fila">
+    <div class="offset-sm-0 col-sm-4 offset-md-1 col-md-1">
+      Motor:
+    </div>
+    <div class="offset-sm-0 col-sm-8">
+      <%= f.input :motor,
+        collection: DiccionariodatosController::MOTORES,
+        label: false,
+        include_blank: true,
+        selected: Msip::ModeloHelper.poromision(params, :motor)
+      %>
+    </div>
+  </div> <!-- row -->
+
+  <div class="row filtro-fila">
+    <div class="offset-md-2 col-md-3">
+      <%= f.button :submit, 'Consultar', class: 'btn btn-default',
+        'data-turbo' => false %>
+    </div>
+  </div>
+</div>

@@ -65,3 +65,4 @@ cobertura-unitarias/
 public/cobertura/
 test/puppeteer/node_modules/
 app/javascript/controllers/sivel2_gen
+.yardoc

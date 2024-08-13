@@ -1258,6 +1258,7 @@ class Ability < Sivel2Gen::Ability
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
         can :read, ::Consultabd
+        can :read, ::Diccionariodatos
         can :read, Msip::Bitacora
         can :manage, Usuario
 

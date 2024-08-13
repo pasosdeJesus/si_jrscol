@@ -1,0 +1,34 @@
+<% if @motor && @motor != "" %>
+  <p> <strong>Motor</strong> <%= @motor %> versión <%= @motor_version %></p>
+  <p> <strong>Descripción</strong>: <%= @motor_descripcion %></p>
+
+  <h2>Tablas principales</h2>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Llave primaria</th>
+        <th>Atributos importantes</th>
+      </tr>
+    </thead>
+    <% i = 1 %>
+    <tbody>
+      <% @motor_tablas_principales.each do |t| %>
+        <tr>
+          <td><%= i %></td>
+          <td><%= t[:nombre] %></td>
+          <td><%= t[:descripcion] %></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <% i += 1 %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h2>Relaciones entre tablas</h2>
+
+<% end %>

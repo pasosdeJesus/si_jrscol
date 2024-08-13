@@ -38,6 +38,7 @@ es:
     materialesperdidos: Bienes Materiales Perdidos 
     inmaterialesperdidos: Bienes Inmateriales Perdidos 
     protegiorupta:  Protegió predio en RUPTA
+    Diccionariodatos: Diccionario de Datos
     documentostierra:  Documentos sobre la tierra
     actividadarea: Subárea de Actividad
     actividadareas: Subáreas de Actividades
@@ -198,6 +199,9 @@ es:
       "depgifmm":
         Depgifmm: Departamento GIFMM
         Depsgifmm: Departamentos GIFMM
+      "diccionariodatos": 
+        diccionariodatos: Diccionario de Datos
+        Diccionariodatos: Diccionario de Datos
       "dificultadmigracion":
         Dificultadmigracion: Accidente o Dificultad en la migración
         Dificultadesmigracion: Accidentes o Dificultades en la migración

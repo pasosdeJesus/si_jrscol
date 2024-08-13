@@ -5454,60 +5454,6 @@ ALTER SEQUENCE public.msip_claverespaldo_id_seq OWNED BY public.msip_claverespal
 
 
 --
--- Name: msip_datosbio; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.msip_datosbio (
-    id bigint NOT NULL,
-    persona_id integer,
-    fecharecoleccion date,
-    res_departamento_id integer,
-    res_municipio_id integer,
-    veredares character varying(1000),
-    direccionres character varying(1000),
-    telefono character varying(100),
-    correo character varying(100),
-    otradiscapacidad character varying(1000),
-    cvulnerabilidad_id integer,
-    escolaridad_id integer,
-    anioaprobacion integer,
-    nivelsisben integer,
-    eps character varying(1000),
-    tipocotizante character varying(1),
-    sistemapensional boolean,
-    afiliadoarl boolean,
-    subsidioestado character varying,
-    personashogar integer,
-    menores12acargo integer,
-    mayores60acargo integer,
-    espaciopp boolean,
-    nombreespaciopp character varying(1000),
-    fechaingespaciopp date,
-    espaciopart_id integer,
-    discapacidad_id integer
-);
-
-
---
--- Name: msip_datosbio_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.msip_datosbio_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: msip_datosbio_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.msip_datosbio_id_seq OWNED BY public.msip_datosbio.id;
-
-
---
 -- Name: msip_departamento_histvigencia; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -10315,13 +10261,6 @@ ALTER TABLE ONLY public.msip_claverespaldo ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
--- Name: msip_datosbio id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.msip_datosbio ALTER COLUMN id SET DEFAULT nextval('public.msip_datosbio_id_seq'::regclass);
-
-
---
 -- Name: msip_departamento_histvigencia id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -11715,14 +11654,6 @@ ALTER TABLE ONLY public.msip_centropoblado
 
 ALTER TABLE ONLY public.msip_claverespaldo
     ADD CONSTRAINT msip_claverespaldo_pkey PRIMARY KEY (id);
-
-
---
--- Name: msip_datosbio msip_datosbio_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.msip_datosbio
-    ADD CONSTRAINT msip_datosbio_pkey PRIMARY KEY (id);
 
 
 --
@@ -14923,14 +14854,6 @@ ALTER TABLE ONLY public.heb412_gen_doc
 
 
 --
--- Name: msip_datosbio fk_rails_2e6e7eebbe; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.msip_datosbio
-    ADD CONSTRAINT fk_rails_2e6e7eebbe FOREIGN KEY (persona_id) REFERENCES public.msip_persona(id);
-
-
---
 -- Name: msip_ubicacionpre fk_rails_2e86701dfb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14992,14 +14915,6 @@ ALTER TABLE ONLY public.sivel2_sjr_oficina_proyectofinanciero
 
 ALTER TABLE ONLY public.sivel2_gen_anexo_victima
     ADD CONSTRAINT fk_rails_34cb4b0e2b FOREIGN KEY (tipoanexo_id) REFERENCES public.msip_tipoanexo(id);
-
-
---
--- Name: msip_datosbio fk_rails_3511516c50; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.msip_datosbio
-    ADD CONSTRAINT fk_rails_3511516c50 FOREIGN KEY (espaciopart_id) REFERENCES public.espaciopart(id);
 
 
 --
@@ -15200,14 +15115,6 @@ ALTER TABLE ONLY public.cor1440_gen_caracterizacionpf
 
 ALTER TABLE ONLY public.sivel2_sjr_progestado_derecho
     ADD CONSTRAINT fk_rails_5167158166 FOREIGN KEY (derecho_id) REFERENCES public.sivel2_sjr_derecho(id);
-
-
---
--- Name: msip_datosbio fk_rails_5220b09d71; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.msip_datosbio
-    ADD CONSTRAINT fk_rails_5220b09d71 FOREIGN KEY (discapacidad_id) REFERENCES public.discapacidad(id);
 
 
 --
@@ -15923,14 +15830,6 @@ ALTER TABLE ONLY public.sivel2_sjr_casosjr
 
 
 --
--- Name: msip_datosbio fk_rails_b4903b3da7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.msip_datosbio
-    ADD CONSTRAINT fk_rails_b4903b3da7 FOREIGN KEY (res_municipio_id) REFERENCES public.msip_municipio(id);
-
-
---
 -- Name: detallefinanciero fk_rails_b4cc8107b9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -16144,14 +16043,6 @@ ALTER TABLE ONLY public.cor1440_gen_actividadpf_mindicadorpf
 
 ALTER TABLE ONLY public.cor1440_gen_proyectofinanciero
     ADD CONSTRAINT fk_rails_d0ff83bfc6 FOREIGN KEY (tipomoneda_id) REFERENCES public.cor1440_gen_tipomoneda(id);
-
-
---
--- Name: msip_datosbio fk_rails_d18580755b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.msip_datosbio
-    ADD CONSTRAINT fk_rails_d18580755b FOREIGN KEY (res_departamento_id) REFERENCES public.msip_departamento(id);
 
 
 --
@@ -17161,6 +17052,7 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240813151536'),
 ('20240806082036'),
 ('20240715230510'),
 ('20240619170550'),

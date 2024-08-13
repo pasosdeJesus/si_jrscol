@@ -48,6 +48,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'declaracionruv', 'declaracionesruv'
   inflect.irregular 'derechorespuesta', 'derechorespuesta'
   inflect.irregular 'depgifmm', 'depsgifmm'
+  inflect.irregular 'diccionariodatos', 'diccionariodatos'
   inflect.irregular 'dificultadmigracion', 'dificultadesmigracion'
   inflect.irregular 'discapacidad', 'discapacidades'
   inflect.irregular 'docidsecundario', 'docsidsecundario'
