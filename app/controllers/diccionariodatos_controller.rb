@@ -29,12 +29,14 @@ class DiccionariodatosController < Heb412Gen::ModelosController
         MOTORES.include?(params[:filtro][:motor])
       @motor_nombre = params[:filtro][:motor]
       @motor = @motor_nombre.constantize
-      @motor_version = @motor::VERSION
+
       @motor_nombre_rayas = @motor_nombre.underscore
       @motor_dir = ""
       Gem::Specification.find_all.each do |s|
         if s.name == @motor_nombre_rayas
           @motor_dir = s.gem_dir
+          debugger
+          @motor_version = @motor::VERSION
           @motor_arch_desc = File.join(
             @motor_dir, "/lib/", @motor_nombre_rayas + ".rb")
           if !File.exist?(@motor_arch_desc)
