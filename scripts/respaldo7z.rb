@@ -24,9 +24,12 @@ if !ENV['MSIP_RUTA_VOLCADOS']
 end
 volcados=ENV['MSIP_RUTA_VOLCADOS']
 
+# El más reciente
+volcados=Dir.glob("#{volcados}/*sql").max_by {|f| File.mtime(f)}
+puts volcados
 
 # https://stackoverflow.com/questions/690151/getting-output-of-system-calls-in-ruby
-def syscall(*cmd)
+def ejecutar_en_shelll(*cmd)
   begin
     stdout, stderr, status = Open3.capture3(*cmd)
     status.success? && stdout.slice!(0..-(1 + $/.size)) # strip trailing eol
@@ -57,9 +60,9 @@ orden="doas 7z a -p#{clave} #{salida} #{volcados} #{anexos} #{nube} '-x!heb412/R
 puts "Ejecutando #{orden}"
 
 puts "Eliminando #{salida}"
-syscall('doas', 'rm', '-f', salida)
+ejecutar_en_shelll('doas', 'rm', '-f', salida)
 #puts "Comprimiendo en #{salida}"
-syscall('doas', '7z', 'a', "-p#{clave}", salida, 
+ejecutar_en_shelll('doas', '7z', 'a', "-p#{clave}", salida, 
         volcados, anexos, nube, "-x!heb412/Respaldos")
 #puts "Comprimiendo menos en #{salida}"
-#syscall('doas', '7z', 'a', "-p#{clave}", salida, nube, "-x!heb412/Respaldos")
+#ejecutar_en_shelll('doas', '7z', 'a', "-p#{clave}", salida, nube, "-x!heb412/Respaldos")
