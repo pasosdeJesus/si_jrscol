@@ -4,7 +4,6 @@ validaciones=[]
 Msip::AnexosController.validar_existencia_archivo(validaciones)
 
 validaciones[0][:cuerpo].each do |f| 
-  debugger
   if Sivel2Gen::AnexoCaso.where(anexo_id: f[0]).count > 0
     puts "Anexo a caso: #{Sivel2Gen::AnexoCaso.where(anexo_id: f[0]).take.caso_id}"
     Sivel2Gen::AnexoCaso.where(anexo_id: f[0]).delete_all
