@@ -317,9 +317,22 @@ module Sivel2Gen
       Msip::AnexosController.validar_existencia_archivo(val2)
       @validaciones << {
         titulo: val2[0][:titulo],
-        encabezado: ["Ignorar"] + val2[0][:encabezado],
+        encabezado: ["Caso", "Victima en caso", "Actividad", "Convenido financiado"] + val2[0][:encabezado],
         cuerpo: val2[0][:cuerpo].map { |f| 
-          [[0,0], [f[0], f[0]], [f[1], f[1]]]
+          caso = nil
+          actividad = nil
+          casovictima = nil
+          pf = nil
+          if Sivel2Gen::AnexoCaso.where(anexo_id: f[0]).count > 0
+            caso = Sivel2Gen::AnexoCaso.where(anexo_id: f[0]).take.caso_id
+          elsif Sivel2Gen::AnexoVictima.where(anexo_id: f[0]).count > 0
+            casovictima = Sivel2Gen::AnexoVictima.where(anexo_id: f[0]).take.victima.caso_id
+          elsif Cor1440Gen::ActividadAnexo.where(anexo_id: f[0]).count > 0
+            actividad = Cor1440Gen::ActividadAnexo.where(anexo_id: f[0]).take.actividad_id
+          elsif Cor1440Gen::AnexoProyectofinanciero.where(anexo_id: f[0]).count > 0
+            pf = Cor1440Gen::AnexoProyectofinanciero.where(anexo_id: f[0]).take.proyectofinanciero_id
+          end
+          [[caso,caso], [casovictima, casovictima], [actividad, actividad], [pf, pf], [f[0], f[0]], [f[1], f[1]]]
         }
       }
       #validar_sivel2_gen
