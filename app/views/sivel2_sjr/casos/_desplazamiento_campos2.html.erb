@@ -229,19 +229,6 @@
 
 <!-- %= f.input :documentostierra, as: :text %-->
 
-<div class="row">
-  <div class="col-md-1">
-  </div>
-  <div class="col-md-11">
-    <a data-bs-toggle="collapse" href='#anexosdesplazamiento'>
-      <h5>ANEXOS DEL DESPLAZAMIENTO</h5>
-    </a>
-    <div class="collapse multi-collapse" id="anexosdesplazamiento">
-      <%= render partial: 'anexo_desplazamiento', locals: {f: f} %>
-    </div>
-  </div>
-</div>
-
 <!-- %= f.association :categoria,
   collection: Sivel2Gen::Categoria.habilitados.
     where("tipocat <> 'I'"),

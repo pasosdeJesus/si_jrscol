@@ -26,15 +26,6 @@ module Sivel2Sjr
       class_name: 'Declaracionruv', 
       foreign_key: "declaracionruv_id", 
       optional: true
-    has_many :anexo_desplazamiento, foreign_key: 'desplazamiento_id', 
-      validate: true, dependent: :destroy, 
-      class_name: 'Sivel2Sjr::AnexoDesplazamiento',
-      inverse_of: :desplazamiento
-    accepts_nested_attributes_for :anexo_desplazamiento, allow_destroy: true, 
-      reject_if: :all_blank
-    has_many :msip_anexo, :through => :anexo_desplazamiento, 
-      class_name: 'Msip::Anexo'
-    accepts_nested_attributes_for :msip_anexo,  reject_if: :all_blank
 
     validates :tipodesp, presence: true
 
