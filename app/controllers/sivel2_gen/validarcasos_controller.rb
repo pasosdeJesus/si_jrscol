@@ -315,6 +315,9 @@ module Sivel2Gen
       validar_sin_derechovulnerado
       val2 = []
       Msip::AnexosController.validar_existencia_archivo(val2)
+      if val2.nil? || val2[0].nil?
+        return
+      end
       @validaciones << {
         titulo: val2[0][:titulo],
         encabezado: ["Caso", "Victima en caso", "Actividad", "Convenido financiado"] + val2[0][:encabezado],
@@ -335,7 +338,6 @@ module Sivel2Gen
           [[caso,caso], [casovictima, casovictima], [actividad, actividad], [pf, pf], [f[0], f[0]], [f[1], f[1]]]
         }
       }
-      #validar_sivel2_gen
     end # def validar_interno
 
   end
