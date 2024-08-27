@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 79269569a1d9655435ec623c3835c18f2e15c3b5
+  revision: 4618f90cd69815dea904c520bd2a3b116e0db751
   branch: tomselect
   specs:
     cor1440_gen (2.2.0.beta6)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: b192dc79480343ffc7f72f2ea87c2e32463dcff8
+  revision: ea8e90ec9ff537affc7aade3ba5b33d5247dd439
   branch: tomselect
   specs:
     heb412_gen (2.2.0.beta6)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 2815e54672212444c4c855450b081c1f740e7d3a
+  revision: b14b0d2f9e2812351457c4510a05589024087143
   branch: tomselect
   specs:
     jos19 (2.2.0.beta6)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 68847d76816524c50244e379a4d123e3fd6c4855
+  revision: 2770039e3eb438ab92c69abc187aa147e52319de
   branch: tomselect
   specs:
     mr519_gen (2.2.0.beta6)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: e6fcfcf5ed8664e2d9b55943918db3474b053b2f
+  revision: 43e85f2a0415a379b743a433fcbb903ac7958eae
   branch: tomselect
   specs:
     msip (2.2.0.beta6)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 81ecf44de22f2cf52154b5acc30e45db0fdcf3cf
+  revision: 2228ad433c168df713359d82611b414310e48adf
   branch: tomselect
   specs:
     sivel2_gen (2.2.0.beta6)
@@ -530,7 +530,7 @@ DEPENDENCIES
   prism
   puma (>= 4.3.3)
   rack (~> 2)
-  rails (~> 7.1)
+  rails (~> 7.2)
   rails-controller-testing
   rails-erd
   rails-i18n

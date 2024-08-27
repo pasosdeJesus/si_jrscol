@@ -51,7 +51,7 @@ gem "prism"
 
 gem "rack", "~> 2"
 
-gem "rails", "~> 7.1"
+gem "rails", "~> 7.2"
 
 gem "rails-i18n"
 
