@@ -20,15 +20,6 @@ import {
         'aria/Administrar'
       ],
       [
-        '#navbarDropdownAdministrar'
-      ],
-      [
-        'xpath///*[@id="navbarDropdownAdministrar"]'
-      ],
-      [
-        'pierce/#navbarDropdownAdministrar'
-      ],
-      [
         'text/Administrar'
       ]
     ],
@@ -43,20 +34,11 @@ import {
         'aria/Tablas básicas'
       ],
       [
-        'li:nth-of-type(4) > a'
-      ],
-      [
-        'xpath///*[@id="navbarSupportedContent"]/ul[2]/li[2]/ul/li[4]/a'
-      ],
-      [
-        'pierce/li:nth-of-type(4) > a'
-      ],
-      [
         'text/Tablas básicas'
       ]
     ],
-    offsetY: 8,
-    offsetX: 78.453125,
+    offsetY: 5,
+    offsetX: 55.453125,
   });
   await runner.runStep({
     type: 'click',
@@ -64,15 +46,6 @@ import {
     selectors: [
       [
         'aria/Departamentos/Estados'
-      ],
-      [
-        '#div_contenido li:nth-of-type(2) > a'
-      ],
-      [
-        'xpath///*[@id="div_contenido"]/article/ul/li[2]/a'
-      ],
-      [
-        'pierce/#div_contenido li:nth-of-type(2) > a'
       ],
       [
         'text/Departamentos/Estados'
@@ -491,12 +464,7 @@ import {
     target: 'main'
   });
 
-  {
-    const targetPage = page
-    const promises = []; 
-    promises.push(targetPage.waitForNavigation())
-
-    targetPage.on('dialog', async dialog => {
+    page.on('dialog', async dialog => {
       console.log(dialog.message())
       await dialog.accept(); //dismiss()
     })
@@ -509,22 +477,13 @@ import {
           'aria/Eliminar'
         ],
         [
-          'a.btn-danger'
-        ],
-        [
-          'xpath///*[@id="div_contenido"]/div[4]/a[3]'
-        ],
-        [
-          'pierce/a.btn-danger'
-        ],
-        [
           'text/Eliminar'
         ]
       ],
       offsetY: 30,
       offsetX: 40.75,
     });
-  }
+
 
   await runner.runStep({
     type: 'waitForElement',

@@ -43,15 +43,6 @@ import {
         'aria/Tablas básicas'
       ],
       [
-        'li:nth-of-type(4) > a'
-      ],
-      [
-        'xpath///*[@id="navbarSupportedContent"]/ul[2]/li[2]/ul/li[4]/a'
-      ],
-      [
-        'pierce/li:nth-of-type(4) > a'
-      ],
-      [
         'text/Tablas básicas'
       ]
     ],
