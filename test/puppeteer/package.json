@@ -7,7 +7,7 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
-    "@pasosdeJesus/pruebas_puppeteer": "https://gitpkg.now.sh/pasosdeJesus/msip/pruebas_puppeteer?main",
+    "@pasosdeJesus/pruebas_puppeteer": "https://gitpkg.now.sh/pasosdeJesus/msip/pruebas_puppeteer?tomselect",
     "dotenv": "^16.3.1",
     "puppeteer-core": "^20.5.0"
   }

@@ -8,7 +8,14 @@ if (test ! -d test/puppeteer) then {
   exit 0;
 } fi;
 
-export IPDES=127.0.0.1
+if (test "$IPDES" = "") then {
+  export IPDES=127.0.0.1
+} fi;
+IPDESRES=$IPDES
+if (test "$PROTDES" = "") then {
+  export PROTDES=http
+} fi;
+
 if (test "$RAILS_ENV" = "") then {
 # Si ejecutamos en RAILS_ENV=test RUTA_RELATIVA será / por
 # https://github.com/rails/rails/issues/49688
@@ -20,13 +27,9 @@ if (test "$CONFIG_HOSTS" = "") then {
 } fi;
 
 . ./.env
+IPDES=$IPDESRES
 if (test "$PUERTOPRU" = "") then {
   export PUERTOPRU=33001;
-} fi;
-fstat | grep ":${PUERTOPRU}" 
-if (test "$?" = "0") then {
-  echo "Ya está corriendo un proceso en el puerto $PUERTOPRU, detengalo antes";
-  exit 1;
 } fi;
 if (test ! -f .env) then {
   echo "Falta .env"
@@ -38,6 +41,12 @@ echo "IPDES=$IPDES"
 echo "PUERTODES=$PUERTODES"
 
 if (test "$IPDES" = "127.0.0.1") then {
+  fstat | grep ":${PUERTOPRU}" 
+  if (test "$?" = "0") then {
+    echo "Ya está corriendo un proceso en el puerto $PUERTOPRU, detengalo antes";
+    exit 1;
+  } fi;
+
   echo "=== Deteniendo"
   bin/detiene
 
@@ -58,7 +67,7 @@ if (test "$IPDES" = "127.0.0.1") then {
   echo "CORRE_PID=$CORRE_PID"
 } fi;
 
-if (test "$CORRE_PID" = "") then {
+if (test "$CORRE_PID" = "" -a "$IPDES" = "127.0.0.1") then {
   echo "No pudo determinarse PID del proceso con el lado del servidor"
   exit 1;
 } fi;
@@ -76,7 +85,7 @@ if (test "$clrps" != "1") then {
 } fi;
 
 echo "***"
-w3m -dump http://${IPDES}:${PUERTODES}/${RUTA_RELATIVA} | tee /tmp/salw3m
+w3m -dump ${PROTDES}://${IPDES}:${PUERTODES}/${RUTA_RELATIVA} | tee /tmp/salw3m
 if (test "$?" != "0" -o  ! -s /tmp/salw3m) then {
   exit 1;
 } fi;
