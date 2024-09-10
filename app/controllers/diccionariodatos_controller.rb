@@ -12,18 +12,22 @@ class DiccionariodatosController < Heb412Gen::ModelosController
   } - ["all"]
 
   TABLAS_NO_USADAS_EN_JRSCOL = [
-    'msip_centropoblado_histvigencia',
-    'msip_departamento_histvigencia',
-    'msip_etiqueta_municipio',
-    'msip_fuenteprensa',
-    'msip_grupo',
-    'msip_grupo_usuario',
-    'msip_municipio_histvigencia',
-    'msip_orgsocial_persona',
-    'msip_pais_histvigencia',
-    'msip_persona_trelacion',
-    'msip_tipoorg',
-    'msip_trelacion' ,
+    "mr519_gen_encuestapersona",
+    "mr519_gen_encuestausuario",
+    "mr519_gen_planencuesta",
+    "msip_centropoblado_histvigencia",
+    "msip_departamento_histvigencia",
+    "msip_etiqueta_municipio",
+    "msip_fuenteprensa",
+    "msip_grupo",
+    "msip_grupo_usuario",
+    "msip_municipio_histvigencia",
+    "msip_orgsocial_persona",
+    "msip_pais_histvigencia",
+    "msip_params_vistam",
+    "msip_persona_trelacion",
+    "msip_tipoorg",
+    "msip_trelacion" ,
   ]
 
 
