@@ -1,6 +1,8 @@
 require 'sivel2_gen/concerns/models/anexo'
 
 module Msip
+
+  # Tipo de anexo (e.g CONSENTIMIENTO DATOS, ANEXO DE VÍCTIMA, OTROS)
   class Tipoanexo < ActiveRecord::Base
     include Msip::Basica
     
