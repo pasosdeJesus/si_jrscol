@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 4618f90cd69815dea904c520bd2a3b116e0db751
+  revision: a40ef016112a4f6a32b602472add5e50d49213eb
   branch: tomselect
   specs:
     cor1440_gen (2.2.0.beta6)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: ea8e90ec9ff537affc7aade3ba5b33d5247dd439
+  revision: b10487e66d5b1abc78018362298abd0abd4cca0c
   branch: tomselect
   specs:
     heb412_gen (2.2.0.beta6)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 2770039e3eb438ab92c69abc187aa147e52319de
+  revision: 6b4c3e66c906768c9c1a05ef7079219cfa556eb8
   branch: tomselect
   specs:
     mr519_gen (2.2.0.beta6)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 43e85f2a0415a379b743a433fcbb903ac7958eae
+  revision: c593e0a66978fb05f51946100e84aa1ed10ccb37
   branch: tomselect
   specs:
     msip (2.2.0.beta6)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 2228ad433c168df713359d82611b414310e48adf
+  revision: 71dd3f8b380427868b9b380790d2a7d7fd649a1b
   branch: tomselect
   specs:
     sivel2_gen (2.2.0.beta6)
@@ -267,7 +267,7 @@ GEM
       railties (>= 6.0.0)
     kgio (2.11.4)
     libxml-ruby (5.0.3)
-    logger (1.6.0)
+    logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -280,12 +280,12 @@ GEM
     matrix (0.4.2)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0820)
+    mime-types-data (3.2024.0903)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
     minitest (5.25.1)
     msgpack (1.7.2)
-    net-imap (0.4.14)
+    net-imap (0.4.16)
       date
       net-protocol
     net-pop (0.1.2)
@@ -317,7 +317,7 @@ GEM
     orm_adapter (0.5.0)
     parslet (2.0.0)
     pdf-core (0.10.0)
-    pg (1.5.7)
+    pg (1.5.8)
     prawn (2.5.0)
       matrix (~> 0.4)
       pdf-core (~> 0.10.0)
@@ -327,7 +327,7 @@ GEM
     prawnto_2 (0.3.1)
       prawn (>= 1.0.0)
       rails (>= 3.2)
-    prism (0.30.0)
+    prism (1.0.0)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -389,13 +389,12 @@ GEM
       psych (>= 4.0.0)
     redcarpet (3.6.0)
     regexp_parser (2.9.2)
-    reline (0.5.9)
+    reline (0.5.10)
       io-console (~> 0.5)
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.3.6)
-      strscan
+    rexml (3.3.7)
     rspreadsheet (0.5.3)
       andand (>= 1.3)
       rubyzip (>= 1.3)
@@ -411,12 +410,6 @@ GEM
       sprockets-rails
       tilt
     securerandom (0.3.1)
-    selenium-webdriver (4.23.0)
-      base64 (~> 0.2)
-      logger (~> 1.4)
-      rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
-      websocket (~> 1.0)
     simple_form (5.3.1)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -424,7 +417,7 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
-    simplecov-html (0.12.3)
+    simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
@@ -438,10 +431,9 @@ GEM
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.1)
-    strscan (3.1.0)
     terrapin (1.0.1)
       climate_control
-    thor (1.3.1)
+    thor (1.3.2)
     tilt (2.4.0)
     timeout (0.4.1)
     ttfunk (1.8.0)
@@ -468,14 +460,13 @@ GEM
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
     webrick (1.8.1)
-    websocket (1.2.11)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.17)
+    zeitwerk (2.6.18)
 
 PLATFORMS
   aarch64-linux
@@ -538,7 +529,6 @@ DEPENDENCIES
   rspreadsheet
   rubyzip (>= 2.0.0)
   sassc-rails
-  selenium-webdriver
   simple_form
   simplecov
   sivel2_gen!

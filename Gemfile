@@ -137,8 +137,6 @@ group :test do
 
   gem "rails-controller-testing"
 
-  gem "selenium-webdriver" # Pruebas de regresión que no requieren javascript
-
   gem "simplecov"
 
 end
