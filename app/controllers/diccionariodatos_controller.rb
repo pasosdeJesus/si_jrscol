@@ -6,14 +6,54 @@ class DiccionariodatosController < Heb412Gen::ModelosController
     '::Diccionariodatos'
   end
 
-  MOTORES=[
-    "Msip",
-    "Mr519Gen",
-    "Heb412Gen",
-    "Cor1440Gen",
-    "Sivel2Gen",
-    "SiJrscol"
+  # En orden de apilamiento
+  MOTORES = Rails.configuration.railties_order.map {|m| 
+    m.to_s == "main_app" ? "SI-JRSCOL" : m.to_s.split(':')[0]
+  } - ["all"]
+
+  TABLAS_NO_USADAS_EN_JRSCOL = [
+    'msip_centropoblado_histvigencia',
+    'msip_departamento_histvigencia',
+    'msip_etiqueta_municipio',
+    'msip_fuenteprensa',
+    'msip_grupo',
+    'msip_grupo_usuario',
+    'msip_municipio_histvigencia',
+    'msip_orgsocial_persona',
+    'msip_pais_histvigencia',
+    'msip_persona_trelacion',
+    'msip_tipoorg',
+    'msip_trelacion' ,
   ]
+
+
+  def extraer_doc_de_clase_en_modulo(arch)
+    pr = Prism.parse_file(arch)
+    pr.attach_comments!
+    cinst = pr.value.statements.body
+
+    # Buscamos modulo
+    m = 0
+    while m < cinst.count && cinst[m].type != :module_node
+      m += 1
+    end
+    if m >= cinst.count
+      return "* No se encontró módulo en #{arch}"
+    end
+
+    # Extraemos documentación de la clase
+    b = cinst[m].slice
+    l = 1
+    desc = ""
+    while l < b.lines.count && !(b.lines[l] =~ /^[\s]*class/)
+      if b.lines[l] =~ /^[\s]*# ?(.*)/
+          desc += " " + $1
+      end
+      l += 1
+    end
+    return desc
+  end
+
 
   def index
     authorize! :index, ::Diccionariodatos
@@ -23,16 +63,22 @@ class DiccionariodatosController < Heb412Gen::ModelosController
     @motor_nombre_rayas = ""
     @motor_arch_desc = ""
     @motor_descripcion = ""
-    @motor_tablas_principales = []
+    @motor_tablas = []
     @motor_relaciones = []
     if params && params[:filtro] && params[:filtro][:motor] && 
         MOTORES.include?(params[:filtro][:motor])
       @motor_nombre = params[:filtro][:motor]
       @motor = @motor_nombre.constantize
-
       @motor_nombre_rayas = @motor_nombre.underscore
-      @motor_dir = ""
+
+      # diccionario, llave será motor, valor será directorio del motor
+      @motores_dir = {"SI-JRSCOL" => "."}
       Gem::Specification.find_all.each do |s|
+        if MOTORES.include?(s.name.camelize)
+          @motores_dir[s.name.camelize] = s.gem_dir
+        end
+
+        # Llenamos descripción y otros datos del motor elegido
         if s.name == @motor_nombre_rayas
           @motor_dir = s.gem_dir
           @motor_version = s.version.to_s
@@ -54,49 +100,66 @@ class DiccionariodatosController < Heb412Gen::ModelosController
           end
         end
       end
-      @motor_tablas_principales = 
-        ActiveRecord::Base.connection.tables.select {|n|
-          n.start_with?(@motor_nombre_rayas + "_") &&
-            ActiveRecord::Base.connection.table_exists?(n)
-        }.sort.map {|t|
-          ncorto=t[(@motor_nombre_rayas.length+1)..-1]
-          arch = File.join(
-            @motor_dir, "/app/models/#{@motor_nombre_rayas}/#{ncorto}.rb"
+
+      # Iteramos sobre las tablas del motor.
+      @motor_tablas = []
+      ActiveRecord::Base.connection.tables.select {|n|
+        n.start_with?(@motor_nombre_rayas + "_") &&
+          ActiveRecord::Base.connection.table_exists?(n) &&
+          !TABLAS_NO_USADAS_EN_JRSCOL.include?(n)
+      }.sort.each do |t|
+        ncorto=t[(@motor_nombre_rayas.length+1)..-1]
+        #if ncorto == 'campo'
+        #  debugger
+        #end
+        postarch = "#{@motor_nombre_rayas}/#{ncorto}.rb"
+        # Buscar descripción no vacía que esté más arriba en la pila de 
+        # motores
+        arch = ""
+        clase = ""
+        desc = ""
+        llave = ""
+        atributos = []
+        registros = 0
+        MOTORES.each do |m|
+          parch = File.join(
+            @motores_dir[m], "/app/models/#{postarch}"
           )
-          if !File.exist?(arch)
-            arch = File.join(
-              ".", "/app/models/#{@motor_nombre_rayas}/#{ncorto}.rb"
-            )
-            if !File.exist?(arch)
-              raise "No existe archivo #{arch}"
+          if File.exist?(parch)
+            arch = parch
+            desc = extraer_doc_de_clase_en_modulo arch
+            if desc != ""
+              clase = (@motor.to_s+"::"+ncorto.camelize).constantize
+              llave = clase.columns.map(&:name).include?("id") ? "id" : ""
+              atributos = clase.columns.map(&:name) - ["id"]
+              registros = clase.all.count
+              break
             end
           end
-          pr = Prism.parse_file(arch)
-          pr.attach_comments!
-          cinst = pr.value.statements.body
-
-          # Buscamos modulo
-          m = 0
-          while m < cinst.count && cinst[m].type != :module_node
-            m += 1
-          end
-          if m >= cinst.count
-            raise "No se encontró módulo en #{arch}"
-          end
-
-          # Extraemos documentación de la clase
-          b = cinst[m].slice
-          l = 1
-          desc = ""
-          while l < b.lines.count && !(b.lines[l] =~ /^[\s]*class/)
-            if b.lines[l] =~ /^[\s]*# ?(.*)/
-              desc += " " + $1
-            end
-            l += 1
-          end
-          { nombre: t, descripcion: desc }
-        }
-
+        end
+        if arch == ""
+          desc = "* No existe archivo para #{postarch}"
+        elsif desc == ""
+          desc = "* No se encontró descripción para #{postarch}"
+        end
+        if desc.strip[0..7].downcase == "relación"
+          @motor_relaciones << { 
+            nombre: t, 
+            descripcion: desc, 
+            llave_primaria: llave,
+            atributos: atributos,
+            registros: registros
+          }
+        else
+          @motor_tablas << { 
+            nombre: t, 
+            descripcion: desc, 
+            llave_primaria: llave,
+            atributos: atributos,
+            registros: registros
+          }
+        end
+      end
     end
 
     index_msip(@registros)

@@ -1,8 +1,8 @@
 <% if @motor && @motor != "" %>
-  <p> <strong>Motor</strong> <%= @motor %> versión <%= @motor_version %></p>
-  <p> <strong>Descripción</strong>: <%= @motor_descripcion %></p>
+  <p> <strong>Motor:</strong> <%= @motor %> <strong>Versión:</strong> <%= @motor_version %></p>
+  <p> <strong>Descripción:</strong> <%= @motor_descripcion %></p>
 
-  <h2>Tablas principales</h2>
+  <h2>Tablas</h2>
 
   <table class="table table-striped">
     <thead>
@@ -11,18 +11,20 @@
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Llave primaria</th>
-        <th>Atributos importantes</th>
+        <th>Atributos</th>
+        <th>Registros</th>
       </tr>
     </thead>
     <% i = 1 %>
     <tbody>
-      <% @motor_tablas_principales.each do |t| %>
+      <% @motor_tablas.each do |t| %>
         <tr>
           <td><%= i %></td>
           <td><%= t[:nombre] %></td>
           <td><%= t[:descripcion] %></td>
-          <td></td>
-          <td></td>
+          <td><%= t[:llave_primaria] %></td>
+          <td><%= t[:atributos].join(", ") %></td>
+          <td><%= t[:registros] %></td>
         </tr>
         <% i += 1 %>
       <% end %>
@@ -30,5 +32,32 @@
   </table>
 
   <h2>Relaciones entre tablas</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Llave primaria</th>
+        <th>Atributos</th>
+        <th>Registros</th>
+      </tr>
+    </thead>
+    <% i = 1 %>
+    <tbody>
+      <% @motor_relaciones.each do |t| %>
+        <tr>
+          <td><%= i %></td>
+          <td><%= t[:nombre] %></td>
+          <td><%= t[:descripcion] %></td>
+          <td><%= t[:llave_primaria] %></td>
+          <td><%= t[:atributos].join(", ") %></td>
+          <td><%= t[:registros] %></td>
+        </tr>
+        <% i += 1 %>
+      <% end %>
+    </tbody>
+  </table>
+
 
 <% end %>
