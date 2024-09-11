@@ -119,8 +119,12 @@ Rails.application.routes.draw do
   get '/consultabd' => 'consultabd#index',
     as: :consultabd
   
-  get '/diccionariodatos' => 'diccionariodatos#index',
+  get '/diccionariodatos' => 'diccionariodatos#presentar',
     as: :diccionariodatos
+  post "/diccionariodatos" => 'diccionariodatos#presentar', 
+    as: :diccionariodatos_enviar
+
+
 
   get '/personas_casos' => 'sivel2_sjr/casos#personas_casos',
     as: :personas_casos

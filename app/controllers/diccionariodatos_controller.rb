@@ -1,13 +1,9 @@
-class DiccionariodatosController < Heb412Gen::ModelosController
+class DiccionariodatosController < ApplicationController
 
   load_and_authorize_resource class: ::Diccionariodatos
 
-  def clase
-    '::Diccionariodatos'
-  end
-
   # En orden de apilamiento
-  MOTORES = Rails.configuration.railties_order.map {|m| 
+  MOTORES = Rails.configuration.railties_order.map {|m|
     m.to_s == "main_app" ? "SI-JRSCOL" : m.to_s.split(':')[0]
   } - ["all"]
 
@@ -59,8 +55,8 @@ class DiccionariodatosController < Heb412Gen::ModelosController
   end
 
 
-  def index
-    authorize! :index, ::Diccionariodatos
+  def presentar
+    authorize! :read, ::Diccionariodatos
     @registros = nil
     @motor_nombre = ""
     @motor_version = ""
@@ -69,9 +65,11 @@ class DiccionariodatosController < Heb412Gen::ModelosController
     @motor_descripcion = ""
     @motor_tablas = []
     @motor_relaciones = []
-    if params && params[:filtro] && params[:filtro][:motor] && 
-        MOTORES.include?(params[:filtro][:motor])
-      @motor_nombre = params[:filtro][:motor]
+    if params && params[:diccionariodatos] &&
+        params[:diccionariodatos][:motor] &&
+        MOTORES.include?(params[:diccionariodatos][:motor])
+
+      @motor_nombre = params[:diccionariodatos][:motor]
       @motor = @motor_nombre.constantize
       @motor_nombre_rayas = @motor_nombre.underscore
 
@@ -117,7 +115,7 @@ class DiccionariodatosController < Heb412Gen::ModelosController
         #  debugger
         #end
         postarch = "#{@motor_nombre_rayas}/#{ncorto}.rb"
-        # Buscar descripción no vacía que esté más arriba en la pila de 
+        # Buscar descripción no vacía que esté más arriba en la pila de
         # motores
         arch = ""
         clase = ""
@@ -147,17 +145,17 @@ class DiccionariodatosController < Heb412Gen::ModelosController
           desc = "* No se encontró descripción para #{postarch}"
         end
         if desc.strip[0..7].downcase == "relación"
-          @motor_relaciones << { 
-            nombre: t, 
-            descripcion: desc, 
+          @motor_relaciones << {
+            nombre: t,
+            descripcion: desc,
             llave_primaria: llave,
             atributos: atributos,
             registros: registros
           }
         else
-          @motor_tablas << { 
-            nombre: t, 
-            descripcion: desc, 
+          @motor_tablas << {
+            nombre: t,
+            descripcion: desc,
             llave_primaria: llave,
             atributos: atributos,
             registros: registros
@@ -166,88 +164,120 @@ class DiccionariodatosController < Heb412Gen::ModelosController
       end
     end
 
-    index_msip(@registros)
+    if params["exportar"]
+      narch = "diccionariodatos-#{@motor}-#{Time.now.strftime "%Y%m%d%H%M%S"}.xlsx"
+      n = self.exportar_excel(narch)
+      send_file(
+        n,
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        disposition: "attachment",
+        filename: narch
+      )
+    else
+      respond_to do |format|
+        format.html {
+          render 'diccionariodatos/presentar',
+          layout: 'application'
+        }
+        format.json { head :no_content }
+        format.js   { head :no_content }
+      end
+    end
   end
 
-  def vistas_manejadas
-    ['Diccionariodatos']
-  end
 
-  def self.vista_consultabd_excel(
-    plant, registros, narch, parsimp, extension, params
-  )
-
-    ruta = File.join(Rails.application.config.x.heb412_ruta, 
-                     plant.ruta).to_s
-
+  def exportar_excel(narch)
     p = Axlsx::Package.new
     lt = p.workbook
     e = lt.styles
 
     estilo_base = e.add_style sz: 12
     estilo_titulo = e.add_style sz: 20
-    estilo_encabezado = e.add_style sz: 12, b: true
+    estilo_enc1 = e.add_style sz: 16
+    estilo_encabezado = e.add_style sz: 12, b: true, 
+      alignment: { wrap_text: true }
+    estilo_varias_lineas = e.add_style sz: 12, alignment: { wrap_text: true }
     #, fg_color: 'FF0000', bg_color: '00FF00'
 
     lt.add_worksheet do |hoja|
-      hoja.add_row ['Reporte Consultabd'], 
+      hoja.add_row ['Diccionario de Datos'],
         height: 30, style: estilo_titulo
+      hoja.merge_cells("A1:E1")
+
       hoja.add_row []
-      hoja.add_row ['Consulta', params['filtro']['consultasql']], 
+      hoja.add_row ["Motor:", @motor],
         style: [estilo_encabezado, estilo_base]
+      hoja.add_row ["Versión:", @motor_version ],
+        style: [estilo_encabezado, estilo_base]
+      hoja.add_row ["Hora:", Time.now.to_s ],
+        style: [estilo_encabezado, estilo_base]
+
       hoja.add_row []
 
-      l = Consultabd.columns.map {|r| r.name.to_s }
-      numfilas = l.length
-      colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numfilas)
+      hoja.add_row ['Tablas'],
+        height: 30, style: estilo_enc1
+      hoja.merge_cells("A7:E7")
 
-      hoja.merge_cells("A1:#{colfin}1")
+      numfilas = 6
+      hoja.add_row [ "Item", 
+                     "Nombre", 
+                     "Descripción", 
+                     "Llave primaria", 
+                     "Atributos" ], 
+                     style: [estilo_encabezado] * numfilas
 
-      hoja.add_row l, style: [estilo_encabezado] * numfilas
-      registros.each do |reg|
-        l2 = l.map {|c| reg[c]}
-        hoja.add_row l2, style: estilo_base
+      item = 1
+      @motor_tablas.each do |t|
+        l2 = [
+          item,
+          t[:nombre],
+          t[:descripcion],
+          t[:llave_primaria],
+          t[:atributos].join(",")
+        ]
+        hoja.add_row l2, style: estilo_varias_lineas 
+        item += 1
       end
-      anchos = [20] * numfilas
+
+      hoja.add_row []
+
+      hoja.add_row ['Relaciones'],
+        height: 30, style: estilo_enc1
+      hoja.merge_cells("A7:E7")
+
+
+      anchos = [10, 20, 80, 10, 80]
       hoja.column_widths(*anchos)
-      ultf = 0
-      hoja.rows.last.tap do |row|
-        ultf = row.row_index
-      end
-      if ultf>0
-        l = [nil] * numfilas
-        hoja.add_row l
-      end
+      if false
 
+        hoja.add_row l, style: [estilo_encabezado] * numfilas
+        registros.each do |reg|
+        end
+        anchos = [20] * numfilas
+        hoja.column_widths(*anchos)
+        ultf = 0
+        hoja.rows.last.tap do |row|
+          ultf = row.row_index
+        end
+        if ultf>0
+          l = [nil] * numfilas
+          hoja.add_row l
+        end
+
+      end
     end
 
     n=File.join('/tmp', File.basename(narch + ".xlsx"))
     p.serialize n
-    FileUtils.rm(narch + "#{extension}-0")
-
     return n
+
   end
 
 
-  def self.vista_listado(plant, ids, modelo, narch, parsimp, extension,
-                         campoid = :id, params)
-    registros = ::Consultabd.all.where(numfila: ids)
-    if plant.id == 57
-      r = self.vista_consultabd_excel(
-        plant, registros, narch, parsimp, extension, params
-      )
-      return r
-    else
-      if self.respond_to?(:index_reordenar)
-        registros = self.index_reordenar(registros)
-      end
-      return registros
-    end
-  end
 
   def diccionariodatos_params
     params.require(:diccionariodatos).permit(
-      :modulo
+      :motor
     )
   end
 

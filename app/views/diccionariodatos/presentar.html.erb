@@ -1,0 +1,138 @@
+<div class="page-header">
+  <h1>Diccionario de datos</h1>
+</div>
+
+<%= simple_form_for ::Diccionariodatos.new, 
+  :url => main_app.diccionariodatos_path,
+  :html => { :class => 'form-horizontal' } do |f| 
+%>
+  <div data-role="content" class="form-inputs">
+    <div id="errores">
+      <% if f.object.errors.any? %>
+        <div id="error_explanation">
+          <div class="alert alert-error">
+            El formulario tiene 
+            <%= pluralize(f.object.errors.count, "error") %>.
+          </div>
+          <ul>
+            <% f.object.errors.full_messages.each do |msg| %>
+              <li>* <%= msg %></li>
+            <% end %>
+          </ul>
+        </div> <!-- error-explanation -->
+      <% end %>
+      <%= f.error_notification %>
+    </div> <!-- errores -->
+    <div class="container">
+      <div class="row filtro-fila">
+        <div class="offset-sm-0 col-sm-4 offset-md-1 col-md-1">
+          Motor:
+        </div>
+        <div class="offset-sm-0 col-sm-8">
+          <%= f.input :motor,
+            collection: DiccionariodatosController::MOTORES,
+            label: false,
+            include_blank: true,
+            selected: @motor.to_s
+          %>
+        </div>
+      </div> <!-- row -->
+
+      <div class="row filtro-fila">
+        <div class="offset-md-2 col-md-3">
+          <%= f.button :submit, 'Consultar', 
+            class: 'btn btn-default',
+            data:  {
+              disable_with: false,
+              turbo: false
+            } %>
+        </div>
+      </div>
+    </div>
+
+    <div style="height: 2rem;"></div>
+
+    <% if @motor && @motor != "" %>
+      <div>
+        <p><strong>Motor:</strong> <%= @motor %></p>
+        <p><strong>Versión:</strong> <%= @motor_version %></p>
+        <p><strong>Hora:</strong> <%= Time.now.to_s %></p>
+      </div>
+      <div>
+        <p> <strong>Descripción:</strong> <%= @motor_descripcion %></p>
+      </div>
+
+      <h2>Tablas</h2>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Llave primaria</th>
+            <th>Atributos</th>
+            <th>Registros</th>
+          </tr>
+        </thead>
+        <% i = 1 %>
+        <tbody>
+          <% @motor_tablas.each do |t| %>
+            <tr>
+              <td><%= i %></td>
+              <td><%= t[:nombre] %></td>
+              <td><%= t[:descripcion] %></td>
+              <td><%= t[:llave_primaria] %></td>
+              <td><%= t[:atributos].join(", ") %></td>
+              <td><%= t[:registros] %></td>
+            </tr>
+            <% i += 1 %>
+          <% end %>
+        </tbody>
+      </table>
+
+      <h2>Relaciones entre tablas</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Llave primaria</th>
+            <th>Atributos</th>
+            <th>Registros</th>
+          </tr>
+        </thead>
+        <% i = 1 %>
+        <tbody>
+          <% @motor_relaciones.each do |t| %>
+            <tr>
+              <td><%= i %></td>
+              <td><%= t[:nombre] %></td>
+              <td><%= t[:descripcion] %></td>
+              <td><%= t[:llave_primaria] %></td>
+              <td><%= t[:atributos].join(", ") %></td>
+              <td><%= t[:registros] %></td>
+            </tr>
+            <% i += 1 %>
+          <% end %>
+        </tbody>
+      </table>
+
+    <% end %>
+  </div>
+  <div style="height: 2rem;"></div>
+  <div class="row filtro-fila">
+    <div class="offset-md-4 col-md-2">
+      <% if @motor %>
+        <%= f.button :submit, 'Exportar a hoja de cálculo', 
+          name: "exportar",
+          class: 'btn btn-default',
+          data:  {
+            disable_with: false,
+            turbo: false
+          } %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
