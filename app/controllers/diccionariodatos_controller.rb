@@ -8,6 +8,9 @@ class DiccionariodatosController < ApplicationController
   } - ["all"]
 
   TABLAS_NO_USADAS_EN_JRSCOL = [
+    "heb412_gen_campohc",
+    "heb412_gen_doc",
+    "heb412_gen_plantilladoc",
     "mr519_gen_encuestapersona",
     "mr519_gen_encuestausuario",
     "mr519_gen_planencuesta",
