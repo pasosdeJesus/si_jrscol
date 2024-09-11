@@ -18,8 +18,8 @@ conexion.execute('SET search_path TO "$user", public')
 conexion.execute("INSERT INTO public.usuario
 	(id, nusuario, email, encrypted_password, password,
   fechacreacion, created_at, updated_at, rol)
-	VALUES (1, 'jrscol', 'jrscol@localhost.org',
-  '$2a$10$1.QNKH7/3sFbf2akI66LG.rumGWmTJcGIUwWyN9Wblx0TCdb0VrY6',
+	VALUES (1, 'sjrcol', 'jrscol@localhost.org',
+  '$2a$10$qoo7Sh6ZoxplKPygeF2JDePwnpA1AhhkNUXkqOVy2YXK2jcs/BQU.',
 	'', '2014-01-12', '2013-12-24', '2013-12-24', 1);")
 
 
