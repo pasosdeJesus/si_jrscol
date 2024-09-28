@@ -54,8 +54,8 @@ import Cor1440Gen__Motor from "./controllers/cor1440_gen/motor"
 window.Cor1440Gen__Motor = Cor1440Gen__Motor
 import Sivel2Gen__Motor from "./controllers/sivel2_gen/motor"
 window.Sivel2Gen__Motor = Sivel2Gen__Motor
-import Jos19Gen__Motor from "./controllers/jos19_gen/motor"
-window.Jos19Gen__Motor = Jos19Gen__Motor
+import Jos19__Motor from "./controllers/jos19/motor"
+window.Jos19__Motor = Jos19__Motor
 
 import "./caso_m"
 
