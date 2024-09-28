@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/styd/apexcharts.rb.git
-  revision: 3c04fbc3eecc07f2b5fd433dae03798f329b1692
+  revision: e5eff19526123252347cc53b85a15db052eb24dd
   branch: master
   specs:
     apexcharts (0.2.0)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: db0e77179b2953851a9cbce7194319e819037afa
+  revision: ac500c7f263b2b5b8a985c68213e5c52cb133509
   branch: tomselect
   specs:
     cor1440_gen (2.2.0.beta6)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 1506ad35c0e3559b56477b631fc12eecf130cf83
+  revision: 58a31de2aa7b74f8ca4c33c28d4118d4f9e9c326
   branch: tomselect
   specs:
     heb412_gen (2.2.0.beta6)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 9e13107166d2cdfa284272473a2deda1f3385162
+  revision: bc359cc3f1c205ed7e8a3969c11de29472753b01
   branch: tomselect
   specs:
     jos19 (2.2.0.beta6)
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 14704cbd535b6af994c4f4a0654c27754496db8e
+  revision: 21ef0b13735f8395dfdb6ee12e783253aa6c6d37
   branch: tomselect
   specs:
     mr519_gen (2.2.0.beta6)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 9eb58a3c2904e8ea83b77678cd59d39d986ec5cd
+  revision: 6aef6422392de0adacc681597d6ce5bf7076cc2b
   branch: tomselect
   specs:
     msip (2.2.0.beta6)
@@ -86,7 +86,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 8b8db150de24a44917213d575a1058b700f0453c
+  revision: a824d27a8f1c3a8e67b4293702546cbe848b1517
   branch: tomselect
   specs:
     sivel2_gen (2.2.0.beta6)
@@ -228,9 +228,9 @@ GEM
     devise-i18n (1.12.1)
       devise (>= 4.9.0)
     docile (1.4.1)
-    dotenv (3.1.2)
-    dotenv-rails (3.1.2)
-      dotenv (= 3.1.2)
+    dotenv (3.1.4)
+    dotenv-rails (3.1.4)
+      dotenv (= 3.1.4)
       railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.0)
@@ -254,10 +254,10 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     htmlentities (4.3.4)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
-    irb (1.14.0)
+    irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jbuilder (2.13.0)
@@ -331,7 +331,7 @@ GEM
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
-    puma (6.4.2)
+    puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.9)
@@ -459,7 +459,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webrick (1.8.1)
+    webrick (1.8.2)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -543,4 +543,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.5.18
+   2.5.20

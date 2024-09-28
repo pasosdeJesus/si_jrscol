@@ -46,6 +46,16 @@ Apex.chart = {
 
 import Msip__Motor from "./controllers/msip/motor.js"
 window.Msip__Motor=Msip__Motor
+import Mr519Gen__Motor from "./controllers/mr519_gen/motor"
+window.Mr519Gen__Motor = Mr519Gen__Motor
+import Heb412Gen__Motor from "./controllers/heb412_gen/motor"
+window.Heb412Gen__Motor = Heb412Gen__Motor
+import Cor1440Gen__Motor from "./controllers/cor1440_gen/motor"
+window.Cor1440Gen__Motor = Cor1440Gen__Motor
+import Sivel2Gen__Motor from "./controllers/sivel2_gen/motor"
+window.Sivel2Gen__Motor = Sivel2Gen__Motor
+import Jos19Gen__Motor from "./controllers/jos19_gen/motor"
+window.Jos19Gen__Motor = Jos19Gen__Motor
 
 import "./caso_m"
 
@@ -135,9 +145,13 @@ document.addEventListener('turbo:load', (e) => {
   
   console.log('Escuchador turbo:load')
 
-  // Si la siguiente no funciona podría deberse a que se
-  // ejecuta este evento antes de que carguen recursos javascript de sprockets
-  msip_ejecutarAlCargarPagina(window)
+  msip_ejecutarAlCargarPagina(window) // Establece root.puntomontaje
+  Msip__Motor.ejecutarAlCargarPagina()
+  Mr519Gen__Motor.ejecutarAlCargarPagina()
+  Heb412Gen__Motor.ejecutarAlCargarPagina()
+  Cor1440Gen__Motor.ejecutarAlCargarPagina()
+  Sivel2Gen__Motor.ejecutarAlCargarPagina()
+  Jos19__Motor.ejecutarAlCargarPagina()
 })
 
 
