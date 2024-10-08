@@ -25,10 +25,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: ac500c7f263b2b5b8a985c68213e5c52cb133509
-  branch: tomselect
+  revision: 3e07256fc1615b3ae4b3d8aa6db0cf4e16107630
+  branch: v2.2
   specs:
-    cor1440_gen (2.2.0.beta6)
+    cor1440_gen (2.2.0.beta7)
       devise
       heb412_gen
       kt-paperclip
@@ -38,10 +38,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 58a31de2aa7b74f8ca4c33c28d4118d4f9e9c326
-  branch: tomselect
+  revision: f98dc89f1bc83878ad6c7d71802fb53ad63c629e
+  branch: v2.2
   specs:
-    heb412_gen (2.2.0.beta6)
+    heb412_gen (2.2.0.beta7)
       mr519_gen
       msip
       redcarpet
@@ -49,27 +49,26 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 953de600b6bff5a9d85d224f6590abef5da125c9
-  branch: tomselect
+  revision: 6aa690977de42995452f2eb24b3c77b915a1d517
+  branch: v2.2
   specs:
     jos19 (2.2.0.beta6)
-      rails (>= 7.0.4)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 21ef0b13735f8395dfdb6ee12e783253aa6c6d37
-  branch: tomselect
+  revision: 920b688159c414e74159d71a12625fe67490f988
+  branch: v2.2
   specs:
-    mr519_gen (2.2.0.beta6)
+    mr519_gen (2.2.0.beta7)
       msip
       rails
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 6aef6422392de0adacc681597d6ce5bf7076cc2b
-  branch: tomselect
+  revision: 0ee4fc1a422cc210b805236e18a2753413938d3e
+  branch: v2.2
   specs:
-    msip (2.2.0.beta6)
+    msip (2.2.0.beta7)
       cancancan (~> 3)
       devise (~> 4)
       devise-i18n (~> 1)
@@ -86,10 +85,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: a824d27a8f1c3a8e67b4293702546cbe848b1517
-  branch: tomselect
+  revision: 3025cd34482382e95c1609b35d26fa81a6bfa284
+  branch: v2.2
   specs:
-    sivel2_gen (2.2.0.beta6)
+    sivel2_gen (2.2.0.beta7)
       color
       devise
       rails
@@ -543,4 +542,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.5.20
+   2.5.21
