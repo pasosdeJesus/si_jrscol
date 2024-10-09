@@ -133,11 +133,14 @@ class DiccionariodatosController < ApplicationController
           if File.exist?(parch)
             arch = parch
             desc = extraer_doc_de_clase_en_modulo arch
-            if desc != ""
-              clase = (@motor.to_s+"::"+ncorto.camelize).constantize
+            clase = (@motor.to_s+"::"+ncorto.camelize).constantize
+            if clase && clase.respond_to?(:all) && 
+                clase.all.respond_to?(:count)
+              registros = clase.all.count
+            end
+            if desc != "" && clase.respond_to?(:columns)
               llave = clase.columns.map(&:name).include?("id") ? "id" : ""
               atributos = clase.columns.map(&:name) - ["id"]
-              registros = clase.all.count
               break
             end
           end

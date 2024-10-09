@@ -57,12 +57,14 @@ tmpsql/
 *.log
 ref/
 app/assets/builds
-app/javascript/controllers/msip
 app/javascript/controllers/cor1440_gen
+app/javascript/controllers/jos19
+app/javascript/controllers/heb412_gen
+app/javascript/controllers/mr519_gen
+app/javascript/controllers/msip
 app/javascript/controllers/sivel2_gen
 cobertura-sistema/
 cobertura-unitarias/
 public/cobertura/
 test/puppeteer/node_modules/
-app/javascript/controllers/sivel2_gen
 .yardoc
