@@ -146,7 +146,7 @@ class Consbenefactcaso < ActiveRecord::Base
           THEN 'Si'
           ELSE 'No'
         END AS caso_titular,
-        casosjr.telefono AS caso_telefono,
+        persona.telefono AS persona_telefono,
         c2.actividad_ids,
         c2.actividad_oficina_ids
         FROM consbenefactcaso2 AS c2
@@ -299,7 +299,7 @@ class Consbenefactcaso < ActiveRecord::Base
             reg.presenta('caso_id'),
             reg.presenta('caso_fecharec'),
             reg.presenta('caso_titular'),
-            reg.presenta('caso_telefono'),
+            reg.presenta('persona_telefono'),
             reg.presenta('actividad_ids')
           ]
           hoja.add_row l, style: estilo_base

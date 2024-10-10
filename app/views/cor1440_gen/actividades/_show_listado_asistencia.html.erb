@@ -11,6 +11,7 @@ Población beneficiaria: <%= personas.uniq.count  %>
       <th>Edad</th>
       <th>Discapacidad</th>
       <th>Perfil</th>
+      <th>Teléfono</th>
       <th>Caso asociado</th>
     </tr>
   </thead>
@@ -54,6 +55,9 @@ Población beneficiaria: <%= personas.uniq.count  %>
         </td>
         <td rowspan="<%= colad %>">
           <%= asistencia.perfilorgsocial.nombre if asistencia.perfilorgsocial %>
+        </td>
+        <td rowspan="<%= colad %>">
+          <%= asistencia.telefono.to_s %>
         </td>
         <td rowspan="<%= colad %>">
           <% vics = Sivel2Gen::Victima.where(persona_id: asistencia.persona.id) %>

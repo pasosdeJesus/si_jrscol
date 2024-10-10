@@ -6,6 +6,7 @@
       <th colspan="2">Identificación(es)</th>
       <th>Relación con contacto</th>
       <th>Perfil</th>
+      <th>Teléfono</th>
     </tr>
   </thead>
   <tbody id="victima">
@@ -40,6 +41,9 @@
         <td rowspan="<%= colad %>">
           <%= victima.persona.ultimoperfilorgsocial_id ? 
             victima.persona.ultimoperfilorgsocial.nombre : '' %>
+        </td>
+        <td rowspan="<%= colad %>">
+          <%= victima.persona.telefono.to_s %>
         </td>
       </tr>
       <% victima.persona.docidsecundario.each do |ds| %>

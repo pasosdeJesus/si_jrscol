@@ -1003,7 +1003,7 @@ class Sivel2Gen::Consexpcaso < ActiveRecord::Base
     when 'contacto_centropoblado'
       contacto.centropoblado ? contacto.centropoblado.nombre : ''
     when 'telefono'
-      casosjr.telefono ? casosjr.telefono : ''
+      contacto.telefono.to_s
     when 'direccion'
       casosjr.direccion ? casosjr.direccion : ''
     when 'contacto_numeroanexos'

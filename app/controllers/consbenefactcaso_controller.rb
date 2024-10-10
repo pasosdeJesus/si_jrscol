@@ -25,7 +25,7 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
      :caso_id,
      :caso_fecharec,
      :caso_titular,
-     :caso_telefono,
+     :persona_telefono,
      :actividad_ids
     ]
   end

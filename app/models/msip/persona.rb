@@ -48,9 +48,10 @@ module Msip
 
     validates :nombres, presence: true, allow_blank: false,
       length: { maximum: 100}
-
     validates :apellidos, presence: true, allow_blank: false,
       length: { maximum: 100}
+
+    validates :telefono, length: { maximum: 127}
 
     validates :tdocumento, presence: true, allow_blank: false
     validates :numerodocumento, presence: true, allow_blank: false, 

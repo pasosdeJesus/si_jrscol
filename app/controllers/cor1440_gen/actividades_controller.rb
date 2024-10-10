@@ -178,7 +178,8 @@ module Cor1440Gen
               externo: false,
               orgsocial_id: nil,
               perfilorgsocial_id: op.ultimoperfilorgsocial_id,
-              discapacidad: vs.discapacidad_id != 6
+              discapacidad: vs.discapacidad_id != 6,
+              telefono: op.telefono
             )
             nr.save(validate: false)
           end
@@ -199,7 +200,8 @@ module Cor1440Gen
             externo: false,
             orgsocial_id: nil,
             perfilorgsocial_id: op.ultimoperfilorgsocial_id,
-            discapacidad: vs.discapacidad_id != 6
+            discapacidad: vs.discapacidad_id != 6,
+            telefono: op.telefono
           )
           nr.save(validate: false)
         end
@@ -236,6 +238,11 @@ module Cor1440Gen
       if asistente.persona.ultimoperfilorgsocial_id.nil? &&
           atr_asistente[:perfilorgsocial_id].to_i > 0
         asistente.persona.ultimoperfilorgsocial_id = atr_asistente[:perfilorgsocial_id].to_i
+        asistente.persona.save(validate: false)
+      end
+      if asistente.persona.telefono.nil? &&
+          atr_asistente[:telefono].to_s != ""
+        asistente.persona.telefono = atr_asistente[:telefono].to_s
         asistente.persona.save(validate: false)
       end
     end
@@ -382,11 +389,21 @@ module Cor1440Gen
       # el de la asistencia
       if params[:actividad][:asistencia_attributes]
         params[:actividad][:asistencia_attributes].each do |l, a|
-          if a && a[:persona_attributes] && 
-              (a[:persona_attributes][:id] == ""  ||
-              Msip::Persona.where(id: a[:persona_attributes][:id].to_i, ultimoperfilorgsocial_id: nil).count == 1 )
-            params[:actividad][:asistencia_attributes][l.to_s][:persona_attributes][:ultimoperfilorgsocial_id] =
-              a[:perfilorgsocial_id]
+          if a && a[:persona_attributes]
+            if (a[:persona_attributes][:id] == ""  ||
+                Msip::Persona.where(id: a[:persona_attributes][:id].to_i, 
+                                    ultimoperfilorgsocial_id: nil).count == 1 
+               )
+              params[:actividad][:asistencia_attributes][l.to_s][:persona_attributes][:ultimoperfilorgsocial_id] =
+                a[:perfilorgsocial_id]
+            end
+            if (a[:persona_attributes][:id] == ""  ||
+              Msip::Persona.where(id: a[:persona_attributes][:id].to_i, 
+                                  telefono: nil).count == 1 
+               )
+              params[:actividad][:asistencia_attributes][l.to_s][:persona_attributes][:telefono] =
+                a[:telefono]
+            end
           end
         end
       end
@@ -470,7 +487,8 @@ module Cor1440Gen
             id: v.victima.persona_id, 
             nombre: v.victima.persona.presenta_nombre,
             ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id,
-            discapacidad_en_casos: v.discapacidad_id != 6
+            discapacidad_en_casos: v.discapacidad_id != 6,
+            telefono: v.victima.persona.telefono
           }
         end
       end
@@ -522,7 +540,8 @@ module Cor1440Gen
           actividad_id: act.id,
           persona_id: dp[:id],
           perfilorgsocial_id: dp[:ultimoperfilorgsocial_id],
-          discapacidad: dp[:discapacidad_en_casos]
+          discapacidad: dp[:discapacidad_en_casos],
+          telefono: dp[:telefono]
         )
         if !asistencia.save(validate: false)
           resp_error 'No pudo crear asistencia' 
@@ -554,11 +573,17 @@ module Cor1440Gen
         @registro.asistencia.each do |asi|
           mf = Cor1440Gen::Asistencia.joins(:actividad).
             where(persona_id: asi.persona_id).maximum(:fecha)
-          if (mf.nil? || asi.actividad.fecha >= mf) && 
-              asi.persona.ultimoperfilorgsocial_id.to_i != 
-              asi.perfilorgsocial_id.to_i
-            asi.persona.ultimoperfilorgsocial_id = asi.perfilorgsocial_id
-            if asi.persona.valid?
+          salvar = false
+          if (mf.nil? || asi.actividad.fecha >= mf)
+            if asi.persona.ultimoperfilorgsocial_id.to_i != asi.perfilorgsocial_id.to_i
+              asi.persona.ultimoperfilorgsocial_id = asi.perfilorgsocial_id
+              salvar = true
+            end
+            if asi.persona.telefono.to_s != asi.telefono.to_s
+              asi.persona.telefono = asi.telefono.to_s
+              salvar = true
+            end
+            if salvar && asi.persona.valid?
               asi.persona.save
             end
           end
@@ -579,6 +604,8 @@ module Cor1440Gen
     def lista_params
       l = lista_params_cor1440_gen;
       l[-1][:asistencia_attributes][-1][:persona_attributes] << :ultimoperfilorgsocial_id;
+      l[-1][:asistencia_attributes][-1][:persona_attributes] << :telefono
+      l[-1][:asistencia_attributes].insert(0, :telefono)
       l[-1][:asistencia_attributes].insert(0, :discapacidad)
       l + 
         [
