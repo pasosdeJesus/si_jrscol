@@ -240,6 +240,7 @@ module Msip
 
     def datos_complementarios(oj)
       return oj.merge(
+        telefono: @persona.telefono.to_s,
         ultimoestatusmigratorio_id: @persona.ultimoestatusmigratorio_id,
         ultimoperfilorgsocial_id: @persona.ultimoperfilorgsocial_id,
         ppt: @persona.ppt,
