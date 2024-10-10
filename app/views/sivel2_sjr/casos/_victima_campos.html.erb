@@ -28,15 +28,6 @@
               <%= fvictimasjr.input :id, as: :hidden %> 
               <%= render partial: 'msip/personas/persona_campos', 
                 locals: {f: fp, fvictima: f, fvictimasjr: fvictimasjr} %>
-              <div class="row">
-                <div class="col-md-4">
-                  <%= fp.input :telefono, 
-                    input_html: {
-                      "data-toggle" => 'tooltip',
-                      "title" => 'Registrar teléfono sin símbolos de puntuación'
-                    } %>
-                </div>
-              </div>
             </div>
           </div>
 
