@@ -1,4 +1,5 @@
 module Sivel2Gen
+  # Relación n:n entre Anexo y Víctima
   class AnexoVictima < ActiveRecord::Base
 
     include Msip::Modelo

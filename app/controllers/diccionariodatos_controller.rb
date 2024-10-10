@@ -27,6 +27,46 @@ class DiccionariodatosController < ApplicationController
     "msip_persona_trelacion",
     "msip_tipoorg",
     "msip_trelacion" ,
+    "sivel2_gen_antecedente" ,
+    "sivel2_gen_antecedente_caso" ,
+    "sivel2_gen_antecedente_combatiente" ,
+    "sivel2_gen_antecedente_victima" ,
+    "sivel2_gen_antecedente_victimacolectiva" ,
+    "sivel2_gen_actocolectivo" ,
+    "sivel2_gen_categoria_presponsable" ,
+    "sivel2_gen_caso_contexto" ,
+    "sivel2_gen_caso_etiqueta" ,
+    "sivel2_gen_caso_fotra" ,
+    "sivel2_gen_caso_frontera" ,
+    "sivel2_gen_caso_fuenteprensa" ,
+    "sivel2_gen_caso_region" ,
+    "sivel2_gen_caso_respuestafor" ,
+    "sivel2_gen_combatiente" ,
+    "sivel2_gen_contexto" ,
+    "sivel2_gen_contextovictima" ,
+    "sivel2_gen_contextovictima_victima" ,
+    "sivel2_gen_departamento_region" ,
+    "sivel2_gen_etnia_victimacolectiva",
+    "sivel2_gen_filiacion_victimacolectiva" ,
+    "sivel2_gen_fotra" ,
+    "sivel2_gen_frontera" ,
+    "sivel2_gen_iglesia" ,
+    "sivel2_gen_intervalo" ,
+    "sivel2_gen_municipio_region" ,
+    "sivel2_gen_observador_filtrodepartamento" ,
+    "sivel2_gen_organizacion_victimacolectiva" ,
+    "sivel2_gen_otraorga_victima" ,
+    "sivel2_gen_pconsolidado" ,
+    "sivel2_gen_profesion_victima" ,
+    "sivel2_gen_profesion_victimacolectiva" ,
+    "sivel2_gen_rangoedad_victimacolectiva" ,
+    "sivel2_gen_region" ,
+    "sivel2_gen_resagresion" ,
+    "sivel2_gen_sectorsocial" ,
+    "sivel2_gen_sectorsocial_victimacolectiva" ,
+    "sivel2_gen_sectorsocialsec_victima" ,
+    "sivel2_gen_victimacolectiva" ,
+    "sivel2_gen_victimacolectiva_vinculoestado"
   ]
 
 
@@ -249,28 +289,32 @@ class DiccionariodatosController < ApplicationController
 
       hoja.add_row ['Relaciones'],
         height: 30, style: estilo_enc1
-      hoja.merge_cells("A7:E7")
+      hoja.merge_cells("A#{item+9}:E#{item+9}")  
 
+      numfilas = 6
+      hoja.add_row [ "Item", 
+                     "Nombre", 
+                     "Descripción", 
+                     "Llave primaria", 
+                     "Atributos" ], 
+                     style: [estilo_encabezado] * numfilas
+
+      item = 1
+      @motor_relaciones.each do |t|
+        l2 = [
+          item,
+          t[:nombre],
+          t[:descripcion],
+          t[:llave_primaria],
+          t[:atributos].join(",")
+        ]
+        hoja.add_row l2, style: estilo_varias_lineas 
+        item += 1
+      end
 
       anchos = [10, 20, 80, 10, 80]
       hoja.column_widths(*anchos)
-      if false
 
-        hoja.add_row l, style: [estilo_encabezado] * numfilas
-        registros.each do |reg|
-        end
-        anchos = [20] * numfilas
-        hoja.column_widths(*anchos)
-        ultf = 0
-        hoja.rows.last.tap do |row|
-          ultf = row.row_index
-        end
-        if ultf>0
-          l = [nil] * numfilas
-          hoja.add_row l
-        end
-
-      end
     end
 
     n=File.join('/tmp', File.basename(narch + ".xlsx"))
