@@ -1,0 +1,7 @@
+<div class="col-sm-1">
+  <% if @registro.caso.count == 0 %>
+    <%= link_to 'Crear Caso',
+      main_app.new_caso_path({contacto: @registro.id}), 
+      :class => 'btn' %>
+  <% end %>
+</div>
