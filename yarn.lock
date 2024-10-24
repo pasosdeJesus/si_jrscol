@@ -192,14 +192,14 @@
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
 "@rails/actioncable@^7.0":
-  version "7.2.101"
-  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-7.2.101.tgz#d0544b1bc51d420c1bb27f3281ccae54945e70f6"
-  integrity sha512-YgFCyD+9mBhpJdfgf4QtJwk+vZbByVMXsEGREM6GrPk9A1pYXkkIpzYd3+843E+33e3S81yywhqZc3DyrZGPSg==
+  version "7.2.102"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-7.2.102.tgz#0ad6214681f2fdadf5baeee2dbba4ad229612a41"
+  integrity sha512-cqgfFwU8bFye53jkzJRVErbIFUnbWSJSccbY3EZvyOxatpcUEuuYGvLv/It6gT1/HNgweiARllmVbnegcAN3Lg==
 
 "@rails/ujs@^7.1.1":
-  version "7.1.401"
-  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.401.tgz#b91ad91228f96ded6c3840c0e3c007f56d2be7c9"
-  integrity sha512-vyBrYC+3wY3Sb6kcTeFG2L18jygcB27sv50tGGFONwOoMcmlltLm/2J8wB9KifQkRl87B86kLmyFywvhELcnTQ==
+  version "7.1.402"
+  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.402.tgz#5d4e7e5d1e2e22df081bf5693fc75f0725635130"
+  integrity sha512-q9dDlIR+anDtuGcV56rLnqHAxtWo8vkSnvfFt7juthvHc+97NEtGlnM++uhvnlDbR+7EGkX8nGqQIF8R93oWMQ==
 
 "@types/parse-json@^4.0.0":
   version "4.0.2"

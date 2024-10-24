@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/styd/apexcharts.rb.git
-  revision: 2a620f8ffe3ad2402d081002f886ae2d4d3ffa93
+  revision: 8e7ff266b193cde00d9fb925595ac0ef026c0e18
   branch: master
   specs:
     apexcharts (0.2.0)
