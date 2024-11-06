@@ -8,6 +8,19 @@ class DiccionariodatosController < ApplicationController
   } - ["all"]
 
   TABLAS_NO_USADAS_EN_JRSCOL = [
+    "cor1440_gen_anexo_efecto",
+    "cor1440_gen_desembolso",
+    "cor1440_gen_efecto",
+    "cor1440_gen_efecto_orgsocial",
+    "cor1440_gen_efecto_respuestafor",
+    "cor1440_gen_efecto_respuestafor",
+    "cor1440_gen_formulario_mindicadorpf",
+    "cor1440_gen_formulario_tipoindicador",
+    "cor1440_gen_informe",
+    "cor1440_gen_informeauditoria",
+    "cor1440_gen_informefinanciero",
+    "cor1440_gen_informenarrativo",
+    "cor1440_gen_plantillahcm_proyectofinanciero",
     "heb412_gen_campohc",
     "heb412_gen_doc",
     "heb412_gen_plantilladoc",
