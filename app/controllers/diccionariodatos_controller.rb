@@ -178,6 +178,7 @@ class DiccionariodatosController < ApplicationController
         desc = ""
         llave = ""
         atributos = []
+        llaves_foraneas = []
         registros = 0
         MOTORES.each do |m|
           parch = File.join(
@@ -192,8 +193,22 @@ class DiccionariodatosController < ApplicationController
               registros = clase.all.count
             end
             if desc != "" && clase.respond_to?(:columns)
-              llave = clase.columns.map(&:name).include?("id") ? "id" : ""
-              atributos = clase.columns.map(&:name) - ["id"]
+              clase.columns.each do |col|
+                if col.name == "id"
+                  llave = "id"
+                else 
+                  clf = nil
+                  if clase.respond_to?(:asociacion_llave_foranea)
+                    clf = clase.asociacion_llave_foranea(col.name)
+                  end
+                  if clf
+                    llaves_foraneas << col.name + "(" + 
+                      clf.options[:class_name].parameterize.underscore + ")"
+                  else
+                    atributos << col.name + ":" + col.sql_type_metadata.sql_type
+                  end
+                end
+              end
               break
             end
           end
@@ -209,6 +224,7 @@ class DiccionariodatosController < ApplicationController
             descripcion: desc,
             llave_primaria: llave,
             atributos: atributos,
+            llaves_foraneas: llaves_foraneas,
             registros: registros
           }
         else
@@ -217,6 +233,7 @@ class DiccionariodatosController < ApplicationController
             descripcion: desc,
             llave_primaria: llave,
             atributos: atributos,
+            llaves_foraneas: llaves_foraneas,
             registros: registros
           }
         end

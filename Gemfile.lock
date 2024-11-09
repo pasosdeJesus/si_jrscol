@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: ce05310fdd34244f92767525cd8038a5b5a34fb5
+  revision: f997cc330249290cec49886446aea57e3cbe62e7
   branch: v2.2
   specs:
     cor1440_gen (2.2.0.beta7)
@@ -176,7 +176,7 @@ GEM
       execjs (~> 2.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
-    benchmark (0.3.0)
+    benchmark (0.4.0)
     bigdecimal (3.1.8)
     bindex (0.8.1)
     bootsnap (1.18.4)
@@ -287,7 +287,7 @@ GEM
     mini_portile2 (2.8.7)
     minitest (5.25.1)
     msgpack (1.7.3)
-    net-imap (0.5.0)
+    net-imap (0.5.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -330,7 +330,7 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     prism (1.2.0)
-    psych (5.1.2)
+    psych (5.2.0)
       stringio
     public_suffix (6.0.1)
     puma (6.4.3)
@@ -391,7 +391,7 @@ GEM
       psych (>= 4.0.0)
     redcarpet (3.6.0)
     regexp_parser (2.9.2)
-    reline (0.5.10)
+    reline (0.5.11)
       io-console (~> 0.5)
     responders (3.1.1)
       actionpack (>= 5.2)
@@ -432,7 +432,7 @@ GEM
       racc
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
-    stringio (3.1.1)
+    stringio (3.1.2)
     terrapin (1.0.1)
       climate_control
     thor (1.3.2)
@@ -545,4 +545,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.5.22
+   2.5.23
