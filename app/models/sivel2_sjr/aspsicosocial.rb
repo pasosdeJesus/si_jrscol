@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica asistencias psicosociales
   class Aspsicosocial < ActiveRecord::Base
     include Msip::Basica
 

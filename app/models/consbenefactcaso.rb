@@ -1,5 +1,4 @@
-#require 'jos19/concerns/models/consbenefactcaso'
-
+# Consulta beneficiarios con actvidad y caso
 class Consbenefactcaso < ActiveRecord::Base
   #    include Jos19::Concerns::Models::Consbenefactcaso
   include Msip::Modelo

@@ -1,3 +1,4 @@
+# Una fila de la tabla detalle financiero en una actividad
 class Detallefinanciero < ActiveRecord::Base
 
   belongs_to :actividad, 

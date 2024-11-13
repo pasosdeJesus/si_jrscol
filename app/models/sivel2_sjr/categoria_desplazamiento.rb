@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Relación n:n entre Categoría y Desplazamiento
   class CategoriaDesplazamiento < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_categoria_desplazamiento"

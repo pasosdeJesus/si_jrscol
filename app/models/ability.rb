@@ -1,3 +1,4 @@
+# Permisos
 class Ability < Sivel2Gen::Ability
 
   ROLADMIN  = 1

@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Obsoleto
   class MotivosjrRespuesta < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_motivosjr_respuesta"

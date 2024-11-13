@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Relación n:n entre Servicios y Asesorias del JRS y Derecho
   class MotivosjrDerecho < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_motivosjr_derecho"

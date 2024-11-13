@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Obsoleto
   class Respuesta < ActiveRecord::Base
 
     include Msip::Modelo

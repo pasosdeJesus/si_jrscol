@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Tipos de desplazamiento
   class Tipodesp < ActiveRecord::Base
     include Msip::Basica
 

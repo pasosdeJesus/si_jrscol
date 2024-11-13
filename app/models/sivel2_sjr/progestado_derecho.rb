@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Relación n:n entre Programas del Estado y Derechos
   class ProgestadoDerecho < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_progestado_derecho"

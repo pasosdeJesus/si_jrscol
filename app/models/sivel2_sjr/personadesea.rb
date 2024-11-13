@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Beneficiarios desean
   class Personadesea < ActiveRecord::Base
     include Msip::Basica
 

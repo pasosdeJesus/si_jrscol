@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Obsoleto
   class DerechoRespuesta < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_derecho_respuesta"

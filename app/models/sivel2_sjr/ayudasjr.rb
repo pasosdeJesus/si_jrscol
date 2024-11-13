@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Ayudas del JRS
   class Ayudasjr < ActiveRecord::Base
     include Msip::Basica
 

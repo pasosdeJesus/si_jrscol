@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Acciones jurídicas
   class Accionjuridica < ActiveRecord::Base
     include Msip::Basica
 

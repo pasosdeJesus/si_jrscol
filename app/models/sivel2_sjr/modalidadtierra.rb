@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Modalidades de tenencia de la tierra
   class Modalidadtierra < ActiveRecord::Base
     include Msip::Basica
 

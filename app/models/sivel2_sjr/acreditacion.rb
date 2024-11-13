@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Acreditaciones (de desplazamiento)
   class Acreditacion < ActiveRecord::Base
     include Msip::Basica
 

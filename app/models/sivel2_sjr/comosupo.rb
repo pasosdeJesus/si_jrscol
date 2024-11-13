@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica ¿Cómo supo del JRS?
   class Comosupo < ActiveRecord::Base
     include Msip::Basica
 

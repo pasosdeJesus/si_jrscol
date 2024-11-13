@@ -1,3 +1,5 @@
+# Relación n:n entre Casosjr y usuario.
+# Histórico de asesores de un caso.
 class Asesorhistorico < ActiveRecord::Base
 
   include Msip::Localizacion

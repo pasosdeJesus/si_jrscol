@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Roles en familia
   class Rolfamilia < ActiveRecord::Base
     include Msip::Basica
 

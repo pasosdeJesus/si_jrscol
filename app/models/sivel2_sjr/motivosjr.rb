@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Servicios y Asesorias del JRS
   class Motivosjr < ActiveRecord::Base
     include Msip::Basica
 

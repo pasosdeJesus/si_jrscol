@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Necesidades de protección internacional
   class Proteccion < ActiveRecord::Base
     include Msip::Basica
 

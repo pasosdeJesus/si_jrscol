@@ -1,5 +1,5 @@
-
 module Sivel2Sjr
+  # Obsoleto
   class Idioma < ActiveRecord::Base
     include Msip::Basica
 

@@ -1,3 +1,4 @@
+# Consulta Niños Víctimas
 class Consninovictima < ActiveRecord::Base
   include Msip::Modelo
 

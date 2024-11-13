@@ -1,3 +1,4 @@
+# Tabla básica Discapacidades
 class Discapacidad < ActiveRecord::Base
   include Msip::Basica
 

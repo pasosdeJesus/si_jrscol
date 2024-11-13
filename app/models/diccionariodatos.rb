@@ -1,4 +1,4 @@
-
+# Diccionario de Datos
 class Diccionariodatos
   include ActiveModel::Model
   attr_accessor :motor

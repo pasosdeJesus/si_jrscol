@@ -1,3 +1,4 @@
+# Un documento de identidad secundario de una persona
 class Docidsecundario < ActiveRecord::Base
 
   include Msip::Modelo

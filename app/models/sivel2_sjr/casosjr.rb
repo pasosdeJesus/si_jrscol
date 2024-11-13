@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Complementa un caso con información adicional
   class Casosjr < ActiveRecord::Base
 
     include Msip::Modelo

@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Obsoleto
   class AslegalRespuesta < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_aslegal_respuesta"

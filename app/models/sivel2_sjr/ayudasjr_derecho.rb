@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Relación n:n entre Ayuda del JRS y Derecho que suple
   class AyudasjrDerecho < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_ayudasjr_derecho"

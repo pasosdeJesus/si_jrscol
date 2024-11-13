@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Programas del estado.
   class Progestado < ActiveRecord::Base
     include Msip::Basica
 

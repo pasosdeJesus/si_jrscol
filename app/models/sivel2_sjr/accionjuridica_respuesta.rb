@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Respuestas usadas hasta 2019 (obsoleto)
   class AccionjuridicaRespuesta < ActiveRecord::Base
     include Msip::Modelo
 

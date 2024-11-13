@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Régimenes salud
   class Regimensalud < ActiveRecord::Base
     include Msip::Basica
 

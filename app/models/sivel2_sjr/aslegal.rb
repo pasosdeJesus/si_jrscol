@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Asesorías jurídicas
   class Aslegal < ActiveRecord::Base
     include Msip::Basica
 

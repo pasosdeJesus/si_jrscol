@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Declaro Ante
   class Declaroante < ActiveRecord::Base
     include Msip::Basica
 

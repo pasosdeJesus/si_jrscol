@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Relación n:n entre Etiqueta y Usuario. Pone etiquetas a un usuario.
   class EtiquetaUsuario < ActiveRecord::Base
 
     self.table_name = "sivel2_sjr_etiqueta_usuario"

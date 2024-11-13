@@ -1,3 +1,4 @@
+# Tabla básica Territorial
 class Territorial < ActiveRecord::Base
   include Msip::Basica
 

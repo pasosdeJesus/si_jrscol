@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básica Clasificaciones de Desplazamientos
   class Clasifdesp < ActiveRecord::Base
     include Msip::Basica
 

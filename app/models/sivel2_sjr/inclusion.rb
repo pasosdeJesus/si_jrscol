@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Inclusión en RUV
   class Inclusion < ActiveRecord::Base
     include Msip::Basica
 

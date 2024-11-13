@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Acto de violencia antecedente a un desplazamiento
   class Actosjr < ActiveRecord::Base
 
     include Msip::Modelo

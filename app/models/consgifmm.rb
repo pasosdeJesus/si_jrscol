@@ -1,3 +1,4 @@
+# Consulta GIFMM
 class Consgifmm < ActiveRecord::Base
   include Msip::Modelo
 

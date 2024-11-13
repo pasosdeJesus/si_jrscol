@@ -1,3 +1,4 @@
+# Consulta BD
 class Consultabd < ActiveRecord::Base
   include Msip::Modelo
 

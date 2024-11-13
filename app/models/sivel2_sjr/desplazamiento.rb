@@ -1,6 +1,7 @@
 require 'msip/accesores_ubicacionpre'
 
 module Sivel2Sjr
+  # Desplazamiento asociado a un caso 
   class Desplazamiento < ActiveRecord::Base
     extend Msip::AccesoresUbicacionpre
 

@@ -1,3 +1,4 @@
+# Acto de violencia contra un menor.
 class Actonino < ActiveRecord::Base
 
   include Msip::Modelo

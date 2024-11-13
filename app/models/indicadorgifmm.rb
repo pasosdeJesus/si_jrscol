@@ -1,3 +1,4 @@
+# Tabla básica Indicadores GIFMM
 class Indicadorgifmm < ActiveRecord::Base
   include Msip::Basica
 

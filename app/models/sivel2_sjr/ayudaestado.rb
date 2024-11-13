@@ -1,4 +1,5 @@
 module Sivel2Sjr
+  # Tabla básicas Ayudas del Estado
   class Ayudaestado < ActiveRecord::Base
     include Msip::Basica
 
