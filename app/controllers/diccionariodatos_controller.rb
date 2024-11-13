@@ -4,11 +4,15 @@ class DiccionariodatosController < ApplicationController
 
   # En orden de apilamiento
   MOTORES = Rails.configuration.railties_order.map {|m|
-    m.to_s == "main_app" ? "SI-JRSCOL" : m.to_s.split(':')[0]
-  } - ["all"]
+    m.to_s == "main_app" ? "SiJrscol" : m.to_s.split(':')[0]
+  } - ["all", "Jos19"]
 
   TABLAS_NO_USADAS_EN_JRSCOL = [
+    "ar_internal_metadata", 
+    "causaref", 
     "cor1440_gen_anexo_efecto",
+    "cor1440_gen_actividadtipo",
+    "cor1440_gen_actividadtipo",
     "cor1440_gen_desembolso",
     "cor1440_gen_efecto",
     "cor1440_gen_efecto_orgsocial",
@@ -40,6 +44,7 @@ class DiccionariodatosController < ApplicationController
     "msip_persona_trelacion",
     "msip_tipoorg",
     "msip_trelacion" ,
+    "schema_migrations" ,
     "sivel2_gen_antecedente" ,
     "sivel2_gen_antecedente_caso" ,
     "sivel2_gen_antecedente_combatiente" ,
@@ -79,11 +84,30 @@ class DiccionariodatosController < ApplicationController
     "sivel2_gen_sectorsocial_victimacolectiva" ,
     "sivel2_gen_sectorsocialsec_victima" ,
     "sivel2_gen_victimacolectiva" ,
-    "sivel2_gen_victimacolectiva_vinculoestado"
+    "sivel2_gen_victimacolectiva_vinculoestado",
+    "sivel2_sjr_accionjuridica_respuesta",
+    "sivel2_sjr_actividad_casosjr",
+    "sivel2_sjr_aslegal_respuesta",
+    "sivel2_sjr_aspsocisocial_respuesta",
+    "sivel2_sjr_ayudaestado_respuesta",
+    "sivel2_sjr_ayudasjr_respuesta",
+    "sivel2_sjr_derecho_procesosjr",
+    "sivel2_sjr_derecho_respuesta",
+    "sivel2_sjr_idioma",
+    "sivel2_sjr_motivosjr_respuesta",
+    "sivel2_sjr_oficina_proyectofinanciero",
+    "sivel2_sjr_progestado_respuesta",
+    "sivel2_sjr_progestado_respuesta",
+    "sivel2_sjr_respuesta",
+    
+   
   ]
 
 
   def extraer_doc_de_clase_en_modulo(arch)
+    if arch == "./app/models/asesorhistorico.rb"
+      #debugger
+    end
     pr = Prism.parse_file(arch)
     pr.attach_comments!
     cinst = pr.value.statements.body
@@ -94,19 +118,25 @@ class DiccionariodatosController < ApplicationController
       m += 1
     end
     if m >= cinst.count
-      return "* No se encontró módulo en #{arch}"
+      # No se encontró módulo intentamos con primer comentario
+      if  pr.comments && pr.comments[0] && pr.comments[0].slice
+        desc =pr.comments.map { |c| c.slice.gsub(/^# */, "") }.join("  ")
+      else
+        return "No se encontró módulo ni comentario al comienzo"
+      end
+    else
+      # Extraemos documentación de la primera clase dentro del módulo
+      b = cinst[m].slice
+      l = 1
+      desc = ""
+      while l < b.lines.count && !(b.lines[l] =~ /^[\s]*class/)
+        if b.lines[l] =~ /^[\s]*# ?(.*)/
+            desc += " " + $1
+        end
+        l += 1
+      end
     end
 
-    # Extraemos documentación de la clase
-    b = cinst[m].slice
-    l = 1
-    desc = ""
-    while l < b.lines.count && !(b.lines[l] =~ /^[\s]*class/)
-      if b.lines[l] =~ /^[\s]*# ?(.*)/
-          desc += " " + $1
-      end
-      l += 1
-    end
     return desc
   end
 
@@ -130,7 +160,9 @@ class DiccionariodatosController < ApplicationController
       @motor_nombre_rayas = @motor_nombre.underscore
 
       # diccionario, llave será motor, valor será directorio del motor
-      @motores_dir = {"SI-JRSCOL" => "."}
+      @motores_dir = {
+        "SiJrscol" => "."
+      }
       Gem::Specification.find_all.each do |s|
         if MOTORES.include?(s.name.camelize)
           @motores_dir[s.name.camelize] = s.gem_dir
@@ -161,16 +193,39 @@ class DiccionariodatosController < ApplicationController
 
       # Iteramos sobre las tablas del motor.
       @motor_tablas = []
-      ActiveRecord::Base.connection.tables.select {|n|
-        n.start_with?(@motor_nombre_rayas + "_") &&
-          ActiveRecord::Base.connection.table_exists?(n) &&
-          !TABLAS_NO_USADAS_EN_JRSCOL.include?(n)
-      }.sort.each do |t|
-        ncorto=t[(@motor_nombre_rayas.length+1)..-1]
+      if (@motor_nombre == "SiJrscol") then
+        @motor_nombre_rayas = "."
+        motores_rayas = MOTORES.select {|m| m != "SiJrscol"}.map { |m|
+          m.underscore
+        }
+        ltablas = ActiveRecord::Base.connection.tables.select {|n|
+          motores_rayas.all?{|mr| !n.start_with?(mr + "_") } &&
+            ActiveRecord::Base.connection.table_exists?(n) &&
+            !TABLAS_NO_USADAS_EN_JRSCOL.include?(n)
+        }
+      else
+        ltablas = ActiveRecord::Base.connection.tables.select {|n|
+          n.start_with?(@motor_nombre_rayas + "_") &&
+            ActiveRecord::Base.connection.table_exists?(n) &&
+            !TABLAS_NO_USADAS_EN_JRSCOL.include?(n)
+        }
+      end
+      ltablas.sort.each do |t|
+        if @motor_nombre == "SiJrscol"
+          if t[0..10] == "sivel2_sjr_"
+            ncorto = t[11..-1]
+            postarch = "sivel2_sjr/#{ncorto}.rb"
+          else
+            ncorto = t
+            postarch = "#{ncorto}.rb"
+          end
+        else
+          ncorto=t[(@motor_nombre_rayas.length+1)..-1]
+          postarch = "#{@motor_nombre_rayas}/#{ncorto}.rb"
+        end
         #if ncorto == 'campo'
         #  debugger
         #end
-        postarch = "#{@motor_nombre_rayas}/#{ncorto}.rb"
         # Buscar descripción no vacía que esté más arriba en la pila de
         # motores
         arch = ""
@@ -187,7 +242,15 @@ class DiccionariodatosController < ApplicationController
           if File.exist?(parch)
             arch = parch
             desc = extraer_doc_de_clase_en_modulo arch
-            clase = (@motor.to_s+"::"+ncorto.camelize).constantize
+            if @motor_nombre == "SiJrscol"
+              if t[0..10] == "sivel2_sjr_"
+                clase = ("Sivel2Sjr::" + ncorto.camelize).constantize
+              else
+                clase = ("::" + ncorto.camelize).constantize
+              end
+            else
+              clase = (@motor.to_s + "::" + ncorto.camelize).constantize
+            end
             if clase && clase.respond_to?(:all) && 
                 clase.all.respond_to?(:count)
               registros = clase.all.count
@@ -202,8 +265,15 @@ class DiccionariodatosController < ApplicationController
                     clf = clase.asociacion_llave_foranea(col.name)
                   end
                   if clf
-                    llaves_foraneas << col.name + "(" + 
-                      clf.options[:class_name].parameterize.underscore + ")"
+                    if  clf.options[:class_name]
+                      nomclf = clf.options[:class_name].parameterize.underscore
+                    elsif clf.active_record
+                      nomclf = clf.active_record.to_s.parameterize.underscore
+                    else
+                      puts "No se logra determinar clase de #{col.name}"
+                      exit 1;
+                    end
+                    llaves_foraneas << col.name + "(" + nomclf + ")"
                   else
                     atributos << col.name + ":" + col.sql_type_metadata.sql_type
                   end
