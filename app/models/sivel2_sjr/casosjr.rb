@@ -24,7 +24,7 @@ module Sivel2Sjr
     belongs_to :llegada, class_name: "Msip::Ubicacion", validate: true,
       foreign_key: "llegada_id", optional: true
     belongs_to :llegadam, class_name: 'Msip::Ubicacion', validate: true,
-      foreign_key: 'llegada_idm', optional: true
+      foreign_key: 'llegadam_id', optional: true
     belongs_to :proteccion, class_name: "Sivel2Sjr::Proteccion", 
       foreign_key: "proteccion_id", validate: true, optional: true
     belongs_to :oficina, class_name: "Msip::Oficina", 
@@ -32,7 +32,7 @@ module Sivel2Sjr
     belongs_to :salida, class_name: "Msip::Ubicacion", validate: true,
       foreign_key: "salida_id", optional: true
     belongs_to :salidam, class_name: 'Msip::Ubicacion', validate: true,
-      foreign_key: 'salida_idm', optional: true
+      foreign_key: 'salidam_id', optional: true
     belongs_to :statusmigratorio, 
       class_name: "Sivel2Sjr::Statusmigratorio", 
       foreign_key: "estatusmigratorio_id", validate: true, optional: true

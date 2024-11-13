@@ -8,6 +8,6 @@ class DetallefinancieroPersona < ActiveRecord::Base
 
   belongs_to :persona, 
     class_name: 'Msip::Persona', 
-    foreign_key: 'personad_id'
+    foreign_key: 'persona_id'
 
 end

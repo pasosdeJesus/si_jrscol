@@ -8,8 +8,8 @@ class DiccionariodatosController < ApplicationController
   } - ["all", "Jos19"]
 
   TABLAS_NO_USADAS_EN_JRSCOL = [
-    "ar_internal_metadata", 
-    "causaref", 
+    "ar_internal_metadata",
+    "causaref",
     "cor1440_gen_anexo_efecto",
     "cor1440_gen_actividadtipo",
     "cor1440_gen_actividadtipo",
@@ -88,7 +88,7 @@ class DiccionariodatosController < ApplicationController
     "sivel2_sjr_accionjuridica_respuesta",
     "sivel2_sjr_actividad_casosjr",
     "sivel2_sjr_aslegal_respuesta",
-    "sivel2_sjr_aspsocisocial_respuesta",
+    "sivel2_sjr_aspsicosocial_respuesta",
     "sivel2_sjr_ayudaestado_respuesta",
     "sivel2_sjr_ayudasjr_respuesta",
     "sivel2_sjr_derecho_procesosjr",
@@ -99,8 +99,6 @@ class DiccionariodatosController < ApplicationController
     "sivel2_sjr_progestado_respuesta",
     "sivel2_sjr_progestado_respuesta",
     "sivel2_sjr_respuesta",
-    
-   
   ]
 
 
@@ -137,7 +135,7 @@ class DiccionariodatosController < ApplicationController
       end
     end
 
-    return desc
+    return desc.strip
   end
 
 
@@ -163,6 +161,27 @@ class DiccionariodatosController < ApplicationController
       @motores_dir = {
         "SiJrscol" => "."
       }
+      if @motor_nombre == "SiJrscol"
+        @motor_dir = "."
+        @motor_version = Jos19::VERSION
+        @motor_arch_desc = File.join(
+          @motor_dir, "/config/application.rb")
+        if !File.exist?(@motor_arch_desc)
+          raise "No existe archivo #{motor_arch_desc}"
+        end
+        pr = Prism.parse_file(@motor_arch_desc)
+        pr.attach_comments!
+        b = pr.value.slice
+        l = 1
+        @motor_descripcion = ""
+        while l < b.lines.count && !(b.lines[l] =~ /^[\s]*module/)
+          if b.lines[l] =~ /^[\s]*# ?(.*)/
+              @motor_descripcion += " " + $1
+          end
+          l += 1
+        end
+      end
+
       Gem::Specification.find_all.each do |s|
         if MOTORES.include?(s.name.camelize)
           @motores_dir[s.name.camelize] = s.gem_dir
@@ -223,9 +242,9 @@ class DiccionariodatosController < ApplicationController
           ncorto=t[(@motor_nombre_rayas.length+1)..-1]
           postarch = "#{@motor_nombre_rayas}/#{ncorto}.rb"
         end
-        #if ncorto == 'campo'
-        #  debugger
-        #end
+        if ncorto == 'etiqueta_persona'
+          #debugger
+        end
         # Buscar descripción no vacía que esté más arriba en la pila de
         # motores
         arch = ""
@@ -251,7 +270,7 @@ class DiccionariodatosController < ApplicationController
             else
               clase = (@motor.to_s + "::" + ncorto.camelize).constantize
             end
-            if clase && clase.respond_to?(:all) && 
+            if clase && clase.respond_to?(:all) &&
                 clase.all.respond_to?(:count)
               registros = clase.all.count
             end
@@ -259,11 +278,10 @@ class DiccionariodatosController < ApplicationController
               clase.columns.each do |col|
                 if col.name == "id"
                   llave = "id"
-                else 
-                  clf = nil
-                  if clase.respond_to?(:asociacion_llave_foranea)
-                    clf = clase.asociacion_llave_foranea(col.name)
-                  end
+                else
+                  clf = Msip::ModeloHelper.llave_foranea_en_modelo(
+                    col.name, clase
+                  )
                   if clf
                     if  clf.options[:class_name]
                       nomclf = clf.options[:class_name].parameterize.underscore
@@ -340,7 +358,7 @@ class DiccionariodatosController < ApplicationController
     estilo_base = e.add_style sz: 12
     estilo_titulo = e.add_style sz: 20
     estilo_enc1 = e.add_style sz: 16
-    estilo_encabezado = e.add_style sz: 12, b: true, 
+    estilo_encabezado = e.add_style sz: 12, b: true,
       alignment: { wrap_text: true }
     estilo_varias_lineas = e.add_style sz: 12, alignment: { wrap_text: true }
     #, fg_color: 'FF0000', bg_color: '00FF00'
@@ -348,7 +366,7 @@ class DiccionariodatosController < ApplicationController
     lt.add_worksheet do |hoja|
       hoja.add_row ['Diccionario de Datos'],
         height: 30, style: estilo_titulo
-      hoja.merge_cells("A1:E1")
+      hoja.merge_cells("A1:F1")
 
       hoja.add_row []
       hoja.add_row ["Motor:", @motor],
@@ -362,15 +380,17 @@ class DiccionariodatosController < ApplicationController
 
       hoja.add_row ['Tablas'],
         height: 30, style: estilo_enc1
-      hoja.merge_cells("A7:E7")
+      hoja.merge_cells("A7:F7")
 
-      numfilas = 6
-      hoja.add_row [ "Item", 
-                     "Nombre", 
-                     "Descripción", 
-                     "Llave primaria", 
-                     "Atributos" ], 
-                     style: [estilo_encabezado] * numfilas
+      numcols = 6
+      hoja.add_row [
+        "Item",
+        "Nombre",
+        "Descripción",
+        "Llave primaria",
+        "Atributos",
+        "Llaves foráneas",
+      ], style: [estilo_encabezado] * numcols
 
       item = 1
       @motor_tablas.each do |t|
@@ -379,9 +399,10 @@ class DiccionariodatosController < ApplicationController
           t[:nombre],
           t[:descripcion],
           t[:llave_primaria],
-          t[:atributos].join(",")
+          t[:atributos].join(", "),
+          t[:llaves_foraneas].join(", ")
         ]
-        hoja.add_row l2, style: estilo_varias_lineas 
+        hoja.add_row l2, style: estilo_varias_lineas
         item += 1
       end
 
@@ -389,15 +410,17 @@ class DiccionariodatosController < ApplicationController
 
       hoja.add_row ['Relaciones'],
         height: 30, style: estilo_enc1
-      hoja.merge_cells("A#{item+9}:E#{item+9}")  
+      hoja.merge_cells("A#{item+9}:E#{item+9}")
 
-      numfilas = 6
-      hoja.add_row [ "Item", 
-                     "Nombre", 
-                     "Descripción", 
-                     "Llave primaria", 
-                     "Atributos" ], 
-                     style: [estilo_encabezado] * numfilas
+      numcols = 6
+      hoja.add_row [
+        "Item",
+        "Nombre",
+        "Descripción",
+        "Llave primaria",
+        "Atributos",
+        "Llaves foráneas"
+      ], style: [estilo_encabezado] * numcols
 
       item = 1
       @motor_relaciones.each do |t|
@@ -406,9 +429,10 @@ class DiccionariodatosController < ApplicationController
           t[:nombre],
           t[:descripcion],
           t[:llave_primaria],
-          t[:atributos].join(",")
+          t[:atributos].join(", "),
+          t[:llaves_foraneas].join(", ")
         ]
-        hoja.add_row l2, style: estilo_varias_lineas 
+        hoja.add_row l2, style: estilo_varias_lineas
         item += 1
       end
 

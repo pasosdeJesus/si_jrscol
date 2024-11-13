@@ -1401,7 +1401,6 @@ CREATE TABLE public.cor1440_gen_actividad (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     oficina_id integer NOT NULL,
-    rangoedadac_id integer,
     usuario_id integer NOT NULL,
     lugar character varying(500),
     ubicacionpre_id integer,
@@ -6293,7 +6292,7 @@ CREATE TABLE public.msip_vereda (
     id bigint NOT NULL,
     nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
     municipio_id integer,
-    verlocal_id integer,
+    verlocal_cod integer,
     observaciones character varying(5000),
     latitud double precision,
     longitud double precision,
@@ -8813,21 +8812,6 @@ CREATE SEQUENCE public.sivel2_sjr_motivoconsulta_id_seq
 
 
 --
--- Name: sivel2_sjr_motivoconsulta; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_motivoconsulta (
-    id integer DEFAULT nextval('public.sivel2_sjr_motivoconsulta_id_seq'::regclass) NOT NULL,
-    nombre character varying(50) NOT NULL,
-    fechacreacion date DEFAULT '2013-05-13'::date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    CONSTRAINT motivoconsulta_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
 -- Name: sivel2_sjr_motivosjr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -10988,14 +10972,6 @@ ALTER TABLE ONLY public.sivel2_sjr_modalidadtierra
 
 
 --
--- Name: sivel2_sjr_motivoconsulta motivoconsulta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_motivoconsulta
-    ADD CONSTRAINT motivoconsulta_pkey PRIMARY KEY (id);
-
-
---
 -- Name: sivel2_sjr_motivosjr motivosjr_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -12398,13 +12374,6 @@ CREATE INDEX index_msip_ubicacion_on_municipio_id ON public.msip_ubicacion USING
 --
 
 CREATE INDEX index_msip_ubicacion_on_pais_id ON public.msip_ubicacion USING btree (pais_id);
-
-
---
--- Name: index_sivel2_gen_actividad_on_rangoedadac_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_sivel2_gen_actividad_on_rangoedadac_id ON public.cor1440_gen_actividad USING btree (rangoedadac_id);
 
 
 --
@@ -16359,6 +16328,9 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241113150932'),
+('20241113141404'),
+('20241113102219'),
 ('20241113090822'),
 ('20241112200428'),
 ('20241112195544'),

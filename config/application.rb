@@ -1,22 +1,21 @@
 require_relative 'boot'
 
- require "rails"
- require "active_model/railtie"
- require "active_job/railtie"
- require "active_record/railtie"
- # require "active_storage/engine"
- require "action_controller/railtie"
- require "action_mailer/railtie"
- # require "action_mailbox/engine"
- # require "action_text/engine"
- require "action_view/railtie"
- require "action_cable/engine"
- require "rails/test_unit/railtie"
+require "rails"
+require "active_model/railtie"
+require "active_job/railtie"
+require "active_record/railtie"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "action_view/railtie"
+require "action_cable/engine"
+require "rails/test_unit/railtie"
 
-# Requerir las gemas listas en el Gemfile, incluyendo gemas que haya
-# limitado a :test, :development, o :production.
 Bundler.require(*Rails.groups)
 
+# Sistema de información del JRS-Colombia. Emplea la funcionalidad de los
+# motores msip, mr519_gen, heb412_gen, sivel2_gen (interpretando caso como
+# grupo familiar) y cor1440_gen. 
+# Agrega desplazamiento, migración y más a los casos de sivel2_gen.
 module SiJrscol
   class Application < Rails::Application
 
