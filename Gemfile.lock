@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: f4c1d8ffd547834613b635e04565414114a60498
+  revision: 5463fed1b6bee7c48d1ec4f7772bd76efc3068a8
   branch: v2.2
   specs:
     cor1440_gen (2.2.0.beta7)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 443eed4d12f12f20cc4f2abca95dcf6f0a3f123d
+  revision: 9d124d5d52b02548368a86ada4686ec8197af69e
   branch: v2.2
   specs:
     heb412_gen (2.2.0.beta7)
@@ -49,14 +49,14 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: cda7c671ebde0335131f8a33102e5e85be623cba
+  revision: 01d8bd37d536b32f5fed16091a970f58a004a9f4
   branch: v2.2
   specs:
     jos19 (2.2.0.beta7)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: df224091f760587de2fd3ac5aed5b03e03ffaf53
+  revision: ce45f9c0636f9a99dd160fd329fa9bbec0ce4ca3
   branch: v2.2
   specs:
     mr519_gen (2.2.0.beta7)
@@ -65,7 +65,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 7c90b8ad938036b7acc776422bdef7e98671eaf2
+  revision: 2d3c67b8ee6923d7acf534045e75d47117e331e8
   branch: v2.2
   specs:
     msip (2.2.0.beta7)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 30a962390507e0301668c67247e4b4185b49f7c3
+  revision: d48a152dbcc7325a31462ecac146ce838623853a
   branch: v2.2
   specs:
     sivel2_gen (2.2.0.beta7)
@@ -333,7 +333,7 @@ GEM
     psych (5.2.0)
       stringio
     public_suffix (6.0.1)
-    puma (6.4.3)
+    puma (6.5.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.10)

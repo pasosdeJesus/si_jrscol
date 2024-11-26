@@ -2960,7 +2960,8 @@ CREATE TABLE public.cor1440_gen_indicadorpf (
     numero character varying(15) NOT NULL,
     indicador character varying(5000) NOT NULL,
     tipoindicador_id integer,
-    objetivopf_id integer
+    objetivopf_id integer,
+    CONSTRAINT objetivo_xor_resultado CHECK ((((objetivopf_id IS NOT NULL) OR (resultadopf_id IS NOT NULL)) AND ((objetivopf_id IS NULL) OR (resultadopf_id IS NULL))))
 );
 
 
@@ -16328,6 +16329,9 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241125115043'),
+('20241119195733'),
+('20241119180614'),
 ('20241113150932'),
 ('20241113141404'),
 ('20241113102219'),
