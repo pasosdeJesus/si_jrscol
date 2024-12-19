@@ -1136,29 +1136,45 @@ class Ability < Sivel2Gen::Ability
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
 
       when Ability::ROLOFICIALPF
-        can :manage, Cor1440Gen::Actividad
-        can :manage, Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Benefactividadpf
-        can :manage, Cor1440Gen::Asistencia
-        can :manage, Cor1440Gen::Mindicadorpf
-        can :manage, Cor1440Gen::Proyectofinanciero
+        can :manage, [
+          Cor1440Gen::Actividad,
+          Cor1440Gen::Asistencia,
+          Cor1440Gen::Actividadpf,
+          Cor1440Gen::Efecto,
+          Cor1440Gen::Financiador,
+          Cor1440Gen::FormularioTipoindicador,
+          Cor1440Gen::Indicadorpf,
+          Cor1440Gen::Informe,
+          Cor1440Gen::Mindicadorpf,
+          Cor1440Gen::Objetivopf,
+          Cor1440Gen::Pmindicadorpf, 
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::Resultadopf,
+          Cor1440Gen::Tipoindicador,
 
-        can :manage, Heb412Gen::Doc
-        can :manage, Heb412Gen::Plantilladoc
-        can :manage, Heb412Gen::Plantillahcm
-        can :manage, Heb412Gen::Plantillahcr
+          Heb412Gen::Doc,
+          Heb412Gen::Plantilladoc,
+          Heb412Gen::Plantillahcm,
+          Heb412Gen::Plantillahcr,
 
-        can :manage, Mr519Gen::Formulario
-        can :manage, Mr519Gen::Encuestausuario
+          Mr519Gen::Campo,
+          Mr519Gen::Formulario,
+          Mr519Gen::Encuestausuario,
 
-        can :manage, Msip::Orgsocial
-        can :manage, Msip::Sectororgsocial
+          Msip::Orgsocial,
+          Msip::Sectororgsocial,
+          Msip::Ubicacionpre,
+
+          Sivel2Gen::Caso,
+          Sivel2Gen::Acto,
+          ::Actonino,
+          ::Docidsecundario
+        ]
+
+
         can :manage, Msip::Ability::lista_modelos_persona
-        can :manage, ::Docidsecundario
-        can :manage, Msip::Ubicacionpre
 
-        can :manage, Sivel2Gen::Caso
-        can :manage, [Sivel2Gen::Acto, ::Actonino]
 
         can :read, Jos19::Consactividadcaso
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
@@ -1226,13 +1242,24 @@ class Ability < Sivel2Gen::Ability
         can [:read], Usuario
 
       when Ability::ROLADMIN, Ability::ROLDIR
-        can :manage, Cor1440Gen::Actividad
-        can :manage, Cor1440Gen::Actividadpf
-        can :manage, Cor1440Gen::Asistencia
+
         can :read, Cor1440Gen::Benefactividadpf
-        can :manage, Cor1440Gen::Informe
-        can :manage, Cor1440Gen::Mindicadorpf
-        can :manage, Cor1440Gen::Proyectofinanciero
+        can :manage, [
+          Cor1440Gen::Actividad,
+          Cor1440Gen::Asistencia,
+          Cor1440Gen::Actividadpf,
+          Cor1440Gen::Efecto,
+          Cor1440Gen::Financiador,
+          Cor1440Gen::FormularioTipoindicador,
+          Cor1440Gen::Indicadorpf,
+          Cor1440Gen::Informe,
+          Cor1440Gen::Mindicadorpf,
+          Cor1440Gen::Objetivopf,
+          Cor1440Gen::Pmindicadorpf, 
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::Resultadopf,
+          Cor1440Gen::Tipoindicador,
+        ]
 
         can :manage, Msip::Respaldo7z
         can [:new, :create, :show, :index], Msip::Claverespaldo # No editables
