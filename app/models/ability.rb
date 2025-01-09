@@ -1036,7 +1036,10 @@ class Ability < Sivel2Gen::Ability
         can [:read, :new], Cor1440Gen::Actividad
         can [:read, :new], Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Informe
-        can :read, Cor1440Gen::Proyectofinanciero
+        can :read, [
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario
+        ]
 
         can :read, Heb412Gen::Doc
         can :create, Heb412Gen::Doc
@@ -1049,7 +1052,10 @@ class Ability < Sivel2Gen::Ability
           territorial_id: [1, usuario.territorial_id]
         can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Benefactividadpf
-        can :read, Cor1440Gen::Proyectofinanciero
+        can :read, [
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario,
+        ]
         can [:index, :read], Cor1440Gen::Rangoedadac
 
         can :read, Heb412Gen::Doc
@@ -1084,7 +1090,10 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Benefactividadpf
         can :read, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
-        can :read, Cor1440Gen::Proyectofinanciero
+        can :read, [
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario,
+        ]
         can [:index, :read], Cor1440Gen::Rangoedadac
 
         can :read, Heb412Gen::Doc
@@ -1114,7 +1123,10 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Benefactividadpf
         can :manage, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
-        can :read, Cor1440Gen::Proyectofinanciero
+        can :read, [
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario
+        ]
         can [:index, :read], Cor1440Gen::Rangoedadac
 
         can :read, Heb412Gen::Doc
@@ -1150,6 +1162,7 @@ class Ability < Sivel2Gen::Ability
           Cor1440Gen::Objetivopf,
           Cor1440Gen::Pmindicadorpf, 
           Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario,
           Cor1440Gen::Resultadopf,
           Cor1440Gen::Tipoindicador,
 
@@ -1185,7 +1198,10 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Benefactividadpf
         can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Mindicadorpf
-        can :read, Cor1440Gen::Proyectofinanciero
+        can :read, [
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario
+        ]
 
         can :read, Heb412Gen::Doc
         can :read, Heb412Gen::Plantilladoc
@@ -1216,7 +1232,10 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Benefactividadpf
         can :read, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Mindicadorpf
-        can :read, Cor1440Gen::Proyectofinanciero
+        can :read, [
+          Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario
+        ]
 
         can :read, Heb412Gen::Doc
         can :read, Heb412Gen::Plantilladoc
@@ -1257,6 +1276,7 @@ class Ability < Sivel2Gen::Ability
           Cor1440Gen::Objetivopf,
           Cor1440Gen::Pmindicadorpf, 
           Cor1440Gen::Proyectofinanciero,
+          Cor1440Gen::ProyectofinancieroUsuario,
           Cor1440Gen::Resultadopf,
           Cor1440Gen::Tipoindicador,
         ]
