@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 57e13b8e772d556bbb1a8b41d92de9e492f81f94
+  revision: dddcdb030a895a304e7d68bb77f73fb2e70f4ca7
   branch: v2.2
   specs:
     cor1440_gen (2.2.0.beta7)
@@ -268,7 +268,7 @@ GEM
       railties (>= 6.0.0)
     kgio (2.11.4)
     libxml-ruby (5.0.3)
-    logger (1.6.4)
+    logger (1.6.5)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
