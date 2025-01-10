@@ -1037,6 +1037,7 @@ class Ability < Sivel2Gen::Ability
         can [:read, :new], Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Informe
         can :read, [
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1053,6 +1054,7 @@ class Ability < Sivel2Gen::Ability
         can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Benefactividadpf
         can :read, [
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario,
         ]
@@ -1091,6 +1093,7 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario,
         ]
@@ -1124,6 +1127,7 @@ class Ability < Sivel2Gen::Ability
         can :manage, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1153,6 +1157,7 @@ class Ability < Sivel2Gen::Ability
           Cor1440Gen::Actividad,
           Cor1440Gen::Asistencia,
           Cor1440Gen::Actividadpf,
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Efecto,
           Cor1440Gen::Financiador,
           Cor1440Gen::FormularioTipoindicador,
@@ -1199,6 +1204,7 @@ class Ability < Sivel2Gen::Ability
         can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1233,6 +1239,7 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1267,6 +1274,7 @@ class Ability < Sivel2Gen::Ability
           Cor1440Gen::Actividad,
           Cor1440Gen::Asistencia,
           Cor1440Gen::Actividadpf,
+          Cor1440Gen::Desembolso,
           Cor1440Gen::Efecto,
           Cor1440Gen::Financiador,
           Cor1440Gen::FormularioTipoindicador,
