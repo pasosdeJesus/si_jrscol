@@ -1037,7 +1037,11 @@ class Ability < Sivel2Gen::Ability
         can [:read, :new], Cor1440Gen::Actividadpf
         can :read, Cor1440Gen::Informe
         can :read, [
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1054,7 +1058,11 @@ class Ability < Sivel2Gen::Ability
         can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Benefactividadpf
         can :read, [
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario,
         ]
@@ -1093,7 +1101,11 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario,
         ]
@@ -1127,7 +1139,11 @@ class Ability < Sivel2Gen::Ability
         can :manage, Cor1440Gen::Informe
         can :index, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1157,12 +1173,16 @@ class Ability < Sivel2Gen::Ability
           Cor1440Gen::Actividad,
           Cor1440Gen::Asistencia,
           Cor1440Gen::Actividadpf,
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
           Cor1440Gen::Efecto,
           Cor1440Gen::Financiador,
           Cor1440Gen::FormularioTipoindicador,
           Cor1440Gen::Indicadorpf,
           Cor1440Gen::Informe,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Mindicadorpf,
           Cor1440Gen::Objetivopf,
           Cor1440Gen::Pmindicadorpf, 
@@ -1204,7 +1224,11 @@ class Ability < Sivel2Gen::Ability
         can :manage, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1239,7 +1263,11 @@ class Ability < Sivel2Gen::Ability
         can :read, Cor1440Gen::Asistencia
         can :read, Cor1440Gen::Mindicadorpf
         can :read, [
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Proyectofinanciero,
           Cor1440Gen::ProyectofinancieroUsuario
         ]
@@ -1274,12 +1302,16 @@ class Ability < Sivel2Gen::Ability
           Cor1440Gen::Actividad,
           Cor1440Gen::Asistencia,
           Cor1440Gen::Actividadpf,
+          Cor1440Gen::AnexoProyectofinanciero,
           Cor1440Gen::Desembolso,
           Cor1440Gen::Efecto,
           Cor1440Gen::Financiador,
           Cor1440Gen::FormularioTipoindicador,
           Cor1440Gen::Indicadorpf,
           Cor1440Gen::Informe,
+          Cor1440Gen::Informeauditoria,
+          Cor1440Gen::Informefinanciero,
+          Cor1440Gen::Informenarrativo,
           Cor1440Gen::Mindicadorpf,
           Cor1440Gen::Objetivopf,
           Cor1440Gen::Pmindicadorpf, 

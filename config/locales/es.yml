@@ -178,6 +178,7 @@ es:
         Proyectos: Áreas de Actividad
       "cor1440_gen/proyectofinanciero":
         actividadpf: Actividades del marco lógico
+        "{financiador_ids: []}": Financiadores
         indicadorobjetivo: Indicadores de efecto
         indicadorpf: Indicadores de resultado
         indicadorgifmm: Indicador GIFMM
