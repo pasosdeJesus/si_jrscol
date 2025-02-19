@@ -5,14 +5,14 @@
 <% end %>
 <%= f.input :busoficina,
   collection: Msip::Oficina.order('nombre'),
-  label_method: :nombre,
-  value_method: :id,
   include_hidden: false,
-  selected: sel,
   input_html: { 
     class: "tom-select", 
+    'data-action': 'change->enviarautomatico#enviar',
     multiple: true, 
-    'data-enviarautomatico' => ''
   },
-  label: false
+  label: false,
+  label_method: :nombre,
+  selected: sel,
+  value_method: :id
 %>

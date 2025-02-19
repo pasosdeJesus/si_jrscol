@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import EnviarautomaticoController from "./enviarautomatico_controller"
+application.register("enviarautomatico", EnviarautomaticoController)
+
 import InicializaController from "./inicializa_controller"
 application.register("inicializa", InicializaController)
 
