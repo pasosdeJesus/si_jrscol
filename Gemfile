@@ -20,6 +20,8 @@ gem "coffee-rails" # CoffeeScript para recuersos .js.coffee y vistas
 
 gem "colorize" # Colores en terminal
 
+gem "csv"
+
 gem "devise" # Autenticación y roles
 
 gem "devise-i18n"
