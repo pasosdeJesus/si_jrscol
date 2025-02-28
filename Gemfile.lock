@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: eaa60a4993ffa122b886f31db9d6db5e7eca7ee1
+  revision: dfa789f6c19e7e4f96f35539d3fe875ecdbafd85
   branch: v2.2
   specs:
     cor1440_gen (2.2.0.beta7)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 7cb7de83cb11329396e16107f2dcf4f91944fe79
+  revision: 0e9932f40ee78bcc3fbd0e4f2a80fe82c5014b22
   branch: v2.2
   specs:
     heb412_gen (2.2.0.beta7)
@@ -49,14 +49,14 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 06b06add87e1f8b162cf5eb3207a69c6bdd4a1cc
+  revision: 9ca316518334927a6faf9a6867525da7445ff007
   branch: v2.2
   specs:
     jos19 (2.2.0.beta7)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: ba73ce9cc6059691ce3c1ef005ad9cf8f8c9b877
+  revision: 209505491a65c878c9ad6cc8742f39fdab2a815b
   branch: v2.2
   specs:
     mr519_gen (2.2.0.beta7)
@@ -65,7 +65,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 77bc3bc85f2fbffafe679cf4cb06825715099797
+  revision: 3dbae72aa3ba928dcefd67b49fee715f82e68389
   branch: v2.2
   specs:
     msip (2.2.0.beta7)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 2af824455f860f045d0a25d0202c90432351b29e
+  revision: 6ae53f86df63705fbab7fb7d8ca3642cdb4a55ff
   branch: v2.2
   specs:
     sivel2_gen (2.2.0.beta7)
@@ -395,7 +395,7 @@ GEM
     rake (13.2.1)
     rdoc (6.10.0)
       psych (>= 4.0.0)
-    redcarpet (3.6.0)
+    redcarpet (3.6.1)
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -450,7 +450,7 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
-    twitter_cldr (6.13.0)
+    twitter_cldr (6.14.0)
       base64
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)
@@ -550,4 +550,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.6.4
+   2.6.5
