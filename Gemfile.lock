@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 423f7bf4a1ed6be5e3fa9397f1af7554ff6b1ada
+  revision: 3c4a8eb341f4cf500f8df475f0d8bed7052951c8
   branch: v2.2
   specs:
     mr519_gen (2.2.0.beta8)
@@ -210,7 +210,7 @@ GEM
     coffee-script-source (1.12.2)
     color (1.8)
     colorize (1.1.0)
-    concurrent-ruby (1.3.4)
+    concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
     crass (1.0.6)
     csv (3.3.2)
@@ -256,10 +256,11 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     htmlentities (4.3.4)
-    i18n (1.14.6)
+    i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
-    irb (1.14.3)
+    irb (1.15.1)
+      pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jbuilder (2.13.0)
@@ -269,7 +270,7 @@ GEM
       railties (>= 6.0.0)
     kgio (2.11.4)
     libxml-ruby (5.0.3)
-    logger (1.6.5)
+    logger (1.6.6)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -283,19 +284,19 @@ GEM
     mime-types (3.6.0)
       logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2025.0107)
+    mime-types-data (3.2025.0220)
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
     minitest (5.25.4)
-    msgpack (1.7.5)
-    net-imap (0.5.5)
+    msgpack (1.8.0)
+    net-imap (0.5.6)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
     net-protocol (0.2.2)
       timeout
-    net-smtp (0.5.0)
+    net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
     nokogiri (1.18.3)
@@ -325,6 +326,8 @@ GEM
     parslet (2.0.0)
     pdf-core (0.10.0)
     pg (1.5.9)
+    pp (0.6.2)
+      prettyprint
     prawn (2.5.0)
       matrix (~> 0.4)
       pdf-core (~> 0.10.0)
@@ -334,15 +337,16 @@ GEM
     prawnto_2 (0.3.1)
       prawn (>= 1.0.0)
       rails (>= 3.2)
+    prettyprint (0.2.0)
     prism (1.3.0)
-    psych (5.2.2)
+    psych (5.2.3)
       date
       stringio
     public_suffix (6.0.1)
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.11)
+    rack (2.2.12)
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.2.0)
@@ -393,7 +397,7 @@ GEM
       zeitwerk (~> 2.6)
     raindrops (0.20.1)
     rake (13.2.1)
-    rdoc (6.10.0)
+    rdoc (6.12.0)
       psych (>= 4.0.0)
     redcarpet (3.6.1)
     regexp_parser (2.10.0)
@@ -402,7 +406,7 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.4.0)
+    rexml (3.4.1)
     rspreadsheet (0.5.3)
       andand (>= 1.3)
       rubyzip (>= 1.3)
@@ -438,11 +442,11 @@ GEM
       racc
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
-    stringio (3.1.2)
+    stringio (3.1.5)
     terrapin (1.0.1)
       climate_control
     thor (1.3.2)
-    tilt (2.5.0)
+    tilt (2.6.0)
     timeout (0.4.3)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
@@ -476,7 +480,7 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.1)
+    zeitwerk (2.7.2)
 
 PLATFORMS
   aarch64-linux-gnu

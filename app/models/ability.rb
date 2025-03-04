@@ -1324,23 +1324,34 @@ class Ability < Sivel2Gen::Ability
         can :manage, Msip::Respaldo7z
         can [:new, :create, :show, :index], Msip::Claverespaldo # No editables
 
-        can :manage, Heb412Gen::Carpetaexclusiva
-        can :manage, Heb412Gen::Doc
-        can :manage, Heb412Gen::Plantilladoc
-        can :manage, Heb412Gen::Plantillahcm
-        can :manage, Heb412Gen::Plantillahcr
+        can :manage, [
+          Heb412Gen::Carpetaexclusiva,
+          Heb412Gen::Doc,
+          Heb412Gen::Plantilladoc,
+          Heb412Gen::Plantillahcm,
+          Heb412Gen::Plantillahcr,
+        ]
 
-        can :manage, Mr519Gen::Formulario
-        can :manage, Mr519Gen::Encuestausuario
+         
+        can :manage, [
+          Mr519Gen::Campo,
+          Mr519Gen::Encuestausuario,
+          Mr519Gen::Formulario,
+        ]
 
-        can :manage, Msip::Orgsocial
-        can :manage, Msip::Sectororgsocial
+        can :manage, [
+          Msip::Orgsocial,
+          Msip::Sectororgsocial,
+          Msip::Ubicacionpre,
+        ]
         can :manage, Msip::Ability::lista_modelos_persona
         can :manage, ::Docidsecundario
-        can :manage, Msip::Ubicacionpre
 
-        can :manage, Sivel2Gen::Caso
-        can :manage, [Sivel2Gen::Acto, ::Actonino]
+        can :manage, [
+          Sivel2Gen::Acto,
+          Sivel2Gen::Caso,
+          ::Actonino
+        ]
 
         can :read, Jos19::Consactividadcaso
         can :read, [::Consbenefactcaso, ::Consgifmm, ::Consninovictima]
