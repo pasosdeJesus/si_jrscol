@@ -2057,51 +2057,9 @@ CREATE MATERIALIZED VIEW public.consninovictima AS
 
 CREATE MATERIALIZED VIEW public.consultabd AS
  SELECT row_number() OVER () AS numfila,
-    id,
-    nombres,
-    apellidos,
-    anionac,
-    mesnac,
-    dianac,
-    sexo,
-    numerodocumento,
-    created_at,
-    updated_at,
-    pais_id,
-    nacionalde,
-    tdocumento_id,
-    departamento_id,
-    municipio_id,
-    centropoblado_id,
-    buscable,
-    ultimoperfilorgsocial_id,
-    ultimoestatusmigratorio_id,
-    ppt_obsoleto,
-    etnia_id,
-    ultimadiscapacidad_id
-   FROM ( SELECT msip_persona.id,
-            msip_persona.nombres,
-            msip_persona.apellidos,
-            msip_persona.anionac,
-            msip_persona.mesnac,
-            msip_persona.dianac,
-            msip_persona.sexo,
-            msip_persona.numerodocumento,
-            msip_persona.created_at,
-            msip_persona.updated_at,
-            msip_persona.pais_id,
-            msip_persona.nacionalde,
-            msip_persona.tdocumento_id,
-            msip_persona.departamento_id,
-            msip_persona.municipio_id,
-            msip_persona.centropoblado_id,
-            msip_persona.buscable,
-            msip_persona.ultimoperfilorgsocial_id,
-            msip_persona.ultimoestatusmigratorio_id,
-            msip_persona.ppt_obsoleto,
-            msip_persona.etnia_id,
-            msip_persona.ultimadiscapacidad_id
-           FROM public.msip_persona) s
+    count
+   FROM ( SELECT count(*) AS count
+           FROM public.cor1440_gen_asistencia a) s
   WITH NO DATA;
 
 
@@ -12144,6 +12102,13 @@ CREATE INDEX busca_conscaso ON public.sivel2_gen_conscaso USING gin (q);
 --
 
 CREATE UNIQUE INDEX consgifmm_id_idx ON public.consgifmm USING btree (id);
+
+
+--
+-- Name: consultabd_numfila_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX consultabd_numfila_idx ON public.consultabd USING btree (numfila);
 
 
 --
