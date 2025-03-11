@@ -43,6 +43,12 @@ gem "parslet"
 
 gem "pg"#, "~> 0.21" # Postgresql
 
+gem "pg_query" 
+# Mientras sale version posterior a 6.0.0 clonar rama main de
+# de "https://github.com/pganalyze/pg_query.git"
+# construir (com gem build) e instalar manualmente en 
+# /var/www/bundler/ruby/3.4 (cono gem install --install-dir ...
+
 gem "prawn" # Generación de PDF
 
 gem "prawnto_2", ">= 0.3.1", :require => "prawnto"
@@ -68,8 +74,6 @@ gem "sassc-rails"
 gem "simple_form"
 
 gem "sprockets-rails"
-
-gem "sql-parser"
 
 gem "stimulus-rails"
 

@@ -38,18 +38,25 @@ class ConsultabdController < Heb412Gen::ModelosController
     end
     @registros = ::Consultabd.where(numfila: -1)
     if params && params[:filtro] && params[:filtro][:consultasql]
-      analizador = SQLParser::Parser.new
       begin
-        asa = analizador.scan_str(params[:filtro][:consultasql].to_s).
-          to_sql.gsub("`", "\"")
-        Rails.logger.info "En consultabd_controller consulta: #{asa}"
-        Consultabd.refresca_consulta(
-          asa, request.remote_ip, current_usuario.id, request.url, params
-        )
-        @registros = Consultabd.all
+        #asa = analizador.scan_str(params[:filtro][:consultasql].to_s).
+        #  to_sql.gsub("`", "\"")
+        asa = PgQuery.parse(params[:filtro][:consultasql].to_s)
+        Rails.logger.info "En consultabd_controller consulta: asa=#{asa}"
+        if asa.tree.stmts[0].stmt.select_stmt
+          # Es SELECT
+          Consultabd.refresca_consulta(
+            asa.query, request.remote_ip, current_usuario.id, 
+            request.url, params
+          )
+          @registros = Consultabd.all
+        else
+          Rails.logger.info "No es SELECT"
+          flash[:error] = "La consulta debe ser un SELECT"
+        end
       rescue StandardError => e
         Rails.logger.info "Excepción en consultabd_controller: #{e.to_s}"
-        flash[:error] = "No se logró reconocer consulta SELECT en SQL '#{params[:filtro][:consultasql].to_s}'"
+        flash[:error] = "No se logró reconocer consulta SELECT en SQL '#{params[:filtro][:consultasql].to_s}':<pre>#{CGI::escapeHTML(e.to_s)}</pre>".html_safe
         if !ActiveRecord::Base.connection.data_source_exists?('consultabd')
           Consultabd.refresca_consulta(
             "SELECT 2 AS valor",
