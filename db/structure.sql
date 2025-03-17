@@ -2057,9 +2057,8 @@ CREATE MATERIALIZED VIEW public.consninovictima AS
 
 CREATE MATERIALIZED VIEW public.consultabd AS
  SELECT row_number() OVER () AS numfila,
-    count
-   FROM ( SELECT count(*) AS count
-           FROM public.cor1440_gen_asistencia a) s
+    numero
+   FROM ( SELECT 1 AS numero) s
   WITH NO DATA;
 
 
