@@ -971,7 +971,7 @@ class Ability < Sivel2Gen::Ability
         CAMPOS_INDICADORES_RES_T +
         CAMPOS_ACTIVIDADESPF_T,
       controlador: 'Cor1440Gen::Proyectofinanciero',
-      ruta: '/proyectosfinanciero'
+      ruta: '/proyectosfinancieros'
     }
 
   }
