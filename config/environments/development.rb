@@ -22,15 +22,7 @@ Rails.application.configure do
   if Rails.root.join("tmp/caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
-<<<<<<< HEAD
     config.public_file_server.headers = { "cache-control" => "public, max-age=#{2.days.to_i}" }
-=======
-
-    config.cache_store = :memory_store
-    config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=#{2.days.to_i}",
-    }
->>>>>>> d34f0726 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
   else
     config.action_controller.perform_caching = false
   end
@@ -44,10 +36,6 @@ Rails.application.configure do
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 
-<<<<<<< HEAD
-  # Set localhost to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-=======
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
@@ -61,25 +49,12 @@ Rails.application.configure do
     tls: true,
     # enable_starttls_auto: true
   }
->>>>>>> d34f0726 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
-
-  # Highlight code that triggered database queries in logs.
-  config.active_record.verbose_query_logs = true
-
-<<<<<<< HEAD
-  # Append comments with runtime information tags to SQL queries in logs.
-  config.active_record.query_log_tags_enabled = true
-
-  # Highlight code that enqueued background job in logs.
-=======
->>>>>>> d34f0726 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
-  config.active_job.verbose_enqueue_logs = true
 
   config.assets.css_compressor = nil
 
@@ -96,4 +71,7 @@ Rails.application.configure do
 
   config.web_console.permissions = ENV.fetch("WEB_CONSOLE_PERMISSIONS", "")
     .split(",")
+
+  # Raise error when a before_action's only/except options reference missing actions.
+  config.action_controller.raise_on_missing_callback_actions = true
 end
