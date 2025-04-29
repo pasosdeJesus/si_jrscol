@@ -68,3 +68,14 @@ cobertura-unitarias/
 public/cobertura/
 test/puppeteer/node_modules/
 .yardoc
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+app/assets/stylesheets/actiontext
+app/assets/stylesheets/msip
+app/assets/stylesheets/mr519_gen
+app/assets/stylesheets/heb412_gen
+app/assets/stylesheets/cor1440_gen
+app/assets/stylesheets/sivel2_gen
+

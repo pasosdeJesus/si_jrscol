@@ -1,5 +1,3 @@
-
-
 console.log('Hola Mundo desde Webpacker')
 
 import Rails from "@rails/ujs";
@@ -9,9 +7,6 @@ if (typeof window.Rails == 'undefined') {
 }
 
 import * as Turbo from '@hotwired/turbo-rails'
-
-import './jquery'
-import '../../vendor/assets/javascripts/jquery-ui'
 
 import 'gridstack'
 
@@ -85,17 +80,19 @@ let esperarRecursosSprocketsYDocumento = function (resolver) {
 
 let promesaRecursosSprocketsYDocumento = new Promise((resolver, rechazar) => {
   esperarRecursosSprocketsYDocumento(resolver)
+
 })
 
 promesaRecursosSprocketsYDocumento.then((mensaje) => {
   console.log(mensaje)
   var root = window;
 
+
   // Antes de iniciar motor sivel2_gen ponemos este, para que se ejecute antes del incluido en ese motor
   $(document).on('change', 
     '[id^=caso_victima_attributes][id$=persona_attributes_anionac]', function(event) {
 
-      root = window
+      var root = window
       anionac = $(this).val()
       prefIdVic = $(this).attr('id').slice(0, -27)
       r = $("[id=" + prefIdVic + "_rangoedadactual_id]")
@@ -115,15 +112,11 @@ promesaRecursosSprocketsYDocumento.then((mensaje) => {
       r.prop('disabled', true)
     })
 
-  msip_prepara_eventos_comunes(root)
-  heb412_gen_prepara_eventos_comunes(root)
-  mr519_gen_prepara_eventos_comunes(root)
-  sivel2_gen_prepara_eventos_comunes(root,'antecedentes/causas')
-  sivel2_sjr_prepara_eventos_comunes(root)
-  cor1440_gen_prepara_eventos_comunes(root, 
-    {'sin_eventos_recalcular_poblacion': 1})
-  sivel2_sjr_prepara_eventos_unicos(root)
-  msip_registra_cambios_para_bitacora(root)
+  Msip__Motor.ejecutarAlCargarDocumentoYRecursos()
+  Mr519Gen__Motor.ejecutarAlCargarDocumentoYRecursos()
+  Heb412Gen__Motor.ejecutarAlCargarDocumentoYRecursos()
+  Apo214__Motor.ejecutarAlCargarDocumentoYRecursos()
+  Sivel2Gen__Motor.ejecutarAlCargarDocumentoYRecursos()
 
   window.AutocompletaAjaxRapidobenefcaso.iniciar()
 
@@ -146,7 +139,6 @@ document.addEventListener('turbo:load', (e) => {
   
   console.log('Escuchador turbo:load')
 
-  msip_ejecutarAlCargarPagina(window) // Establece root.puntomontaje
   Msip__Motor.ejecutarAlCargarPagina()
   Mr519Gen__Motor.ejecutarAlCargarPagina()
   Heb412Gen__Motor.ejecutarAlCargarPagina()
