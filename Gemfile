@@ -20,6 +20,8 @@ gem "cocoon",
 
 gem "csv"
 
+gem "cssbundling-rails"
+
 gem "devise" # Autenticación y roles
 
 gem "devise-i18n"
@@ -40,7 +42,7 @@ gem "parslet"
 gem "pg" # , "~> 0.21" # Postgresql
 
 gem "pg_query"
-# Mientras sale version posterior a 6.0.0 clonar rama main de
+# Mientras sale version posterior a 6.0.0 clonar rama sintema de
 # de "https://github.com/pganalyze/pg_query.git"
 # construir (com gem build) e instalar manualmente en
 # /var/www/bundler/ruby/3.4 (cono gem install --install-dir ...
