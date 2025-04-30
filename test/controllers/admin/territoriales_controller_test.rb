@@ -9,10 +9,12 @@ module Admin
 
 
     setup do
+      Rails.application.try(:reload_routes_unless_loaded)
       @current_usuario = ::Usuario.create(PRUEBA_USUARIO)
       sign_in @current_usuario
       @territorial = ::Territorial.create(
-        ::TerritorialTest::PRUEBA_TERRITORIAL)
+        ::TerritorialTest::PRUEBA_TERRITORIAL
+      )
       @controller = ::Admin::TerritorialesController.new 
     end
 

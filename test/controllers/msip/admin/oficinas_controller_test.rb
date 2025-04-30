@@ -11,6 +11,8 @@ module Msip
 
 
       setup do
+        Rails.application.try(:reload_routes_unless_loaded)
+
         @current_usuario = ::Usuario.create(PRUEBA_USUARIO)
         sign_in @current_usuario
         @oficina = Msip::Oficina.create(
