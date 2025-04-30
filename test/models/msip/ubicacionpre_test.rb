@@ -48,7 +48,7 @@ module Msip
       u = Msip::Ubicacionpre.find(idu)
 
       assert_equal "Colombia", u.nombre
-      assert_nil u.nombre_sin_pais
+      assert_equal "", u.nombre_sin_pais
 
       u = Msip::Ubicacionpre.create(
         pais_id: 170,
@@ -204,9 +204,9 @@ module Msip
     end
 
     test "nomenclatura" do
-      assert_equal [nil, nil],
+      assert_equal ["", ""],
         Ubicacionpre.nomenclatura(nil, nil, nil, nil, nil, nil, nil)
-      assert_equal ["a", nil],
+      assert_equal ["a", ""],
         Ubicacionpre.nomenclatura("a", nil, nil, nil, nil, nil, nil)
       assert_equal ["b / a", "b"],
         Ubicacionpre.nomenclatura("a", "b", nil, nil, nil, nil, nil)
