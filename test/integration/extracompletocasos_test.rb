@@ -13,8 +13,9 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @current_usuario = Usuario.find_by(nusuario: "sjrcol")
-    @current_usuario.password = "sjrcol123"
+    Rails.application.try(:reload_routes_unless_loaded)
+    @current_usuario = Usuario.find_by(nusuario: 'sjrcol')
+    @current_usuario.password = 'sjrcol123'
     sign_in @current_usuario
     get root_path
 

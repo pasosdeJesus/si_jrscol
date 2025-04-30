@@ -11,6 +11,7 @@ module Msip
       if ENV["CONFIG_HOSTS"] != "www.example.com"
         raise "CONFIG_HOSTS debe ser www.example.com"
       end
+      Rails.application.try(:reload_routes_unless_loaded)
 
       @gupoper = Msip::Grupoper.create!(PRUEBA_GRUPOPER)
       @tipoorgsocial = Msip::Tipoorgsocial.create!(PRUEBA_TIPOORGSOCIAL)

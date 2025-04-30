@@ -11,8 +11,8 @@ module Msip
       if ENV["CONFIG_HOSTS"] != "www.example.com"
         raise "CONFIG_HOSTS debe ser www.example.com"
       end
-
-      ActiveRecord::Base.connection.execute(<<-SQL)
+      Rails.application.try(:reload_routes_unless_loaded)
+      ActiveRecord::Base.connection.execute <<-SQL
         REFRESH MATERIALIZED VIEW msip_mundep;
       SQL
     end
