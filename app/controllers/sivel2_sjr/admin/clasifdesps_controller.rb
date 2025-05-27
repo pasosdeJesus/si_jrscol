@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class ClasifdespsController < Msip::Admin::BasicasController
       before_action :set_clasifdesp, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Clasifdesp
 
-      def clase 
+      def clase
         "Sivel2Sjr::Clasifdesp"
       end
 
@@ -16,7 +18,6 @@ module Sivel2Sjr
       def clasifdesp_params
         params.require(:sivel2_sjr_clasifdesp).permit(*atributos_form)
       end
-
     end
   end
 end

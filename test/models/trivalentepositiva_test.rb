@@ -1,33 +1,37 @@
-# encoding: UTF-8
+# encoding: utf-8
+# frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class TrivalentepositivaTest < ActiveSupport::TestCase
-
   PRUEBA_TRIVALENTEPOSITIVA = {
     nombre: "Trivalentepositiva",
     fechacreacion: "2020-07-12",
-    created_at: "2020-07-12"
+    created_at: "2020-07-12",
   }
 
   test "valido" do
     trivalentepositiva = ::Trivalentepositiva.create(
-      PRUEBA_TRIVALENTEPOSITIVA)
+      PRUEBA_TRIVALENTEPOSITIVA,
+    )
+
     assert(trivalentepositiva.valid?)
     trivalentepositiva.destroy
   end
 
   test "no valido" do
     trivalentepositiva = ::Trivalentepositiva.new(
-      PRUEBA_TRIVALENTEPOSITIVA)
-    trivalentepositiva.nombre = ''
+      PRUEBA_TRIVALENTEPOSITIVA,
+    )
+    trivalentepositiva.nombre = ""
+
     assert_not(trivalentepositiva.valid?)
     trivalentepositiva.destroy
   end
 
   test "existente" do
-    trivalentepositiva = ::Trivalentepositiva.where(id: 1).take
-    assert_equal(trivalentepositiva.nombre, "SIN RESPUESTA")
-  end
+    trivalentepositiva = ::Trivalentepositiva.find_by(id: 1)
 
+    assert_equal("SIN RESPUESTA", trivalentepositiva.nombre)
+  end
 end

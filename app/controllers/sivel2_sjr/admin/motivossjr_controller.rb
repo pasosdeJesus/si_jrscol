@@ -1,24 +1,26 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class MotivossjrController < Msip::Admin::BasicasController
       before_action :set_motivosjr, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Motivosjr
 
-      def clase 
+      def clase
         "Sivel2Sjr::Motivosjr"
       end
 
       def atributos_index
-        ["id",  "nombre" ] + 
-          [ :derecho_ids =>  [] ] +
-          ["observaciones", "fechacreacion", "fechadeshabilitacion"] 
+        ["id", "nombre"] +
+          [derecho_ids: []] +
+          ["observaciones", "fechacreacion", "fechadeshabilitacion"]
       end
 
       def new
         new_gen
-        @registro.nombre = 'N '+Time.now.to_i.to_s
+        @registro.nombre = "N " + Time.now.to_i.to_s
         @registro.save!(validate: false)
-        redirect_to main_app.edit_admin_motivosjr_path(@registro)
+        redirect_to(main_app.edit_admin_motivosjr_path(@registro))
       end
 
       # Use callbacks to share common setup or constraints between actions.
@@ -30,7 +32,6 @@ module Sivel2Sjr
       def motivosjr_params
         params.require(:sivel2_sjr_motivosjr).permit(*atributos_form)
       end
-
     end
   end
 end

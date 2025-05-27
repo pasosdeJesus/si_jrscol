@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
-    class ComosuposController <  Msip::Admin::BasicasController
+    class ComosuposController < Msip::Admin::BasicasController
       before_action :set_comosupo, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Comosupo
 
-      def clase 
+      def clase
         "Sivel2Sjr::Comosupo"
       end
 
@@ -15,7 +17,7 @@ module Sivel2Sjr
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def comosupo_params
-        params.require(:sivel2_sjr_comosupo).permit( *(atributos_index - ["id"]))
+        params.require(:sivel2_sjr_comosupo).permit(*(atributos_index - ["id"]))
       end
 
       helper_method :clase, :atributos_index

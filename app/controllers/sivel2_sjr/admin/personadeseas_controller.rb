@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class PersonadeseasController < Msip::Admin::BasicasController
       before_action :set_personadesea, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Personadesea
 
-      def clase 
+      def clase
         "Sivel2Sjr::Personadesea"
       end
 
@@ -17,7 +19,6 @@ module Sivel2Sjr
       def personadesea_params
         params.require(:sivel2_sjr_personadesea).permit(*atributos_form)
       end
-
     end
   end
 end

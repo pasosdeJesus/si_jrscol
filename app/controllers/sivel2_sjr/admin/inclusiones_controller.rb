@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class InclusionesController < Msip::Admin::BasicasController
       before_action :set_inclusion, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Inclusion
 
-      def clase 
+      def clase
         "Sivel2Sjr::Inclusion"
       end
 
@@ -14,34 +16,35 @@ module Sivel2Sjr
       end
 
       def genclase
-        return 'F';
+        "F"
       end
 
       def atributos_index
-        [:id,
-         :nombre,
-         :observaciones,
-         :pospres,
-         :fechacreacion_localizada,
-         :habilitado
+        [
+          :id,
+          :nombre,
+          :observaciones,
+          :pospres,
+          :fechacreacion_localizada,
+          :habilitado,
         ]
       end
 
       def atributos_form
         a = atributos_index - [:id]
-        return a.map do |e|
-          e == :fechacreacion_localizada ? :fechacreacion : 
+        a.map do |e|
+          if e == :fechacreacion_localizada
+            :fechacreacion
+          else
             (e == :habilitado ? :fechadeshabilitacion : e)
+          end
         end
       end
-
 
       # No confiar en parametros de internet, sino solo los de lista blanca
       def inclusion_params
         params.require(:sivel2_sjr_inclusion).permit(*atributos_form)
       end
-
-
     end
   end
 end

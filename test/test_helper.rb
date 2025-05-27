@@ -1,74 +1,73 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
-ENV['RAILS_ENV'] ||= 'test'
+ENV["RAILS_ENV"] ||= "test"
 
-require 'simplecov'
-SimpleCov.start 'rails'
-require File.expand_path('../../config/environment', __FILE__)
-require 'rails/test_help'
-
+require "simplecov"
+SimpleCov.start("rails")
+require File.expand_path("../../config/environment", __FILE__)
+require "rails/test_help"
 
 class ActiveSupport::TestCase
-
   if Msip::Tcentropoblado.all.count == 0
-    load "#{Rails.root}/db/seeds.rb"
+    load "#{Rails.root.join("db/seeds.rb")}"
     SiJrscol::Application.load_tasks
-    Rake::Task['msip:indices'].invoke
+    Rake::Task["msip:indices"].invoke
   end
 
   protected
+
   def load_seeds
-    load "#{Rails.root}/db/seeds.rb"
+    load("#{Rails.root.join("db/seeds.rb")}")
   end
 end
 
-
 PRUEBA_ACTIVIDAD = {
   id: 1,
-  nombre:'n',
-  fecha:'2017-03-02',
-  oficina_id:1,
-  usuario_id:1,
+  nombre: "n",
+  fecha: "2017-03-02",
+  oficina_id: 1,
+  usuario_id: 1,
   ubicacionpre_id: 1,
-  resultado: 'x'
+  resultado: "x",
 }
 
 PRUEBA_ACTIVIDADPF = {
   id: 1,
   proyectofinanciero_id: 1,
-  nombrecorto:'actividadpf',
-  titulo: 'titulo actividadpf',
+  nombrecorto: "actividadpf",
+  titulo: "titulo actividadpf",
   resultadopf_id: 1,
 }
 
 PRUEBA_ACTONINO = {
   caso_id: 1,
   persona_id: 1,
-  fecha: '2020-06-15',
+  fecha: "2020-06-15",
   ubicacionpre_id: 1, # Colombia
   presponsable_id: 8, # GAULA
-  categoria_id: 40 # ASESINATO
+  categoria_id: 40, # ASESINATO
 }
 
 PRUEBA_AREA = {
   id: 1,
-  nombre: 'A',
+  nombre: "A",
   fechacreacion: "2018-10-25",
-  created_at: "2018-10-25"
+  created_at: "2018-10-25",
 }
 
 PRUEBA_ASESORHISTORICO = {
   casosjr_id: 1,
   usuario_id: 1,
   oficina_id: 1,
-  fechainicio: '2022-06-22',
-  fechafin: '2022-06-23'
+  fechainicio: "2022-06-22",
+  fechafin: "2022-06-23",
 }
 
 PRUEBA_CASO = {
   titulo: "Caso de prueba",
   fecha: "2021-09-11",
-  memo: "Una descripción del caso de prueba"
+  memo: "Una descripción del caso de prueba",
 }
 
 PRUEBA_CASOSJR = {
@@ -79,15 +78,15 @@ PRUEBA_CASOSJR = {
   created_at: "2021-04-14",
 }
 
-PRUEBA_CATEGORIA= {
-  id: 1000, 
+PRUEBA_CATEGORIA = {
+  id: 1000,
   nombre: "Categoria",
   supracategoria_id: 1,
   fechacreacion: "2014-09-09",
-  created_at: "2014-09-09"
+  created_at: "2014-09-09",
 }
 
-PRUEBA_DESPLAZAMIENTO= {
+PRUEBA_DESPLAZAMIENTO = {
   caso_id: 0, # por llenar
   fechaexpulsion: "2021-04-12",
   fechallegada: "2021-04-13",
@@ -110,7 +109,7 @@ PRUEBA_DETALLEFINANCIERO = {
   numeromeses: 3,
   numeroasistencia: 1,
   created_at: "2020-07-12",
-  updated_at: "2020-07-12"
+  updated_at: "2020-07-12",
 }
 
 PRUEBA_ETIQUETA = {
@@ -123,7 +122,7 @@ PRUEBA_ETIQUETA = {
 
 PRUEBA_GRUPOPER = {
   id: 1,
-  nombre: 'grupoper1'
+  nombre: "grupoper1",
 }
 
 PRUEBA_FINANCIADOR = {
@@ -133,7 +132,6 @@ PRUEBA_FINANCIADOR = {
   fechacreacion: "2015-04-20",
   created_at: "2015-04-20",
 }
-
 
 PRUEBA_LUGARPRELIMINAR = {
   fecha: "2021-11-10",
@@ -177,62 +175,62 @@ PRUEBA_LUGARPRELIMINAR = {
   desgenanomalia: "",
   evaluacionlugar: "",
   riesgosdanios: "",
-  archivokml_id: nil
+  archivokml_id: nil,
 }
 
 PRUEBA_OBJETIVOPF = {
   id: 1,
   proyectofinanciero_id: 1,
-  numero: 'O1',
-  objetivo: 'Objetivo 1'
+  numero: "O1",
+  objetivo: "Objetivo 1",
 }
 
 PRUEBA_ORGSOCIAL = {
   grupoper_id: 1,
   tipoorgsocial_id: 99,
-  created_at: '2021-08-27',
-  updated_at: '2021-08-27'
+  created_at: "2021-08-27",
+  updated_at: "2021-08-27",
 }
 
 PRUEBA_PERSONA = {
-  nombres: 'Luis Alejandro',
-  apellidos: 'Cruz Ordoñez',
-  sexo: 'M',
-  numerodocumento: '1061769227',
+  nombres: "Luis Alejandro",
+  apellidos: "Cruz Ordoñez",
+  sexo: "M",
+  numerodocumento: "1061769227",
   tdocumento_id: 11,
   anionac: 1987,
   mesnac: 6,
   dianac: 15,
   ultimoperfilorgsocial_id: 13,
-  ultimoestatusmigratorio_id: 7
+  ultimoestatusmigratorio_id: 7,
 }
 
 PRUEBA_PERSONA2 = {
-  nombres: 'x',
-  apellidos: 'y',
-  sexo: 'M',
-  numerodocumento: '127935',
+  nombres: "x",
+  apellidos: "y",
+  sexo: "M",
+  numerodocumento: "127935",
   tdocumento_id: 11,
   anionac: 1988,
   mesnac: 7,
   dianac: 16,
   ultimoperfilorgsocial_id: 13,
-  ultimoestatusmigratorio_id: 2
+  ultimoestatusmigratorio_id: 2,
 }
 
 PRUEBA_PROYECTOFINANCIERO = {
   id: 1,
   nombre: "Proyectofinanciero",
   fechacreacion: "2015-04-20",
-  created_at: "2015-04-20"
+  created_at: "2015-04-20",
 }
 
 PRUEBA_RESULTADOPF = {
   id: 1,
   proyectofinanciero_id: 1,
   objetivopf_id: 1,
-  numero: 'R1',
-  resultado: 'Resultado 1'
+  numero: "R1",
+  resultado: "Resultado 1",
 }
 
 PRUEBA_SOLICITUD = {
@@ -284,7 +282,7 @@ PRUEBA_UBICACIONPRE = {
   created_at: "2021-12-08",
   updated_at: "2021-12-08",
   nombre_sin_pais: "BARRANCOMINAS / BARRANCOMINAS / GUAINÍA",
-  fechacreacion: "2023-12-07"
+  fechacreacion: "2023-12-07",
 }
 
 PRUEBA_UBICACIONPRE2 = {
@@ -297,7 +295,7 @@ PRUEBA_UBICACIONPRE2 = {
   latitud: 0.1,
   longitud: 0.2,
   nombre_sin_pais: "IMAGINA",
-  fechacreacion: "2023-12-07"
+  fechacreacion: "2023-12-07",
 }
 
 # Usuario para ingresar y hacer pruebas
@@ -309,11 +307,11 @@ PRUEBA_USUARIO = {
   rol: 1,
   idioma: "es_CO",
   email: "usuario1@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2014-08-05",
   fechadeshabilitacion: nil,
-  territorial_id: nil
+  territorial_id: nil,
 }
 
 # Usuario operador para ingresar y hacer pruebas
@@ -326,13 +324,13 @@ PRUEBA_USUARIO_ANALI = {
   rol: 5, # Analista
   idioma: "es_CO",
   email: "analista@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2021-08-27",
-  fechadeshabilitacion: nil
+  fechadeshabilitacion: nil,
 }
 
-# Usuario operador del grupo analista de casos 
+# Usuario operador del grupo analista de casos
 # (debe agregarse al grupo analista de casos después de creado)
 PRUEBA_USUARIO_AN = {
   nusuario: "analista",
@@ -343,14 +341,14 @@ PRUEBA_USUARIO_AN = {
   territorial_id: 1,
   idioma: "es_CO",
   email: "analista@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2021-08-27",
-  fechadeshabilitacion: nil
+  fechadeshabilitacion: nil,
 }
 
 # Usuario analista de prensa para ingresar y hacer pruebas
-PRUEBA_USUARIO_AP= {
+PRUEBA_USUARIO_AP = {
   nusuario: "ap",
   password: "sjrcol123",
   nombre: "ap",
@@ -359,10 +357,10 @@ PRUEBA_USUARIO_AP= {
   rol: 7, # Analista
   idioma: "es_CO",
   email: "ap@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2021-08-27",
-  fechadeshabilitacion: nil
+  fechadeshabilitacion: nil,
 }
 
 # Usuario invitado para ingresar y hacer pruebas
@@ -375,10 +373,10 @@ PRUEBA_USUARIO_INV = {
   rol: 2, # Analista
   idioma: "es_CO",
   email: "inv@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2021-08-27",
-  fechadeshabilitacion: nil
+  fechadeshabilitacion: nil,
 }
 
 # Usuario coordinador para ingresar y hacer pruebas
@@ -391,10 +389,10 @@ PRUEBA_USUARIO_COORD = {
   rol: 4, # Coordinador
   idioma: "es_CO",
   email: "coord@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2021-08-27",
-  fechadeshabilitacion: nil
+  fechadeshabilitacion: nil,
 }
 
 # Usuario operador para ingresar y hacer pruebas
@@ -407,10 +405,10 @@ PRUEBA_USUARIO_OP = {
   territorial_id: 1,
   idioma: "es_CO",
   email: "operador@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2021-08-27",
-  fechadeshabilitacion: nil
+  fechadeshabilitacion: nil,
 }
 
 # Usuario sistematizador para ingresar y hacer pruebas
@@ -423,10 +421,10 @@ PRUEBA_USUARIO_SIST = {
   rol: 5, # Analista
   idioma: "es_CO",
   email: "sistematiza@localhost",
-  encrypted_password: '$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G',
+  encrypted_password: "$2a$10$uMAciEcJuUXDnpelfSH6He7BxW0yBeq6VMemlWc5xEl6NZRDYVA3G",
   sign_in_count: 0,
   fechacreacion: "2021-08-27",
-  fechadeshabilitacion: nil
+  fechadeshabilitacion: nil,
 }
 
 PRUEBA_VICTIMA = {
@@ -438,8 +436,7 @@ PRUEBA_VICTIMA = {
   organizacion_id: 1,
   vinculoestado_id: 1,
   organizacionarmada: 1,
-  anotaciones: 'a',
+  anotaciones: "a",
   iglesia_id: 1,
-  orientacionsexual: 'H'
+  orientacionsexual: "H",
 }
-

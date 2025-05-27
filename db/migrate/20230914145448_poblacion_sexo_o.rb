@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class PoblacionSexoO < ActiveRecord::Migration[7.0]
   def up
-    execute <<-SQL
+    execute(<<-SQL)
       CREATE OR REPLACE PROCEDURE public.cor1440_gen_recalcular_poblacion_actividad(IN par_actividad_id bigint)
       LANGUAGE plpgsql AS $$
       DECLARE
@@ -85,9 +87,10 @@ class PoblacionSexoO < ActiveRecord::Migration[7.0]
       $$;
     SQL
   end
+
   def down
-    remove_column :cor1440_gen_actividad_rangoedadac, :i
-    execute <<-SQL
+    remove_column(:cor1440_gen_actividad_rangoedadac, :i)
+    execute(<<-SQL)
       CREATE OR REPLACE PROCEDURE public.cor1440_gen_recalcular_poblacion_actividad(IN par_actividad_id bigint)
       LANGUAGE plpgsql AS $$
       DECLARE
@@ -172,5 +175,4 @@ class PoblacionSexoO < ActiveRecord::Migration[7.0]
       $$;
     SQL
   end
-
 end

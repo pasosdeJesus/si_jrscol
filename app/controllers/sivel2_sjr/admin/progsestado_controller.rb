@@ -1,34 +1,36 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class ProgsestadoController < Msip::Admin::BasicasController
       before_action :set_progestado, only: [:show, :edit, :update, :destroy]
-      load_and_authorize_resource  class: Sivel2Sjr::Progestado
+      load_and_authorize_resource class: Sivel2Sjr::Progestado
 
-      def clase 
-        'Sivel2Sjr::Progestado'
+      def clase
+        "Sivel2Sjr::Progestado"
       end
 
       def atributos_index
-        ['id',  'nombre' ] + 
-          [ :derecho_ids =>  [] ] +
-          ['observaciones', 'fechacreacion', 'fechadeshabilitacion'] 
+        ["id", "nombre"] +
+          [derecho_ids: []] +
+          ["observaciones", "fechacreacion", "fechadeshabilitacion"]
       end
 
       def genclase
-        return 'M'
+        "M"
       end
 
       def create
         m = Sivel2Sjr::Progestado.new(
-          nombre: progestado_params[:nombre], 
-          observaciones: progestado_params[:observaciones], 
-          fechacreacion: progestado_params[:fechacreacion], 
-          fechadeshabilitacion: progestado_params[:fechadeshabilitacion]
+          nombre: progestado_params[:nombre],
+          observaciones: progestado_params[:observaciones],
+          fechacreacion: progestado_params[:fechacreacion],
+          fechadeshabilitacion: progestado_params[:fechadeshabilitacion],
         )
         m.save!
         m.derecho_ids = progestado_params[:derecho_ids]
         m.save!
-        redirect_to main_app.admin_progsestado_path #'/admin/progsestado'
+        redirect_to(main_app.admin_progsestado_path) # '/admin/progsestado'
       end
 
       def set_progestado
@@ -38,7 +40,6 @@ module Sivel2Sjr
       def progestado_params
         params.require(:sivel2_sjr_progestado).permit(*atributos_form)
       end
-
     end
   end
 end

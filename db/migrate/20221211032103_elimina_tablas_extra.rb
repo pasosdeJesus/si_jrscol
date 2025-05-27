@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class EliminaTablasExtra < ActiveRecord::Migration[7.0]
   def up
-    execute <<~SQL
+    execute(<<~SQL)
       DROP TABLE IF EXISTS taccion;
       DROP SEQUENCE IF EXISTS taccion_seq;
       DROP TABLE IF EXISTS tproceso;
@@ -8,6 +10,7 @@ class EliminaTablasExtra < ActiveRecord::Migration[7.0]
       DROP TABLE IF EXISTS tmpactvl;
     SQL
   end
+
   def down
   end
 end

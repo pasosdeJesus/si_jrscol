@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Sivel2Sjr
   # Respuestas usadas hasta 2019 (obsoleto)
   class AccionjuridicaRespuesta < ActiveRecord::Base
@@ -5,14 +6,16 @@ module Sivel2Sjr
 
     self.table_name = "sivel2_sjr_accionjuridica_respuesta"
 
-    belongs_to :accionjuridica, class_name: 'Sivel2Sjr::Accionjuridica', 
-      foreign_key: "accionjuridica_id", optional: false
-    belongs_to :respuesta, class_name: 'Sivel2Sjr::Respuesta',
-      foreign_key: "respuesta_id", optional: false
+    belongs_to :accionjuridica, 
+      class_name: "Sivel2Sjr::Accionjuridica", 
+      optional: false
+    belongs_to :respuesta, 
+      class_name: "Sivel2Sjr::Respuesta", 
+      optional: false
 
-    validates_presence_of :accionjuridica
-    validates_presence_of :respuesta
+    validates :accionjuridica, presence: true
+    validates :respuesta, presence: true
 
-    validates_uniqueness_of :accionjuridica, scope: :respuesta_id
+    validates :accionjuridica, uniqueness: { scope: :respuesta_id }
   end
 end

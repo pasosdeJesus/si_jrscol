@@ -1,15 +1,16 @@
-require 'test_helper'
-require 'nokogiri'
+# frozen_string_literal: true
+
+require "test_helper"
+require "nokogiri"
 
 module Msip
   class ControlAccesoBasicasControllerTest < ActionDispatch::IntegrationTest
-
     include Rails.application.routes.url_helpers
     include Devise::Test::IntegrationHelpers
 
-    setup  do
-      if ENV['CONFIG_HOSTS'] != 'www.example.com'
-        raise 'CONFIG_HOSTS debe ser www.example.com'
+    setup do
+      if ENV["CONFIG_HOSTS"] != "www.example.com"
+        raise "CONFIG_HOSTS debe ser www.example.com"
       end
       Rails.application.try(:reload_routes_unless_loaded)
       @persona = Msip::Persona.create!(PRUEBA_PERSONA)
@@ -21,53 +22,54 @@ module Msip
       current_usuario = Usuario.create!(PRUEBA_USUARIO_AN)
       current_usuario.grupo_ids = [20]
       current_usuario.save
-      return current_usuario
+      current_usuario
     end
 
     test "sin autenticar no debe listar tablas básicas" do
       get msip.tablasbasicas_path
       mih = Nokogiri::HTML(@response.body)
-      filas_index = mih.at_css('div.container').at_css('ul').count
-      assert(filas_index == 0)
+      filas_index = mih.at_css("div.container").at_css("ul").count
+
+      assert_equal(0, filas_index)
     end
 
     basicas_msip = Msip::Ability::BASICAS_PROPIAS
 
     ## PROBANDO BASICAS GEOGRÁFICAS
-    PAIS_PARAMS = {id: 1, nombre: "ejemplo", nombreiso_espanol: "eje", fechacreacion: "2021-12-09"}
-    MODELO_PARAMS = {nombre: "ejemplop",observaciones: "obs", fechacreacion: "2021-12-09"}
-    MODELO_PARAMS_IDSTR = { id: "a", nombre: "ejemplop", observaciones: "obs", fechacreacion: "2021-12-09"}
+    PAIS_PARAMS = { id: 1, nombre: "ejemplo", nombreiso_espanol: "eje", fechacreacion: "2021-12-09" }
+    MODELO_PARAMS = { nombre: "ejemplop", observaciones: "obs", fechacreacion: "2021-12-09" }
+    MODELO_PARAMS_IDSTR = { id: "a", nombre: "ejemplop", observaciones: "obs", fechacreacion: "2021-12-09" }
 
     def crear_registro(modelo, basica)
-      if modelo.columns_hash['id'].type == "string".to_sym
-        if basica == 'trelacion'
-          registro = modelo.create!(MODELO_PARAMS_IDSTR.merge({inverso: "a"}))
+      registro = if modelo.columns_hash["id"].type == "string".to_sym
+        if basica == "trelacion"
+          modelo.create!(MODELO_PARAMS_IDSTR.merge({ inverso: "a" }))
         else
-          registro = modelo.create!(MODELO_PARAMS_IDSTR)
+          modelo.create!(MODELO_PARAMS_IDSTR)
         end
       else
         case basica
         when "centropoblado"
-          registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
+          modelo.create!(MODELO_PARAMS.merge({ municipio_id: 1360 }))
         when "departamento"
-          registro = modelo.create!(MODELO_PARAMS.merge({pais_id: 170}))
+          modelo.create!(MODELO_PARAMS.merge({ pais_id: 170 }))
         when "municipio"
-          registro = modelo.create!(MODELO_PARAMS.merge({departamento_id: 17}))
+          modelo.create!(MODELO_PARAMS.merge({ departamento_id: 17 }))
         when "oficina"
-          registro = modelo.create!(MODELO_PARAMS.merge({territorial_id: 1}))
+          modelo.create!(MODELO_PARAMS.merge({ territorial_id: 1 }))
         when "pais"
-          registro = modelo.create!(MODELO_PARAMS.merge({id: 1000, nombreiso_espanol: "iso"}))
+          modelo.create!(MODELO_PARAMS.merge({ id: 1000, nombreiso_espanol: "iso" }))
         when "tdocumento"
-          registro = modelo.create!(MODELO_PARAMS.merge({sigla: 'TD'}))
+          modelo.create!(MODELO_PARAMS.merge({ sigla: "TD" }))
         when "ubicacionpre"
-          registro = modelo.create!(MODELO_PARAMS.merge({pais_id: 170}))
+          modelo.create!(MODELO_PARAMS.merge({ pais_id: 170 }))
         when "vereda"
-          registro = modelo.create!(MODELO_PARAMS.merge({municipio_id: 1360}))
+          modelo.create!(MODELO_PARAMS.merge({ municipio_id: 1360 }))
         else
-          registro = modelo.create!(MODELO_PARAMS)
+          modelo.create!(MODELO_PARAMS)
         end
       end
-      return registro
+      registro
     end
 
     basicas_msip.each do |basica|
@@ -76,31 +78,33 @@ module Msip
       end
 
       modulo_str = basica[0] + "::" + basica[1].capitalize
-      modelo = modulo_str.constantize()
+      modelo = modulo_str.constantize
 
-      #No autenticado
+      # No autenticado
 
       if basica[1] == "centropoblado" || basica[1] == "municipio" || basica[1] == "departamento" || basica[1] == "pais"
         test "sin autenticar debe presentar el index de #{basica[1]}" do
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
+
           assert_response :ok
         end
         test "sin autenticar debe presentar el show de #{basica[1]}" do
-          skip 
+          skip
           reg = modelo.all.take
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
+
           assert_response :ok
         end
-      else 
+      else
         test "sin autenticar no debe presentar el index de #{basica[1]}" do
           assert_raise CanCan::AccessDenied do
-            get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+            get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
           end
         end
         test "sin autenticar no debe presentar el show de #{basica[1]}" do
           reg = crear_registro(modelo, basica[1])
           assert_raise CanCan::AccessDenied do
-            get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+            get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
           end
           reg.destroy!
         end
@@ -108,15 +112,15 @@ module Msip
 
       test "sin autenticar no debe ver formulario de nuevo de #{basica[1]}" do
         assert_raise CanCan::AccessDenied do
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/nueva"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/nueva"
         end
       end
 
       test "sin autenticar no puede crear registro de #{basica[1]}" do
-        ruta = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+        ruta = ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          post ruta, params: {"#{basica[1]}": reg.attributes} 
+          post ruta, params: { "#{basica[1]}": reg.attributes }
         end
         reg.destroy!
       end
@@ -124,7 +128,7 @@ module Msip
       test "sin autenticar no debe editar #{basica[1]}" do
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}/edita"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}/edita"
         end
         reg.destroy!
       end
@@ -132,14 +136,14 @@ module Msip
       test "sin autenticar no debe actualizar #{basica[1]}" do
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          patch ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+          patch ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
         end
         reg.destroy!
       end
 
       test "sin autenticar no debe dejar destruir un registro de #{basica[1]}" do
         reg = crear_registro(modelo, basica[1])
-        ruta1 = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}" + "/" + reg.id.to_s
+        ruta1 = ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}" + "/" + reg.id.to_s
         assert_raise CanCan::AccessDenied do
           delete ruta1
         end
@@ -154,22 +158,24 @@ module Msip
         test "operador sin grupo debe presentar el index de #{basica[1]}" do
           skip
           sign_in @ope_sin_grupo
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
+
           assert_response :ok
         end
         test "operador sin grupo debe presentar el show de #{basica[1]}" do
-          skip 
+          skip
           sign_in @ope_sin_grupo
           reg = modelo.all.take
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
+
           assert_response :ok
         end
-      else 
+      else
         test "operador sin grupo no debe presentar el index de #{basica[1]}" do
           skip
           sign_in @ope_sin_grupo
           assert_raise CanCan::AccessDenied do
-            get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+            get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
           end
         end
         test "operador sin grupo no debe presentar el show de #{basica[1]}" do
@@ -177,7 +183,7 @@ module Msip
           sign_in @ope_sin_grupo
           reg = crear_registro(modelo, basica[1])
           assert_raise CanCan::AccessDenied do
-            get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+            get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
           end
           reg.destroy!
         end
@@ -187,17 +193,17 @@ module Msip
         skip
         sign_in @ope_sin_grupo
         assert_raise CanCan::AccessDenied do
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/nueva"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/nueva"
         end
       end
 
       test "operador sin grupo no puede crear registro de #{basica[1]}" do
         skip
         sign_in @ope_sin_grupo
-        ruta = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+        ruta = ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          post ruta, params: {"#{basica[1]}": reg.attributes} 
+          post ruta, params: { "#{basica[1]}": reg.attributes }
         end
         reg.destroy!
       end
@@ -207,7 +213,7 @@ module Msip
         sign_in @ope_sin_grupo
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}/edita"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}/edita"
         end
         reg.destroy!
       end
@@ -217,7 +223,7 @@ module Msip
         sign_in @ope_sin_grupo
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          patch ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+          patch ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
         end
         reg.destroy!
       end
@@ -226,7 +232,7 @@ module Msip
         skip
         sign_in @ope_sin_grupo
         reg = crear_registro(modelo, basica[1])
-        ruta1 = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}" + "/" + reg.id.to_s
+        ruta1 = ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}" + "/" + reg.id.to_s
         assert_raise CanCan::AccessDenied do
           delete ruta1
         end
@@ -240,22 +246,24 @@ module Msip
         test "operador analista debe presentar el index de #{basica[1]}" do
           skip
           sign_in @ope_analista
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
+
           assert_response :ok
         end
         test "operador analista debe presentar el show de #{basica[1]}" do
-          skip 
+          skip
           sign_in @ope_analista
           reg = modelo.all.take
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
+
           assert_response :ok
         end
-      else 
+      else
         test "operador analista no debe presentar el index de #{basica[1]}" do
           skip
           sign_in @ope_analista
           assert_raise CanCan::AccessDenied do
-            get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+            get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
           end
         end
         test "operador analista no debe presentar el show de #{basica[1]}" do
@@ -263,7 +271,7 @@ module Msip
           sign_in @ope_analista
           reg = crear_registro(modelo, basica[1])
           assert_raise CanCan::AccessDenied do
-            get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+            get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
           end
           reg.destroy!
         end
@@ -273,17 +281,17 @@ module Msip
         skip
         sign_in @ope_analista
         assert_raise CanCan::AccessDenied do
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/nueva"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/nueva"
         end
       end
 
       test "operador analista no puede crear registro de #{basica[1]}" do
         skip
         sign_in @ope_analista
-        ruta = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}"
+        ruta = ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}"
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          post ruta, params: {"#{basica[1]}": reg.attributes} 
+          post ruta, params: { "#{basica[1]}": reg.attributes }
         end
         reg.destroy!
       end
@@ -293,7 +301,7 @@ module Msip
         sign_in @ope_analista
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          get ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}/edita"
+          get ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}/edita"
         end
         reg.destroy!
       end
@@ -303,7 +311,7 @@ module Msip
         sign_in @ope_analista
         reg = crear_registro(modelo, basica[1])
         assert_raise CanCan::AccessDenied do
-          patch ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}/#{reg.id}"
+          patch ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}/#{reg.id}"
         end
         reg.destroy!
       end
@@ -312,23 +320,22 @@ module Msip
         skip
         sign_in @ope_analista
         reg = crear_registro(modelo, basica[1])
-        ruta1 = ENV['RUTA_RELATIVA'] + "admin/#{basica[1].pluralize()}" + "/" + reg.id.to_s
+        ruta1 = ENV["RUTA_RELATIVA"] + "admin/#{basica[1].pluralize}" + "/" + reg.id.to_s
         assert_raise CanCan::AccessDenied do
           delete ruta1
         end
         reg.destroy!
       end
-
     end
-
 
     test "autenticado como operador sin grupo no debe presentar listado" do
       skip
       sign_in @ope_sin_grupo
       get msip.tablasbasicas_path
       mih = Nokogiri::HTML(@response.body)
-      filas_index = mih.at_css('div.container').at_css('ul').count
-      assert(filas_index == 0)
+      filas_index = mih.at_css("div.container").at_css("ul").count
+
+      assert_equal(0, filas_index)
     end
 
     test "autenticado como operador analista no debe presentar listado" do
@@ -336,11 +343,9 @@ module Msip
       sign_in @ope_analista
       get msip.tablasbasicas_path
       mih = Nokogiri::HTML(@response.body)
-      filas_index = mih.at_css('div.container').at_css('ul').count
-      assert(filas_index == 0)
+      filas_index = mih.at_css("div.container").at_css("ul").count
+
+      assert_equal(0, filas_index)
     end
-
-
-
   end
 end

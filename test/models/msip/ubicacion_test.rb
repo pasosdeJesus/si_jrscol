@@ -9,7 +9,7 @@ module Msip
 
       pais = Pais.find(862)
       ubicacion = Ubicacion.create(PRUEBA_UBICACION.merge(
-        caso_id: caso.id
+        caso_id: caso.id,
       ))
       ubicacion.pais = pais
 
@@ -19,7 +19,7 @@ module Msip
     test "no valido" do
       caso = Sivel2Gen::Caso.create(PRUEBA_CASO)
       ubicacion = Ubicacion.create(PRUEBA_UBICACION.merge(
-        caso_id: caso.id
+        caso_id: caso.id,
       ))
       ubicacion.tsitio_id = nil
 
@@ -29,7 +29,7 @@ module Msip
     test "no valido 2" do
       caso = Sivel2Gen::Caso.create(PRUEBA_CASO)
       ubicacion = Ubicacion.create(PRUEBA_UBICACION.merge(
-        caso_id: caso.id
+        caso_id: caso.id,
       ))
       ubicacion.pais_id = nil
 
@@ -40,7 +40,7 @@ module Msip
       caso = Sivel2Gen::Caso.create(PRUEBA_CASO)
 
       u = Ubicacion.create(PRUEBA_UBICACION.merge(
-        caso_id: caso.id
+        caso_id: caso.id,
       ))
 
       assert_equal "Venezuela / Distrito Capital / Bolivariano Libertador / Caracas",

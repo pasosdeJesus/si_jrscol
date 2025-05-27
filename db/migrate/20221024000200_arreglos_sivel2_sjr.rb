@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ArreglosSivel2Sjr < ActiveRecord::Migration[7.0]
   include Msip::SqlHelper
 
@@ -6,13 +8,13 @@ class ArreglosSivel2Sjr < ActiveRecord::Migration[7.0]
   ]
 
   def up
-    IND.each do |nomini, nomfin| 
+    IND.each do |nomini, nomfin|
       renombrar_índice_pg(nomini, nomfin)
     end
   end
 
   def down
-    IND.reverse.each do |nomini, nomfin| 
+    IND.reverse.each do |nomini, nomfin|
       renombrar_índice_pg(nomfin, nomini)
     end
   end

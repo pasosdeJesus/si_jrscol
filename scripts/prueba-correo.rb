@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
-
-
+# frozen_string_literal: true
 
 puts "Variables de ambiente"
-puts "SMTP_MAQ=#{ENV.fetch('SMTP_MAQ')}"
-puts "SMTP_PUERTO=#{ENV.fetch('SMTP_PUERTO')}"
-puts "SMTP_DOMINIO=#{ENV.fetch('SMTP_DOMINIO')}"
-puts "SMTP_USUARIO=#{ENV.fetch('SMTP_USUARIO')}"
-puts "SMTP_CLAVE=#{'x'*(ENV.fetch('SMTP_CLAVE').length)}"
+puts "SMTP_MAQ=#{ENV.fetch("SMTP_MAQ")}"
+puts "SMTP_PUERTO=#{ENV.fetch("SMTP_PUERTO")}"
+puts "SMTP_DOMINIO=#{ENV.fetch("SMTP_DOMINIO")}"
+puts "SMTP_USUARIO=#{ENV.fetch("SMTP_USUARIO")}"
+puts "SMTP_CLAVE=#{"x" * ENV.fetch("SMTP_CLAVE").length}"
 
 puts "Configuración de correo"
 # https://makandracards.com/makandra/52335-actionmailer-how-to-send-a-test-mail-directly-from-the-console
@@ -19,27 +18,31 @@ puts "mailer.smtp_settings: #{mailer.smtp_settings}" # -> { address: "localhost"
 # enable_starttls_auto: true }
 
 puts "Enviando correo de prueba mediante mailer.mail."
-mailer.mail(from: ENV.fetch('SMTP_USUARIO'), to: 'vtamara@pasosdeJesus.org', 
-            subject: 'correo de prueba', body: "Juan 8:32").deliver
+mailer.mail(
+  from: ENV.fetch("SMTP_USUARIO"),
+  to: "vtamara@pasosdeJesus.org",
+  subject: "correo de prueba",
+  body: "Juan 8:32",
+).deliver
 
 puts "Enviando correo de prueba mediante NotificacionMailer a outlook."
 begin
   NotificacionMailer.with(
     resultado: "Probando correo",
-    correo_depuracion: 'vtamara@cinep.org.co'
-  ).
-  notificar_mantenimiento.deliver_now
+    correo_depuracion: "vtamara@cinep.org.co",
+  )
+    .notificar_mantenimiento.deliver_now
 rescue => e
-  puts "** No se pudo enviar correo (#{e.to_s})"
+  puts "** No se pudo enviar correo (#{e})"
 end
 
 puts "Enviando correo de prueba mediante NotificacionMailer a gmail."
 begin
   NotificacionMailer.with(
     resultado: "Probando correo",
-    correo_depuracion: 'pasosdeJesus2@gmail.com'
-  ).
-  notificar_mantenimiento.deliver_now
+    correo_depuracion: "pasosdeJesus2@gmail.com",
+  )
+    .notificar_mantenimiento.deliver_now
 rescue => e
-  puts "** No se pudo enviar correo (#{e.to_s})"
+  puts "** No se pudo enviar correo (#{e})"
 end

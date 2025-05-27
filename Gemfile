@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 
 gem "apexcharts",
-  git: "https://github.com/styd/apexcharts.rb.git", branch: :master
+  git: "https://github.com/styd/apexcharts.rb.git",
+  branch: :master
 
 gem "bcrypt"
 
@@ -12,9 +15,8 @@ gem "cancancan"
 gem "caxlsx"
 
 gem "cocoon",
-  git: "https://github.com/vtamara/cocoon.git", branch: "new_id_with_ajax" # Formularios anidados (algunos con ajax)
-
-gem "colorize" # Colores en terminal
+  git: "https://github.com/vtamara/cocoon.git",
+  branch: "new_id_with_ajax" # Formularios anidados (algunos con ajax)
 
 gem "csv"
 
@@ -35,17 +37,17 @@ gem "odf-report" # Genera ODT
 
 gem "parslet"
 
-gem "pg"#, "~> 0.21" # Postgresql
+gem "pg" # , "~> 0.21" # Postgresql
 
-gem "pg_query" 
-# Mientras sale version posterior a 6.0.0 clonar rama sintema de
+gem "pg_query"
+# Mientras sale version posterior a 6.0.0 clonar rama main de
 # de "https://github.com/pganalyze/pg_query.git"
-# construir (com gem build) e instalar manualmente en 
+# construir (com gem build) e instalar manualmente en
 # /var/www/bundler/ruby/3.4 (cono gem install --install-dir ...
 
 gem "prawn" # Generación de PDF
 
-gem "prawnto_2", ">= 0.3.1", :require => "prawnto"
+gem "prawnto_2", ">= 0.3.1", require: "prawnto"
 
 gem "prawn-table"
 
@@ -76,7 +78,6 @@ gem "twitter_cldr" # ICU con CLDR
 gem "tzinfo" # Zonas horarias
 
 gem "will_paginate" # Listados en páginas
-
 
 #####
 # Motores que se sobrecargan vistas (deben ponerse en orden de apilamiento
@@ -109,38 +110,40 @@ gem "jos19",
   git: "https://gitlab.com/pasosdeJesus/jos19.git", branch: "sintema"
   #path: "../jos19-2.2"
 
-  gem "debug" # Depurar
 group :development, :test do
+  gem "brakeman"
+
+  gem "bundler-audit"
+
+  gem "code-scanning-rubocop"
+
+  gem "colorize" # Colores en terminal
+
+  gem "debug"
 
   gem "dotenv-rails"
+
+  gem "rubocop-minitest"
+
+  gem "rubocop-rails"
+
+  gem "rubocop-shopify"
 end
 
-
 group :development do
-
-  gem "puma" , ">= 4.3.3" # Servidor web
+  gem "puma", ">= 4.3.3" # Servidor web
 
   gem "rails-erd"
 
   gem "web-console" # Consola irb en páginas
-
 end
 
-
 group :test do
-  gem "capybara"
-
-  gem "cuprite"
-
   gem "rails-controller-testing"
 
   gem "simplecov"
-
 end
 
-
 group :production do
-
   gem "unicorn" # Para despliegue
-
 end

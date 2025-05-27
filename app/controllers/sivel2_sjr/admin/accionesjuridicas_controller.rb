@@ -1,33 +1,37 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class AccionesjuridicasController < Msip::Admin::BasicasController
-      before_action :set_accionjuridica, 
+      before_action :set_accionjuridica,
         only: [:show, :edit, :update, :destroy]
-      load_and_authorize_resource  class: Sivel2Sjr::Accionjuridica
-  
-      def clase 
+      load_and_authorize_resource class: Sivel2Sjr::Accionjuridica
+
+      def clase
         "Sivel2Sjr::Accionjuridica"
       end
-  
+
       def set_accionjuridica
         @basica = Sivel2Sjr::Accionjuridica.find(params[:id])
       end
-  
+
       def atributos_index
         [
-          "id", "nombre", "observaciones", "fechacreacion", 
-          "fechadeshabilitacion"
+          "id",
+          "nombre",
+          "observaciones",
+          "fechacreacion",
+          "fechadeshabilitacion",
         ]
       end
-  
+
       def genclase
-        'F'
+        "F"
       end
-  
+
       def accionjuridica_params
         params.require(:sivel2_sjr_accionjuridica).permit(*atributos_form)
       end
-  
     end
   end
 end

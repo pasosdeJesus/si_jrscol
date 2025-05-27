@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   # Tabla básica Asesorías jurídicas
   class Aslegal < ActiveRecord::Base
@@ -5,12 +7,10 @@ module Sivel2Sjr
 
     self.table_name = "sivel2_sjr_aslegal"
 
-    has_and_belongs_to_many :respuesta, 
+    has_and_belongs_to_many :respuesta,
       class_name: "Sivel2Sjr::Respuesta",
-      foreign_key: "aslegal_id", 
-      validate: true, 
+      validate: true,
       association_foreign_key: "respuesta_id",
-      join_table: 'sivel2_sjr_aslegal_respuesta' 
-
+      join_table: "sivel2_sjr_aslegal_respuesta"
   end
 end

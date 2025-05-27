@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomologaPpts < ActiveRecord::Migration[7.0]
   def up
     numprin = 0
@@ -8,10 +10,10 @@ class HomologaPpts < ActiveRecord::Migration[7.0]
       prob = ""
       if p[:ppt] && p[:ppt].strip.match(/^[0-9]+$/)
         if p[:ppt].strip != p.numerodocumento
-          if Msip::Persona.where(tdocumento_id: 16).
-              where(numerodocumento: p[:ppt].strip).count == 0
-            if Docidsecundario.where(tdocumento_id: 16).
-                where(numero: p[:ppt].strip).count == 0
+          if Msip::Persona.where(tdocumento_id: 16)
+              .where(numerodocumento: p[:ppt].strip).count == 0
+            if Docidsecundario.where(tdocumento_id: 16)
+                .where(numero: p[:ppt].strip).count == 0
               if p.tdocumento_id == 11 # SIN DOCUMENTO
                 p.tdocumento_id = 16
                 p.numerodocumento = p[:ppt]
@@ -20,22 +22,22 @@ class HomologaPpts < ActiveRecord::Migration[7.0]
                 ds = Docidsecundario.new(
                   tdocumento_id: 16,
                   numero: p[:ppt].strip,
-                  persona_id: p.id
+                  persona_id: p.id,
                 )
                 ds.save
                 numsec += 1
               end
             else
-              prob = "Duplicado como documento de identidad secundario de "\
-                "persona con id: " + Docidsecundario.
-                where(tdocumento_id: 16).where(numero:p[:ppt].strip).
-                pluck(:persona_id).join(", ")
+              prob = "Duplicado como documento de identidad secundario de " \
+                "persona con id: " + Docidsecundario
+                  .where(tdocumento_id: 16).where(numero: p[:ppt].strip)
+                  .pluck(:persona_id).join(", ")
             end
           else
-            prob = "Duplicado como documento de identidad primario de "\
-                "persona con id: " + Msip::Persona.
-                where(tdocumento_id: 16).where(numerodocumento:p[:ppt].strip).
-                pluck(:id).join(", ")
+            prob = "Duplicado como documento de identidad primario de " \
+              "persona con id: " + Msip::Persona
+                .where(tdocumento_id: 16).where(numerodocumento: p[:ppt].strip)
+                .pluck(:id).join(", ")
           end
         else
           prob = "Documento principal igual al PPT"
@@ -52,6 +54,7 @@ class HomologaPpts < ActiveRecord::Migration[7.0]
     STDERR.puts "PPT homologado como documento secundario de #{numsec} personas"
     STDERR.puts "PPT descartado de #{numprob} personas"
   end
+
   def down
     raise IrreversibleMigration
   end

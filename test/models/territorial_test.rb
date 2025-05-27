@@ -1,7 +1,8 @@
-require 'test_helper'
+# frozen_string_literal: true
+
+require "test_helper"
 
 class TerritorialTest < ActiveSupport::TestCase
-
   PRUEBA_TERRITORIAL = {
     nombre: "Territorial",
     fechacreacion: "2018-10-25",
@@ -10,22 +11,26 @@ class TerritorialTest < ActiveSupport::TestCase
 
   test "valido" do
     territorial = ::Territorial.create(
-      PRUEBA_TERRITORIAL)
+      PRUEBA_TERRITORIAL,
+    )
+
     assert(territorial.valid?)
     territorial.destroy
   end
 
   test "no valido" do
     territorial = ::Territorial.new(
-      PRUEBA_TERRITORIAL)
-    territorial.nombre = ''
+      PRUEBA_TERRITORIAL,
+    )
+    territorial.nombre = ""
+
     assert_not(territorial.valid?)
     territorial.destroy
   end
 
   test "existente" do
-    territorial = ::Territorial.where(id: 1).take
-    assert_equal(territorial.nombre, "SIN INFORMACIÓN")
-  end
+    territorial = ::Territorial.find_by(id: 1)
 
+    assert_equal("SIN INFORMACIÓN", territorial.nombre)
+  end
 end

@@ -10,12 +10,12 @@ module ConteosHelper
     personas = {}
     a.asistencia.each do |asist|
       if !asist.persona
-        merr = "Persona en NULL en asistencia #{asist.id} "\
+        merr = "Persona en NULL en asistencia #{asist.id} " \
           "de actividad #{a.id}"
         puts merr
         STDERR.puts merr
       elsif personas[asist.persona.id]
-        merr = "Persona #{asist.persona.id} repetida en "\
+        merr = "Persona #{asist.persona.id} repetida en " \
           "listado de asistencia de la actividad #{a.id}"
         puts merr
         STDERR.puts merr
@@ -28,7 +28,6 @@ module ConteosHelper
     convM = Msip::Persona.convencion_sexo[:sexo_masculino].to_s
     convS = Msip::Persona.convencion_sexo[:sexo_sininformacion].to_s
     convI = Msip::Persona.convencion_sexo[:sexo_intersexual].to_s
-
 
     rangoedadsexo = {}
     personas.keys.sort.each do |pid|
@@ -79,7 +78,7 @@ module ConteosHelper
       ti = 0
       if a.actividad_rangoedadac &&
           a.actividad_rangoedadac.where(rangoedadac_id: re.id).count > 0
-        are = a.actividad_rangoedadac.where(rangoedadac_id: re.id).take
+        are = a.actividad_rangoedadac.find_by(rangoedadac_id: re.id)
         tm = are.mr
         tf = are.fr
         ts = are.s
@@ -97,28 +96,28 @@ module ConteosHelper
       end
 
       if tf != df
-        STDERR.puts "** Diferencia en actividad #{a.id}, "\
-          "rango de edad #{re.id}, sexo #{convF}. "\
+        STDERR.puts "** Diferencia en actividad #{a.id}, " \
+          "rango de edad #{re.id}, sexo #{convF}. " \
           "Tabla dice #{tf} y cuenta de asistentes da #{df}."
         numdif += 1
       end
       if tm != dm
-        STDERR.puts "** Diferencia en actividad #{a.id}, "\
-          "rango de edad #{re.id}, sexo #{convM}. "\
+        STDERR.puts "** Diferencia en actividad #{a.id}, " \
+          "rango de edad #{re.id}, sexo #{convM}. " \
           "Tabla dice #{tm} y cuenta de asistentes da #{dm}."
         numdif += 1
       end
       if ts != ds
-        STDERR.puts "** Diferencia en actividad #{a.id}, "\
-          "rango de edad #{re.id}, sexo #{convS}. "\
+        STDERR.puts "** Diferencia en actividad #{a.id}, " \
+          "rango de edad #{re.id}, sexo #{convS}. " \
           "Tabla dice #{ts} y cuenta de asistentes da #{ds}."
         numdif += 1
       end
 
       next unless ti != di
 
-      STDERR.puts "** Diferencia en actividad #{a.id}, "\
-        "rango de edad #{re.id}, sexo #{convI}. "\
+      STDERR.puts "** Diferencia en actividad #{a.id}, " \
+        "rango de edad #{re.id}, sexo #{convI}. " \
         "Tabla dice #{ti} y cuenta de asistentes da #{di}."
       numdif += 1
     end
@@ -137,7 +136,7 @@ module ConteosHelper
   def cambia_actividad_rangoedadac(actividad, rangoedadac, f, m, s, i)
     acrs = Cor1440Gen::ActividadRangoedadac.where(actividad_id: actividad.id)
       .where(rangoedadac_id: rangoedadac.id)
-    STDERR.puts "Cambiando actividad_id: #{actividad.id}, "\
+    STDERR.puts "Cambiando actividad_id: #{actividad.id}, " \
       "rangoedadac_id: #{rangoedadac.id}, f: #{f}, m: #{m}, s: #{s}, i: #{i}"
     if acrs.count > 0
       acr = acrs.take
@@ -184,7 +183,7 @@ module ConteosHelper
       ti = 0
       if a.actividad_rangoedadac &&
           a.actividad_rangoedadac.where(rangoedadac_id: re.id).count > 0
-        are = a.actividad_rangoedadac.where(rangoedadac_id: re.id).take
+        are = a.actividad_rangoedadac.find_by(rangoedadac_id: re.id)
         tm = are.mr
         tf = are.fr
         ts = are.s
@@ -201,7 +200,7 @@ module ConteosHelper
         di = d[re.id][convI]
       end
 
-      pref = "* Cambiando tabla de población de actividad '#{a.id}', "\
+      pref = "* Cambiando tabla de población de actividad '#{a.id}', " \
         "fila con rango de edad '#{re.nombre}': "
 
       numdifpre = numdif
@@ -223,7 +222,7 @@ module ConteosHelper
       if ti != di
         numdif += 1
         resultado << "#{pref} #{convI} #{ti}->#{di}"
-        pref = ", "
+        ", "
       end
 
       if (numdif - numdifpre) > 0
@@ -235,7 +234,7 @@ module ConteosHelper
       next unless a.actividad_rangoedadac &&
         a.actividad_rangoedadac.where(rangoedadac_id: re.id).count > 0
 
-      are = a.actividad_rangoedadac.where(rangoedadac_id: re.id).take
+      are = a.actividad_rangoedadac.find_by(rangoedadac_id: re.id)
       tm = are.mr
       tf = are.fr
       ts = are.s
@@ -337,22 +336,22 @@ module ConteosHelper
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_femenino].to_s}' 
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_femenino]}'#{" "}
             LIMIT 1) AS fn, (SELECT cuenta
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_masculino].to_s}' 
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_masculino]}'#{" "}
             LIMIT 1) AS mn, (SELECT cuenta
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_sininformacion].to_s}'
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_sininformacion]}'
             LIMIT 1) AS sn, (SELECT cuenta
           FROM cor1440_gen_vista_asist_rangoe_sexo AS i
           WHERE i.actividad_id=v.actividad_id
           AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_intersexual].to_s}' 
+          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_intersexual]}'#{" "}
             LIMIT 1) AS inum
         FROM cor1440_gen_vista_asist_rangoe_sexo AS v
       ) AS sub
@@ -362,7 +361,7 @@ module ConteosHelper
       CREATE MATERIALIZED VIEW cor1440_gen_vista_resumentpob2 AS (
       SELECT * FROM (SELECT a.id as actividad_id, ARRAY_TO_STRING(ARRAY(
             SELECT rangoedadac_id::text || ' ' || coalesce(f::text,'0')
-              || ' ' || coalesce(m::text, '0') 
+              || ' ' || coalesce(m::text, '0')#{" "}
               || ' ' || coalesce(s::text, '0')
               || ' ' || coalesce(i::text, '0')
             FROM cor1440_gen_vista_tpoblacion_de_asist
@@ -436,7 +435,6 @@ module ConteosHelper
   end
   module_function :recalcula_poblacion
 
-
   def instala_calculo_poblacion_pg
     ActiveRecord::Base.connection.execute(<<-SQL)
         -- Suponemos que cor1440_gen_rangoedadac es consistente
@@ -484,12 +482,12 @@ module ConteosHelper
             WHERE ac.id=par_actividad_id
           LOOP
             RAISE NOTICE 'persona_id es %', asistente.id;
-            edad = msip_edad_de_fechanac_fecharef(asistente.anionac, 
+            edad = msip_edad_de_fechanac_fecharef(asistente.anionac,#{" "}
               asistente.mesnac, asistente.dianac, a_anio, a_mes, a_dia);
             RAISE NOTICE 'edad es %', edad;
             SELECT id INTO rango_id FROM cor1440_gen_rangoedadac WHERE
               fechadeshabilitacion IS NULL AND
-              limiteinferior <= edad AND 
+              limiteinferior <= edad AND#{" "}
                 (limitesuperior IS NULL OR edad <= limitesuperior) LIMIT 1;
             IF rango_id IS NULL THEN
               rango_id := 7;
@@ -497,15 +495,15 @@ module ConteosHelper
             RAISE NOTICE 'rango_id es %', rango_id;
 
             CASE asistente.sexo
-              WHEN '#{Msip::Persona.sexo_opciones[:sexo_femenino].to_s}' THEN
+              WHEN '#{Msip::Persona.sexo_opciones[:sexo_femenino]}' THEN
                 UPDATE cor1440_gen_actividad_rangoedadac SET fr = fr + 1
                   WHERE actividad_id=par_actividad_id
                   AND rangoedadac_id=rango_id;
-              WHEN '#{Msip::Persona.sexo_opciones[:sexo_masculino].to_s}' THEN
+              WHEN '#{Msip::Persona.sexo_opciones[:sexo_masculino]}' THEN
                 UPDATE cor1440_gen_actividad_rangoedadac SET mr = mr + 1
                   WHERE actividad_id=par_actividad_id
                   AND rangoedadac_id=rango_id;
-              WHEN '#{Msip::Persona.sexo_opciones[:sexo_intersexual].to_s}' THEN
+              WHEN '#{Msip::Persona.sexo_opciones[:sexo_intersexual]}' THEN
                 UPDATE cor1440_gen_actividad_rangoedadac SET i = i + 1
                   WHERE actividad_id=par_actividad_id
                   AND rangoedadac_id=rango_id;
@@ -558,8 +556,8 @@ module ConteosHelper
         BEGIN
           ASSERT(TG_OP = 'UPDATE');
           ASSERT(NEW.id = OLD.id);
-          FOR aid IN 
-            SELECT actividad_id FROM cor1440_gen_asistencia 
+          FOR aid IN#{" "}
+            SELECT actividad_id FROM cor1440_gen_asistencia#{" "}
               WHERE persona_id=NEW.id
           LOOP
             CALL cor1440_gen_recalcular_poblacion_actividad(aid);
@@ -606,14 +604,13 @@ module ConteosHelper
           ON cor1440_gen_asistencia;
         DROP TRIGGER IF EXISTS cor1440_gen_recalcular_tras_cambiar_actividad
           ON cor1440_gen_tras_cambiar_actividad;
-        DROP FUNCTION IF EXISTS 
+        DROP FUNCTION IF EXISTS#{" "}
           cor1440_gen_asistencia_cambiada_creada_eliminada CASCADE;
         DROP FUNCTION IF EXISTS cor1440_gen_persona_cambiada CASCADE;
         DROP FUNCTION IF EXISTS cor1440_gen_actividad_cambiada CASCADE;
-        DROP PROCEDURE IF EXISTS cor1440_gen_recalcular_poblacion_actividad 
+        DROP PROCEDURE IF EXISTS cor1440_gen_recalcular_poblacion_actividad#{" "}
           CASCADE;
     SQL
   end
   module_function :desinstala_calculo_poblacion_pg
-
 end

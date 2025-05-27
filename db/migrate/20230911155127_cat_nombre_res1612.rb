@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class CatNombreRes1612 < ActiveRecord::Migration[7.0]
   def up
-    add_column :sivel2_gen_categoria, :nombre_res1612, :string, limit: 128
+    add_column(:sivel2_gen_categoria, :nombre_res1612, :string, limit: 128)
 
-    execute <<-SQL
+    execute(<<-SQL)
       UPDATE sivel2_gen_categoria
         SET nombre_res1612 = 'RECLUTAMIENTO DE NNA' where id=3020; -- RECLUTAMIENTO DE NNA
       UPDATE sivel2_gen_categoria
@@ -11,7 +13,7 @@ class CatNombreRes1612 < ActiveRecord::Migration[7.0]
         SET nombre_res1612 = 'ASESINATO' where id=3000; -- HOMICIDIO EN PERSONA PROTEGIDA
       INSERT INTO sivel2_gen_categoria (id, nombre, nombre_res1612, tipocat, supracategoria_id,
         fechacreacion, created_at, updated_at) VALUES
-        (3023, 'MUTILACIÓN', 'MUTILACIÓN', 'I', 100, 
+        (3023, 'MUTILACIÓN', 'MUTILACIÓN', 'I', 100,#{" "}
          '2023-09-11', '2023-09-11', '2023-09-11');
       UPDATE sivel2_gen_categoria
         SET nombre_res1612 = 'LESIONES PERSONALES' where id=3004; -- HERIDAS
@@ -37,12 +39,11 @@ class CatNombreRes1612 < ActiveRecord::Migration[7.0]
          '2023-09-11', '2023-09-11', '2023-09-11');
     SQL
   end
+
   def down
-    remove_column :sivel2_gen_categoria, :nombre_res1612, :string, limit: 128
-    execute <<-SQL
+    remove_column(:sivel2_gen_categoria, :nombre_res1612, :string, limit: 128)
+    execute(<<-SQL)
       DELETE FROM sivel2_gen_categoria WHERE id IN (3023, 3024);
     SQL
-
   end
-
 end
