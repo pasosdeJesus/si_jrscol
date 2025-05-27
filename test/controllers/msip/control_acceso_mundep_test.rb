@@ -12,8 +12,7 @@ module Msip
         raise "CONFIG_HOSTS debe ser www.example.com"
       end
 
-      Rails.application.try(:reload_routes_unless_loaded)
-      ActiveRecord::Base.connection.execute <<-SQL
+      ActiveRecord::Base.connection.execute(<<-SQL)
         REFRESH MATERIALIZED VIEW msip_mundep;
       SQL
     end

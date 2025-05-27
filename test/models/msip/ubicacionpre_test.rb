@@ -206,9 +206,9 @@ module Msip
     end
 
     test "nomenclatura" do
-      assert_equal ["", ""],
+      assert_equal [nil, nil],
         Ubicacionpre.nomenclatura(nil, nil, nil, nil, nil, nil, nil)
-      assert_equal ["a", ""],
+      assert_equal ["a", nil],
         Ubicacionpre.nomenclatura("a", nil, nil, nil, nil, nil, nil)
       assert_equal ["b / a", "b"],
         Ubicacionpre.nomenclatura("a", "b", nil, nil, nil, nil, nil)

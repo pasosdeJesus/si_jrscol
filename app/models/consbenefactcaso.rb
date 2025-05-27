@@ -47,7 +47,11 @@ class Consbenefactcaso < ActiveRecord::Base
     where(persona_tdocumento: f)
   }
 
-  # Genera consulta
+
+
+  CONSULTA = "consbenefactcaso"
+
+  # Refresca consulta
   # @params ordenar_por Criterio de ordenamiento
   # @params pf_ids Lista con identificaciones de proyectos financieros o []
   # @params actividadpf_ids Lista con identificaciones de actividads de pfs o []
@@ -55,14 +59,22 @@ class Consbenefactcaso < ActiveRecord::Base
   # @params fechaini Fecha inicial en formato estándar o nil
   # @params fechafin Fecha final en formato estándar o nil
   # @params actividad_ids Lista de actividades a las cuales limitar
+  # @params remote_ip
+  # @params usuario_id
+  # @params url
+  # @params params
   #
-  def self.crea_consulta(ordenar_por = nil, pf_ids, actividadpf_ids,
-    oficina_ids, fechaini, fechafin, actividad_ids)
+  def self.refrescar_consulta(
+    ordenar_por = nil, pf_ids, actividadpf_ids,
+    oficina_ids, fechaini, fechafin, actividad_ids, 
+    ip_remota, usuario_id, url, params
+  )
+    debugger
     if ARGV.include?("db:migrate")
       return
     end
 
-    wherebe = "TRUE"
+    wherebe = "TRUE".dup
     if oficina_ids && oficina_ids.count > 0
       wherebe << " AND ac.oficina_id IN " \
         "(#{oficina_ids.map(&:to_i).join(",")})"
@@ -87,7 +99,7 @@ class Consbenefactcaso < ActiveRecord::Base
       wherebe << " AND ac.id IN (#{actividad_ids.join(",")})"
     end
 
-    consulta = <<-SQL
+    consultasql = <<-SQL
       DROP MATERIALIZED VIEW IF EXISTS consbenefactcaso2 CASCADE;
       CREATE MATERIALIZED VIEW consbenefactcaso2 AS#{" "}
         SELECT c1.persona_id,
@@ -112,14 +124,10 @@ class Consbenefactcaso < ActiveRecord::Base
               WHERE #{wherebe}
           ) AS sub
         ) AS c1
-      GROUP BY 1
-    SQL
+      GROUP BY 1;
 
-    Consbenefactcaso.connection.execute(consulta)
-
-    consulta = <<-SQL
-      DROP MATERIALIZED VIEW IF EXISTS consbenefactcaso;
-      CREATE MATERIALIZED VIEW consbenefactcaso AS#{" "}
+      DROP MATERIALIZED VIEW IF EXISTS #{CONSULTA};
+      CREATE MATERIALIZED VIEW #{CONSULTA} AS#{" "}
       SELECT c2.persona_id,
         persona.nombres AS persona_nombres,
         persona.apellidos AS persona_apellidos,
@@ -166,11 +174,58 @@ class Consbenefactcaso < ActiveRecord::Base
           casosjr.caso_id = caso.id
     SQL
 
-    Consbenefactcaso.connection.execute(consulta)
 
-    Consbenefactcaso.reset_column_information
-  end # def crea_consulta
+    forzar_crear = false
 
+    cuentapersonas = 0
+    cuentapersonas_ant = -1
+    # Evitamos borrar la consulta si la última hecha es esa misma
+    maxid = Msip::Bitacora.where(modelo: "Consbenefactcaso").maximum(:id)
+    if maxid.nil?
+      forzar_crear = true
+    else
+      maxcons = Msip::Bitacora.find(maxid)
+      detalle_reg = JSON.parse(maxcons.detalle)
+      cuentapersonas_ant = detalle_reg["cuentapersonas"]
+      if detalle_reg["consultasql"] != consultasql
+        forzar_crear = true
+      end
+    end
+    cuentapersonas = Msip::Persona.all.count
+    if forzar_crear ||
+        !ActiveRecord::Base.connection.data_source_exists?("#{CONSULTA}")
+      d = { 
+        consultasql: consultasql, 
+        cuentapersonas: cuentapersonas
+      }
+      Msip::Bitacora.a(
+        ip_remota,
+        usuario_id,
+        url,
+        params,
+        "Consbenefactcaso",
+        0,
+        "listar",
+        d.to_json,
+      )
+      Consbenefactcaso.connection.execute(consultasql)
+      ActiveRecord::Base.connection.execute(
+        "CREATE UNIQUE INDEX on #{CONSULTA} (persona_id);",
+      )
+      Consbenefactcaso.reset_column_information
+    else
+      # Si la cuenta de personas almacenada cuando se creó la consulta
+      # es igual a la actual no debe ser ni siquiera necesario ejecutar
+      # REFRESH MATERIALIZED VIEW
+      if cuentapersonas != cuentapersonas_ant
+        debugger
+        ActiveRecord::Base.connection.execute(
+          "REFRESH MATERIALIZED VIEW #{CONSULTA}",
+        )
+      end
+    end
+  end
+ 
   def presenta(atr)
     if atr.to_s == "actividad_ids"
       # debugger

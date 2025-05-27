@@ -59,6 +59,5 @@ module Cor1440Gen
         proyectofinanciero_params_si_jrscol,
       )
     end
-
   end
 end
