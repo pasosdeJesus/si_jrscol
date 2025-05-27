@@ -1,7 +1,8 @@
-require 'application_system_test_case'
+# frozen_string_literal: true
+
+require "application_system_test_case"
 
 class ExtracompletocasosTest < ApplicationSystemTestCase
-
   self.use_transactional_tests = false
   # Buscando evitar el error:
   # ActiveRecord::StatementInvalid: PG::InFailedSqlTransaction: ERROR:  current
@@ -10,38 +11,38 @@ class ExtracompletocasosTest < ApplicationSystemTestCase
   # El compromiso es que la prueba elimine los datos que cree
 
   setup do
-    @usuario = Usuario.find_by(nusuario: 'sjrcol')
-    @usuario.password = 'sjrcol123'
-    visit new_usuario_session_path 
+    @usuario = Usuario.find_by(nusuario: "sjrcol")
+    @usuario.password = "sjrcol123"
+    visit new_usuario_session_path
     fill_in "Usuario", with: @usuario.nusuario
     fill_in "Clave", with: @usuario.password
     click_button "Iniciar Sesión"
+
     assert page.has_content?("Administrar")
-    find('[aria-label=Close]').click
+    find("[aria-label=Close]").click
 
+    # Creamos caso
+    # visit '/casos/nuevo'
+    # @numcaso=find_field('Código').value
 
-    # Creamos caso 
-    #visit '/casos/nuevo'
-    #@numcaso=find_field('Código').value
-
-    #cs = Sivel2Sjr::Casosjr.where(caso_id: @numcaso).take
-    #p = cs.contacto
-    #p.nombres = 'Juan'
-    #p.apellidos = 'Perez'
-    #p.save!
+    # cs = Sivel2Sjr::Casosjr.where(caso_id: @numcaso).take
+    # p = cs.contacto
+    # p.nombres = 'Juan'
+    # p.apellidos = 'Perez'
+    # p.save!
   end
 
   test "genera con usuario administrador en base inicial" do
     assert page.has_content?("Casos")
     click_on "Casos"
+
     assert page.has_content?("Listado")
     click_on "Listado"
+
     assert page.has_content?("Búsqueda Avanzada")
     click_on "Búsqueda Avanzada"
     puts page.body
+
     assert page.has_content?("Fecha recepción")
-
   end
-
 end
-

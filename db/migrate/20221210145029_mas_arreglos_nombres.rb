@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MasArreglosNombres < ActiveRecord::Migration[7.0]
   include Msip::SqlHelper
 
@@ -7,26 +9,30 @@ class MasArreglosNombres < ActiveRecord::Migration[7.0]
   ]
 
   def up
-    IND.each do |nomini, nomfin| 
+    IND.each do |nomini, nomfin|
       renombrar_índice_pg(nomini, nomfin)
     end
-    renombrar_función_pg("sip_persona_buscable_trigger", 
-                         "msip_persona_buscable_trigger")
-    execute <<~SQL.squish
-      ALTER TRIGGER sip_persona_actualiza_buscable ON msip_persona 
+    renombrar_función_pg(
+      "sip_persona_buscable_trigger",
+      "msip_persona_buscable_trigger",
+    )
+    execute(<<~SQL.squish)
+      ALTER TRIGGER sip_persona_actualiza_buscable ON msip_persona#{" "}
         RENAME TO msip_persona_actualiza_buscable;
     SQL
   end
 
   def down
-    execute <<~SQL.squish
-      ALTER TRIGGER msip_persona_actualiza_buscable ON msip_persona 
+    execute(<<~SQL.squish)
+      ALTER TRIGGER msip_persona_actualiza_buscable ON msip_persona#{" "}
         RENAME TO sip_persona_actualiza_buscable;
     SQL
 
-    renombrar_función_pg("msip_persona_buscable_trigger", 
-                         "sip_persona_buscable_trigger")
-    IND.reverse.each do |nomini, nomfin| 
+    renombrar_función_pg(
+      "msip_persona_buscable_trigger",
+      "sip_persona_buscable_trigger",
+    )
+    IND.reverse.each do |nomini, nomfin|
       renombrar_índice_pg(nomfin, nomini)
     end
   end

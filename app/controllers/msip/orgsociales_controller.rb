@@ -1,63 +1,67 @@
+# frozen_string_literal: true
+
 require_dependency "msip/concerns/controllers/orgsociales_controller"
 
 module Msip
   class OrgsocialesController < Heb412Gen::ModelosController
-
     before_action :set_orgsocial, only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource class: Msip::Orgsocial
 
     include Msip::Concerns::Controllers::OrgsocialesController
 
     def atributos_index
-      [ :id, 
+      [
+        :id,
         :grupoper_id,
         :tipoorgsocial_id,
-        { :sectororgsocial_ids => [] },
+        { sectororgsocial_ids: [] },
         :lineaorgsocial_id,
         :email,
         :web,
-        :telefono, 
+        :telefono,
         :fax,
         :pais,
         :departamento,
         :municipio,
         :direccion,
         :nit,
-        :habilitado
+        :habilitado,
       ]
     end
 
     def atributos_show
-      atributos_index 
+      atributos_index
     end
 
     def atributos_form
       a = atributos_show - [
-        :id, 
-        :habilitado
+        :id,
+        :habilitado,
       ] + [
-        :fechadeshabilitacion
+        :fechadeshabilitacion,
       ]
       a[a.index(:grupoper_id)] = :grupoper
-      return a
+      a
     end
 
     def orgsocial_params
       params.require(:orgsocial).permit(
         atributos_form - [:grupoper] +
-        [ :departamento_id,
+        [
+          :departamento_id,
           :municipio_id,
           :pais_id,
-          :grupoper_attributes => [
+          grupoper_attributes: [
             :id,
             :nombre,
-            :anotaciones ]
-      ]) 
+            :anotaciones,
+          ],
+        ],
+      )
     end
 
     def vistas_manejadas
-      ['Orgsocial']
+      ["Orgsocial"]
     end
-
   end
 end

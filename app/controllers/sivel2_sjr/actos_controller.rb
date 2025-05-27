@@ -1,8 +1,9 @@
-require 'date'
+# frozen_string_literal: true
+
+require "date"
 
 module Sivel2Sjr
   class ActosController < Sivel2Gen::ActosController
-
     # Crea nuevos actos procesando parámetros
     def agregar
       des_id = params[:desplazamiento]
@@ -13,27 +14,27 @@ module Sivel2Sjr
       desplazamiento = "caso_acto_id_desplazamiento_#{des_id}"
       if params[:caso][:id].nil?
         respond_to do |format|
-          format.html { render inline: 'Falta identificacion del caso' }
+          format.html { render(inline: "Falta identificacion del caso") }
         end
         return
       elsif !params[presponsable]
         respond_to do |format|
-          format.html { render inline: 'Debe tener Presunto Responsable' }
+          format.html { render(inline: "Debe tener Presunto Responsable") }
         end
         return
       elsif !params[categoria]
         respond_to do |format|
-          format.html { render inline: 'Debe tener Categoria' }
+          format.html { render(inline: "Debe tener Categoria") }
         end
         return
       elsif !params[persona]
         respond_to do |format|
-          format.html { render inline: 'Debe tener Víctima' }
+          format.html { render(inline: "Debe tener Víctima") }
         end
         return
       elsif !params[fecha]
         respond_to do |format|
-          format.html { render inline: 'Debe tener Fecha' }
+          format.html { render(inline: "Debe tener Fecha") }
         end
         return
       else
@@ -45,7 +46,7 @@ module Sivel2Sjr
               vic = cvic.to_i
               @caso = Sivel2Gen::Caso.find(params[:caso][:id])
               @caso.current_usuario = current_usuario
-              authorize! :update, @caso
+              authorize!(:update, @caso)
               acto = Sivel2Gen::Acto.new(
                 presponsable_id: presp,
                 categoria_id: cat,
@@ -55,7 +56,7 @@ module Sivel2Sjr
               acto.save
               actosjr = Sivel2Sjr::Actosjr.new(
                 fecha: params[fecha],
-                desplazamiento_id: params[desplazamiento]!="" ? params[desplazamiento].to_i : nil
+                desplazamiento_id: params[desplazamiento] != "" ? params[desplazamiento].to_i : nil,
               )
               actosjr.acto = acto
               actosjr.save!
@@ -65,7 +66,7 @@ module Sivel2Sjr
       end
       @params = params
       respond_to do |format|
-        format.js { render 'refrescar' }
+        format.js { render("refrescar") }
       end
     end
 
@@ -76,30 +77,31 @@ module Sivel2Sjr
       observaciones_pr = "observaciones_nuevopr_#{des_id}"
       if !params[nombre_pr]
         respond_to do |format|
-          format.html { render inline: 'El presunto responsable debe tener un nombre' }
+          format.html { render(inline: "El presunto responsable debe tener un nombre") }
         end
         return
       else
         papa = Sivel2Gen::Presponsable.where(id: params[papa_pr])
-        papa_id  = papa.empty? ? nil : papa[0].id
+        papa_id = papa.empty? ? nil : papa[0].id
         pr = Sivel2Gen::Presponsable.new(
           nombre: params[nombre_pr],
           observaciones: params[observaciones_pr],
-          papa_id: papa_id, 
-          fechacreacion: Date.today()
+          papa_id: papa_id,
+          fechacreacion: Date.today,
         )
         pr.save!
         params[:nuevopr_id] = pr.id
       end
       @params = params
       respond_to do |format|
-        format.js { render 'refrescar' }
+        format.js { render("refrescar") }
       end
     end
+
     def eliminar
-      acto = Sivel2Gen::Acto.where(id: params[:acto_id].to_i).take
-      #authorize! :destroy, @acto
-      authorize! :destroy, Sivel2Gen::Acto
+      acto = Sivel2Gen::Acto.find_by(id: params[:acto_id].to_i)
+      # authorize! :destroy, @acto
+      authorize!(:destroy, Sivel2Gen::Acto)
       params[:desplazamiento_id] = Sivel2Sjr::Actosjr.where(acto_id: acto.id)[0].desplazamiento_id.to_s
       @params = params
       if acto && acto.actosjr
@@ -107,9 +109,8 @@ module Sivel2Sjr
         acto.actosjr.destroy!
       end
       respond_to do |format|
-        format.js { render 'refrescar' }
+        format.js { render("refrescar") }
       end
     end
-
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class DeshabilitaPsuLento < ActiveRecord::Migration[7.0]
   def up
-    execute <<-SQL
+    execute(<<-SQL)
       DELETE FROM heb412_gen_campoplantillahcm WHERE plantillahcm_id=108;
       DELETE FROM heb412_gen_plantillahcm WHERE id=108;
       UPDATE heb412_gen_plantillahcm
@@ -8,8 +10,9 @@ class DeshabilitaPsuLento < ActiveRecord::Migration[7.0]
         WHERE id=53;
     SQL
   end
+
   def down
-    execute <<-SQL
+    execute(<<-SQL)
       UPDATE heb412_gen_plantillahcm
         SET nombremenu='Plantilla PSU Actividades -- rápido pero inflexibe y solo en XLSX'
         WHERE id=53;
@@ -19,5 +22,4 @@ class DeshabilitaPsuLento < ActiveRecord::Migration[7.0]
       '', 'Actividad', 'Plantilla PSU Actividades -- flexible pero lento', 4);
     SQL
   end
-
 end

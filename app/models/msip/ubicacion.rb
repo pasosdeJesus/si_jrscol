@@ -1,4 +1,6 @@
-require 'msip/concerns/models/ubicacion'
+# frozen_string_literal: true
+
+require "msip/concerns/models/ubicacion"
 
 module Msip
   class Ubicacion < ActiveRecord::Base

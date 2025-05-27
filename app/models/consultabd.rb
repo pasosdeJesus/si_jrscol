@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Consulta BD
 class Consultabd < ActiveRecord::Base
   include Msip::Modelo
@@ -12,24 +14,26 @@ class Consultabd < ActiveRecord::Base
     atr.to_s
   end # presenta
 
-  CONSULTA='consultabd'
+  CONSULTA = "consultabd"
 
   # econsultasql es consulta ya escapada
   def self.crea_consulta(econsultasql)
     if ARGV.include?("db:migrate")
       return
     end
-    if ActiveRecord::Base.connection.data_source_exists? CONSULTA
+
+    if ActiveRecord::Base.connection.data_source_exists?(CONSULTA)
       ActiveRecord::Base.connection.execute(
-        "DROP MATERIALIZED VIEW IF EXISTS #{CONSULTA}")
+        "DROP MATERIALIZED VIEW IF EXISTS #{CONSULTA}",
+      )
     end
-    w = ''
-    #if ordenar_por
+    w = ""
+    # if ordenar_por
     #  w += ' ORDER BY ' + self.interpreta_ordenar_por(ordenar_por)
-    #else
+    # else
     #  w += ' ORDER BY ' + self.interpreta_ordenar_por('fechadesc')
-    #end
-    ActiveRecord::Base.connection.execute("CREATE 
+    # end
+    ActiveRecord::Base.connection.execute("CREATE
               MATERIALIZED VIEW #{CONSULTA} AS
               SELECT row_number() OVER () AS numfila,
               * FROM (
@@ -50,24 +54,30 @@ class Consultabd < ActiveRecord::Base
       maxcons = Msip::Bitacora.find(maxid)
       detalle_reg = JSON.parse(maxcons.detalle)
       if detalle_reg[:consultasql] != econsultasql
-        forzar_crear = true 
+        forzar_crear = true
       end
     end
-    if forzar_crear || 
+    if forzar_crear ||
         !ActiveRecord::Base.connection.data_source_exists?("#{CONSULTA}")
-      d = {consultasql: econsultasql}
+      d = { consultasql: econsultasql }
       Msip::Bitacora.a(
-        ip_remota, usuario_id, url, params,
-        "Consultabd", 0, "listar", d.to_json
+        ip_remota,
+        usuario_id,
+        url,
+        params,
+        "Consultabd",
+        0,
+        "listar",
+        d.to_json,
       )
       crea_consulta(econsultasql)
       ActiveRecord::Base.connection.execute(
-        "CREATE UNIQUE INDEX on #{CONSULTA} (numfila);")
+        "CREATE UNIQUE INDEX on #{CONSULTA} (numfila);",
+      )
     else
       ActiveRecord::Base.connection.execute(
-        "REFRESH MATERIALIZED VIEW #{CONSULTA}")
+        "REFRESH MATERIALIZED VIEW #{CONSULTA}",
+      )
     end
   end
-
 end
-

@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 class PrNombreRes1612 < ActiveRecord::Migration[7.0]
-
   def up
-    add_column :sivel2_gen_presponsable, :nombre_res1612, :string, limit: 128
+    add_column(:sivel2_gen_presponsable, :nombre_res1612, :string, limit: 128)
 
-    execute <<-SQL
+    execute(<<-SQL)
       UPDATE sivel2_gen_presponsable
         SET nombre_res1612 = 'Fuerza Pública' WHERE id=2; -- Fuerza Pública
       UPDATE sivel2_gen_presponsable
@@ -20,8 +21,8 @@ class PrNombreRes1612 < ActiveRecord::Migration[7.0]
         SET nombre_res1612 = 'Otros' WHERE id=36; -- Otros
     SQL
   end
-  def down
-    remove_column :sivel2_gen_presponsable, :nombre_res1612, :string, limit: 128
-  end
 
+  def down
+    remove_column(:sivel2_gen_presponsable, :nombre_res1612, :string, limit: 128)
+  end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CambiaSexoO < ActiveRecord::Migration[7.0]
   def up
-    execute <<-SQL
+    execute(<<-SQL)
       ALTER TABLE msip_persona DROP CONSTRAINT IF EXISTS persona_sexo_check;
       UPDATE msip_persona SET sexo='O' WHERE sexo='I';
       ALTER TABLE msip_persona ADD CONSTRAINT persona_sexo_check
@@ -9,7 +11,7 @@ class CambiaSexoO < ActiveRecord::Migration[7.0]
   end
 
   def down
-    execute <<-SQL
+    execute(<<-SQL)
       ALTER TABLE msip_persona DROP CONSTRAINT IF EXISTS persona_sexo_check;
       UPDATE msip_persona SET sexo='I' WHERE sexo='O';
       ALTER TABLE msip_persona ADD CONSTRAINT persona_sexo_check

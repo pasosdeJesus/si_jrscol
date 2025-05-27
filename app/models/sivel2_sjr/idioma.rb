@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   # Obsoleto
   class Idioma < ActiveRecord::Base
@@ -6,4 +8,3 @@ module Sivel2Sjr
     self.table_name = "sivel2_sjr_idioma"
   end
 end
-

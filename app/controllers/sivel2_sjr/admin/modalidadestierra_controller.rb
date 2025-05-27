@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class ModalidadestierraController < Msip::Admin::BasicasController
       before_action :set_modalidadtierra, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Modalidadtierra
 
-      def clase 
+      def clase
         "Sivel2Sjr::Modalidadtierra"
       end
 
@@ -17,7 +19,6 @@ module Sivel2Sjr
       def modalidadtierra_params
         params.require(:sivel2_sjr_modalidadtierra).permit(*atributos_form)
       end
-
     end
   end
 end

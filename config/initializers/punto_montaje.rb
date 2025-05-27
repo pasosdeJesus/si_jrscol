@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 SiJrscol::Application.config.relative_url_root = ENV.fetch(
-  'RUTA_RELATIVA', '/')
+  "RUTA_RELATIVA", "/"
+)
 SiJrscol::Application.config.assets.prefix = ENV.fetch(
-  'RUTA_RELATIVA', '/') + 'assets'
+  "RUTA_RELATIVA", "/"
+) + "assets"

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ActualizaDiscapacidadDeAsistencia < ActiveRecord::Migration[7.1]
   def up
-    execute <<-SQL
+    execute(<<-SQL)
       INSERT INTO discapacidad
       (id, nombre, observaciones, fechacreacion, fechadeshabilitacion,
       created_at, updated_at) VALUES
@@ -19,9 +21,10 @@ class ActualizaDiscapacidadDeAsistencia < ActiveRecord::Migration[7.1]
           FROM cor1440_gen_asistencia WHERE discapacidad='t');
     SQL
   end
+
   def down
     puts "Es mas compleo deshacer personas con discapacidad NINGUNA provenientes de listasdos de asistencia"
-    execute <<-SQL
+    execute(<<-SQL)
       UPDATE msip_persona SET ultimadiscapacidad_id=7
         WHERE ultimadiscapacidad_id=8;
       DELETE FROM discapacidad WHERE id=8;

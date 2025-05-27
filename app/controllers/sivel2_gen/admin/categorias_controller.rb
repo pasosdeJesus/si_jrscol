@@ -1,4 +1,6 @@
-require 'sivel2_gen/concerns/controllers/categorias_controller'
+# frozen_string_literal: true
+
+require "sivel2_gen/concerns/controllers/categorias_controller"
 
 module Sivel2Gen
   module Admin
@@ -18,18 +20,20 @@ module Sivel2Gen
           :observaciones,
           :nombre_res1612,
           :fechacreacion_localizada,
-          :habilitado
+          :habilitado,
         ]
       end
 
       def atributos_form
         a = atributos_index - [:id]
-        return a.map do |e|
-          e == :fechacreacion_localizada ? :fechacreacion : 
+        a.map do |e|
+          if e == :fechacreacion_localizada
+            :fechacreacion
+          else
             (e == :habilitado ? :fechadeshabilitacion : e)
+          end
         end
       end
-
     end
   end
 end

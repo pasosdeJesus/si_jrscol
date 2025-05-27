@@ -1,11 +1,12 @@
-class DiccionariodatosController < ApplicationController
+# frozen_string_literal: true
 
+class DiccionariodatosController < ApplicationController
   load_and_authorize_resource class: ::Diccionariodatos
 
   # En orden de apilamiento
-  MOTORES = Rails.configuration.railties_order.map {|m|
-    m.to_s == "main_app" ? "SiJrscol" : m.to_s.split(':')[0]
-  } - ["all", "Jos19"]
+  MOTORES = Rails.configuration.railties_order.map do |m|
+    m.to_s == "main_app" ? "SiJrscol" : m.to_s.split(":")[0]
+  end - ["all", "Jos19"]
 
   TABLAS_NO_USADAS_EN_JRSCOL = [
     "ar_internal_metadata",
@@ -43,47 +44,47 @@ class DiccionariodatosController < ApplicationController
     "msip_params_vistam",
     "msip_persona_trelacion",
     "msip_tipoorg",
-    "msip_trelacion" ,
-    "schema_migrations" ,
-    "sivel2_gen_antecedente" ,
-    "sivel2_gen_antecedente_caso" ,
-    "sivel2_gen_antecedente_combatiente" ,
-    "sivel2_gen_antecedente_victima" ,
-    "sivel2_gen_antecedente_victimacolectiva" ,
-    "sivel2_gen_actocolectivo" ,
-    "sivel2_gen_categoria_presponsable" ,
-    "sivel2_gen_caso_contexto" ,
-    "sivel2_gen_caso_etiqueta" ,
-    "sivel2_gen_caso_fotra" ,
-    "sivel2_gen_caso_frontera" ,
-    "sivel2_gen_caso_fuenteprensa" ,
-    "sivel2_gen_caso_region" ,
-    "sivel2_gen_caso_respuestafor" ,
-    "sivel2_gen_combatiente" ,
-    "sivel2_gen_contexto" ,
-    "sivel2_gen_contextovictima" ,
-    "sivel2_gen_contextovictima_victima" ,
-    "sivel2_gen_departamento_region" ,
+    "msip_trelacion",
+    "schema_migrations",
+    "sivel2_gen_antecedente",
+    "sivel2_gen_antecedente_caso",
+    "sivel2_gen_antecedente_combatiente",
+    "sivel2_gen_antecedente_victima",
+    "sivel2_gen_antecedente_victimacolectiva",
+    "sivel2_gen_actocolectivo",
+    "sivel2_gen_categoria_presponsable",
+    "sivel2_gen_caso_contexto",
+    "sivel2_gen_caso_etiqueta",
+    "sivel2_gen_caso_fotra",
+    "sivel2_gen_caso_frontera",
+    "sivel2_gen_caso_fuenteprensa",
+    "sivel2_gen_caso_region",
+    "sivel2_gen_caso_respuestafor",
+    "sivel2_gen_combatiente",
+    "sivel2_gen_contexto",
+    "sivel2_gen_contextovictima",
+    "sivel2_gen_contextovictima_victima",
+    "sivel2_gen_departamento_region",
     "sivel2_gen_etnia_victimacolectiva",
-    "sivel2_gen_filiacion_victimacolectiva" ,
-    "sivel2_gen_fotra" ,
-    "sivel2_gen_frontera" ,
-    "sivel2_gen_iglesia" ,
-    "sivel2_gen_intervalo" ,
-    "sivel2_gen_municipio_region" ,
-    "sivel2_gen_observador_filtrodepartamento" ,
-    "sivel2_gen_organizacion_victimacolectiva" ,
-    "sivel2_gen_otraorga_victima" ,
-    "sivel2_gen_pconsolidado" ,
-    "sivel2_gen_profesion_victima" ,
-    "sivel2_gen_profesion_victimacolectiva" ,
-    "sivel2_gen_rangoedad_victimacolectiva" ,
-    "sivel2_gen_region" ,
-    "sivel2_gen_resagresion" ,
-    "sivel2_gen_sectorsocial" ,
-    "sivel2_gen_sectorsocial_victimacolectiva" ,
-    "sivel2_gen_sectorsocialsec_victima" ,
-    "sivel2_gen_victimacolectiva" ,
+    "sivel2_gen_filiacion_victimacolectiva",
+    "sivel2_gen_fotra",
+    "sivel2_gen_frontera",
+    "sivel2_gen_iglesia",
+    "sivel2_gen_intervalo",
+    "sivel2_gen_municipio_region",
+    "sivel2_gen_observador_filtrodepartamento",
+    "sivel2_gen_organizacion_victimacolectiva",
+    "sivel2_gen_otraorga_victima",
+    "sivel2_gen_pconsolidado",
+    "sivel2_gen_profesion_victima",
+    "sivel2_gen_profesion_victimacolectiva",
+    "sivel2_gen_rangoedad_victimacolectiva",
+    "sivel2_gen_region",
+    "sivel2_gen_resagresion",
+    "sivel2_gen_sectorsocial",
+    "sivel2_gen_sectorsocial_victimacolectiva",
+    "sivel2_gen_sectorsocialsec_victima",
+    "sivel2_gen_victimacolectiva",
     "sivel2_gen_victimacolectiva_vinculoestado",
     "sivel2_sjr_accionjuridica_respuesta",
     "sivel2_sjr_actividad_casosjr",
@@ -101,10 +102,9 @@ class DiccionariodatosController < ApplicationController
     "sivel2_sjr_respuesta",
   ]
 
-
   def extraer_doc_de_clase_en_modulo(arch)
     if arch == "./app/models/asesorhistorico.rb"
-      #debugger
+      # debugger
     end
     pr = Prism.parse_file(arch)
     pr.attach_comments!
@@ -112,13 +112,11 @@ class DiccionariodatosController < ApplicationController
 
     # Buscamos modulo
     m = 0
-    while m < cinst.count && cinst[m].type != :module_node
-      m += 1
-    end
+    m += 1 while m < cinst.count && cinst[m].type != :module_node
     if m >= cinst.count
       # No se encontró módulo intentamos con primer comentario
-      if  pr.comments && pr.comments[0] && pr.comments[0].slice
-        desc =pr.comments.map { |c| c.slice.gsub(/^# */, "") }.join("  ")
+      if pr.comments && pr.comments[0] && pr.comments[0].slice
+        desc = pr.comments.map { |c| c.slice.gsub(/^# */, "") }.join("  ")
       else
         return "No se encontró módulo ni comentario al comienzo"
       end
@@ -129,18 +127,17 @@ class DiccionariodatosController < ApplicationController
       desc = ""
       while l < b.lines.count && !(b.lines[l] =~ /^[\s]*class/)
         if b.lines[l] =~ /^[\s]*# ?(.*)/
-            desc += " " + $1
+          desc += " " + ::Regexp.last_match(1)
         end
         l += 1
       end
     end
 
-    return desc.strip
+    desc.strip
   end
 
-
   def presentar
-    authorize! :read, ::Diccionariodatos
+    authorize!(:read, ::Diccionariodatos)
     @registros = nil
     @motor_nombre = ""
     @motor_version = ""
@@ -159,16 +156,18 @@ class DiccionariodatosController < ApplicationController
 
       # diccionario, llave será motor, valor será directorio del motor
       @motores_dir = {
-        "SiJrscol" => "."
+        "SiJrscol" => ".",
       }
       if @motor_nombre == "SiJrscol"
         @motor_dir = "."
         @motor_version = Jos19::VERSION
         @motor_arch_desc = File.join(
-          @motor_dir, "/config/application.rb")
-        if !File.exist?(@motor_arch_desc)
+          @motor_dir, "/config/application.rb"
+        )
+        unless File.exist?(@motor_arch_desc)
           raise "No existe archivo #{motor_arch_desc}"
         end
+
         pr = Prism.parse_file(@motor_arch_desc)
         pr.attach_comments!
         b = pr.value.slice
@@ -176,7 +175,7 @@ class DiccionariodatosController < ApplicationController
         @motor_descripcion = ""
         while l < b.lines.count && !(b.lines[l] =~ /^[\s]*module/)
           if b.lines[l] =~ /^[\s]*# ?(.*)/
-              @motor_descripcion += " " + $1
+            @motor_descripcion += " " + ::Regexp.last_match(1)
           end
           l += 1
         end
@@ -188,46 +187,48 @@ class DiccionariodatosController < ApplicationController
         end
 
         # Llenamos descripción y otros datos del motor elegido
-        if s.name == @motor_nombre_rayas
-          @motor_dir = s.gem_dir
-          @motor_version = s.version.to_s
-          @motor_arch_desc = File.join(
-            @motor_dir, "/lib/", @motor_nombre_rayas + ".rb")
-          if !File.exist?(@motor_arch_desc)
-            raise "No existe archivo #{motor_arch_desc}"
+        next unless s.name == @motor_nombre_rayas
+
+        @motor_dir = s.gem_dir
+        @motor_version = s.version.to_s
+        @motor_arch_desc = File.join(
+          @motor_dir, "/lib/", @motor_nombre_rayas + ".rb"
+        )
+        unless File.exist?(@motor_arch_desc)
+          raise "No existe archivo #{motor_arch_desc}"
+        end
+
+        pr = Prism.parse_file(@motor_arch_desc)
+        pr.attach_comments!
+        b = pr.value.slice
+        l = 1
+        @motor_descripcion = ""
+        while l < b.lines.count && !(b.lines[l] =~ /^[\s]*module/)
+          if b.lines[l] =~ /^[\s]*# ?(.*)/
+            @motor_descripcion += " " + ::Regexp.last_match(1)
           end
-          pr = Prism.parse_file(@motor_arch_desc)
-          pr.attach_comments!
-          b = pr.value.slice
-          l = 1
-          @motor_descripcion = ""
-          while l < b.lines.count && !(b.lines[l] =~ /^[\s]*module/)
-            if b.lines[l] =~ /^[\s]*# ?(.*)/
-              @motor_descripcion += " " + $1
-            end
-            l += 1
-          end
+          l += 1
         end
       end
 
       # Iteramos sobre las tablas del motor.
       @motor_tablas = []
-      if (@motor_nombre == "SiJrscol") then
+      if @motor_nombre == "SiJrscol"
         @motor_nombre_rayas = "."
-        motores_rayas = MOTORES.select {|m| m != "SiJrscol"}.map { |m|
+        motores_rayas = MOTORES.select { |m| m != "SiJrscol" }.map do |m|
           m.underscore
-        }
-        ltablas = ActiveRecord::Base.connection.tables.select {|n|
-          motores_rayas.all?{|mr| !n.start_with?(mr + "_") } &&
+        end
+        ltablas = ActiveRecord::Base.connection.tables.select do |n|
+          motores_rayas.all? { |mr| !n.start_with?(mr + "_") } &&
             ActiveRecord::Base.connection.table_exists?(n) &&
             !TABLAS_NO_USADAS_EN_JRSCOL.include?(n)
-        }
+        end
       else
-        ltablas = ActiveRecord::Base.connection.tables.select {|n|
+        ltablas = ActiveRecord::Base.connection.tables.select do |n|
           n.start_with?(@motor_nombre_rayas + "_") &&
             ActiveRecord::Base.connection.table_exists?(n) &&
             !TABLAS_NO_USADAS_EN_JRSCOL.include?(n)
-        }
+        end
       end
       ltablas.sort.each do |t|
         if @motor_nombre == "SiJrscol"
@@ -239,11 +240,11 @@ class DiccionariodatosController < ApplicationController
             postarch = "#{ncorto}.rb"
           end
         else
-          ncorto=t[(@motor_nombre_rayas.length+1)..-1]
+          ncorto = t[(@motor_nombre_rayas.length + 1)..-1]
           postarch = "#{@motor_nombre_rayas}/#{ncorto}.rb"
         end
-        if ncorto == 'etiqueta_persona'
-          #debugger
+        if ncorto == "etiqueta_persona"
+          # debugger
         end
         # Buscar descripción no vacía que esté más arriba en la pila de
         # motores
@@ -258,48 +259,48 @@ class DiccionariodatosController < ApplicationController
           parch = File.join(
             @motores_dir[m], "/app/models/#{postarch}"
           )
-          if File.exist?(parch)
-            arch = parch
-            desc = extraer_doc_de_clase_en_modulo arch
-            if @motor_nombre == "SiJrscol"
-              if t[0..10] == "sivel2_sjr_"
-                clase = ("Sivel2Sjr::" + ncorto.camelize).constantize
-              else
-                clase = ("::" + ncorto.camelize).constantize
-              end
+          next unless File.exist?(parch)
+
+          arch = parch
+          desc = extraer_doc_de_clase_en_modulo(arch)
+          clase = if @motor_nombre == "SiJrscol"
+            if t[0..10] == "sivel2_sjr_"
+              ("Sivel2Sjr::" + ncorto.camelize).constantize
             else
-              clase = (@motor.to_s + "::" + ncorto.camelize).constantize
+              ("::" + ncorto.camelize).constantize
             end
-            if clase && clase.respond_to?(:all) &&
-                clase.all.respond_to?(:count)
-              registros = clase.all.count
-            end
-            if desc != "" && clase.respond_to?(:columns)
-              clase.columns.each do |col|
-                if col.name == "id"
-                  llave = "id"
+          else
+            (@motor.to_s + "::" + ncorto.camelize).constantize
+          end
+          if clase && clase.respond_to?(:all) &&
+              clase.all.respond_to?(:count)
+            registros = clase.all.count
+          end
+          next unless desc != "" && clase.respond_to?(:columns)
+
+          clase.columns.each do |col|
+            if col.name == "id"
+              llave = "id"
+            else
+              clf = Msip::ModeloHelper.llave_foranea_en_modelo(
+                col.name, clase
+              )
+              if clf
+                if clf.options[:class_name]
+                  nomclf = clf.options[:class_name].parameterize.underscore
+                elsif clf.active_record
+                  nomclf = clf.active_record.to_s.parameterize.underscore
                 else
-                  clf = Msip::ModeloHelper.llave_foranea_en_modelo(
-                    col.name, clase
-                  )
-                  if clf
-                    if  clf.options[:class_name]
-                      nomclf = clf.options[:class_name].parameterize.underscore
-                    elsif clf.active_record
-                      nomclf = clf.active_record.to_s.parameterize.underscore
-                    else
-                      puts "No se logra determinar clase de #{col.name}"
-                      exit 1;
-                    end
-                    llaves_foraneas << col.name + "(" + nomclf + ")"
-                  else
-                    atributos << col.name + ":" + col.sql_type_metadata.sql_type
-                  end
+                  puts "No se logra determinar clase de #{col.name}"
+                  exit(1)
                 end
+                llaves_foraneas << col.name + "(" + nomclf + ")"
+              else
+                atributos << col.name + ":" + col.sql_type_metadata.sql_type
               end
-              break
             end
           end
+          break
         end
         if arch == ""
           desc = "* No existe archivo para #{postarch}"
@@ -313,7 +314,7 @@ class DiccionariodatosController < ApplicationController
             llave_primaria: llave,
             atributos: atributos,
             llaves_foraneas: llaves_foraneas,
-            registros: registros
+            registros: registros,
           }
         else
           @motor_tablas << {
@@ -322,75 +323,94 @@ class DiccionariodatosController < ApplicationController
             llave_primaria: llave,
             atributos: atributos,
             llaves_foraneas: llaves_foraneas,
-            registros: registros
+            registros: registros,
           }
         end
       end
     end
 
     if params["exportar"]
-      narch = "diccionariodatos-#{@motor}-#{Time.now.strftime "%Y%m%d%H%M%S"}.xlsx"
-      n = self.exportar_excel(narch)
+      narch = "diccionariodatos-#{@motor}-#{Time.now.strftime("%Y%m%d%H%M%S")}.xlsx"
+      n = exportar_excel(narch)
       send_file(
         n,
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         disposition: "attachment",
-        filename: narch
+        filename: narch,
       )
     else
       respond_to do |format|
-        format.html {
-          render 'diccionariodatos/presentar',
-          layout: 'application'
-        }
-        format.json { head :no_content }
-        format.js   { head :no_content }
+        format.html do
+          render(
+            "diccionariodatos/presentar",
+            layout: "application",
+          )
+        end
+        format.json { head(:no_content) }
+        format.js   { head(:no_content) }
       end
     end
   end
-
 
   def exportar_excel(narch)
     p = Axlsx::Package.new
     lt = p.workbook
     e = lt.styles
 
-    estilo_base = e.add_style sz: 12
-    estilo_titulo = e.add_style sz: 20
-    estilo_enc1 = e.add_style sz: 16
-    estilo_encabezado = e.add_style sz: 12, b: true,
-      alignment: { wrap_text: true }
-    estilo_varias_lineas = e.add_style sz: 12, alignment: { wrap_text: true }
-    #, fg_color: 'FF0000', bg_color: '00FF00'
+    estilo_base = e.add_style(sz: 12)
+    estilo_titulo = e.add_style(sz: 20)
+    estilo_enc1 = e.add_style(sz: 16)
+    estilo_encabezado = e.add_style(
+      sz: 12,
+      b: true,
+      alignment: { wrap_text: true },
+    )
+    estilo_varias_lineas = e.add_style(sz: 12, alignment: { wrap_text: true })
+    # , fg_color: 'FF0000', bg_color: '00FF00'
 
     lt.add_worksheet do |hoja|
-      hoja.add_row ['Diccionario de Datos'],
-        height: 30, style: estilo_titulo
+      hoja.add_row(
+        ["Diccionario de Datos"],
+        height: 30,
+        style: estilo_titulo,
+      )
       hoja.merge_cells("A1:F1")
 
-      hoja.add_row []
-      hoja.add_row ["Motor:", @motor],
-        style: [estilo_encabezado, estilo_base]
-      hoja.add_row ["Versión:", @motor_version ],
-        style: [estilo_encabezado, estilo_base]
-      hoja.add_row ["Hora:", Time.now.to_s ],
-        style: [estilo_encabezado, estilo_base]
+      hoja.add_row([])
+      hoja.add_row(
+        ["Motor:", @motor],
+        style: [estilo_encabezado, estilo_base],
+      )
+      hoja.add_row(
+        ["Versión:", @motor_version],
+        style: [estilo_encabezado, estilo_base],
+      )
+      hoja.add_row(
+        ["Hora:", Time.now.to_s],
+        style: [estilo_encabezado, estilo_base],
+      )
 
-      hoja.add_row []
+      hoja.add_row([])
 
-      hoja.add_row ['Tablas'],
-        height: 30, style: estilo_enc1
+      hoja.add_row(
+        ["Tablas"],
+        height: 30,
+        style: estilo_enc1,
+      )
       hoja.merge_cells("A7:F7")
 
       numcols = 6
-      hoja.add_row [
-        "Item",
-        "Nombre",
-        "Descripción",
-        "Llave primaria",
-        "Atributos",
-        "Llaves foráneas",
-      ], style: [estilo_encabezado] * numcols
+      hoja.add_row(
+        [
+          "Item",
+          "Nombre",
+          "Descripción",
+          "Llave primaria",
+          "Atributos",
+          "Llaves foráneas",
+        ],
+        style: [estilo_encabezado] * numcols,
+      )
 
       item = 1
       @motor_tablas.each do |t|
@@ -400,27 +420,33 @@ class DiccionariodatosController < ApplicationController
           t[:descripcion],
           t[:llave_primaria],
           t[:atributos].join(", "),
-          t[:llaves_foraneas].join(", ")
+          t[:llaves_foraneas].join(", "),
         ]
-        hoja.add_row l2, style: estilo_varias_lineas
+        hoja.add_row(l2, style: estilo_varias_lineas)
         item += 1
       end
 
-      hoja.add_row []
+      hoja.add_row([])
 
-      hoja.add_row ['Relaciones'],
-        height: 30, style: estilo_enc1
-      hoja.merge_cells("A#{item+9}:E#{item+9}")
+      hoja.add_row(
+        ["Relaciones"],
+        height: 30,
+        style: estilo_enc1,
+      )
+      hoja.merge_cells("A#{item + 9}:E#{item + 9}")
 
       numcols = 6
-      hoja.add_row [
-        "Item",
-        "Nombre",
-        "Descripción",
-        "Llave primaria",
-        "Atributos",
-        "Llaves foráneas"
-      ], style: [estilo_encabezado] * numcols
+      hoja.add_row(
+        [
+          "Item",
+          "Nombre",
+          "Descripción",
+          "Llave primaria",
+          "Atributos",
+          "Llaves foráneas",
+        ],
+        style: [estilo_encabezado] * numcols,
+      )
 
       item = 1
       @motor_relaciones.each do |t|
@@ -430,30 +456,24 @@ class DiccionariodatosController < ApplicationController
           t[:descripcion],
           t[:llave_primaria],
           t[:atributos].join(", "),
-          t[:llaves_foraneas].join(", ")
+          t[:llaves_foraneas].join(", "),
         ]
-        hoja.add_row l2, style: estilo_varias_lineas
+        hoja.add_row(l2, style: estilo_varias_lineas)
         item += 1
       end
 
       anchos = [10, 20, 80, 10, 80]
       hoja.column_widths(*anchos)
-
     end
 
-    n=File.join('/tmp', File.basename(narch + ".xlsx"))
-    p.serialize n
-    return n
-
+    n = File.join("/tmp", File.basename(narch + ".xlsx"))
+    p.serialize(n)
+    n
   end
-
-
 
   def diccionariodatos_params
     params.require(:diccionariodatos).permit(
-      :motor
+      :motor,
     )
   end
-
-
 end

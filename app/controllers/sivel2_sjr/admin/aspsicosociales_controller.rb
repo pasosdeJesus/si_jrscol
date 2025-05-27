@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class AspsicosocialesController < Msip::Admin::BasicasController
       before_action :set_aspsicosocial, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Aspsicosocial
 
-      def clase 
+      def clase
         "Sivel2Sjr::Aspsicosocial"
       end
 
@@ -17,7 +19,6 @@ module Sivel2Sjr
       def aspsicosocial_params
         params.require(:sivel2_sjr_aspsicosocial).permit(*atributos_form)
       end
-
     end
   end
 end

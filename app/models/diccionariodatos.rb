@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Diccionario de Datos
 class Diccionariodatos
   include ActiveModel::Model
@@ -7,20 +9,24 @@ class Diccionariodatos
     def count
       3
     end
+
     def reorder(col)
-      return self
+      self
     end
+
     def all
-      return self
+      self
     end
+
     def paginate(p)
     end
+
     def total_pages
       0
     end
   end
 
-  def self.accessible_by(x, y=nil)
+  def self.accessible_by(x, y = nil)
     ColMod.new
   end
 end

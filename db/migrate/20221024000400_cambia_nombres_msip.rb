@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CambiaNombresMsip < ActiveRecord::Migration[7.0]
   include Msip::SqlHelper
 
@@ -6,9 +8,8 @@ class CambiaNombresMsip < ActiveRecord::Migration[7.0]
   ]
 
   def change
-    IND.each do |nomini, nomfin| 
+    IND.each do |nomini, nomfin|
       renombrar_índice_pg(nomini, nomfin)
     end
   end
-
 end

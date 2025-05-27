@@ -4,7 +4,6 @@ require_relative "../../test_helper"
 
 module Msip
   class OficinaTest < ActiveSupport::TestCase
-
     PRUEBA_OFICINA = {
       nombre: "Oficina",
       territorial_id: 1,

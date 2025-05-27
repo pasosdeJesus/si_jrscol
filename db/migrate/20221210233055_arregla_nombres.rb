@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ArreglaNombres < ActiveRecord::Migration[7.0]
   include Msip::SqlHelper
 
-  SEQ=[
+  SEQ = [
     ["anexo_seq", "sivel2_gen_anexo_caso_id_seq"],
     ["causaref_seq", "causaref_id_seq"],
     ["desplazamiento_seq", "sivel2_sjr_desplazamiento_id_seq"],
@@ -13,10 +15,10 @@ class ArreglaNombres < ActiveRecord::Migration[7.0]
   ]
 
   def up
-    SEQ.each do |nomini, nomfin| 
-      renombrar_secuencia_pg nomini, nomfin
+    SEQ.each do |nomini, nomfin|
+      renombrar_secuencia_pg(nomini, nomfin)
     end
-    execute <<~SQL.squish
+    execute(<<~SQL.squish)
       DROP SEQUENCE IF EXISTS accion_seq;
       DROP SEQUENCE IF EXISTS proceso_seq;
       DROP TABLE IF EXISTS acto_errado;
@@ -27,10 +29,10 @@ class ArreglaNombres < ActiveRecord::Migration[7.0]
       DROP SEQUENCE IF EXISTS etapa_seq;
     SQL
   end
-  def down
-    SEQ.reverse.each do |nomini, nomfin| 
-      renombrar_secuencia_pg nomfin, nomini
-    end
 
+  def down
+    SEQ.reverse.each do |nomini, nomfin|
+      renombrar_secuencia_pg(nomfin, nomini)
+    end
   end
 end

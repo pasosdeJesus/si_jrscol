@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class AyudassjrController < Msip::Admin::BasicasController
       before_action :set_ayudasjr, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Ayudasjr
 
-      def clase 
+      def clase
         "Sivel2Sjr::Ayudasjr"
       end
 
       def atributos_index
-        ["id",  "nombre" ] + 
-          [ :derecho_ids =>  [] ] +
-          ["observaciones", "fechacreacion", "habilitado"] 
+        ["id",  "nombre"] +
+          [derecho_ids: []] +
+          ["observaciones", "fechacreacion", "habilitado"]
       end
 
       # Use callbacks to share common setup or constraints between actions.
@@ -24,7 +26,7 @@ module Sivel2Sjr
         params.require(:sivel2_sjr_ayudasjr).permit(*atributos_form)
       end
 
-      # Elimina un registro 
+      # Elimina un registro
       def destroy
         # No se ha logrado con before_destroy en modelo
         mens = ""
@@ -34,19 +36,19 @@ module Sivel2Sjr
           if cuenta > 0
             porb.delete_all
             mens += " Se han eliminado automáticamente #{cuenta} registros " +
-              " relacionados de la tabla " + 
+              " relacionados de la tabla " +
               Sivel2Sjr::AyudasjrDerecho.human_attribute_name(
-                :ayudasjr_derecho) + ". "
+                :ayudasjr_derecho,
+              ) + ". "
           end
         end
         super(mens)
-#        @basica.destroy
-#        respond_to do |format|
-#          format.html { redirect_to admin_basicas_url(@basica) }
-#          format.json { head :no_content }
-#        end
+        #        @basica.destroy
+        #        respond_to do |format|
+        #          format.html { redirect_to admin_basicas_url(@basica) }
+        #          format.json { head :no_content }
+        #        end
       end
-
     end
   end
 end

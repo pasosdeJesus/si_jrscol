@@ -1,22 +1,14 @@
+# frozen_string_literal: true
+
 class ActosninosController < ApplicationController
   load_and_authorize_resource class: ::Actonino
 
   include ActionView::Helpers::AssetUrlHelper
 
-  def destroy
-    @problema = ""
-    if !params[:id]
-      return
-    end
-    @actonino = ::Actonino.find(params[:id])
-    @caso = @actonino.caso
-    @actonino.destroy
-  end
-
   def create
     prepara_nuevo
     @problema = "".dup
-    if !params["caso_id"] || 
+    if !params["caso_id"] ||
         Sivel2Gen::Caso.where(id: params["caso_id"]).count == 0
       @problema << "Falta caso_id"
     else
@@ -43,25 +35,35 @@ class ActosninosController < ApplicationController
       @problema << "Falta Víctima.\n "
     end
 
-    if @problema == ''
+    if @problema == ""
       acto = ::Actonino.new(
         fecha: params[:caso][:actonino][:fecha],
         ubicacionpre_id: params[:caso][:actonino][:ubicacionpre_id],
         presponsable_id: params[:caso][:actonino][:presponsable_id],
         categoria_id: params[:caso][:actonino][:categoria_id],
         persona_id: params[:caso][:actonino][:persona_id],
-        caso_id: params["caso_id"]
+        caso_id: params["caso_id"],
       )
       if acto.valid?
         acto.save
         params[:caso].delete(:actonino)
       else
-        acto.errors.messages.each do |l,v|
-          @problema << "#{l.to_s}: #{v.join('. ')}.\n"
+        acto.errors.messages.each do |l, v|
+          @problema << "#{l}: #{v.join(". ")}.\n"
         end
       end
     end
+  end
 
+  def destroy
+    @problema = ""
+    unless params[:id]
+      return
+    end
+
+    @actonino = ::Actonino.find(params[:id])
+    @caso = @actonino.caso
+    @actonino.destroy
   end
 
   private
@@ -69,8 +71,7 @@ class ActosninosController < ApplicationController
   def prepara_nuevo
     @registro = @acto = ::Actonino.new
     @caso = Sivel2Gen::Caso.new(
-      actonino: [@acto]
+      actonino: [@acto],
     )
   end
-
-end 
+end

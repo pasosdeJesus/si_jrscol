@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class TipostransferenciaController < Msip::Admin::BasicasController
-    before_action :set_tipotransferencia, 
+    before_action :set_tipotransferencia,
       only: [:show, :edit, :update, :destroy]
-    load_and_authorize_resource  class: ::Tipotransferencia
+    load_and_authorize_resource class: ::Tipotransferencia
 
-    def clase 
+    def clase
       "::Tipotransferencia"
     end
 
@@ -14,29 +16,31 @@ module Admin
 
     def atributos_index
       [
-        :id, 
-        :nombre, 
-        :observaciones, 
-        :fechacreacion_localizada, 
-        :habilitado
+        :id,
+        :nombre,
+        :observaciones,
+        :fechacreacion_localizada,
+        :habilitado,
       ]
     end
 
     def atributos_form
       a = atributos_index - [:id]
-      return a.map do |e|
-        e == :fechacreacion_localizada ? :fechacreacion : 
+      a.map do |e|
+        if e == :fechacreacion_localizada
+          :fechacreacion
+        else
           (e == :habilitado ? :fechadeshabilitacion : e)
+        end
       end
     end
 
     def genclase
-      'M'
+      "M"
     end
 
     def tipotransferencia_params
       params.require(:tipotransferencia).permit(*atributos_form)
     end
-
   end
 end

@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 module DesplazamientoHelper
-
-
   # calcula clasificacion de modalidad geográfica y submodalidad
   def modageo_desplazamiento(expulsion, llegada)
-    pe = Msip::UbicacionHelper.formato_ubicacion(expulsion).split(' / ')
-    pl = Msip::UbicacionHelper.formato_ubicacion(llegada).split(' / ')
+    pe = Msip::UbicacionHelper.formato_ubicacion(expulsion).split(" / ")
+    pl = Msip::UbicacionHelper.formato_ubicacion(llegada).split(" / ")
     if pe.length > 0 && pl.length > 0
       if pe[0] != pl[0]
         cl = "TRANSFRONTERIZO"
@@ -30,8 +30,7 @@ module DesplazamientoHelper
       ul = "URBANO"
     end
     res = [cl, ue + " - " + ul]
-    return res
+    res
   end
   module_function :modageo_desplazamiento
-
 end

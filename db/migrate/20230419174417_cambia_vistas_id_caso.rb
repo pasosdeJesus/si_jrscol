@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CambiaVistasIdCaso < ActiveRecord::Migration[7.0]
   def up
-    execute <<-SQL
+    execute(<<-SQL)
       DROP VIEW IF EXISTS ultimodesplazamiento CASCADE;
       DROP VIEW IF EXISTS cvp2 CASCADE;
       DROP VIEW IF EXISTS cvp1 CASCADE;

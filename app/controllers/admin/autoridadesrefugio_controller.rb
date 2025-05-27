@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class AutoridadesrefugioController < Msip::Admin::BasicasController
-    before_action :set_autoridadrefugio, 
+    before_action :set_autoridadrefugio,
       only: [:show, :edit, :update, :destroy]
-    load_and_authorize_resource  class: ::Autoridadrefugio
+    load_and_authorize_resource class: ::Autoridadrefugio
 
-    def clase 
+    def clase
       "::Autoridadrefugio"
     end
 
@@ -14,29 +16,31 @@ module Admin
 
     def atributos_index
       [
-        :id, 
-        :nombre, 
-        :observaciones, 
-        :fechacreacion_localizada, 
-        :habilitado
+        :id,
+        :nombre,
+        :observaciones,
+        :fechacreacion_localizada,
+        :habilitado,
       ]
     end
 
     def atributos_form
       a = atributos_index - [:id]
-      return a.map do |e|
-        e == :fechacreacion_localizada ? :fechacreacion : 
+      a.map do |e|
+        if e == :fechacreacion_localizada
+          :fechacreacion
+        else
           (e == :habilitado ? :fechadeshabilitacion : e)
+        end
       end
     end
 
     def genclase
-      'F'
+      "F"
     end
 
     def autoridadrefugio_params
       params.require(:autoridadrefugio).permit(*atributos_form)
     end
-
   end
 end

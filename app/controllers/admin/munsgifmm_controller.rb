@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class MunsgifmmController < Msip::Admin::BasicasController
-    before_action :set_mungifmm, 
+    before_action :set_mungifmm,
       only: [:show, :edit, :update, :destroy]
-    load_and_authorize_resource  class: ::Mungifmm
+    load_and_authorize_resource class: ::Mungifmm
 
-    def clase 
+    def clase
       "::Mungifmm"
     end
 
@@ -14,29 +16,31 @@ module Admin
 
     def atributos_index
       [
-        :id, 
-        :nombre, 
-        :observaciones, 
-        :fechacreacion_localizada, 
-        :habilitado
+        :id,
+        :nombre,
+        :observaciones,
+        :fechacreacion_localizada,
+        :habilitado,
       ]
     end
 
     def atributos_form
       a = atributos_index - [:id]
-      return a.map do |e|
-        e == :fechacreacion_localizada ? :fechacreacion : 
+      a.map do |e|
+        if e == :fechacreacion_localizada
+          :fechacreacion
+        else
           (e == :habilitado ? :fechadeshabilitacion : e)
+        end
       end
     end
 
     def genclase
-      'M'
+      "M"
     end
 
     def mungifmm_params
       params.require(:mungifmm).permit(*atributos_form)
     end
-
   end
 end

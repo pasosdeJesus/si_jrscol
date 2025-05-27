@@ -1,4 +1,6 @@
-require 'sivel2_gen/concerns/models/acto'
+# frozen_string_literal: true
+
+require "sivel2_gen/concerns/models/acto"
 
 module Sivel2Gen
   # Acto de violencia contra una persona, basado en modelo de datos
@@ -8,10 +10,10 @@ module Sivel2Gen
   class Acto < ActiveRecord::Base
     include Sivel2Gen::Concerns::Models::Acto
 
-    has_one :actosjr, class_name: 'Sivel2Sjr::Actosjr',
-      foreign_key: "acto_id", dependent: :delete, inverse_of: :acto
+    has_one :actosjr,
+      class_name: "Sivel2Sjr::Actosjr",
+      dependent: :delete,
+      inverse_of: :acto
     accepts_nested_attributes_for :actosjr
-
   end
 end
-

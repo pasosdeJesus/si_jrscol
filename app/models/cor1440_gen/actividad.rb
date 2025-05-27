@@ -6,22 +6,26 @@ module Cor1440Gen
   class Actividad < ActiveRecord::Base
     include Cor1440Gen::Concerns::Models::Actividad
 
-    belongs_to :ubicacionpre, class_name: '::Msip::Ubicacionpre',
-      foreign_key: 'ubicacionpre_id', optional: true
-    has_many :detallefinanciero, dependent: :delete_all,
-      class_name: 'Detallefinanciero',
-      foreign_key: 'actividad_id'
+    belongs_to :ubicacionpre, 
+class_name: '::Msip::Ubicacionpre', 
+optional: true
+    has_many :detallefinanciero, 
+dependent: :delete_all,
+      class_name: 'Detallefinanciero'
     accepts_nested_attributes_for :detallefinanciero,
-      allow_destroy: true, reject_if: :all_blank
+      allow_destroy: true, 
+reject_if: :all_blank
 
     attr_accessor :rapidobenefcaso_id
 
     attr_reader :territorial_id
+
     def territorial_id
       self.oficina ? self.oficina.territorial_id : nil
     end
 
     attr_reader :territorial
+
     def territorial
       self.oficina ? self.oficina.territorial : nil
     end
@@ -29,6 +33,7 @@ module Cor1440Gen
     attr_accessor :controlador
 
     attr_accessor :ubicacionpre_texto
+
     def ubicacionpre_texto
       if self.ubicacionpre
         self.ubicacionpre.nombre
@@ -38,6 +43,7 @@ module Cor1440Gen
     end
 
     attr_accessor :ubicacionpre_mundep_texto
+
     def ubicacionpre_mundep_texto
       if self.ubicacionpre
         self.ubicacionpre.nombre_sin_pais
@@ -52,19 +58,19 @@ module Cor1440Gen
 
     validate :territorial_responsable_current_usuario
     def territorial_responsable_current_usuario
-      if (current_usuario && current_usuario.territorial_id && 
+      if current_usuario && current_usuario.territorial_id &&
           current_usuario.rol != Ability::ROLADMIN &&
           current_usuario.rol != Ability::ROLDIR &&
           responsable && responsable.territorial_id &&
-          responsable.territorial_id != current_usuario.territorial_id)
+          responsable.territorial_id != current_usuario.territorial_id
         errors.add(:responsable, "Para editar responsable el " +
                    "usuario actual debe estar en la misma territorial")
       end
-      if (current_usuario && current_usuario.territorial_id && 
+      if current_usuario && current_usuario.territorial_id &&
           current_usuario.rol != Ability::ROLADMIN &&
           current_usuario.rol != Ability::ROLDIR &&
           oficina && oficina.territorial_id &&
-          current_usuario.territorial_id != oficina.territorial_id)
+          current_usuario.territorial_id != oficina.territorial_id
         errors.add(:oficina, "La oficina de la actividad debe ser " +
                    "de la misma territorial del usuario")
       end
@@ -73,8 +79,8 @@ module Cor1440Gen
     validate :valida_detallefinanciero_sin_repetidos
     def valida_detallefinanciero_sin_repetidos
       pact = []
-      self.detallefinanciero.map{
-        |t| t.persona_ids.map{ |per| 
+      self.detallefinanciero.map { |t|
+        t.persona_ids.map { |per|
           if t.actividadpf_id
             pact.push([per, t.actividadpf_id])
           end
@@ -82,9 +88,9 @@ module Cor1440Gen
       }
       if pact.length != pact.uniq.length
         errors.add(:persona, "En Detalle Financiero no se puden repetir " +
-                   "beneficiarios si la actividad del marco lógico es la misma") 
-      end 
-    end 
+                   "beneficiarios si la actividad del marco lógico es la misma")
+      end
+    end
 
     validate :valida_actividad_marco_logico
     def valida_actividad_marco_logico
@@ -94,43 +100,42 @@ module Cor1440Gen
       end
       if controlador && controlador.params && controlador.params[:actividad] &&
           controlador.params[:actividad][:actividad_proyectofinanciero_attributes]
-        controlador.params[:actividad][:actividad_proyectofinanciero_attributes].each do |l, v|
-          if v[:proyectofinanciero_id].to_i != 10 &&
+        controlador.params[:actividad][:actividad_proyectofinanciero_attributes].each do |_l, v|
+          next unless v[:proyectofinanciero_id].to_i != 10 &&
               v['_destroy'] == 'false' && (v['actividadpf_ids'] == [] || 
               v['actividadpf_ids'] == [''])
-            cf = v[:proyectofinanciero_id].to_i > 0 ?
-            Cor1440Gen::Proyectofinanciero.find(
-              v[:proyectofinanciero_id]).nombre : ''
-            errors.add(
-              :proyectofinanciero, 
-              "Falta agregar actividad de marco lógico en "\
-              "convenio financiador #{cf}"
-            )
-          end
+          cf = v[:proyectofinanciero_id].to_i > 0 ?
+          Cor1440Gen::Proyectofinanciero.find(
+            v[:proyectofinanciero_id]
+).nombre : ''
+          errors.add(
+            :proyectofinanciero,
+            "Falta agregar actividad de marco lógico en " \
+              "convenio financiador #{cf}",
+          )
         end
-      end 
+      end
     end
 
     validate :valida_asistentes
     def valida_asistentes
       self.asistencia.each do |a|
         docerr = []
-        if !a.valid?
-          a.errors.messages.each do |l,lm|
+        unless a.valid?
+          a.errors.messages.each do |_l, lm|
             docerr += lm
           end
         end
-        if !a.persona.valid?
-          a.persona.errors.messages.each do |l,lm|
+        unless a.persona.valid?
+          a.persona.errors.messages.each do |_l, lm|
             docerr += lm
           end
         end
-        if docerr.count > 0
-          errors.add(
-            :actividad_asistencia_attributes,
-            "Problemas validando asistente #{a.id}: #{docerr.join("; ")}"
-          )
-        end
+        next unless docerr.count > 0
+        errors.add(
+          :actividad_asistencia_attributes,
+          "Problemas validando asistente #{a.id}: #{docerr.join("; ")}",
+        )
       end
     end
 
@@ -141,18 +146,18 @@ module Cor1440Gen
       docerr = []
       if controlador && controlador.params && controlador.params[:actividad] &&
           controlador.params[:actividad][:asistencia_attributes]
-        controlador.params[:actividad][:asistencia_attributes].each do |l, v|
+        controlador.params[:actividad][:asistencia_attributes].each do |_l, v|
           if v[:perfilorgsocial_id].to_i == 0 && v['_destroy'] == 'false'
             docerr <<  v[:persona_attributes][:numerodocumento]
           end
         end
       end
       if docerr.count > 0
-        Rails.logger.info "*OJO* Falta perfil poblacional en asistente(s) con identificacion(es) " + docerr.join(", ") + "."
+        Rails.logger.info("*OJO* Falta perfil poblacional en asistente(s) con identificacion(es) " + docerr.join(", ") + ".")
         errors.add(
-          :actividad_asistencia_attributes, 
+          :actividad_asistencia_attributes,
           "Falta perfil poblacional en asistente(s) con identificacion(es) " +
-          docerr.join(", ") + "."
+          docerr.join(", ") + ".",
         )
       end
     end
@@ -163,18 +168,18 @@ module Cor1440Gen
       docerr = []
       if controlador && controlador.params && controlador.params[:actividad] &&
           controlador.params[:actividad][:asistencia_attributes]
-        controlador.params[:actividad][:asistencia_attributes].each do |l, v|
+        controlador.params[:actividad][:asistencia_attributes].each do |_l, v|
           if v[:persona_attributes] && v[:persona_attributes][:sexo] &&
-            v[:persona_attributes][:sexo] == 'S' && v['_destroy'] == 'false'
-            docerr <<  v[:persona_attributes][:numerodocumento]
+              v[:persona_attributes][:sexo] == 'S' && v['_destroy'] == 'false'
+            docerr << v[:persona_attributes][:numerodocumento]
           end
         end
       end
       if docerr.count > 0
         errors.add(
-          :actividad_asistencia_attributes, 
+          :actividad_asistencia_attributes,
           "Falta sexo en asistente(s) con identificacion(es) " +
-          docerr.join(", ") + "."
+          docerr.join(", ") + ".",
         )
       end
     end
@@ -182,52 +187,56 @@ module Cor1440Gen
 
 
     # FILTROS
-   
+
     scope :filtro_oficina, lambda { |ids|
       where(oficina_id: ids.map(&:to_i))
     }
 
     scope :filtro_proyectofinanciero, lambda { |ids|
-      where('cor1440_gen_actividad.id IN '\
-            '(SELECT actividad_id '\
-            ' FROM cor1440_gen_actividad_proyectofinanciero '\
-            ' WHERE proyectofinanciero_id IN (?))', ids.map(&:to_i))
+      where(
+'cor1440_gen_actividad.id IN ' \
+        '(SELECT actividad_id  ' \
+            'FROM cor1440_gen_actividad_proyectofinanciero  ' \
+            'WHERE proyectofinanciero_id IN (?))', 
+ids.map(&:to_i))
     }
 
     scope :filtro_territorial, lambda { |tid|
-      where(tid.count == 0 ? "TRUE" :
-            "oficina_id IN (SELECT id FROM msip_oficina "\
-            "WHERE msip_oficina.territorial_id IN (?))", tid)
+      where(
+tid.count == 0 ? "TRUE" :
+            "oficina_id IN (SELECT id FROM msip_oficina " \
+              "WHERE msip_oficina.territorial_id IN (?))", 
+tid)
     }
 
 
     # PRESENTACIÓN DE INFORMACIÓN
 
     def casos_asociados
-      lp = self.asistencia.pluck(:persona_id) 
+      lp = self.asistencia.pluck(:persona_id)
       if lp.count == 0
         lc = []
       else
-        lv = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
-          where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
-                self.fecha)
+        lv = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr)
+          .where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+            self.fecha)
         lc = lv.pluck(:caso_id)
       end
       if lc.empty?
-        return ""
+        ""
       else
-        return lc.sort.uniq.join(", ")
+        lc.sort.uniq.join(", ")
       end
     end
 
     def cuenta_victimas_condicion
       cuenta = 0
-      lp = self.asistencia.pluck(:persona_id) 
-      victimas = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
-        where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
-              self.fecha)
+      lp = self.asistencia.pluck(:persona_id)
+      victimas = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr)
+        .where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+          self.fecha)
       victimas.each do |v|
-        if (yield(v))
+        if yield(v)
           cuenta += 1
         end
       end
@@ -238,12 +247,12 @@ module Cor1440Gen
     # que cumplan una condición
     def personas_victimas_condicion
       ids = []
-      lp = self.asistencia.pluck(:persona_id) 
-      victimas = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr).
-        where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
-              self.fecha)
+      lp = self.asistencia.pluck(:persona_id)
+      victimas = Sivel2Gen::Victima.where(persona_id: lp).joins(:victimasjr)
+        .where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+          self.fecha)
       victimas.each do |v|
-        if (yield(v))
+        if yield(v)
           ids << v.persona_id
         end
       end
@@ -254,8 +263,8 @@ module Cor1440Gen
     # listado de asistentes que cumplan una condición
     def personas_asistentes_condicion
       ids = []
-      self.asistencia.each do |a| 
-        if (yield(a))
+      self.asistencia.each do |a|
+        if yield(a)
           ids << a.persona_id
         end
       end
@@ -263,7 +272,7 @@ module Cor1440Gen
     end
 
     def poblacion_ids
-      idp = personas_asistentes_condicion {|a| true}
+      idp = personas_asistentes_condicion {|_a| true}
       idp.uniq!
       idp.join(",")
     end
@@ -284,17 +293,16 @@ module Cor1440Gen
     end
 
     def poblacion_nuevos_ids
-      idp += personas_asistentes_condicion {|a| 
-        Sivel2Gen::Victima.where(persona_id: a.persona_id).joins(:victimasjr).
-          where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
-                self.fecha).count > 0 &&
-          Sivel2Gen::Victima.where(persona_id: a.persona_id).take.caso.fecha.
-            at_beginning_of_month >= self.fecha.at_beginning_of_month
+      idp += personas_asistentes_condicion {|a|
+        Sivel2Gen::Victima.where(persona_id: a.persona_id).joins(:victimasjr)
+          .where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+            self.fecha).count > 0 &&
+          Sivel2Gen::Victima.find_by(persona_id: a.persona_id).caso.fecha
+            .at_beginning_of_month >= self.fecha.at_beginning_of_month
       }
       idp.uniq!
       idp.join(",")
     end
-
 
     def poblacion_nuevos
       poblacion_nuevos_ids.split(",").count
@@ -303,15 +311,15 @@ module Cor1440Gen
     def poblacion_colombianos_retornados_ids
       idcol = 170 # Colombia
 
-      idp += personas_asistentes_condicion {|a| 
-        Sivel2Gen::Victima.where(persona_id: a.persona_id).joins(:victimasjr).
-          where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
-                self.fecha).count > 0 &&
-               Sivel2Gen::Victima.where(persona_id: a.persona_id).
-               joins(:victimasjr).
-               where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
-                     self.fecha).take.caso.migracion.count > 0 &&
-                    (a.persona.nacionalde == idcol || a.persona.pais_id == idcol)
+      idp += personas_asistentes_condicion {|a|
+        Sivel2Gen::Victima.where(persona_id: a.persona_id).joins(:victimasjr)
+          .where('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+            self.fecha).count > 0 &&
+          Sivel2Gen::Victima.where(persona_id: a.persona_id)
+            .joins(:victimasjr)
+            .find_by('fechadesagregacion IS NULL OR fechadesagregacion >= ?',
+            self.fecha).caso.migracion.count > 0 &&
+          (a.persona.nacionalde == idcol || a.persona.pais_id == idcol)
       }
       idp.uniq!
       idp.join(",")
@@ -321,11 +329,10 @@ module Cor1440Gen
       poblacion_colombianos_retornados_ids.split(",").count
     end
 
-
     # Retorna listado de ids de personas de casos y asistencia
     # cuyo perfil de migración tenga nombre nomperfil
     def poblacion_perfil_migracion_ids(nomperfil)
-      idp += personas_asistentes_condicion {|a| 
+      idp += personas_asistentes_condicion {|a|
         a.perfilorgsocial &&
           a.perfilorgsocial.nombre == nomperfil
       }
@@ -333,7 +340,6 @@ module Cor1440Gen
       idp.join(",")
     end
 
-   
     def poblacion_pendulares_ids
       poblacion_perfil_migracion_ids('PENDULAR')
     end
@@ -341,7 +347,6 @@ module Cor1440Gen
     def poblacion_pendulares
       poblacion_pendulares_ids.split(",").count
     end
-
 
     def poblacion_transito_ids
       poblacion_perfil_migracion_ids('EN TRÁNSITO')
@@ -359,27 +364,38 @@ module Cor1440Gen
       poblacion_vocacion_permanencia_ids.split(",").count
     end
 
-
-    def  poblacion_r_g(sexo, num)
-      idp = personas_victimas_condicion {|v| 
+    def poblacion_r_g(sexo, num)
+      idp = personas_victimas_condicion {|v|
         if v.persona.sexo == sexo
           e = Sivel2Gen::RangoedadHelper.edad_de_fechanac_fecha(
-            v.persona.anionac, v.persona.mesnac, v.persona.dianac,
-            fecha.year, fecha.month, fecha. day)
+            v.persona.anionac, 
+v.persona.mesnac, 
+v.persona.dianac,
+            fecha.year, 
+fecha.month, 
+fecha.day
+)
           r = Sivel2Gen::RangoedadHelper.buscar_rango_edad(
-            e, 'Cor1440Gen::Rangoedadac')
+            e, 'Cor1440Gen::Rangoedadac'
+)
           r == num
         else
           false
         end
       }
-      idp += personas_asistentes_condicion {|a| 
+      idp += personas_asistentes_condicion {|a|
         if a.persona && a.persona.sexo == sexo
           e = Sivel2Gen::RangoedadHelper.edad_de_fechanac_fecha(
-            a.persona.anionac, a.persona.mesnac, a.persona.dianac,
-            fecha.year, fecha.month, fecha. day)
+            a.persona.anionac, 
+a.persona.mesnac, 
+a.persona.dianac,
+            fecha.year, 
+fecha.month, 
+fecha.day
+)
           r = Sivel2Gen::RangoedadHelper.buscar_rango_edad(
-            e, 'Cor1440Gen::Rangoedadac')
+            e, 'Cor1440Gen::Rangoedadac'
+)
           r == num
         else
           false
@@ -390,22 +406,20 @@ module Cor1440Gen
     end
 
     def poblacion_mujeres_r_g_ids(num)
-      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_femenino], num)
+      poblacion_r_g(Msip::Persona.convencion_sexo[:sexo_femenino], num)
     end
 
     def poblacion_hombres_r_g_ids(num)
-      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_masculino], num)
+      poblacion_r_g(Msip::Persona.convencion_sexo[:sexo_masculino], num)
     end
 
     def poblacion_intersexuales_g_ids(num)
-      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_intersexual], num)
+      poblacion_r_g(Msip::Persona.convencion_sexo[:sexo_intersexual], num)
     end
-
 
     def poblacion_sinsexo_g_ids(num)
-      poblacion_r_g(Msip::Persona::convencion_sexo[:sexo_sininformacion], num)
+      poblacion_r_g(Msip::Persona.convencion_sexo[:sexo_sininformacion], num)
     end
-
 
     def poblacion_gen_infijo(infijo, num = nil)
       puts "** OJO poblacion_gen_infijo(infijo = #{infijo}, num = #{num})"
@@ -437,7 +451,7 @@ module Cor1440Gen
     end
 
     def poblacion_hombres_r_g_4_5_ids
-      l = poblacion_hombres_r_g_ids(4).split(",") + 
+      l = poblacion_hombres_r_g_ids(4).split(",") +
         poblacion_hombres_r_g_ids(5).split(",")
       l.join(",")
     end
@@ -450,7 +464,7 @@ module Cor1440Gen
     end
 
     def poblacion_mujeres_r_g_4_5_ids
-      l = poblacion_mujeres_r_g_ids(4).split(",") + 
+      l = poblacion_mujeres_r_g_ids(4).split(",") +
         poblacion_mujeres_r_g_ids(5).split(",")
       l.join(",")
     end
@@ -486,7 +500,6 @@ module Cor1440Gen
       l.join(",")
     end
 
-
     def poblacion_sinsexo_adultos_ids
       l = poblacion_sinsexo_g_ids(4).split(",") +
         poblacion_sinsexo_g_ids(5).split(",") +
@@ -505,7 +518,7 @@ module Cor1440Gen
     def presenta(atr)
       case atr.to_s
       when 'beneficiarios_com_acogida'
-        self.asistencia.select{|a| a.perfilorgsocial_id == 13}.count
+        self.asistencia.select {|a| a.perfilorgsocial_id == 13}.count
 
       when 'covid19'
         if self.covid
@@ -564,8 +577,8 @@ module Cor1440Gen
 
       when 'num_afrodescendientes'
         cuenta_victimas_condicion {|v|
-          v.etnia.nombre  == 'AFRODESCENDIENTE' || 
-          v.etnia.nombre == 'NEGRO'
+          v.etnia.nombre == 'AFRODESCENDIENTE' ||
+            v.etnia.nombre == 'NEGRO'
         }
 
       when 'num_con_discapacidad'
@@ -583,7 +596,7 @@ module Cor1440Gen
         }
         idp += personas_asistentes_condicion {|a|
           if Sivel2Gen::Victima.where(persona_id: a.persona_id).count > 0
-            v = Sivel2Gen::Victima.where(persona_id: a.persona_id).take
+            v = Sivel2Gen::Victima.find_by(persona_id: a.persona_id)
             vs = Sivel2Sjr::Victimasjr.where(victima_id: v.id)
             vs.count > 0 && vs.take.discapacidad &&
               vs.take.discapacidad && vs.take.discapacidad.nombre != 'NINGUNA'
@@ -593,14 +606,14 @@ module Cor1440Gen
         }
         idp.uniq!
         idp.join(",")
- 
+
       when 'num_indigenas'
         cuenta_victimas_condicion { |v|
-          v.etnia.nombre  != 'AFRODESCENDIENTE' &&
-          v.etnia.nombre != 'NEGRO' &&
-          v.etnia.nombre != 'ROM' &&
-          v.etnia.nombre != 'MESTIZO' &&
-          v.etnia.nombre != 'SIN INFORMACIÓN'
+          v.etnia.nombre != 'AFRODESCENDIENTE' &&
+            v.etnia.nombre != 'NEGRO' &&
+            v.etnia.nombre != 'ROM' &&
+            v.etnia.nombre != 'MESTIZO' &&
+            v.etnia.nombre != 'SIN INFORMACIÓN'
         }
 
       when 'num_lgbti'
@@ -611,8 +624,8 @@ module Cor1440Gen
       when 'num_otra_etnia'
         cuenta_victimas_condicion { |v|
           v.etnia.nombre == 'ROM' ||
-          v.etnia.nombre == 'MESTIZO' ||
-          v.etnia.nombre == 'SIN INFORMACIÓN'
+            v.etnia.nombre == 'MESTIZO' ||
+            v.etnia.nombre == 'SIN INFORMACIÓN'
         }
 
       when 'poblacion_hombres_adultos'
@@ -651,7 +664,7 @@ module Cor1440Gen
         poblacion_hombres_r_g_ids(g)
 
       when /^poblacion_hombres_r_g_4_5*$/
-        p1 = poblacion_hombres_r_g_solore(4)+poblacion_hombres_r_g_solore(5)
+        p1 = poblacion_hombres_r_g_solore(4) + poblacion_hombres_r_g_solore(5)
         p2 = poblacion_hombres_r_g_4_5_ids.split(",").count
         if p1 >= p2
           p1.to_s
@@ -695,7 +708,7 @@ module Cor1440Gen
         poblacion_mujeres_r_g_ids(g)
 
       when /^poblacion_mujeres_r_g_4_5*$/
-        p1 = poblacion_mujeres_r_g_solore(4)+poblacion_mujeres_r_g_solore(5)
+        p1 = poblacion_mujeres_r_g_solore(4) + poblacion_mujeres_r_g_solore(5)
         p2 = poblacion_mujeres_r_g_4_5_ids.split(",").count
         if p1 >= p2
           p1.to_s
@@ -790,47 +803,48 @@ module Cor1440Gen
       end
     end
 
-
     def self.vista_reporte_completo_excel(
-      plant, registros, narch, parsimp, extension, params)
-
-      ruta = File.join(Rails.application.config.x.heb412_ruta, 
-                       plant.ruta).to_s
-
+      plant, registros, narch, parsimp, extension, params
+)
       p = Axlsx::Package.new
       lt = p.workbook
       e = lt.styles
 
-      estilo_base = e.add_style sz: 12
-      estilo_titulo = e.add_style sz: 20
-      estilo_encabezado = e.add_style sz: 12, b: true
-      #, fg_color: 'FF0000', bg_color: '00FF00'
+      estilo_base = e.add_style(sz: 12)
+      estilo_titulo = e.add_style(sz: 20)
+      estilo_encabezado = e.add_style(sz: 12, b: true)
+      # , fg_color: 'FF0000', bg_color: '00FF00'
 
       lt.add_worksheet do |hoja|
-        hoja.add_row ['Reporte Completo de Actividades'], 
-          height: 30, style: estilo_titulo
-        hoja.add_row []
-        hoja.add_row [
-          'Fecha inicial', params['filtro']['busfechaini'], 
-          'Fecha final', params['filtro']['busfechafin'] ], style: estilo_base
-        idpf = (!params['filtro'] || 
-                !params['filtro']['busproyectofinanciero_nombre'] || 
-                params['filtro']['busproyectofinanciero_nombre'] == ''
-               ) ? nil : params['filtro']['busproyectofinanciero_nombre']
-        idaml = (!params['filtro'] || 
-                 !params['filtro']['busactividadpf_nombre'] || 
-                 params['filtro']['busactividadpf_nombre'] == ''
-                ) ? nil : params['filtro']['busactividadpf_nombre']
+        hoja.add_row(['Reporte Completo de Actividades'],
+                     height: 30, 
+                     style: estilo_titulo)
+        hoja.add_row([])
+        hoja.add_row([
+          'Fecha inicial', 
+          params['filtro']['busfechaini'],
+          'Fecha final', 
+          params['filtro']['busfechafin'],
+        ], 
+        style: estilo_base)
+        idpf = !params['filtro'] ||
+          !params['filtro']['busproyectofinanciero_nombre'] ||
+          params['filtro']['busproyectofinanciero_nombre'] == '' ? 
+          nil : params['filtro']['busproyectofinanciero_nombre']
+        idaml = !params['filtro'] ||
+          !params['filtro']['busactividadpf_nombre'] ||
+          params['filtro']['busactividadpf_nombre'] == '' ? 
+          nil : params['filtro']['busactividadpf_nombre']
 
         npf = idpf.nil? ? '' :
-          Cor1440Gen::Proyectofinanciero.where(id: idpf).
-          pluck(:nombre).join('; ')
+          Cor1440Gen::Proyectofinanciero.where(id: idpf)
+            .pluck(:nombre).join('; ')
         naml = idaml.nil? ? '' :
-          Cor1440Gen::Actividadpf.where(id: idaml).
-          pluck(:titulo).join('; ')
+          Cor1440Gen::Actividadpf.where(id: idaml)
+            .pluck(:titulo).join('; ')
 
-        hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
-        hoja.add_row []
+        hoja.add_row(['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base)
+        hoja.add_row([])
         l = [
           'Id',
           'Nombre',
@@ -882,7 +896,7 @@ module Cor1440Gen
           'Otro sexo 18-26',
           'Otro sexo 27-59',
           'Otro sexo 60+',
-          'Otro sexo SRE'
+          'Otro sexo SRE',
         ]
         numcol = l.length
         colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
@@ -891,13 +905,13 @@ module Cor1440Gen
 
         l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
           ['Sin sexo'] + ([''] * 6) + ['Otro sexo'] + ([''] * 6)
-        hoja.add_row l2, style: [estilo_encabezado] * numcol
+        hoja.add_row(l2, style: [estilo_encabezado] * numcol)
         hoja.merge_cells("X6:AD6")
         hoja.merge_cells("AE6:AK6")
         hoja.merge_cells("AL6:AR6")
         hoja.merge_cells("AS6:AY6")
 
-        hoja.add_row l, style: [estilo_encabezado] * numcol
+        hoja.add_row(l, style: [estilo_encabezado] * numcol)
 
         registros.each do |reg|
           l = [
@@ -951,9 +965,9 @@ module Cor1440Gen
             reg.presenta('poblacion_intersexuales_g4'),
             reg.presenta('poblacion_intersexuales_g5'),
             reg.presenta('poblacion_intersexuales_g6'),
-            reg.presenta('poblacion_intersexuales_g7')
+            reg.presenta('poblacion_intersexuales_g7'),
           ]
-          hoja.add_row l, style: estilo_base
+          hoja.add_row(l, style: estilo_base)
         end
         anchos = [20] * numcol
         hoja.column_widths(*anchos)
@@ -961,34 +975,31 @@ module Cor1440Gen
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
-        if ultf>0
+        if ultf > 0
           l = [nil] * numcol
-          hoja.add_row l
+          hoja.add_row(l)
         end
       end
 
-      n=File.join('/tmp', File.basename(narch + ".xlsx"))
-      p.serialize n
+      n = File.join('/tmp', File.basename(narch + ".xlsx"))
+      p.serialize(n)
       FileUtils.rm(narch + "#{extension}-0")
 
-      return n
+      n
     end
 
     def self.vista_reporte_extracompleto_excel(
-      plant, registros, narch, parsimp, extension, params)
-
-      ruta = File.join(Rails.application.config.x.heb412_ruta, 
-                       plant.ruta).to_s
-
+      plant, registros, narch, parsimp, extension, params
+)
       p = Axlsx::Package.new
       lt = p.workbook
       e = lt.styles
 
-      estilo_base = e.add_style sz: 12
-      estilo_titulo = e.add_style sz: 20
-      estilo_titulo2 = e.add_style sz: 16
-      estilo_encabezado = e.add_style sz: 12, b: true
-      #, fg_color: 'FF0000', bg_color: '00FF00'
+      estilo_base = e.add_style(sz: 12)
+      estilo_titulo = e.add_style(sz: 20)
+      estilo_titulo2 = e.add_style(sz: 16)
+      estilo_encabezado = e.add_style(sz: 12, b: true)
+      # , fg_color: 'FF0000', bg_color: '00FF00'
 
       logo = File.expand_path('app/assets/images/logo.jpg')
       l = [
@@ -1077,66 +1088,76 @@ module Cor1440Gen
         'Numero de anexos',
         'Ids de Anexos',
         'Núm. Detalles Financieros',
-        'Ids de detalles Financieros'
+        'Ids de detalles Financieros',
       ]
       numcol = l.length
       colfin = Heb412Gen::PlantillaHelper.numero_a_columna(numcol)
-      anchos = [18, 12, 25] + ([20] * (numcol-3))
+      anchos = [18, 12, 25] + ([20] * (numcol - 3))
 
 
       lt.add_worksheet do |hoja|
         hoja.add_image(image_src: logo, start_at: 'A1', end_at: 'C3')
-        hoja.add_row [nil, nil, 'Servicio Jesuita a Refugiados - Colombia'] +
-          [nil]*(numcol-3), height: 30, style: estilo_titulo
-        hoja.add_row [nil, nil, 'Reporte Extracompleto de Actividades', nil, nil, 'SI-JRSCOL'] + [nil]*(numcol-6), height: 30, style: estilo_titulo2
-        hoja.add_row []
-        idpf = (!params['filtro'] || 
-                !params['filtro']['busproyectofinanciero_nombre'] || 
-                params['filtro']['busproyectofinanciero_nombre'] == ''
-               ) ? nil : params['filtro']['busproyectofinanciero_nombre']
+        hoja.add_row([nil, nil, 'Servicio Jesuita a Refugiados - Colombia'] +
+          [nil] * (numcol - 3), 
+height: 30, 
+style: estilo_titulo)
+        hoja.add_row([nil, nil, 'Reporte Extracompleto de Actividades', nil, nil, 'SI-JRSCOL'] + [nil] * (numcol - 6), height: 30, style: estilo_titulo2)
+        hoja.add_row([])
+        idpf = !params['filtro'] ||
+                !params['filtro']['busproyectofinanciero_nombre'] ||
+                params['filtro']['busproyectofinanciero_nombre'] == '' ? 
+                nil : params['filtro']['busproyectofinanciero_nombre']
         npf = idpf.nil? ? '' :
-          Cor1440Gen::Proyectofinanciero.where(id: idpf).
-          pluck(:nombre).join('; ')
+          Cor1440Gen::Proyectofinanciero.where(id: idpf)
+            .pluck(:nombre).join('; ')
 
-        hoja.add_row ['Fecha inicial', params['filtro']['busfechaini'], 
-          'Convenio financiero', npf],  style: estilo_base
+        hoja.add_row([
+'Fecha inicial', 
+params['filtro']['busfechaini'],
+                      'Convenio financiero', 
+npf,], 
+style: estilo_base)
 
-        idaml = (!params['filtro'] || 
-                 !params['filtro']['busactividadpf_nombre'] || 
-                 params['filtro']['busactividadpf_nombre'] == ''
-                ) ? nil : params['filtro']['busactividadpf_nombre']
+        idaml = !params['filtro'] ||
+                 !params['filtro']['busactividadpf_nombre'] ||
+                 params['filtro']['busactividadpf_nombre'] == '' ? 
+                 nil : params['filtro']['busactividadpf_nombre']
         naml = idaml.nil? ? '' :
-          Cor1440Gen::Actividadpf.where(id: idaml).
-          pluck(:titulo).join('; ')
-        hoja.add_row ['Fecha final', params['filtro']['busfechafin'], 
-          'Actividades de marco lógico', naml],  style: estilo_base
+          Cor1440Gen::Actividadpf.where(id: idaml)
+            .pluck(:titulo).join('; ')
+        hoja.add_row([
+'Fecha final', 
+params['filtro']['busfechafin'],
+                      'Actividades de marco lógico', 
+naml,], 
+style: estilo_base)
 
 
-        hoja.add_row []
+        hoja.add_row([])
 
         hoja.merge_cells("A1:B2")
         hoja.merge_cells("C1:#{colfin}1")
         hoja.merge_cells("C2:E2")
         hoja.merge_cells("F2:#{colfin}2")
 
-        hoja.add_border "A1:B2"
-        hoja.add_border "C1:#{colfin}1"
-        hoja.add_border "C2:E2"
-        hoja.add_border "F2:H2"
-        hoja.add_border "A4:D5"
+        hoja.add_border("A1:B2")
+        hoja.add_border("C1:#{colfin}1")
+        hoja.add_border("C2:E2")
+        hoja.add_border("F2:H2")
+        hoja.add_border("A4:D5")
         # hoja.add_border "B3:D3", { edges: [:top], style: :thick }
 
         l2 = ([''] * 23) + ['Mujeres'] + ([''] * 6) + ['Hombres'] + ([''] * 6) +
           ['Sin sexo'] + ([''] * 6) + ['Otro sexo'] + ([''] * 6)
-        hoja.add_row l2, style: [estilo_encabezado] * numcol
+        hoja.add_row(l2, style: [estilo_encabezado] * numcol)
 
         hoja.merge_cells("X7:AD7")
         hoja.merge_cells("AE7:AK7")
         hoja.merge_cells("AL7:AR7")
         hoja.merge_cells("AS7:AY7")
 
-        hoja.add_row l, style: [estilo_encabezado] * numcol
-        hoja.add_border "A4:D5"
+        hoja.add_row(l, style: [estilo_encabezado] * numcol)
+        hoja.add_border("A4:D5")
 
         registros.each do |reg|
           l = [
@@ -1227,7 +1248,7 @@ module Cor1440Gen
             reg.presenta('numero_detalles_financieros'),
             reg.presenta('detalles_financieros_ids'),
           ]
-          hoja.add_row l, style: estilo_base
+          hoja.add_row(l, style: estilo_base)
         end
 
         hoja.column_widths(*anchos)
@@ -1235,60 +1256,61 @@ module Cor1440Gen
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
-        if ultf>0
+        if ultf > 0
           l = [nil] * numcol
-          hoja.add_row l
+          hoja.add_row(l)
         end
       end
 
-      n=File.join('/tmp', File.basename(narch + ".xlsx"))
-      p.serialize n
+      n = File.join('/tmp', File.basename(narch + ".xlsx"))
+      p.serialize(n)
       FileUtils.rm(narch + "#{extension}-0")
 
-      return n
+      n
     end
 
-
     def self.vista_reporte_psu_excel(
-      plant, registros, narch, parsimp, extension, params)
-
-      ruta = File.join(Rails.application.config.x.heb412_ruta, 
-                       plant.ruta).to_s
-
+      plant, registros, narch, parsimp, extension, params
+)
       p = Axlsx::Package.new
       lt = p.workbook
       e = lt.styles
 
-      estilo_base = e.add_style sz: 12
-      estilo_titulo = e.add_style sz: 20
-      estilo_encabezado = e.add_style sz: 12, b: true
-      #, fg_color: 'FF0000', bg_color: '00FF00'
+      estilo_base = e.add_style(sz: 12)
+      estilo_titulo = e.add_style(sz: 20)
+      estilo_encabezado = e.add_style(sz: 12, b: true)
+      # , fg_color: 'FF0000', bg_color: '00FF00'
 
       lt.add_worksheet do |hoja|
-        hoja.add_row ['Reporte PSU de Actividades'], 
-          height: 30, style: estilo_titulo
-        hoja.add_row []
-        hoja.add_row [
-          'Fecha inicial', params['filtro']['busfechaini'], 
-          'Fecha final', params['filtro']['busfechafin'] ], style: estilo_base
-        idpf = (!params['filtro'] || 
-                !params['filtro']['busproyectofinanciero_nombre'] || 
-                params['filtro']['busproyectofinanciero_nombre'] == ''
-               ) ? nil : params['filtro']['busproyectofinanciero_nombre']
-        idaml = (!params['filtro'] || 
-                 !params['filtro']['busactividadpf_nombre'] || 
-                 params['filtro']['busactividadpf_nombre'] == ''
-                ) ? nil : params['filtro']['busactividadpf_nombre']
+        hoja.add_row(['Reporte PSU de Actividades'],
+          height: 30, 
+style: estilo_titulo)
+        hoja.add_row([])
+        hoja.add_row([
+          'Fecha inicial', 
+params['filtro']['busfechaini'],
+          'Fecha final', 
+params['filtro']['busfechafin'],
+], 
+style: estilo_base)
+        idpf = !params['filtro'] ||
+                !params['filtro']['busproyectofinanciero_nombre'] ||
+                params['filtro']['busproyectofinanciero_nombre'] == '' ? 
+                nil : params['filtro']['busproyectofinanciero_nombre']
+        idaml = !params['filtro'] ||
+                 !params['filtro']['busactividadpf_nombre'] ||
+                 params['filtro']['busactividadpf_nombre'] == '' ? 
+                 nil : params['filtro']['busactividadpf_nombre']
 
         npf = idpf.nil? ? '' :
-          Cor1440Gen::Proyectofinanciero.where(id: idpf).
-          pluck(:nombre).join('; ')
+          Cor1440Gen::Proyectofinanciero.where(id: idpf)
+            .pluck(:nombre).join('; ')
         naml = idaml.nil? ? '' :
-          Cor1440Gen::Actividadpf.where(id: idaml).
-          pluck(:titulo).join('; ')
+          Cor1440Gen::Actividadpf.where(id: idaml)
+            .pluck(:titulo).join('; ')
 
-        hoja.add_row ['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base
-        hoja.add_row []
+        hoja.add_row(['Convenio financiero', npf, 'Actividad de marco lógico', naml], style: estilo_base)
+        hoja.add_row([])
         l = [
           'Id',
           'Fecha',
@@ -1308,7 +1330,7 @@ module Cor1440Gen
 
         hoja.merge_cells("A1:#{colfin}1")
 
-        hoja.add_row l, style: [estilo_encabezado] * numcol
+        hoja.add_row(l, style: [estilo_encabezado] * numcol)
 
         registros.each do |reg|
           l = [
@@ -1325,7 +1347,7 @@ module Cor1440Gen
             reg.presenta('poblacion'),
             reg.presenta('numero_anexos'),
           ]
-          hoja.add_row l, style: estilo_base
+          hoja.add_row(l, style: estilo_base)
         end
         anchos = [20] * numcol
         hoja.column_widths(*anchos)
@@ -1333,19 +1355,18 @@ module Cor1440Gen
         hoja.rows.last.tap do |row|
           ultf = row.row_index
         end
-        if ultf>0
+        if ultf > 0
           l = [nil] * numcol
-          hoja.add_row l
+          hoja.add_row(l)
         end
       end
 
-      n=File.join('/tmp', File.basename(narch + ".xlsx"))
-      p.serialize n
+      n = File.join('/tmp', File.basename(narch + ".xlsx"))
+      p.serialize(n)
       FileUtils.rm(narch + "#{extension}-0")
 
-      return n
+      n
     end
-
 
   end
 end

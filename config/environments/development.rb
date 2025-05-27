@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
@@ -25,7 +27,7 @@ Rails.application.configure do
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=#{2.days.to_i}"
+      "Cache-Control" => "public, max-age=#{2.days.to_i}",
     }
   else
     config.action_controller.perform_caching = false
@@ -41,15 +43,15 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address:              ENV['SMTP_MAQ'],
-    port:                 ENV['SMTP_PUERTO'],
-    domain:               ENV['SMTP_DOMINIO'],
-    user_name:            ENV['SMTP_USUARIO'],
-    password:             ENV['SMTP_CLAVE'],
-    authentication:       :login,
-    openssl_verify_mode:  OpenSSL::SSL::VERIFY_NONE,
-    tls:  true
-    #enable_starttls_auto: true
+    address: ENV["SMTP_MAQ"],
+    port: ENV["SMTP_PUERTO"],
+    domain: ENV["SMTP_DOMINIO"],
+    user_name: ENV["SMTP_USUARIO"],
+    password: ENV["SMTP_CLAVE"],
+    authentication: :login,
+    openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
+    tls: true,
+    # enable_starttls_auto: true
   }
 
   # Print deprecation notices to the Rails logger.
@@ -67,7 +69,6 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
-  # 
   config.active_job.verbose_enqueue_logs = true
 
   # Suppress logger output for asset requests.
@@ -81,6 +82,6 @@ Rails.application.configure do
 
   default_url_options[:host] = "https://colombiajrs.info/"
 
-  config.web_console.permissions = ENV.fetch("WEB_CONSOLE_PERMISSIONS", "").
-    split(",") 
+  config.web_console.permissions = ENV.fetch("WEB_CONSOLE_PERMISSIONS", "")
+    .split(",")
 end

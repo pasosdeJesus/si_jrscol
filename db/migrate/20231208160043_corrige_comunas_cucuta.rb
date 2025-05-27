@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CorrigeComunasCucuta < ActiveRecord::Migration[7.0]
   def up
     [
@@ -12,37 +14,38 @@ class CorrigeComunasCucuta < ActiveRecord::Migration[7.0]
       [9069, 11378], # Comuna 9
       [9070, 11379], # Comuna 10
     ].each do |p|
-      if Msip::Centropoblado.where(id: p[0]).count == 1
-        c = Msip::Centropoblado.find(p[0])
-        u = Msip::Ubicacionpre.find(p[1])
-        if u.centropoblado_id != c.id
-          puts "No corresponden #{p[0]} con #{p[1]}"
-          exit 1;
-        end
-        nc = Msip::Centropoblado.new(c.attributes.merge(
-          nombre: c.nombre + "x_z",
-          cplocal_cod: -c.cplocal_cod,
-          id: nil
-        ))
-        nc.save
-        if !nc.valid? then
-          puts "nc no es valido en #{p}"
-          exit 1;
-        end
-        nu = Msip::Ubicacionpre.new(u.attributes.merge(
-          id: nil, centropoblado_id: nc.id
-        ))
-        nu.poner_nombre_estandar
-        nu.save
-        if !nc.valid? then
-          puts "nu no es valido en #{p}"
-          exit 1;
-        end
-        if nu.id.nil?
-          puts "id en null en #{p}"
-          exit 1;
-        end
-        execute <<-SQL
+      next unless Msip::Centropoblado.where(id: p[0]).count == 1
+
+      c = Msip::Centropoblado.find(p[0])
+      u = Msip::Ubicacionpre.find(p[1])
+      if u.centropoblado_id != c.id
+        puts "No corresponden #{p[0]} con #{p[1]}"
+        exit(1)
+      end
+      nc = Msip::Centropoblado.new(c.attributes.merge(
+        nombre: c.nombre + "x_z",
+        cplocal_cod: -c.cplocal_cod,
+        id: nil,
+      ))
+      nc.save
+      unless nc.valid?
+        puts "nc no es valido en #{p}"
+        exit(1)
+      end
+      nu = Msip::Ubicacionpre.new(u.attributes.merge(
+        id: nil, centropoblado_id: nc.id,
+      ))
+      nu.poner_nombre_estandar
+      nu.save
+      unless nc.valid?
+        puts "nu no es valido en #{p}"
+        exit(1)
+      end
+      if nu.id.nil?
+        puts "id en null en #{p}"
+        exit(1)
+      end
+      execute(<<-SQL)
         UPDATE sivel2_sjr_desplazamiento SET expulsionubicacionpre_id=#{nu.id}
           WHERE expulsionubicacionpre_id=#{u.id};
         UPDATE sivel2_sjr_desplazamiento SET llegadaubicacionpre_id=#{nu.id}
@@ -56,26 +59,26 @@ class CorrigeComunasCucuta < ActiveRecord::Migration[7.0]
         UPDATE sivel2_sjr_migracion SET destinoubicacionpre_id=#{nu.id}
           WHERE destinoubicacionpre_id=#{u.id};
 
-        SQL
-        u.delete
-        execute <<-SQL
+      SQL
+      u.delete
+      execute(<<-SQL)
         UPDATE msip_ubicacionpre SET centropoblado_id=#{nc.id}
           WHERE centropoblado_id=#{c.id};
         UPDATE msip_ubicacion SET centropoblado_id=#{nc.id}
           WHERE centropoblado_id=#{c.id};
         UPDATE msip_persona SET centropoblado_id=#{nc.id}
           WHERE centropoblado_id=#{c.id};
-        SQL
-        c.delete
-        nc.nombre = nc.nombre[0..-4]
-        nc.cplocal_cod *= -1
-        nc.save
-        nu.centropoblado.reload
-        nu.poner_nombre_estandar
-        nu.save
-      end
+      SQL
+      c.delete
+      nc.nombre = nc.nombre[0..-4]
+      nc.cplocal_cod *= -1
+      nc.save
+      nu.centropoblado.reload
+      nu.poner_nombre_estandar
+      nu.save
     end
   end
+
   def down
   end
 end

@@ -1,31 +1,31 @@
-class AgregaOtroCompletoac < ActiveRecord::Migration[7.0]
+# frozen_string_literal: true
 
+class AgregaOtroCompletoac < ActiveRecord::Migration[7.0]
   def up
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 523, 'AR', 'poblacion_intersexuales_g7'
+      5, 523, "AR", "poblacion_intersexuales_g7"
     )
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 522, 'AR', 'poblacion_intersexuales_g6'
+      5, 522, "AR", "poblacion_intersexuales_g6"
     )
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 521, 'AR', 'poblacion_intersexuales_g5'
+      5, 521, "AR", "poblacion_intersexuales_g5"
     )
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 520, 'AR', 'poblacion_intersexuales_g4'
+      5, 520, "AR", "poblacion_intersexuales_g4"
     )
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 519, 'AR', 'poblacion_intersexuales_g3'
+      5, 519, "AR", "poblacion_intersexuales_g3"
     )
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 518, 'AR', 'poblacion_intersexuales_g2'
+      5, 518, "AR", "poblacion_intersexuales_g2"
     )
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 517, 'AR', 'poblacion_intersexuales_g1'
+      5, 517, "AR", "poblacion_intersexuales_g1"
     )
     Heb412Gen::PlantillaHelper.inserta_columna(
-      5, 524, 'U', 'poblacion_intersexuales'
+      5, 524, "U", "poblacion_intersexuales"
     )
-
   end
 
   def down
@@ -38,5 +38,4 @@ class AgregaOtroCompletoac < ActiveRecord::Migration[7.0]
     Heb412Gen::PlantillaHelper.elimina_columna(5, 522)
     Heb412Gen::PlantillaHelper.elimina_columna(5, 523)
   end
-
 end

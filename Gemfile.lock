@@ -25,10 +25,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 1a60a782e27652c71f23472bb9820cbbdbb3b5e4
+  revision: 515829a3db2555bc084d0c34cae3e1075ba2102b
   branch: v2.2
   specs:
-    cor1440_gen (2.2.0.beta8)
+    cor1440_gen (2.2.0)
       devise
       heb412_gen
       kt-paperclip
@@ -38,10 +38,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: bbcd6b5bbda0879d06ee5db3c90de52253a30b12
+  revision: c3cb5f1d08cc2f61fdcd039dd829aa756d005664
   branch: v2.2
   specs:
-    heb412_gen (2.2.0.beta8)
+    heb412_gen (2.2.0)
       mr519_gen
       msip
       redcarpet
@@ -49,26 +49,26 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 9bfdbf6e550155c3471f9edc93adb6d774f2e46d
+  revision: a9319b0a44cc98fe0f20861e2406f10b20c7214c
   branch: v2.2
   specs:
     jos19 (2.2.0.beta8)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: a094a9e8e9995b7df6cc06e97e6a2a1aab03125a
+  revision: 47ee2caf4dc4521b56f08e5fd92489da2d291580
   branch: v2.2
   specs:
-    mr519_gen (2.2.0.beta8)
+    mr519_gen (2.2.0)
       msip
       rails
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 3b92048cb5e72609c098deeacc68f3b70d1c9952
+  revision: 2d1fb0e91feab9a33687507ee02e9c920e6c1afa
   branch: v2.2
   specs:
-    msip (2.2.0.beta8)
+    msip (2.2.0)
       cancancan (~> 3)
       devise (~> 4)
       devise-i18n (~> 1)
@@ -85,10 +85,10 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 6c1180866fe5bf9d00fed462466f4c36d9d122bf
+  revision: 0afc579acb9eb94fce2bf99502f91e4adb869652
   branch: v2.2
   specs:
-    sivel2_gen (2.2.0.beta8)
+    sivel2_gen (2.2.0)
       color
       devise
       rails
@@ -170,6 +170,7 @@ GEM
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     andand (1.3.3)
+    ast (2.4.3)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -179,9 +180,14 @@ GEM
     benchmark (0.4.0)
     bigdecimal (3.1.9)
     bindex (0.8.1)
-    bootsnap (1.18.4)
+    bootsnap (1.18.6)
       msgpack (~> 1.2)
+    brakeman (7.0.2)
+      racc
     builder (3.3.0)
+    bundler-audit (0.9.2)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     camertron-eprun (1.1.1)
     cancancan (3.6.1)
     capybara (3.40.0)
@@ -201,6 +207,8 @@ GEM
     choice (0.2.0)
     cldr-plurals-runtime-rb (1.1.0)
     climate_control (1.2.0)
+    code-scanning-rubocop (0.6.1)
+      rubocop (~> 1.0)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
       railties (>= 5.2.0)
@@ -214,9 +222,9 @@ GEM
     connection_pool (2.5.0)
     crass (1.0.6)
     csv (3.3.4)
-    cuprite (0.15.1)
+    cuprite (0.17)
       capybara (~> 3.0)
-      ferrum (~> 0.15.0)
+      ferrum (~> 0.17.0)
     date (3.4.1)
     debug (1.10.0)
       irb (~> 1.10)
@@ -238,8 +246,9 @@ GEM
     drb (2.2.1)
     erubi (1.13.1)
     execjs (2.10.0)
-    ferrum (0.15)
+    ferrum (0.17.1)
       addressable (~> 2.5)
+      base64 (~> 0.2)
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
@@ -287,8 +296,11 @@ GEM
       activesupport (>= 5.0.0)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
+    json (2.12.2)
     kgio (2.11.4)
-    libxml-ruby (5.0.3)
+    language_server-protocol (3.17.0.5)
+    libxml-ruby (5.0.4)
+    lint_roller (1.1.0)
     logger (1.7.0)
     loofah (2.24.0)
       crass (~> 1.0.2)
@@ -342,6 +354,10 @@ GEM
       nokogiri (>= 1.12.0)
       rubyzip (>= 1.3.0)
     orm_adapter (0.5.0)
+    parallel (1.27.0)
+    parser (3.3.8.0)
+      ast (~> 2.4.1)
+      racc
     parslet (2.0.0)
     pdf-core (0.10.0)
     pg (1.5.9)
@@ -367,7 +383,7 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.13)
+    rack (2.2.16)
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.2.0)
@@ -416,6 +432,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
+    rainbow (3.1.1)
     raindrops (0.20.1)
     rake (13.2.1)
     rdoc (6.13.1)
@@ -431,8 +448,35 @@ GEM
     rspreadsheet (0.5.3)
       andand (>= 1.3)
       rubyzip (>= 1.3)
+    rubocop (1.75.7)
+      json (~> 2.3)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.1.0)
+      parallel (~> 1.10)
+      parser (>= 3.3.0.2)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 2.9.3, < 3.0)
+      rubocop-ast (>= 1.44.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 4.0)
+    rubocop-ast (1.44.1)
+      parser (>= 3.3.7.2)
+      prism (~> 1.4)
+    rubocop-minitest (0.38.0)
+      lint_roller (~> 1.1)
+      rubocop (>= 1.75.0, < 2.0)
+      rubocop-ast (>= 1.38.0, < 2.0)
+    rubocop-rails (2.32.0)
+      activesupport (>= 4.2.0)
+      lint_roller (~> 1.1)
+      rack (>= 1.1)
+      rubocop (>= 1.75.0, < 2.0)
+      rubocop-ast (>= 1.44.0, < 2.0)
+    rubocop-shopify (2.17.0)
+      rubocop (~> 1.62)
     ruby-graphviz (1.2.5)
       rexml
+    ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -480,6 +524,9 @@ GEM
       tzinfo
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    unicode-display_width (3.1.4)
+      unicode-emoji (~> 4.0, >= 4.0.4)
+    unicode-emoji (4.0.4)
     unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
@@ -520,10 +567,13 @@ DEPENDENCIES
   babel-transpiler
   bcrypt
   bootsnap (>= 1.1.0)
+  brakeman
+  bundler-audit
   cancancan
   capybara
   caxlsx
   cocoon!
+  code-scanning-rubocop
   coffee-rails
   colorize
   cor1440_gen!
@@ -558,6 +608,9 @@ DEPENDENCIES
   rails-i18n
   redcarpet
   rspreadsheet
+  rubocop-minitest
+  rubocop-rails
+  rubocop-shopify
   rubyzip (>= 2.0.0)
   sassc-rails
   simple_form
@@ -573,4 +626,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.6.8
+   2.6.9

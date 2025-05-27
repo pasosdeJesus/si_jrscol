@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenombraJrscolMsip < ActiveRecord::Migration[7.0]
   include Msip::SqlHelper
 
@@ -14,16 +16,24 @@ class RenombraJrscolMsip < ActiveRecord::Migration[7.0]
     ["sip_persona_numerodocumento_idx", "msip_persona_numerodocumento_idx"],
     ["sip_persona_tdocumento_id_idx", "msip_persona_tdocumento_id_idx"],
     ["sip_ubicacionpre_clase_id_idx", "msip_ubicacionpre_clase_id_idx"],
-    ["sip_ubicacionpre_departamento_id_idx", 
-     "msip_ubicacionpre_departamento_id_idx"],
+    [
+      "sip_ubicacionpre_departamento_id_idx",
+      "msip_ubicacionpre_departamento_id_idx",
+    ],
     ["sip_ubicacionpre_municipio_id_idx", "msip_ubicacionpre_municipio_id_idx"],
     ["sip_ubicacionpre_pais_id_idx", "msip_ubicacionpre_pais_id_idx"],
-    ["sip_ubicacionpre_pais_id_departamento_id_idx",
-     "msip_ubicacionpre_pais_id_departamento_id_idx"],
-    ["sip_ubicacionpre_pais_id_departamento_id_municipio_id_idx",
-     "msip_ubicacionpre_pais_id_departamento_id_municipio_id_idx"],
-    ["sip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx",
-     "msip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx"],
+    [
+      "sip_ubicacionpre_pais_id_departamento_id_idx",
+      "msip_ubicacionpre_pais_id_departamento_id_idx",
+    ],
+    [
+      "sip_ubicacionpre_pais_id_departamento_id_municipio_id_idx",
+      "msip_ubicacionpre_pais_id_departamento_id_municipio_id_idx",
+    ],
+    [
+      "sip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx",
+      "msip_ubicacionpre_pais_id_departamento_id_municipio_id_clase_idx",
+    ],
     ["sip_ubicacionpre_tsitio_id_idx", "msip_ubicacionpre_tsitio_id_idx"],
   ]
 
@@ -48,5 +58,4 @@ class RenombraJrscolMsip < ActiveRecord::Migration[7.0]
       rename_table(nomfin, nomini)
     end
   end
-
 end

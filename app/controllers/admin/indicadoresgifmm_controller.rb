@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class IndicadoresgifmmController < Msip::Admin::BasicasController
-    before_action :set_indicadorgifmm, 
+    before_action :set_indicadorgifmm,
       only: [:show, :edit, :update, :destroy]
-    load_and_authorize_resource  class: ::Indicadorgifmm
+    load_and_authorize_resource class: ::Indicadorgifmm
 
-    def clase 
+    def clase
       "::Indicadorgifmm"
     end
 
@@ -14,30 +16,32 @@ module Admin
 
     def atributos_index
       [
-        :id, 
+        :id,
         :nombre,
-        :sectorgifmm_id, 
-        :observaciones, 
-        :fechacreacion_localizada, 
-        :habilitado
+        :sectorgifmm_id,
+        :observaciones,
+        :fechacreacion_localizada,
+        :habilitado,
       ]
     end
 
     def atributos_form
       a = atributos_index - [:id]
-      return a.map do |e|
-        e == :fechacreacion_localizada ? :fechacreacion : 
+      a.map do |e|
+        if e == :fechacreacion_localizada
+          :fechacreacion
+        else
           (e == :habilitado ? :fechadeshabilitacion : e)
+        end
       end
     end
 
     def genclase
-      'M'
+      "M"
     end
 
     def indicadorgifmm_params
       params.require(:indicadorgifmm).permit(*atributos_form)
     end
-
   end
 end

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Sivel2Sjr
   module Admin
     class ProteccionesController < Msip::Admin::BasicasController
       before_action :set_proteccion, only: [:show, :edit, :update, :destroy]
       load_and_authorize_resource class: Sivel2Sjr::Proteccion
 
-      def clase 
+      def clase
         "Sivel2Sjr::Proteccion"
       end
 
@@ -17,7 +19,6 @@ module Sivel2Sjr
       def proteccion_params
         params.require(:sivel2_sjr_proteccion).permit(*atributos_form)
       end
-
     end
   end
 end

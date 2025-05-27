@@ -2,33 +2,36 @@
 
 module Admin
   class TerritorialesController < Msip::Admin::BasicasController
-
-    before_action :set_territorial, 
+    before_action :set_territorial,
       only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource class: ::Territorial
 
     def atributos_index
-      [:id,
-       :nombre,
-       :observaciones,
-       :pais_id,
-       :departamento_id,
-       :municipio_id,
-       :centropoblado_id,
-       :fechacreacion_localizada,
-       :habilitado
+      [
+        :id,
+        :nombre,
+        :observaciones,
+        :pais_id,
+        :departamento_id,
+        :municipio_id,
+        :centropoblado_id,
+        :fechacreacion_localizada,
+        :habilitado,
       ]
     end
 
     def atributos_form
       a = atributos_index - [:id]
-      return a.map do |e|
-        e == :fechacreacion_localizada ? :fechacreacion : 
+      a.map do |e|
+        if e == :fechacreacion_localizada
+          :fechacreacion
+        else
           (e == :habilitado ? :fechadeshabilitacion : e)
+        end
       end
     end
 
-    def clase 
+    def clase
       "::Territorial"
     end
 
@@ -37,13 +40,11 @@ module Admin
     end
 
     def genclase
-      'F'
+      "F"
     end
 
     def territorial_params
       params.require(:territorial).permit(*atributos_form)
     end
-
-
   end
 end
