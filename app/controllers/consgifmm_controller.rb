@@ -17,7 +17,6 @@ class ConsgifmmController < Heb412Gen::ModelosController
     # aapf = Cor1440Gen::ActividadActividadpf.where(actividad_id:
     #                                              c.pluck(:actividad_id))
     # apf= Cor1440Gen::Actividadpf.where(id: aapf.pluck(:actividadpf_id))
-
     # @actipos = Cor1440Gen::Actividadtipo.where(
     #  id: apf.pluck(:actividadtipo_id)).pluck(:id, :nombre)
     c.reorder([:fecha, :actividad_id])
@@ -29,7 +28,11 @@ class ConsgifmmController < Heb412Gen::ModelosController
 
   def columnas_posibles
     [
+<<<<<<< HEAD
       :fecha,
+=======
+:fecha,
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
       :actividad_objetivo,
       :conveniofinanciado_nombre,
       :actividadmarcologico_nombre,
@@ -44,8 +47,12 @@ class ConsgifmmController < Heb412Gen::ModelosController
       :sector_gifmm,
       :indicador_gifmm,
       :beneficiarios_cuenta_y_enlaces,
+<<<<<<< HEAD
       :beneficiarios_nuevos_mes_cuenta_y_enlaces,
     ]
+=======
+      :beneficiarios_nuevos_mes_cuenta_y_enlaces,]
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
   end
 
   # Genera conteo por caso/beneficiario y tipo de actividad de convenio
@@ -78,8 +85,13 @@ class ConsgifmmController < Heb412Gen::ModelosController
     f = Mr519Gen::Formulario.find_by(nombreinterno: p[0])
 
     rf = registro.actividad.respuestafor.where(
+<<<<<<< HEAD
       formulario_id: f.id,
     )
+=======
+      formulario_id: f.id
+)
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
     if rf.count == 0
       return "" # No se encontró respuesta a formulario en cactividad
     elsif rf.count > 1
@@ -122,11 +134,17 @@ class ConsgifmmController < Heb412Gen::ModelosController
     end
 
     if campo.tipo == Mr519Gen::ApplicationHelper::SELECCIONMULTIPLE
+<<<<<<< HEAD
       cop = vc.valorjson.select { |i| i != "" }.map do |idop|
         ope = Mr519Gen::Opcioncs.where(id: idop.to_i)
         if ope.count == 0
           "No hay opcion con id #{idop}"
         else
+=======
+      cop = vc.valorjson.select {|i| i != ""}.map {|idop|
+        ope = Mr519Gen::Opcioncs.where(id: idop.to_i)
+        ope.count == 0 ? "No hay opcion con id #{idop}" :
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
           ope.take.nombre
         end
       end
@@ -138,7 +156,11 @@ class ConsgifmmController < Heb412Gen::ModelosController
 
   def self.vista_consgifmm_excel(
     plant, registros, narch, parsimp, extension, params
+<<<<<<< HEAD
   )
+=======
+)
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
     p = Axlsx::Package.new
     lt = p.workbook
     e = lt.styles
@@ -149,6 +171,7 @@ class ConsgifmmController < Heb412Gen::ModelosController
     # , fg_color: 'FF0000', bg_color: '00FF00'
 
     lt.add_worksheet do |hoja|
+<<<<<<< HEAD
       hoja.add_row(
         ["Reporte GIFMM"],
         height: 30,
@@ -191,6 +214,34 @@ class ConsgifmmController < Heb412Gen::ModelosController
         Cor1440Gen::Actividadpf.where(id: idaml)
           .pluck(:titulo).join("; ")
       end
+=======
+      hoja.add_row(["Reporte GIFMM"],
+                   height: 30, 
+                   style: estilo_titulo)
+      hoja.add_row([])
+      hoja.add_row([
+        "Fecha inicial", 
+        params["filtro"]["busfechaini"],
+        "Fecha final", 
+        params["filtro"]["busfechafin"],
+      ], 
+      style: estilo_base)
+      idpf = !params["filtro"] ||
+        !params["filtro"]["busconveniofinanciado_nombre"] ||
+        params["filtro"]["busconveniofinanciado_nombre"] == "" ? 
+        nil : params["filtro"]["busconveniofinanciado_nombre"]
+      idaml = !params["filtro"] ||
+        !params["filtro"]["busactividadmarcologico_nombre"] ||
+        params["filtro"]["busactividadmarcologico_nombre"] == "" ? 
+        nil : params["filtro"]["busactividadmarcologico_nombre"]
+
+      npf = idpf.nil? ? "" :
+        Cor1440Gen::Proyectofinanciero.where(id: idpf)
+          .pluck(:nombre).join("; ")
+      naml = idaml.nil? ? "" :
+        Cor1440Gen::Actividadpf.where(id: idaml)
+          .pluck(:titulo).join("; ")
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
 
       hoja.add_row(["Convenio financiero", npf, "Actividad de marco lógico", naml], style: estilo_base)
       hoja.add_row([])
@@ -371,9 +422,15 @@ class ConsgifmmController < Heb412Gen::ModelosController
     ::ConsgifmmExp.refresca_consulta(nil, ids)
     registros = ::ConsgifmmExp.all.where(consgifmm_id: ids)
     if plant.id == 51
+<<<<<<< HEAD
       r = vista_consgifmm_excel(
         plant, registros, narch, parsimp, extension, params
       )
+=======
+      r = self.vista_consgifmm_excel(
+        plant, registros, narch, parsimp, extension, params
+)
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
       r
     else
       if respond_to?(:index_reordenar)

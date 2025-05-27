@@ -20,4 +20,5 @@ class Territorial < ActiveRecord::Base
   belongs_to :centropoblado,
     class_name: "Msip::Centropoblado",
     optional: true
+
 end

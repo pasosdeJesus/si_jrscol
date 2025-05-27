@@ -229,6 +229,13 @@ class Consgifmm < ActiveRecord::Base
     else
       " ORDER BY " + interpreta_ordenar_por("fechadesc")
     end
+    w = ''
+    w += if ordenar_por
+      ' ORDER BY ' + self.interpreta_ordenar_por(ordenar_por)
+    else
+      ' ORDER BY ' + self.interpreta_ordenar_por('fechadesc')
+>>>>>>> 41cddff9 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
+    end
     ActiveRecord::Base.connection.execute("CREATE
               MATERIALIZED VIEW #{CONSULTA} AS
               #{consulta}

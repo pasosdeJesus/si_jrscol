@@ -69,7 +69,6 @@ class Consbenefactcaso < ActiveRecord::Base
     oficina_ids, fechaini, fechafin, actividad_ids, 
     ip_remota, usuario_id, url, params
   )
-    debugger
     if ARGV.include?("db:migrate")
       return
     end
@@ -425,4 +424,5 @@ class Consbenefactcaso < ActiveRecord::Base
     critord += ", conscaso.caso_id"
     critord
   end
+
 end
