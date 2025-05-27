@@ -1,17 +1,18 @@
 # frozen_string_literal: true
+
 module Sivel2Sjr
   # Obsoleto
   class DerechoProcesosjr < ActiveRecord::Base
     self.table_name = "sivel2_sjr_derecho_procesosjr"
 
-    belongs_to :procesosjr, 
+    belongs_to :procesosjr,
       class_name: "Sivel2Sjr::Procesosjr",
-      foreign_key: "id_proceso", 
-      validate: true, 
+      foreign_key: "id_proceso",
+      validate: true,
       optional: false
-    belongs_to :derecho, 
-      class_name: "Sivel2Sjr::Derecho", 
-      validate: true, 
+    belongs_to :derecho,
+      class_name: "Sivel2Sjr::Derecho",
+      validate: true,
       optional: false
   end
 end

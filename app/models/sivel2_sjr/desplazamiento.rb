@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "msip/accesores_ubicacionpre"
 
 module Sivel2Sjr
@@ -10,7 +11,7 @@ module Sivel2Sjr
 
     self.table_name = "sivel2_sjr_desplazamiento"
 
-    has_many :actosjr, 
+    has_many :actosjr,
       class_name: "Sivel2Sjr::Actosjr",
       validate: true
     accesores_ubicacionpre :destino
@@ -30,56 +31,57 @@ module Sivel2Sjr
 
     validates :tipodesp, presence: true
 
-    belongs_to :clasifdesp, 
-      class_name: "Sivel2Sjr::Clasifdesp", 
-      validate: true, 
+    belongs_to :clasifdesp,
+      class_name: "Sivel2Sjr::Clasifdesp",
+      validate: true,
       optional: true
-    belongs_to :tipodesp, 
-      class_name: "Sivel2Sjr::Tipodesp", 
-      validate: true, 
+    belongs_to :tipodesp,
+      class_name: "Sivel2Sjr::Tipodesp",
+      validate: true,
       optional: true
-    belongs_to :declaroante, 
-      class_name: "Sivel2Sjr::Declaroante", 
-      validate: true, 
+    belongs_to :declaroante,
+      class_name: "Sivel2Sjr::Declaroante",
+      validate: true,
       optional: true
-    belongs_to :inclusion, 
-      class_name: "Sivel2Sjr::Inclusion", 
-      validate: true, 
+    belongs_to :inclusion,
+      class_name: "Sivel2Sjr::Inclusion",
+      validate: true,
       optional: true
     belongs_to :acreditacion,
-      class_name: "Sivel2Sjr::Acreditacion", 
-      validate: true, 
+      class_name: "Sivel2Sjr::Acreditacion",
+      validate: true,
       optional: true
     belongs_to :modalidadtierra,
-      class_name: "Sivel2Sjr::Modalidadtierra", 
-      validate: true, 
+      class_name: "Sivel2Sjr::Modalidadtierra",
+      validate: true,
       optional: true
-    belongs_to :pais, 
+    belongs_to :pais,
       class_name: "Msip::Pais",
-      foreign_key: "paisdecl", 
-      validate: true, 
+      foreign_key: "paisdecl",
+      validate: true,
       optional: true
-    belongs_to :departamento, 
+    belongs_to :departamento,
       class_name: "Msip::Departamento",
-      foreign_key: "departamentodecl", 
-      validate: true, 
+      foreign_key: "departamentodecl",
+      validate: true,
       optional: true
-    belongs_to :municipio, 
+    belongs_to :municipio,
       class_name: "Msip::Municipio",
-      foreign_key: "municipiodecl", 
-      validate: true, 
+      foreign_key: "municipiodecl",
+      validate: true,
       optional: true
-    belongs_to :caso, 
-      class_name: "Sivel2Gen::Caso", 
-      validate: true, 
+    belongs_to :caso,
+      class_name: "Sivel2Gen::Caso",
+      validate: true,
       optional: false
 
     validates :fechaexpulsion, :fechallegada, presence: true
     validates :fechaexpulsion, uniqueness:
-      { 
+      {
         scope: :caso_id,
         message: " ya existe otro desplazamiento " \
-        "con la misma fecha de expulsión",}
+          "con la misma fecha de expulsión",
+      }
 
     validate :llegada_posterior_a_expulsion
     def llegada_posterior_a_expulsion
@@ -87,7 +89,8 @@ module Sivel2Sjr
           fechaexpulsion.present? && fechallegada < fechaexpulsion
         errors.add(
           :fechallegada,
-          " debe ser posterior a la fecha de expulsión")
+          " debe ser posterior a la fecha de expulsión",
+        )
       end
     end
 
@@ -96,7 +99,8 @@ module Sivel2Sjr
       if fechaexpulsion.present? &&
           Sivel2Sjr::Desplazamiento.where(
             caso_id: caso_id,
-            fechaexpulsion: fechaexpulsion).count > 1
+            fechaexpulsion: fechaexpulsion,
+          ).count > 1
         errors.add(:fechaexpulsion, " debe ser única")
       end
     end
@@ -107,7 +111,8 @@ module Sivel2Sjr
           llegadaubicacionpre_id == expulsionubicacionpre_id
         errors.add(
           :llegada,
-          " debe ser diferente al sitio de expulsion")
+          " debe ser diferente al sitio de expulsion",
+        )
       end
     end
   end

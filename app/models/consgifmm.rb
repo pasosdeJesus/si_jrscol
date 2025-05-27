@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Consulta GIFMM
 class Consgifmm < ActiveRecord::Base
   include Msip::Modelo
@@ -6,22 +7,21 @@ class Consgifmm < ActiveRecord::Base
   self.primary_key = "id"
 
   belongs_to :detallefinanciero,
-    class_name: 'Detallefinanciero',
-    foreign_key: 'id', 
-optional: false
+    class_name: "Detallefinanciero",
+    foreign_key: "id",
+    optional: false
 
   belongs_to :proyectofinanciero,
-    class_name: 'Cor1440Gen::Proyectofinanciero',, 
-optional: false
+    class_name: "Cor1440Gen::Proyectofinanciero",
+    optional: false
 
   belongs_to :actividadpf,
-    class_name: 'Cor1440Gen::Actividadpf',, 
-optional: false
+    class_name: "Cor1440Gen::Actividadpf",
+    optional: false
 
   belongs_to :actividad,
-    class_name: 'Cor1440Gen::Actividad',, 
-optional: false
-
+    class_name: "Cor1440Gen::Actividad",
+    optional: false
 
   # Retorna el del primer proyecto y de la primera actividad o nil
   def busca_indicador_gifmm
@@ -31,37 +31,37 @@ optional: false
   end
 
   def indicador_gifmm
-    idig = self.busca_indicador_gifmm
+    idig = busca_indicador_gifmm
     if !idig.nil?
       ::Indicadorgifmm.find(idig).nombre
     else
-      ''
+      ""
     end
   end
 
   def sector_gifmm
-    idig = self.busca_indicador_gifmm
+    idig = busca_indicador_gifmm
     if !idig.nil?
       ::Indicadorgifmm.find(idig).sectorgifmm.nombre
     else
-      ''
+      ""
     end
   end
 
   def beneficiarios_nuevos_mes_ids
-    idp = beneficiarios_ids.split(',').select { |pid|
+    idp = beneficiarios_ids.split(",").select do |pid|
       c = Cor1440Gen::Asistencia.joins(:actividad).joins(:persona)
         .joins(
-          'JOIN cor1440_gen_actividad_actividadpf ' \
-            'ON cor1440_gen_actividad_actividadpf.actividad_id=cor1440_gen_asistencia.actividad_id ' \
-          'AND cor1440_gen_actividad_actividadpf.actividadpf_id=' + self.actividadpf_id.to_s,
+          "JOIN cor1440_gen_actividad_actividadpf " \
+            "ON cor1440_gen_actividad_actividadpf.actividad_id=cor1440_gen_asistencia.actividad_id " \
+            "AND cor1440_gen_actividad_actividadpf.actividadpf_id=" + actividadpf_id.to_s,
         ).where(
-          'cor1440_gen_actividad.fecha < ? ',
-          self.fecha.at_beginning_of_month,
-        ).where('msip_persona.id = ?', pid.to_i)
+          "cor1440_gen_actividad.fecha < ? ",
+          fecha.at_beginning_of_month,
+        ).where("msip_persona.id = ?", pid.to_i)
         .where(
-          'cor1440_gen_actividad.fecha >= ? ',
-          self.fecha.at_beginning_of_year,
+          "cor1440_gen_actividad.fecha >= ? ",
+          fecha.at_beginning_of_year,
         ) # Definicion de nuevo aumentada
 
       # Definicion de nuevo si usaran detalle financiero
@@ -74,7 +74,7 @@ optional: false
       #      self.detallefinanciero_id).
       #      where('msip_persona.id = ?', pid.to_i)
       c.count == 0
-    }
+    end
     idp.sort.uniq.join(",")
   end
 
@@ -87,16 +87,16 @@ optional: false
 
     m = /^beneficiari(.*)cuenta_y_enlaces$/.match(atr.to_s)
     if m && respond_to?("beneficiari#{m[1].parameterize}ids")
-      bids = send("beneficiari#{m[1].parameterize}ids").split(',')
-      enlaces = bids.map { |i|
+      bids = send("beneficiari#{m[1].parameterize}ids").split(",")
+      enlaces = bids.map do |i|
         r = "<a href='#{Rails.application.routes.url_helpers.msip_path +
         "personas/" + i.to_s}' target='_blank'>#{i}</a>"
         r.html_safe
-      }.join(", ".html_safe).html_safe
+      end.join(", ".html_safe).html_safe
       return "#{bids.count} : #{enlaces}".html_safe
     end
 
-    self.actividad.presenta(atr)
+    actividad.presenta(atr)
   end # presenta
 
   scope :filtro_actividad_id, lambda { |ida|
@@ -104,22 +104,22 @@ optional: false
   }
 
   scope :filtro_fechaini, lambda { |f|
-    where('fecha >= ?', f)
+    where("fecha >= ?", f)
   }
 
   scope :filtro_fechafin, lambda { |f|
-    where('fecha <= ?', f)
+    where("fecha <= ?", f)
   }
 
   scope :filtro_conveniofinanciado_nombre, lambda { |c|
     if !c.nil? && c != [""]
-      where('proyectofinanciero_id IN (?)', c.map(&:to_i))
+      where("proyectofinanciero_id IN (?)", c.map(&:to_i))
     end
   }
 
   scope :filtro_actividadmarcologico_nombre, lambda { |a|
     if !a.nil? && a != [""]
-      where('actividadpf_id IN (?)', a.map(&:to_i))
+      where("actividadpf_id IN (?)", a.map(&:to_i))
     end
   }
 
@@ -127,7 +127,7 @@ optional: false
     where(departamento_gifmm: d)
   }
 
-  CONSULTA = 'consgifmm'
+  CONSULTA = "consgifmm"
 
   def self.interpreta_ordenar_por(campo)
     critord = ""
@@ -145,7 +145,7 @@ optional: false
 
   def self.consulta
     "SELECT (cor1440_gen_actividad.id::text || '-' || cor1440_gen_actividadpf.id::text || '-' || COALESCE(detallefinanciero.id::text, '')) AS id,
-	    detallefinanciero.id as detallefinanciero_id,
+      detallefinanciero.id as detallefinanciero_id,
       cor1440_gen_actividad.id AS actividad_id,
       cor1440_gen_actividadpf.proyectofinanciero_id,
       cor1440_gen_actividadpf.id AS actividadpf_id,
@@ -220,18 +220,18 @@ optional: false
 
     if ActiveRecord::Base.connection.data_source_exists?(CONSULTA)
       ActiveRecord::Base.connection.execute(
-        "DROP MATERIALIZED VIEW IF EXISTS #{CONSULTA}"
-)
+        "DROP MATERIALIZED VIEW IF EXISTS #{CONSULTA}",
+      )
     end
-    w = ''
+    w = ""
     w += if ordenar_por
-      ' ORDER BY ' + self.interpreta_ordenar_por(ordenar_por)
+      " ORDER BY " + interpreta_ordenar_por(ordenar_por)
     else
-      ' ORDER BY ' + self.interpreta_ordenar_por('fechadesc')
+      " ORDER BY " + interpreta_ordenar_por("fechadesc")
     end
     ActiveRecord::Base.connection.execute("CREATE
               MATERIALIZED VIEW #{CONSULTA} AS
-              #{self.consulta}
+              #{consulta}
               #{w} ;")
   end # def crea_consulta
 
@@ -239,12 +239,12 @@ optional: false
     if !ActiveRecord::Base.connection.data_source_exists?("#{CONSULTA}")
       crea_consulta(nil)
       ActiveRecord::Base.connection.execute(
-        "CREATE UNIQUE INDEX on #{CONSULTA} (id);"
-)
+        "CREATE UNIQUE INDEX on #{CONSULTA} (id);",
+      )
     else
       ActiveRecord::Base.connection.execute(
-        "REFRESH MATERIALIZED VIEW #{CONSULTA}"
-)
+        "REFRESH MATERIALIZED VIEW #{CONSULTA}",
+      )
     end
   end
 end

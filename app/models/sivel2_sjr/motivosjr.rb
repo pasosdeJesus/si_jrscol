@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Sivel2Sjr
   # Tabla básica Servicios y Asesorias del JRS
   class Motivosjr < ActiveRecord::Base
@@ -10,19 +11,19 @@ module Sivel2Sjr
       class_name: "Sivel2Sjr::MotivosjrRespuesta",
       validate: true,
       dependent: :destroy
-    has_many :respuesta, 
-class_name: "Sivel2Sjr::Respuesta",
+    has_many :respuesta,
+      class_name: "Sivel2Sjr::Respuesta",
       through: :motivosjr_respuesta
 
     has_many :motivosjr_derecho,
-      class_name: "Sivel2Sjr::MotivosjrDerecho",, 
-validate: true, 
-dependent: :destroy
-    has_many :derecho, 
-class_name: "Sivel2Sjr::Derecho",
+      class_name: "Sivel2Sjr::MotivosjrDerecho",
+      validate: true,
+      dependent: :destroy
+    has_many :derecho,
+      class_name: "Sivel2Sjr::Derecho",
       through: :motivosjr_derecho
-    accepts_nested_attributes_for :motivosjr_derecho, 
-reject_if: :all_blank,
+    accepts_nested_attributes_for :motivosjr_derecho,
+      reject_if: :all_blank,
       update_only: true
   end
 end
