@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Sivel2Sjr
   # Respuestas usadas hasta 2019 (obsoleto)
   class AccionjuridicaRespuesta < ActiveRecord::Base
@@ -6,11 +7,11 @@ module Sivel2Sjr
 
     self.table_name = "sivel2_sjr_accionjuridica_respuesta"
 
-    belongs_to :accionjuridica, 
-      class_name: "Sivel2Sjr::Accionjuridica", 
+    belongs_to :accionjuridica,
+      class_name: "Sivel2Sjr::Accionjuridica",
       optional: false
-    belongs_to :respuesta, 
-      class_name: "Sivel2Sjr::Respuesta", 
+    belongs_to :respuesta,
+      class_name: "Sivel2Sjr::Respuesta",
       optional: false
 
     validates :accionjuridica, presence: true

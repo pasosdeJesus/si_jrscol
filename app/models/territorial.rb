@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 # Tabla básica Territorial
 class Territorial < ActiveRecord::Base
   include Msip::Basica
 
   has_many :oficina,
     class_name: "Msip::Oficina",
-    validate: true,
+    validate: true
 
   belongs_to :pais,
     class_name: "Msip::Pais",
@@ -19,5 +20,4 @@ class Territorial < ActiveRecord::Base
   belongs_to :centropoblado,
     class_name: "Msip::Centropoblado",
     optional: true
-
 end

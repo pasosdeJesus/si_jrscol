@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Sivel2Sjr
   # Tabla básica asistencias psicosociales
   class Aspsicosocial < ActiveRecord::Base
@@ -7,10 +8,10 @@ module Sivel2Sjr
     self.table_name = "sivel2_sjr_aspsicosocial"
 
     has_many :aspsicosocial_respuesta,
-      class_name: "Sivel2Sjr::AspsicosocialRespuesta", 
-      validate: true, 
+      class_name: "Sivel2Sjr::AspsicosocialRespuesta",
+      validate: true,
       dependent: :destroy
-    has_many :respuesta, 
+    has_many :respuesta,
       class_name: "Sivel2Sjr::Respuesta",
       through: :aspsicosocial_respuesta
 
