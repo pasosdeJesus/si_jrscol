@@ -111,7 +111,7 @@ gem "heb412_gen", # Motor de nube y llenado de plantillas
 gem "cor1440_gen",
   git: "https://gitlab.com/pasosdeJesus/cor1440_gen.git",
   branch: "v2.2"
-# path: "~/comp/rails/cor1440_gen-2.2"
+  #path: "~/comp/rails/cor1440_gen-2.2"
 
 # Motor de SIVeL 2
 gem "sivel2_gen",
