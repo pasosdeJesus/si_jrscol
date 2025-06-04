@@ -8,12 +8,7 @@
 
   <div class="div-tabla-celda">
     <%= f.association :resultadopf, 
-      collection: Cor1440Gen::Resultadopf.joins(:objetivopf).
-      where(proyectofinanciero_id: f.object.proyectofinanciero_id).
-      order([
-        "cor1440_gen_objetivopf.numero", 
-        "cor1440_gen_resultadopf.numero"
-      ]),
+      collection: @col_resultados,
       include_blank: false,
       label: false,
       label_method: lambda {
@@ -43,7 +38,7 @@
   </div>
   <div class="div-tabla-celda">
     <%= f.association :indicadorgifmm, 
-      collection: Indicadorgifmm.habilitados,
+      collection: @indicadoresgifmm,
       label_method: :nombre,
       value_method: :id,
       input_html: {
