@@ -26,6 +26,11 @@ module Cor1440Gen
       atributos_index_cor1440 - [:titulo]
     end
 
+    def edit
+      @indicadoresgifmm = Indicadorgifmm.habilitados
+      edit_cor1440_gen
+    end
+
     def filtra_contenido_params
     end
 
@@ -54,5 +59,6 @@ module Cor1440Gen
         proyectofinanciero_params_si_jrscol,
       )
     end
+
   end
 end
