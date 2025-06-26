@@ -30,6 +30,7 @@ class ConsultabdController < Heb412Gen::ModelosController
 
   # Genera listado
   def index
+    @metodo_formulario_msipmodelo = "post"
     @columnas = []
     unless ActiveRecord::Base.connection.data_source_exists?("consultabd")
       Consultabd.refresca_consulta(

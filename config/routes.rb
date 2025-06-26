@@ -123,6 +123,9 @@ Rails.application.routes.draw do
   get "/consultabd" => "consultabd#index",
     as: :consultabd
 
+  post "/consultabd" => "consultabd#index",
+    as: :consultabd_post
+
   get "/diccionariodatos" => "diccionariodatos#presentar",
     as: :diccionariodatos
   post "/diccionariodatos" => "diccionariodatos#presentar",
