@@ -83,6 +83,8 @@ Rails.application.configure do
 
   config.assets.css_compressor = nil
 
+  config.assets.css_compressor = nil
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
