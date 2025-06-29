@@ -56,6 +56,8 @@ class ExtracompletocasosTest < ActionDispatch::IntegrationTest
       "&formato=ods" \
       "&formatosalida=ods" \
       "&commit=Enviar"
+    puts "OJO ls -l /builds/pasosdeJesus/si_jrscol/public/heb412/generados/"
+    puts `ls -l /builds/pasosdeJesus/si_jrscol/public/heb412/generados/`
     get ruta
 
     assert_response :redirect
