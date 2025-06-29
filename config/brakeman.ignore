@@ -1,0 +1,980 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "0f800d0c6e42e98941b83a07cd18f0549b0821070eed8219c72037ad4ab0cae3",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/helpers/plantilla_helper.rb",
+      "line": 62,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"UPDATE public.heb412_gen_campoplantillahcm SET columna='#{sigcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= #{plantilla_id}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PlantillaHelper",
+        "method": "s(:self).corre_columnas_a_derecha"
+      },
+      "user_input": "sigcolp(co, 2)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "10b3926681490afef9e7e254d448305346284cc40fabdd55bb893c88e804ef1e",
+      "check_name": "SendFile",
+      "message": "Parameter value used in file name",
+      "file": "app/controllers/diccionariodatos_controller.rb",
+      "line": 336,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "send_file(exportar_excel(\"diccionariodatos-#{params[:diccionariodatos][:motor].constantize}-#{Time.now.strftime(\"%Y%m%d%H%M%S\")}.xlsx\"), :type => \"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\", :disposition => \"attachment\", :filename => (\"diccionariodatos-#{params[:diccionariodatos][:motor].constantize}-#{Time.now.strftime(\"%Y%m%d%H%M%S\")}.xlsx\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DiccionariodatosController",
+        "method": "presentar"
+      },
+      "user_input": "params[:diccionariodatos][:motor].constantize",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "1990e263fbf96c53b7eeecf1aa004ecbb608c4abef8c113d001622b5863a0acf",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/msip/admin/ubicacionespre_controller.rb",
+      "line": 50,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT TRIM(nombre) AS value, pais_id, departamento_id, municipio_id, centropoblado_id, tsitio_id, lugar, sitio, latitud, longitud FROM public.msip_ubicacionpre AS ubicacionpre WHERE #{(\" to_tsvector('spanish', \" + \"@@ to_tsquery('spanish', '#{(Msip::Ubicacion.connection.quote_string(params[:term]).downcase.strip + \":*\")}')\")} #{\"AND pais_id=#{params[:pais].to_i}\"} #{\"AND departamento_id=#{params[:dep].to_i}\"} #{\"AND municipio_id=#{params[:mun].to_i}\"} #{(\"AND centropoblado_id=#{params[:clas].to_i}\" or \"\")} ORDER BY 1 LIMIT 10\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Msip::Admin::UbicacionespreController",
+        "method": "lugar"
+      },
+      "user_input": "Msip::Ubicacion.connection.quote_string(params[:term])",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "1dbb10c5d3ba2daf1e7dd6612f013a6162c07f6d78652411a7f42fe69710a948",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/controllers/sivel2_sjr/migraciones_controller.rb",
+      "line": 44,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(inline => Sivel2Sjr::Migracion.new.as_json.to_s, {})",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::MigracionesController",
+        "method": "nuevo"
+      },
+      "user_input": "Sivel2Sjr::Migracion.new.as_json.to_s",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "2c47677cacbc1417dddb8293b7c4df42cae9ebc437c35e618cf702cd3d30a077",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 876,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT ruta, cuenta FROM ((SELECT municipioubicacion(d1.expulsionubicacionpre_id) || ' - '\\n        || municipioubicacion(d1.llegadaubicacionpre_id) AS ruta,\\n        count(id) AS cuenta\\n      FROM public.sivel2_sjr_desplazamiento AS d1, sivel2_sjr_casosjr AS casosjr\\n      WHERE #{(((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"])))}\\n      GROUP BY 1)\\n      UNION\\n      (SELECT municipioubicacion(d1.expulsionubicacionpre_id) || ' - '\\n        || municipioubicacion(d1.llegadaubicacionpre_id) || ' - '\\n        || municipioubicacion(d2.llegadaubicacionpre_id) AS ruta,\\n        count(d1.caso_id) AS cuenta\\n      FROM sivel2_sjr_casosjr AS casosjr,\\n        sivel2_sjr_desplazamiento AS d1,\\n        msip_ubicacionpre AS l1,\\n        sivel2_sjr_desplazamiento as d2,\\n        msip_ubicacionpre AS e2, msip_ubicacionpre AS l2\\n      WHERE #{(((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\") or consulta_and(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"])))}\\n      AND d1.caso_id=d2.caso_id\\n      AND d1.fechaexpulsion < d2.fechaexpulsion\\n      AND d1.llegadaubicacionpre_id = l1.id\\n      AND d2.llegadaubicacionpre_id = l2.id\\n      AND d2.expulsionubicacionpre_id = e2.id\\n      GROUP BY 1)) as sub\\n      ORDER BY 2 DESC\\n                                               \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "rutas"
+      },
+      "user_input": "consulta_and_sinap(\"\", \"casosjr.caso_id\", \"d1.caso_id\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "314ac8938d808c9831b6e4463ce2c0ce2f7b347e059165907d453b4f856658ec",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/helpers/plantilla_helper.rb",
+      "line": 13,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"UPDATE public.heb412_gen_campoplantillahcm SET columna='#{sigcolp(col_final, n)}' WHERE columna='#{col_final}' AND plantillahcm_id= #{plantilla_id}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PlantillaHelper",
+        "method": "s(:self).inserta_n_columnas"
+      },
+      "user_input": "sigcolp(col_final, n)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "341a237ef0efbd131508fb50e6cbb77d3db93b12501eb454b764d8de72346e1e",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/consgifmm_exp.rb",
+      "line": 1105,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE\\n              MATERIALIZED VIEW #{\"consgifmm_exp\"} AS\\n              #{consulta}\\n              #{(((\"AND consgifmm.id IN (\" + ids.map do\n \"'#{sid}'\"\n end.join(\",\")) + \") \") + (if ordenar_por then\n  (\" ORDER BY \" + interpreta_ordenar_por(ordenar_por))\nelse\n  (\" ORDER BY \" + interpreta_ordenar_por(\"fechadesc\"))\nend))} ;\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ConsgifmmExp",
+        "method": "ConsgifmmExp.crea_consulta"
+      },
+      "user_input": "consulta",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "36b8dacf711a31b07fa37b0e88141cc4ecb5dc64b8979500399a90b42d56e8e6",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/consultabd.rb",
+      "line": 40,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE\\n              MATERIALIZED VIEW #{\"consultabd\"} AS\\n              SELECT row_number() OVER () AS numfila,\\n              * FROM (\\n              #{econsultasql}\\n              #{\"\"} ) AS s ;\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Consultabd",
+        "method": "Consultabd.crea_consulta"
+      },
+      "user_input": "econsultasql",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "397cf7bbff709d3990ac09a62289de17b799bc1237f087462440fa4db110c89e",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/controllers/sivel2_sjr/desplazamientos_controller.rb",
+      "line": 43,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(inline => Sivel2Sjr::Desplazamiento.new.as_json.to_s, {})",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::DesplazamientosController",
+        "method": "nuevo"
+      },
+      "user_input": "Sivel2Sjr::Desplazamiento.new.as_json.to_s",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 24,
+      "fingerprint": "3eec1730f76660d4544fbef86aa5a5dd0f5d95ad9a988f986e0bf1889cf8df75",
+      "check_name": "UnsafeReflection",
+      "message": "Unsafe reflection method `constantize` called on parameter value",
+      "file": "app/controllers/diccionariodatos_controller.rb",
+      "line": 154,
+      "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
+      "code": "params[:diccionariodatos][:motor].constantize",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DiccionariodatosController",
+        "method": "presentar"
+      },
+      "user_input": "params[:diccionariodatos][:motor]",
+      "confidence": "High",
+      "cwe_id": [
+        470
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "4a1e754a6d6e03a55080e9c2864feae066007b7e4fd094f3312c2c8130586884",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 590,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE VIEW #{\"cvp2\"} AS SELECT respuesta_id, derecho_id as derecho_id, ar.#{(escapar_param(params, [:filtro, \"contar\"]) or \"ayudaestado\")}_id\\n        FROM public.sivel2_sjr_#{(escapar_param(params, [:filtro, \"contar\"]) or \"ayudaestado\")}_respuesta AS ar,\\n          public.sivel2_sjr_#{(escapar_param(params, [:filtro, \"contar\"]) or \"ayudaestado\")}_derecho AS ad\\n        WHERE\\n          ar.#{(escapar_param(params, [:filtro, \"contar\"]) or \"ayudaestado\")}_id=ad.#{(escapar_param(params, [:filtro, \"contar\"]) or \"ayudaestado\")}_id \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "vacios"
+      },
+      "user_input": "params",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "558073e855fdcade779385811da4c702532ab1f7a8cde52d87b47d9661051d11",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/controllers/sivel2_sjr/desplazamientos_controller.rb",
+      "line": 41,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(text => Sivel2Sjr::Desplazamiento.new.as_json, {})",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::DesplazamientosController",
+        "method": "nuevo"
+      },
+      "user_input": "Sivel2Sjr::Desplazamiento.new.as_json",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "57749a3ac20df69c06bfad34ad29356d2953d7c16e099852584798bb4484a859",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 1012,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT a.nombre, ar.favorable, count(r.id) as cuenta\\n        FROM public.sivel2_sjr_accionjuridica AS a\\n        JOIN public.sivel2_sjr_accionjuridica_respuesta AS ar ON a.id=ar.accionjuridica_id\\n        JOIN public.sivel2_sjr_respuesta AS r ON ar.respuesta_id=r.id\\n        JOIN public.sivel2_sjr_casosjr AS casosjr ON r.caso_id=casosjr.caso_id\\n      WHERE #{(((\"TRUE \" or consulta_and(\"TRUE \", \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((\"TRUE \" or consulta_and(\"TRUE \", \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((\"TRUE \" or consulta_and(\"TRUE \", \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((\"TRUE \" or consulta_and(\"TRUE \", \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"])))}\\n      GROUP BY 1, 2 ORDER BY 1,2;\\n      \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "accionesjuridicas"
+      },
+      "user_input": "params",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "5f6bd1a3cce695a028a1a5d8bc7c403ecc6b709ab78be79dddca8d7ab857831c",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/msip/personas_controller.rb",
+      "line": 281,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "benef.where(\"#{cfecha} >= ?\", ((\"\" or Msip::FormatoFechaHelper.fecha_local_estandar(params[:reporterepetido][:fechaini])) or Msip::FormatoFechaHelper.inicio_semestre(Date.today).to_s))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Msip::PersonasController",
+        "method": "filtro_benef_fechas"
+      },
+      "user_input": "cfecha",
+      "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "62812e8f0f12f7787fceeb322bf64192365120a32cb20cc409bc69e207e0701e",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/helpers/plantilla_helper.rb",
+      "line": 76,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"UPDATE public.heb412_gen_campoplantillahcm SET columna='#{prevcolp(co, 2)}' WHERE columna='#{co}' AND plantillahcm_id= #{plantilla_id}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PlantillaHelper",
+        "method": "s(:self).corre_columnas_a_izquierda"
+      },
+      "user_input": "prevcolp(co, 2)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "645964a7f66de08c045f2564e00ae310bc4804a294208f83d6f5c0cde0457f6a",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/controllers/sivel2_sjr/migraciones_controller.rb",
+      "line": 42,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(text => Sivel2Sjr::Migracion.new.as_json, {})",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::MigracionesController",
+        "method": "nuevo"
+      },
+      "user_input": "Sivel2Sjr::Migracion.new.as_json",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "710bd97af64799430ea351ef9da80bca9564ce8d9f2eb6d7e301a2858b74f429",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/views/msip/personas/_resultado_tabla.html.erb",
+      "line": 24,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Msip::Persona.connection.execute(\"SELECT soundexespm(nombres || ' ' || apellidos) FROM msip_persona WHERE id=#{pid}\")",
+      "render_path": [
+        {
+          "type": "template",
+          "name": "msip/personas/_resultado_repetidos",
+          "line": 2,
+          "file": "app/views/msip/personas/_resultado_repetidos.html.erb",
+          "rendered": {
+            "name": "msip/personas/_resultado_tabla",
+            "file": "app/views/msip/personas/_resultado_tabla.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "msip/personas/_resultado_tabla"
+      },
+      "user_input": "pid",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "74aa0b762c3e017167f186f6fb186faad18d459f353eee2d15710d4a20f2aba2",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/casos_controller.rb",
+      "line": 1027,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT TRIM(#{(\"\" + (\"\" + :BRAKEMAN_SAFE_LITERAL))}) AS value, #{(\" caso_id \" + (\" || ';' || \" + \"char_length(#{:BRAKEMAN_SAFE_LITERAL})\"))} AS id FROM public.msip_persona AS persona JOIN sivel2_gen_victima AS victima ON persona.id=victima.persona_id LEFT JOIN msip_tdocumento ON persona.tdocumento_id=msip_tdocumento.id WHERE #{(\" to_tsvector('spanish', caso_id \" + \"to_tsquery('spanish', '#{(Sivel2Gen::Caso.connection.quote_string(params[:term]).downcase.strip + \":*\")}')\")} ORDER BY 1 LIMIT 10\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::CasosController",
+        "method": "busca"
+      },
+      "user_input": "Sivel2Gen::Caso.connection.quote_string(params[:term])",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "751bd6e948b07bf818c50cd3c3d78bfc573942e3352f11e55a725163945786ae",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 127,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE MATERIALIZED VIEW #{\"cres1\"} AS\\n              SELECT #{\"sub.actividad_id, sub.fecha, sub.oficina_id, sub.#{(\"#{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)}_id\" or \"loca_id\")}\"}\\n              FROM #{\"(SELECT DISTINCT a.id AS actividad_id,\\n                a.fecha, a.oficina_id,\\n                json_array_elements_text(v.valorjson) AS #{(\"#{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)}_id\" or \"loca_id\")}\\n              FROM mr519_gen_valorcampo AS v\\n              JOIN cor1440_gen_actividad_respuestafor AS ar\\n                ON ar.respuestafor_id=v.respuestafor_id\\n              JOIN cor1440_gen_actividad AS a\\n                ON a.id=ar.actividad_id\\n              WHERE campo_id=#{(((((110 or 103) or 100) or 150) or 106) or 130)}) AS sub\"}\\n              WHERE #{((((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"sub.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))) + ((if ((((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((\"\" or consulta_and(\"\", \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"sub.fecha\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"sub.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))) == \"\") then\n  \"\"\nelse\n  \" AND \"\nend) + \"sub.#{(\"#{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)}_id\" or \"loca_id\")} IS NOT NULL AND sub.#{(\"#{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)}_id\" or \"loca_id\")}<>''\"))}\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "respuestas"
+      },
+      "user_input": "params",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "766e74c0c21292a1fc6b1997578c8ba4771b89d2035f61fa8960619498e97648",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 580,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE VIEW #{\"cvp1\"} AS\\n            SELECT #{agrega_tabla(\"respuesta.id AS respuesta_id, \", \"casosjr.oficina_id AS oficina_id\")}\\n            FROM #{\"public.sivel2_sjr_casosjr AS casosjr, \"} WHERE #{((((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))) or consulta_and((((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"respuesta.caso_id\", \"casosjr.caso_id\"), \"derecho_respuesta.respuesta_id\", \"respuesta.id\"), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"respuesta.fechaatencion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))), \"derecho_respuesta.derecho_id\", escapar_param(params, [:filtro, \"derecho\"])))}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "vacios"
+      },
+      "user_input": "agrega_tabla(\"respuesta.id AS respuesta_id, \", \"casosjr.oficina_id AS oficina_id\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 24,
+      "fingerprint": "77e4dc950e6593038a091f25eeced6193eb40365d8516dc4b4214d753e3701d6",
+      "check_name": "UnsafeReflection",
+      "message": "Unsafe reflection method `constantize` called on parameter value",
+      "file": "app/controllers/diccionariodatos_controller.rb",
+      "line": 273,
+      "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
+      "code": "((params[:diccionariodatos][:motor].constantize.to_s + \"::\") + ((t[(11..-1)] or t) or t[(((params[:diccionariodatos][:motor].underscore or \".\").length + 1)..-1)]).camelize).constantize",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DiccionariodatosController",
+        "method": "presentar"
+      },
+      "user_input": "((params[:diccionariodatos][:motor].constantize.to_s + \"::\") + ((t[(11..-1)] or t) or t[(((params[:diccionariodatos][:motor].underscore or \".\").length + 1)..-1)]).camelize)",
+      "confidence": "High",
+      "cwe_id": [
+        470
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "781d041c56a43ebd7abdff7014c1d1a73300c5cf7f02c5901ffabc2055ebcbe8",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/controllers/sivel2_sjr/desplazamientos_controller.rb",
+      "line": 47,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(inline => \"errores: #{Sivel2Sjr::Desplazamiento.new.errors.messages}\", {})",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::DesplazamientosController",
+        "method": "nuevo"
+      },
+      "user_input": "Sivel2Sjr::Desplazamiento.new.errors.messages",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "81a36013ab27d560250858d2efb5c4c941ab8b70cc1693ae5880a24daad2b20b",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/sivel2_gen/consexpcaso.rb",
+      "line": 363,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Sivel2Gen::Victima.connection.execute(\"\\n        SELECT COUNT(*) FROM (\\n          SELECT v.id, msip_edad_de_fechanac_fecharef(\\n            p.anionac, p.mesnac, p.dianac,\\n            '#{anio.to_i}', '#{mes.to_i}', '#{dia.to_i}') AS edad\\n          FROM public.sivel2_gen_victima AS v\\n          JOIN public.msip_persona AS p ON p.id=v.persona_id\\n          WHERE v.caso_id='#{caso_id.to_i}' AND\\n           p.sexo='#{sexo[0]}') AS sub\\n        WHERE TRUE=TRUE\\n        #{(((\"\" + \" AND edad>='#{inf.to_i}'\") + \" AND edad<='#{sup.to_i}'\") + \" AND edad IS NULL\")}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Gen::Consexpcaso",
+        "method": "Sivel2Gen::Consexpcaso.poblacion_a_fecha"
+      },
+      "user_input": "sexo[0]",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 24,
+      "fingerprint": "84551f45ced061f8e2f62ed3e2e2931a30a3082b53c125aa4f2d5b85d53dc25d",
+      "check_name": "UnsafeReflection",
+      "message": "Unsafe reflection method `constantize` called on parameter value",
+      "file": "app/controllers/diccionariodatos_controller.rb",
+      "line": 270,
+      "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
+      "code": "(\"::\" + ((t[(11..-1)] or t) or t[(((params[:diccionariodatos][:motor].underscore or \".\").length + 1)..-1)]).camelize).constantize",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DiccionariodatosController",
+        "method": "presentar"
+      },
+      "user_input": "params[:diccionariodatos][:motor].underscore",
+      "confidence": "Medium",
+      "cwe_id": [
+        470
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "8e93582337a4f62f71d33572f8a42e961cdc35127634edc74328de79d3837fa9",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/consgifmm.rb",
+      "line": 234,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE\\n              MATERIALIZED VIEW #{\"consgifmm\"} AS\\n              #{consulta}\\n              #{(\"\" + (if ordenar_por then\n  (\" ORDER BY \" + interpreta_ordenar_por(ordenar_por))\nelse\n  (\" ORDER BY \" + interpreta_ordenar_por(\"fechadesc\"))\nend))} ;\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Consgifmm",
+        "method": "Consgifmm.crea_consulta"
+      },
+      "user_input": "consulta",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "99a22a99ae3f4ff2760d68e24e8e6d06768fa38c7c69532f8291305d0c8fe0f1",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/helpers/plantilla_helper.rb",
+      "line": 39,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"UPDATE public.heb412_gen_campoplantillahcm SET columna='#{col}' WHERE columna='#{sigcolp(col, n)}' AND plantillahcm_id= #{plantilla_id}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PlantillaHelper",
+        "method": "s(:self).elimina_n_columnas"
+      },
+      "user_input": "col",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "99f9f06a8808bbf9c99fdbb9bf267f0f12ea47b1c3e206d27efa6c53259e2504",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 811,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE OR REPLACE VIEW #{\"cmunrec\"} AS (\\n      SELECT (SELECT nombre FROM public.msip_pais WHERE id=pais_id) AS pais,\\n        (SELECT nombre FROM public.msip_departamento\\n          WHERE id=departamento_id) AS departamento,\\n        (SELECT nombre FROM public.msip_municipio\\n        WHERE id=ubicacion.municipio_id) AS municipio,\\n        CASE WHEN (casosjr.contacto_id = victima.persona_id) THEN 1 ELSE 0 END\\n          AS contacto,\\n        CASE WHEN (casosjr.contacto_id<>victima.persona_id) THEN 1 ELSE 0 END\\n          AS beneficiario,\\n        1 as npersona\\n      FROM public.sivel2_sjr_desplazamiento AS desplazamiento,\\n        msip_ubicacionpre AS ubicacion,\\n        sivel2_gen_victima AS victima,\\n        sivel2_sjr_casosjr AS casosjr\\n      WHERE\\n        #{consulta_and_sinap((((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))), \"desplazamiento.llegadaubicacionpre_id\", \"ubicacion.id\")}\\n    )\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "municipios"
+      },
+      "user_input": "params",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "9c62b3dd4b5be6daf2a1881fcc318676404eac7556376951a9074aff28cce1c3",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/controllers/sivel2_sjr/migraciones_controller.rb",
+      "line": 50,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(inline => Sivel2Sjr::Migracion.new.errors, { :status => :unprocessable_entity })",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::MigracionesController",
+        "method": "nuevo"
+      },
+      "user_input": "Sivel2Sjr::Migracion.new.errors",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "9da990e4b7b9e2a6d8164b111628469ca2755ff131b3be238dd9235553c18646",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 156,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT #{(\"\" + (t[0] + \", \"))}\\n              COUNT(cast(#{\"cres1\"}.actividad_id as text) || ' '\\n              || cast(#{\"cres1\"}.fecha as text))\\n              FROM #{agrega_tabla(\"cres1\", \"public.sivel2_sjr_#{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)} AS #{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)}\")}\\n              #{(\"\" or (\"WHERE \" + (consulta_and_sinap(\"\", \"#{\"#{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)}_id\"}::integer\", \"#{(escapar_param(params, [:filtro, \"contar\"]) or pContarDef)}.id\") or \"loca\")))}\\n              #{((\"\" + (\"\" + 1.to_s)) or \"GROUP BY #{(\"\" + (\"\" + 1.to_s))} ORDER BY #{2} DESC\")}\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "respuestas"
+      },
+      "user_input": "t[0]",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "9ebabb87741e0bc73c3b18d96ca49225e5bcb63b3219818b2e9151074a45f8f6",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/msip/personas_controller.rb",
+      "line": 287,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "benef.where(\"#{cfecha} >= ?\", ((\"\" or Msip::FormatoFechaHelper.fecha_local_estandar(params[:reporterepetido][:fechaini])) or Msip::FormatoFechaHelper.inicio_semestre(Date.today).to_s)).where(\"#{cfecha} <= ?\", Msip::FormatoFechaHelper.fecha_local_estandar(params[:reporterepetido][:fechafin]))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Msip::PersonasController",
+        "method": "filtro_benef_fechas"
+      },
+      "user_input": "cfecha",
+      "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "a7117b74a6553aca23845e6c54ccf88ec6480349850dc3f0b059e1fe9cf56eca",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 634,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT derecho, atendido, (CASE WHEN atendido IS NULL THEN 0\\n            ELSE reportados END) AS atendidos, reportados\\n          FROM (SELECT #{(\"\" + (t[0] + \", \"))}\\n            COUNT(cvp1.respuesta_id) AS reportados\\n            FROM #{\"public.sivel2_sjr_derecho AS derecho, public.cvp1 LEFT OUTER JOIN public.cvp2 ON\\n    (cvp1.respuesta_id=cvp2.respuesta_id AND cvp1.derecho_id=cvp2.derecho_id)\"}\\n            #{(\"\" or (\"WHERE \" + consulta_and_sinap(\"\", \"cvp1.derecho_id\", \"derecho.id\")))}\\n            #{((\"\" + (\"\" + 1.to_s)) or \"GROUP BY #{(\"\" + (\"\" + 1.to_s))} ORDER BY 1, 2\")}) AS s\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "vacios"
+      },
+      "user_input": "t[0]",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "ac10fc4e5295bb1ac4766422e82ea46015f8047fc51dd6a4f685615d05a09eca",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 964,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT victima.caso_id, persona.id AS persona,\\n        persona.sexo, rangoedad.nombre as rangoedad,\\n        COUNT(desplazamiento.id) as cuenta\\n      FROM sivel2_gen_victima AS victima,\\n        msip_persona AS persona,\\n        sivel2_sjr_desplazamiento AS desplazamiento,\\n        sivel2_gen_rangoedad AS rangoedad,\\n        sivel2_sjr_casosjr AS casosjr\\n      WHERE #{(((((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))) or consulta_and((((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))), \"persona.sexo\", escapar_param(params, [:filtro, \"bussexo\"]))) or consulta_and(((((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))) or consulta_and((((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"casosjr.fecharec\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))), \"persona.sexo\", escapar_param(params, [:filtro, \"bussexo\"]))), \"victima.rangoedad_id\", escapar_param(params, [:filtro, \"busrangoedad_id\"]).to_i))}\\n      GROUP BY 1, 2, 3, 4 ORDER BY #{(\"3, 5 DESC, 1\" or if (escapar_param(params, [:filtro, \"ordenar\"]) == \"EDAD\") then\n  \"4, 5 DESC, 1\"\nelse\n  \"5 DESC, 1\"\nend)};\\n      \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "desplazamientos"
+      },
+      "user_input": "consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(consulta_and_sinap(\"\", \"victima.caso_id\", \"desplazamiento.caso_id\"), \"victima.persona_id\", \"persona.id\"), \"victima.rangoedad_id\", \"rangoedad.id\"), \"casosjr.caso_id\", \"desplazamiento.caso_id\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "afa612b558d213bb78c8d07c9768451b7181043faf8f8dd8331e2d029dcc1148",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/helpers/conteos_helper.rb",
+      "line": 339,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"      DROP VIEW IF EXISTS cor1440_gen_vista_resumentpob CASCADE;\\n      CREATE VIEW cor1440_gen_vista_resumentpob AS (\\n      SELECT * FROM (SELECT a.id AS actividad_id, ARRAY_TO_STRING(ARRAY(\\n            SELECT rangoedadac_id::text || ' ' || coalesce(fr::text,'0')\\n            || ' ' || coalesce(mr::text, '0') || ' ' || coalesce(s::text, '0')\\n            || ' ' || coalesce(i::text, '0')\\n            FROM cor1440_gen_actividad_rangoedadac\\n            WHERE actividad_id=a.id\\n            ORDER BY rangoedadac_id), ' | ') AS tpob\\n      FROM cor1440_gen_actividad AS a) AS sub\\n      WHERE sub.tpob <> ''\\n      ORDER BY 1\\n      );\\n\\n      DROP VIEW IF EXISTS cor1440_gen_vista_asist_rangoe_sexo CASCADE;\\n      CREATE VIEW cor1440_gen_vista_asist_rangoe_sexo AS (\\n      SELECT actividad_id, rangoedadac_id, sexo, count(persona_id) AS cuenta\\n      FROM (SELECT sub.actividad_id, sub.persona_id, sexo, re.id AS rangoedadac_id\\n      FROM (SELECT asi.actividad_id, persona_id, p.sexo,\\n        msip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac,\\n          extract(year from a.fecha)::integer,\\n          extract(month from a.fecha)::integer,\\n          extract(day from a.fecha)::integer\\n        ) AS edad FROM  cor1440_gen_asistencia AS asi\\n        JOIN msip_persona AS p ON p.id=asi.persona_id\\n        JOIN cor1440_gen_actividad AS a ON a.id=asi.actividad_id) AS sub\\n      JOIN cor1440_gen_rangoedadac AS re ON (re.id = 7 AND sub.edad IS NULL) OR\\n        (re.id <> 7 AND re.limiteinferior<= sub.edad AND\\n          (re.limitesuperior IS NULL OR sub.edad <= re.limitesuperior))) AS sub2\\n      GROUP BY 1,2,3 ORDER BY 1, 2, 3\\n      );\\n\\n      DROP VIEW IF EXISTS cor1440_gen_vista_tpoblacion_de_asist;\\n      CREATE VIEW cor1440_gen_vista_tpoblacion_de_asist AS (\\n      SELECT actividad_id, rangoedadac_id, coalesce(fn, 0) AS f,\\n        coalesce(mn, 0) AS m, coalesce(sn, 0) AS s, coalesce(inum, 0) AS i\\n      FROM (\\n        SELECT DISTINCT actividad_id, rangoedadac_id, (SELECT cuenta\\n          FROM cor1440_gen_vista_asist_rangoe_sexo AS i\\n          WHERE i.actividad_id=v.actividad_id\\n          AND i.rangoedadac_id=v.rangoedadac_id\\n          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_femenino]}' \\n            LIMIT 1) AS fn, (SELECT cuenta\\n          FROM cor1440_gen_vista_asist_rangoe_sexo AS i\\n          WHERE i.actividad_id=v.actividad_id\\n          AND i.rangoedadac_id=v.rangoedadac_id\\n          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_masculino]}' \\n            LIMIT 1) AS mn, (SELECT cuenta\\n          FROM cor1440_gen_vista_asist_rangoe_sexo AS i\\n          WHERE i.actividad_id=v.actividad_id\\n          AND i.rangoedadac_id=v.rangoedadac_id\\n          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_sininformacion]}'\\n            LIMIT 1) AS sn, (SELECT cuenta\\n          FROM cor1440_gen_vista_asist_rangoe_sexo AS i\\n          WHERE i.actividad_id=v.actividad_id\\n          AND i.rangoedadac_id=v.rangoedadac_id\\n          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_intersexual]}' \\n            LIMIT 1) AS inum\\n        FROM cor1440_gen_vista_asist_rangoe_sexo AS v\\n      ) AS sub\\n      );\\n\\n      DROP MATERIALIZED VIEW IF EXISTS cor1440_gen_vista_resumentpob2;\\n      CREATE MATERIALIZED VIEW cor1440_gen_vista_resumentpob2 AS (\\n      SELECT * FROM (SELECT a.id as actividad_id, ARRAY_TO_STRING(ARRAY(\\n            SELECT rangoedadac_id::text || ' ' || coalesce(f::text,'0')\\n              || ' ' || coalesce(m::text, '0') \\n              || ' ' || coalesce(s::text, '0')\\n              || ' ' || coalesce(i::text, '0')\\n            FROM cor1440_gen_vista_tpoblacion_de_asist\\n            WHERE actividad_id=a.id\\n            ORDER BY rangoedadac_id), ' | ') AS tpob\\n      FROM cor1440_gen_actividad AS a) AS sub\\n      WHERE sub.tpob <> ''\\n      ORDER BY 1\\n      );\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ConteosHelper",
+        "method": "arreglar_tablas_poblacion_desde_2020"
+      },
+      "user_input": "Msip::Persona.convencion_sexo[:sexo_femenino]",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "b111de3bb1ff1e22274c71e69105b0a357b35ff68876b5c1024c6fb0b90d8928",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_gen/validarcasos_controller.rb",
+      "line": 40,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "casos.where(\"#{campo} = ?\", params[:validarcaso][:oficina_id].to_i)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Gen::ValidarcasosController",
+        "method": "filtro_oficina"
+      },
+      "user_input": "campo",
+      "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "b602a3d7829ab2f654a3af865318784660f5f016666a1961392e7d373d9c367c",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/cor1440_gen/benefactividadpf.rb",
+      "line": 135,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"DROP MATERIALIZED VIEW IF EXISTS cor1440_gen_benefactividadpf;CREATE MATERIALIZED VIEW cor1440_gen_benefactividadpf AS   #{Benefactividadpf.subasis((((((\"TRUE AND be.actividad_oficina IN (#{Msip::Oficina.where(:id => oficina_ids).pluck(:nombre).map do\n \"'#{Msip::SqlHelper.escapar(o)}'\"\n end.join(\",\")})\" << \" AND be.actividad_id IN\\n        (SELECT actividad_id FROM cor1440_gen_actividad_proyectofinanciero\\n          WHERE proyectofinanciero_id IN (#{pf_ids.map(&:to_i).join(\",\")}))\") << \" AND be.actividad_id IN\\n        (SELECT actividad_id FROM cor1440_gen_actividad_actividadpf\\n          WHERE actividadpf_id IN (#{actividadpf_ids.map(&:to_i).join(\",\")}))\") << \" AND be.actividad_fecha >= '#{Msip::SqlHelper.escapar(fechaini)}'\") << \" AND be.actividad_fecha <= '#{Msip::SqlHelper.escapar(fechafin)}'\") << \" AND be.actividad_id IN (#{actividad_ids.join(\",\")})\"), Cor1440Gen::Actividadpf.where(:proyectofinanciero_id => pf_ids))};\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Cor1440Gen::Benefactividadpf",
+        "method": "Cor1440Gen::Benefactividadpf.crea_consulta"
+      },
+      "user_input": "Msip::Oficina.where(:id => oficina_ids).pluck(:nombre)",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "bbbbbf09ff7334dfc5274942012eb7c1f9b9f52995b4aebf5aa6baa016a12671",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/conteos_controller.rb",
+      "line": 775,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE OR REPLACE VIEW #{\"cmunex\"} AS (\\n        SELECT (SELECT nombre FROM public.msip_pais WHERE id=pais_id) AS pais,\\n        (SELECT nombre FROM public.msip_departamento\\n          WHERE id=ubicacion.departamento_id) AS departamento,\\n        (SELECT nombre FROM public.msip_municipio\\n          WHERE id=ubicacion.municipio_id) AS municipio,\\n        CASE WHEN (casosjr.contacto_id = victima.persona_id) THEN 1 ELSE 0 END\\n          AS contacto,\\n        CASE WHEN (casosjr.contacto_id<>victima.persona_id) THEN 1 ELSE 0 END\\n          AS beneficiario,\\n        1 as npersona\\n        FROM public.sivel2_sjr_desplazamiento AS desplazamiento,\\n          msip_ubicacionpre AS ubicacion,\\n          sivel2_gen_victima AS victima,\\n          sivel2_sjr_casosjr AS casosjr\\n        WHERE #{consulta_and_sinap((((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")) or consulta_and(((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")) or consulta_and((consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\") or consulta_and(consulta_and_sinap(consulta_and_sinap(\"\", \"casosjr.caso_id\", \"desplazamiento.caso_id\"), \"desplazamiento.caso_id\", \"victima.caso_id\"), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechaini\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \">=\")), \"fechaexpulsion\", DateTime.strptime(escapar_param(params, [:filtro, \"fechafin\"]), \"%Y-%m-%d\").strftime(\"%Y-%m-%d\"), \"<=\")), \"casosjr.oficina_id\", escapar_param(params, [:filtro, \"oficina_id\"]))), \"expulsionubicacionpre_id\", \"ubicacion.id\")}\\n        )\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::ConteosController",
+        "method": "municipios"
+      },
+      "user_input": "params",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "c3059b7e61c51ca914871c2c9588fae90f389454eaae8b8fcf53403df1aea048",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/sivel2_sjr/casos_controller.rb",
+      "line": 241,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "@conscaso.where(\"caso_id IN (SELECT caso_id FROM\\n                        public.sivel2_gen_caso_etiqueta WHERE\\n                        sivel2_gen_caso_etiqueta.etiqueta_id IN\\n                          (#{current_usuario.etiqueta.map(&:id).join(\",\")}))\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Sivel2Sjr::CasosController",
+        "method": "inicializa_index"
+      },
+      "user_input": "current_usuario.etiqueta.map(&:id).join(\",\")",
+      "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "eacc57bee82a96c2968cb185cb038f426733c31a4a0a182adae400dff40b353c",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/helpers/conteos_helper.rb",
+      "line": 498,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"        -- Suponemos que cor1440_gen_rangoedadac es consistente\\n        CREATE OR REPLACE PROCEDURE cor1440_gen_recalcular_poblacion_actividad(\\n          par_actividad_id BIGINT)\\n        LANGUAGE plpgsql\\n        AS $cuerpo$\\n        DECLARE\\n          rangos INTEGER ARRAY;\\n          idrangos INTEGER ARRAY;\\n          a_dia INTEGER;\\n          a_mes INTEGER;\\n          a_anio INTEGER;\\n          asistente RECORD;\\n          edad INTEGER;\\n          rango_id INTEGER;\\n        BEGIN\\n          RAISE NOTICE 'actividad_id es %', par_actividad_id;\\n          SELECT EXTRACT(DAY FROM fecha) INTO a_dia FROM cor1440_gen_actividad\\n            WHERE id=par_actividad_id LIMIT 1;\\n          RAISE NOTICE 'a_dia es %', a_dia;\\n          SELECT EXTRACT(MONTH FROM fecha) INTO a_mes FROM cor1440_gen_actividad\\n            WHERE id=par_actividad_id;\\n          RAISE NOTICE 'a_mes es %', a_mes;\\n          SELECT EXTRACT(YEAR FROM fecha) INTO a_anio FROM cor1440_gen_actividad\\n            WHERE id=par_actividad_id;\\n          RAISE NOTICE 'a_anio es %', a_anio;\\n\\n          DELETE FROM cor1440_gen_actividad_rangoedadac\\n            WHERE actividad_id=par_actividad_id\\n          ;\\n\\n          FOR rango_id IN SELECT id FROM cor1440_gen_rangoedadac\\n            WHERE fechadeshabilitacion IS NULL\\n          LOOP\\n            INSERT INTO cor1440_gen_actividad_rangoedadac\\n              (actividad_id, rangoedadac_id, mr, fr, s, i, created_at, updated_at)\\n              (SELECT par_actividad_id, rango_id, 0, 0, 0, 0, NOW(), NOW());\\n          END LOOP;\\n\\n          FOR asistente IN SELECT p.id, p.anionac, p.mesnac, p.dianac, p.sexo\\n            FROM cor1440_gen_asistencia AS asi\\n            JOIN cor1440_gen_actividad AS ac ON ac.id=asi.actividad_id\\n            JOIN msip_persona AS p ON p.id=asi.persona_id\\n            WHERE ac.id=par_actividad_id\\n          LOOP\\n            RAISE NOTICE 'persona_id es %', asistente.id;\\n            edad = msip_edad_de_fechanac_fecharef(asistente.anionac, \\n              asistente.mesnac, asistente.dianac, a_anio, a_mes, a_dia);\\n            RAISE NOTICE 'edad es %', edad;\\n            SELECT id INTO rango_id FROM cor1440_gen_rangoedadac WHERE\\n              fechadeshabilitacion IS NULL AND\\n              limiteinferior <= edad AND \\n                (limitesuperior IS NULL OR edad <= limitesuperior) LIMIT 1;\\n            IF rango_id IS NULL THEN\\n              rango_id := 7;\\n            END IF;\\n            RAISE NOTICE 'rango_id es %', rango_id;\\n\\n            CASE asistente.sexo\\n              WHEN '#{Msip::Persona.sexo_opciones[:sexo_femenino]}' THEN\\n                UPDATE cor1440_gen_actividad_rangoedadac SET fr = fr + 1\\n                  WHERE actividad_id=par_actividad_id\\n                  AND rangoedadac_id=rango_id;\\n              WHEN '#{Msip::Persona.sexo_opciones[:sexo_masculino]}' THEN\\n                UPDATE cor1440_gen_actividad_rangoedadac SET mr = mr + 1\\n                  WHERE actividad_id=par_actividad_id\\n                  AND rangoedadac_id=rango_id;\\n              WHEN '#{Msip::Persona.sexo_opciones[:sexo_intersexual]}' THEN\\n                UPDATE cor1440_gen_actividad_rangoedadac SET i = i + 1\\n                  WHERE actividad_id=par_actividad_id\\n                  AND rangoedadac_id=rango_id;\\n              ELSE\\n                UPDATE cor1440_gen_actividad_rangoedadac SET s = s + 1\\n                  WHERE actividad_id=par_actividad_id\\n                  AND rangoedadac_id=rango_id;\\n            END CASE;\\n          END LOOP;\\n\\n          DELETE FROM cor1440_gen_actividad_rangoedadac\\n            WHERE actividad_id = par_actividad_id\\n            AND mr = 0 AND fr = 0 AND i = 0 AND s = 0\\n          ;\\n          RETURN;\\n        END;\\n        $cuerpo$;\\n\\n\\n        CREATE OR REPLACE FUNCTION cor1440_gen_actividad_cambiada()\\n          RETURNS trigger AS $ac$\\n          BEGIN\\n            ASSERT(TG_OP = 'UPDATE');\\n            ASSERT(NEW.id = OLD.id);\\n            CALL cor1440_gen_recalcular_poblacion_actividad(NEW.id);\\n            RETURN NULL;\\n          END ;\\n        $ac$ LANGUAGE plpgsql;\\n\\n        CREATE OR REPLACE FUNCTION cor1440_gen_asistencia_cambiada_creada_eliminada()\\n          RETURNS trigger AS $ac$\\n          BEGIN\\n            CASE\\n              WHEN (TG_OP = 'UPDATE') THEN\\n                ASSERT(NEW.id = OLD.id);\\n                CALL cor1440_gen_recalcular_poblacion_actividad(NEW.actividad_id);\\n              WHEN (TG_OP = 'INSERT') THEN\\n                CALL cor1440_gen_recalcular_poblacion_actividad(NEW.actividad_id);\\n              ELSE -- DELETE\\n                CALL cor1440_gen_recalcular_poblacion_actividad(OLD.actividad_id);\\n            END CASE;\\n            RETURN NULL;\\n          END;\\n        $ac$ LANGUAGE plpgsql;\\n\\n        CREATE OR REPLACE FUNCTION cor1440_gen_persona_cambiada()\\n          RETURNS trigger AS $ac$\\n        DECLARE\\n          aid INTEGER;\\n        BEGIN\\n          ASSERT(TG_OP = 'UPDATE');\\n          ASSERT(NEW.id = OLD.id);\\n          FOR aid IN \\n            SELECT actividad_id FROM cor1440_gen_asistencia \\n              WHERE persona_id=NEW.id\\n          LOOP\\n            CALL cor1440_gen_recalcular_poblacion_actividad(aid);\\n          END LOOP;\\n          RETURN NULL;\\n        END ;\\n        $ac$ LANGUAGE plpgsql;\\n\\n\\n        -- Solo agregamos trigger al cambiar actividad porque:\\n        -- Al crearse no habr\\u00E1 asistentes\\n        -- Cuando se elimine, se eliminar\\u00E1n los asistentes que tendr\\u00E1\\n        -- triggers al eliminar\\n        CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_actividad\\n          AFTER UPDATE ON cor1440_gen_actividad\\n          FOR EACH ROW EXECUTE FUNCTION cor1440_gen_actividad_cambiada()\\n        ;\\n\\n        CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_asistencia\\n          AFTER INSERT OR UPDATE OR DELETE ON cor1440_gen_asistencia\\n          FOR EACH ROW EXECUTE FUNCTION cor1440_gen_asistencia_cambiada_creada_eliminada()\\n        ;\\n\\n        -- Solo agregamos trigger al cambiar persona porque:\\n        -- Al crearse no puede ser asistente.\\n        -- Cuando se elimine, se eliminar\\u00E1n las asistencias que ten\\u00EDa\\n        --   y eso ya disparar\\u00E1 proceso de actualizar poblacion(es).\\n        CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_persona\\n          AFTER UPDATE ON msip_persona\\n          FOR EACH ROW EXECUTE FUNCTION cor1440_gen_persona_cambiada()\\n        ;\\n\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ConteosHelper",
+        "method": "instala_calculo_poblacion_pg"
+      },
+      "user_input": "Msip::Persona.sexo_opciones[:sexo_femenino]",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "eb6773d48c2ce32365ea2c55250f77d5569483f53de3e24711d322384e4e29a1",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/views/sivel2_sjr/casos/_anexovictima.html.erb",
+      "line": 3,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "f.object.anexo_victima.where(\"tipoanexo_id IN (SELECT id FROM msip_tipoanexo WHERE nombre #{opnom} ?)\", \"CONSENTIMIENTO DE DATOS\")",
+      "render_path": null,
+      "location": {
+        "type": "template",
+        "template": "sivel2_sjr/casos/_anexovictima"
+      },
+      "user_input": "opnom",
+      "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "edfb6a4a7804c2157612222c7d24ee0b02482e5fefc88294e0c0454c53fc568b",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/msip/personas_controller.rb",
+      "line": 118,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.select_all(\"SELECT TRIM(#{(\"\" + (\"\" + :BRAKEMAN_SAFE_LITERAL))}) AS value, #{(\" persona.id \" + (\" || ';' || \" + \"char_length(#{:BRAKEMAN_SAFE_LITERAL})\"))} AS id FROM public.msip_persona AS persona JOIN public.msip_tdocumento AS tdocumento   ON persona.tdocumento_id=tdocumento.id WHERE #{\" persona.buscable @@ to_tsquery('spanish', '#{Msip::SqlHelper.cadena_a_palabras_tsquery(params[:term])}')\"} ORDER BY 1 LIMIT 20\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Msip::PersonasController",
+        "method": "index"
+      },
+      "user_input": "params[:term]",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 24,
+      "fingerprint": "fa4df271a50ae16d8f857af5bb9bc28280217e38e67d345c3e198cffd0c2de16",
+      "check_name": "UnsafeReflection",
+      "message": "Unsafe reflection method `constantize` called on parameter value",
+      "file": "app/controllers/diccionariodatos_controller.rb",
+      "line": 268,
+      "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
+      "code": "(\"Sivel2Sjr::\" + ((t[(11..-1)] or t) or t[(((params[:diccionariodatos][:motor].underscore or \".\").length + 1)..-1)]).camelize).constantize",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DiccionariodatosController",
+        "method": "presentar"
+      },
+      "user_input": "params[:diccionariodatos][:motor].underscore",
+      "confidence": "Medium",
+      "cwe_id": [
+        470
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "fe82abfe36c64e6f2c14470f40c1368f60e65996a3b4b2c6cc3deebf3c77a645",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/consbenefactcaso.rb",
+      "line": 118,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Consbenefactcaso.connection.execute(\"      DROP MATERIALIZED VIEW IF EXISTS consbenefactcaso2 CASCADE;\\n      CREATE MATERIALIZED VIEW consbenefactcaso2 AS \\n        SELECT c1.persona_id,\\n        ARRAY_AGG(DISTINCT c1.actividad_id) AS actividad_ids,\\n        ARRAY_AGG(DISTINCT c1.actividad_oficina_id) AS actividad_oficina_ids\\n        FROM (\\n          SELECT DISTINCT sub.persona_id,\\n            sub.actividad_id,\\n            sub.actividad_oficina_id\\n            FROM ( SELECT per.id AS persona_id,\\n              ac.id AS actividad_id,\\n              ac.fecha AS actividad_fecha,\\n              ac.oficina_id AS actividad_oficina_id,\\n              apf.proyectofinanciero_id AS actividad_proyectofinanciero_id,\\n              aapf.actividadpf_id AS actividad_actividadpf_id\\n              FROM msip_persona AS per\\n              LEFT JOIN cor1440_gen_asistencia asis ON per.id = asis.persona_id\\n              LEFT JOIN cor1440_gen_actividad ac ON ac.id = asis.actividad_id\\n              LEFT JOIN cor1440_gen_actividad_proyectofinanciero apf ON apf.actividad_id = ac.id\\n              LEFT JOIN cor1440_gen_actividad_actividadpf aapf ON aapf.actividad_id = ac.id\\n              LEFT JOIN cor1440_gen_actividadpf apf2 ON apf2.proyectofinanciero_id = apf.proyectofinanciero_id\\n              WHERE #{(((((\"TRUE AND ac.oficina_id IN (#{oficina_ids.map(&:to_i).join(\",\")})\" << \" AND apf.proyectofinanciero_id IN (#{pf_ids.map(&:to_i).join(\",\")})\") << \" AND aapf.actividadpf_id IN (#{actividadpf_ids.map(&:to_i).join(\",\")})\") << \" AND ac.fecha >= '#{Msip::SqlHelper.escapar(fechaini)}'\") << \" AND ac.fecha <= '#{Msip::SqlHelper.escapar(fechafin)}'\") << \" AND ac.id IN (#{actividad_ids.join(\",\")})\")}\\n          ) AS sub\\n        ) AS c1\\n      GROUP BY 1\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Consbenefactcaso",
+        "method": "Consbenefactcaso.crea_consulta"
+      },
+      "user_input": "actividad_ids.join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "7.0.2"
+}
