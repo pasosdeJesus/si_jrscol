@@ -25,8 +25,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: a2d3be7122f92ca07bb2e70c86804c4ff88528f3
-  branch: main
+  revision: d61936442377d8f122872fccd2289bd17eccbfe0
+  branch: sintema
   specs:
     cor1440_gen (2.3.0.alfa4)
       devise
@@ -38,8 +38,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 403f9716aaa9e5cd31bfce8f9e68b0be11a7553e
-  branch: main
+  revision: 36a57c306b1debb27bb4a9ddb47d10648c9e5e60
+  branch: sintema
   specs:
     heb412_gen (2.3.0.alfa4)
       mr519_gen
@@ -49,16 +49,16 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 167ca62fe3760640a5597e221c8cb10b357e9a0e
-  branch: main
+  revision: c1883c07613a25134e5d9581ff3f9c61a2f53e7d
+  branch: sintema
   specs:
     jos19 (2.2.0.beta6)
       rails (>= 7.0.4)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: b349fcdf77af47dca69c00b677ebe20d5ceba42a
-  branch: main
+  revision: 5095a7edcaacb9b48b3686a3e3d77ec685ee0eb4
+  branch: sintema
   specs:
     mr519_gen (2.3.0.alfa4)
       msip
@@ -66,8 +66,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: b249b4b886d65a0b75d3b08d28c108f73acc72bb
-  branch: main
+  revision: e4159f467a4b5a7ff794c27788c9e2e9f676a1f5
+  branch: sintema
   specs:
     msip (2.3.0.alfa4)
       cancancan (~> 3)
@@ -84,8 +84,8 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: c9a21c95b5306e39dc6b688e267e511e2dd0bb8b
-  branch: main
+  revision: de9b60ef6abbde7c93375e31d926bb71ab527963
+  branch: sintema
   specs:
     sivel2_gen (2.3.0.alfa3)
       color
@@ -169,12 +169,12 @@ GEM
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     andand (1.3.3)
-    base64 (0.2.0)
+    base64 (0.3.0)
     bcrypt (3.1.20)
-    benchmark (0.4.0)
-    bigdecimal (3.1.9)
+    benchmark (0.4.1)
+    bigdecimal (3.2.2)
     bindex (0.8.1)
-    bootsnap (1.18.4)
+    bootsnap (1.18.6)
       msgpack (~> 1.2)
     builder (3.3.0)
     camertron-eprun (1.1.1)
@@ -196,19 +196,19 @@ GEM
     choice (0.2.0)
     cldr-plurals-runtime-rb (1.1.0)
     climate_control (1.2.0)
-    color (1.8)
+    color (2.0.1)
     colorize (1.1.0)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.0)
+    connection_pool (2.5.3)
     crass (1.0.6)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
-    csv (3.3.4)
-    cuprite (0.15.1)
+    csv (3.3.5)
+    cuprite (0.17)
       capybara (~> 3.0)
-      ferrum (~> 0.15.0)
+      ferrum (~> 0.17.0)
     date (3.4.1)
-    debug (1.10.0)
+    debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
     devise (4.9.4)
@@ -217,7 +217,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-i18n (1.13.0)
+    devise-i18n (1.14.0)
       devise (>= 4.9.0)
       rails-i18n
     docile (1.4.1)
@@ -225,31 +225,42 @@ GEM
     dotenv-rails (3.1.8)
       dotenv (= 3.1.8)
       railties (>= 6.1)
-    drb (2.2.1)
+    drb (2.2.3)
+    erb (5.0.1)
     erubi (1.13.1)
-    ferrum (0.15)
+    ferrum (0.17.1)
       addressable (~> 2.5)
+      base64 (~> 0.2)
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (4.30.2)
+    google-protobuf (4.31.1)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-aarch64-linux)
+    google-protobuf (4.31.1-aarch64-linux-gnu)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-arm64-darwin)
+    google-protobuf (4.31.1-aarch64-linux-musl)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-x86-linux)
+    google-protobuf (4.31.1-arm64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-x86_64-darwin)
+    google-protobuf (4.31.1-x86-linux-gnu)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.2-x86_64-linux)
+    google-protobuf (4.31.1-x86-linux-musl)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-x86_64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-x86_64-linux-gnu)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-x86_64-linux-musl)
       bigdecimal
       rake (>= 13)
     htmlentities (4.3.4)
@@ -266,9 +277,9 @@ GEM
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
     kgio (2.11.4)
-    libxml-ruby (5.0.3)
+    libxml-ruby (5.0.4)
     logger (1.7.0)
-    loofah (2.24.0)
+    loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -277,16 +288,16 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
-    matrix (0.4.2)
-    mime-types (3.6.2)
+    matrix (0.4.3)
+    mime-types (3.7.0)
       logger
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2025.0408)
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2025.0708)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.8)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     msgpack (1.8.0)
-    net-imap (0.5.6)
+    net-imap (0.5.9)
       date
       net-protocol
     net-pop (0.1.2)
@@ -343,14 +354,14 @@ GEM
       activesupport (>= 7.0.0)
       rack
       railties (>= 7.0.0)
-    psych (5.2.3)
+    psych (5.2.6)
       date
       stringio
-    public_suffix (6.0.1)
+    public_suffix (6.0.2)
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.13)
+    rack (2.2.17)
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.2.0)
@@ -376,7 +387,7 @@ GEM
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-    rails-dom-testing (2.2.0)
+    rails-dom-testing (2.3.0)
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
@@ -400,8 +411,9 @@ GEM
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
     raindrops (0.20.1)
-    rake (13.2.1)
-    rdoc (6.13.1)
+    rake (13.3.0)
+    rdoc (6.14.2)
+      erb
       psych (>= 4.0.0)
     redcarpet (3.6.1)
     regexp_parser (2.10.0)
@@ -429,14 +441,14 @@ GEM
     simplecov_json_formatter (0.1.4)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
-    stringio (3.1.6)
+    stringio (3.1.7)
     terrapin (1.1.0)
       climate_control
     thor (1.3.2)
     timeout (0.4.3)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
-    turbo-rails (2.0.13)
+    turbo-rails (2.0.16)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
     twitter_cldr (6.14.0)
@@ -459,14 +471,14 @@ GEM
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
     webrick (1.9.1)
-    websocket-driver (0.7.7)
+    websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     will_paginate (4.0.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.2)
+    zeitwerk (2.7.3)
 
 PLATFORMS
   aarch64-linux-gnu

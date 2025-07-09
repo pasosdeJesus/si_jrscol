@@ -2798,13 +2798,168 @@ CREATE MATERIALIZED VIEW public.consninovictima AS
 
 
 --
+-- Name: cor1440_gen_actividad_rangoedadac; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_actividad_rangoedadac (
+    id integer NOT NULL,
+    actividad_id integer,
+    rangoedadac_id integer,
+    ml integer,
+    mr integer,
+    fl integer,
+    fr integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    s integer,
+    i integer
+);
+
+
+--
+-- Name: cor1440_gen_rangoedadac; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cor1440_gen_rangoedadac (
+    id integer NOT NULL,
+    nombre character varying,
+    limiteinferior integer,
+    limitesuperior integer,
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000)
+);
+
+
+--
+-- Name: discapacidad; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.discapacidad (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: perfilmigracion; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.perfilmigracion (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sivel2_sjr_statusmigratorio; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sivel2_sjr_statusmigratorio (
+    id integer NOT NULL,
+    nombre character varying(100),
+    fechacreacion date,
+    fechadeshabilitacion date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    observaciones character varying(5000),
+    formupersona boolean
+);
+
+
+--
 -- Name: consultabd; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
 CREATE MATERIALIZED VIEW public.consultabd AS
  SELECT row_number() OVER () AS numfila,
-    numero
-   FROM ( SELECT 1 AS numero) s
+    id,
+    persona_id,
+    caso_id,
+    id_asistencia,
+    actividad_id,
+    fecha,
+    nombre_actividad,
+    sexo,
+    anio_nacimiento,
+    mes_nacimiento,
+    dia_nacimiento,
+    nombres,
+    apellidos,
+    documento_identidad,
+    numero_documento,
+    telefono,
+    ultimo_perfil,
+    ultimadiscapacidad_id,
+    nombre_discapacidad,
+    proyectofinanciero_id,
+    nombre_proyecto,
+    nombre_oficina,
+    oficina_id,
+    actividadpf_id,
+    nombrecorto,
+    titulo,
+    objetivo,
+    resultado,
+    observaciones
+   FROM ( SELECT b.id,
+            b.persona_id,
+            min(v.caso_id) AS caso_id,
+            min(b.id) AS id_asistencia,
+            min(b.actividad_id) AS actividad_id,
+            min(c.fecha) AS fecha,
+            min((c.nombre)::text) AS nombre_actividad,
+            min(d.sexo) AS sexo,
+            min(d.anionac) AS anio_nacimiento,
+            min(d.mesnac) AS mes_nacimiento,
+            min(d.dianac) AS dia_nacimiento,
+            min((d.nombres)::text) AS nombres,
+            min((d.apellidos)::text) AS apellidos,
+            min((k.nombre)::text) AS documento_identidad,
+            min((d.numerodocumento)::text) AS numero_documento,
+            min((b.telefono)::text) AS telefono,
+            min((l.nombre)::text) AS ultimo_perfil,
+            min(d.ultimadiscapacidad_id) AS ultimadiscapacidad_id,
+            min((w.nombre)::text) AS nombre_discapacidad,
+            min(a.proyectofinanciero_id) AS proyectofinanciero_id,
+            min((h.nombre)::text) AS nombre_proyecto,
+            min((j.nombre)::text) AS nombre_oficina,
+            min(c.oficina_id) AS oficina_id,
+            min(f.actividadpf_id) AS actividadpf_id,
+            min((g.nombrecorto)::text) AS nombrecorto,
+            min((g.titulo)::text) AS titulo,
+            min((c.objetivo)::text) AS objetivo,
+            min((c.resultado)::text) AS resultado,
+            min((c.observaciones)::text) AS observaciones
+           FROM ((((((((((((((public.cor1440_gen_asistencia b
+             JOIN public.cor1440_gen_actividad c ON ((b.actividad_id = c.id)))
+             JOIN public.msip_persona d ON ((b.persona_id = d.id)))
+             JOIN public.msip_tdocumento k ON ((d.tdocumento_id = k.id)))
+             LEFT JOIN public.perfilmigracion l ON ((d.ultimoestatusmigratorio_id = l.id)))
+             JOIN public.cor1440_gen_actividad_proyectofinanciero a ON ((b.actividad_id = a.actividad_id)))
+             JOIN public.cor1440_gen_proyectofinanciero h ON ((a.proyectofinanciero_id = h.id)))
+             JOIN public.msip_oficina j ON ((c.oficina_id = j.id)))
+             JOIN public.cor1440_gen_actividad_actividadpf f ON ((b.actividad_id = f.actividad_id)))
+             JOIN public.cor1440_gen_actividadpf g ON ((f.actividadpf_id = g.id)))
+             LEFT JOIN public.sivel2_gen_victima v ON ((b.persona_id = v.persona_id)))
+             LEFT JOIN public.discapacidad w ON ((w.id = d.ultimadiscapacidad_id)))
+             JOIN public.cor1440_gen_actividad_rangoedadac are ON ((are.actividad_id = b.actividad_id)))
+             LEFT JOIN public.cor1440_gen_rangoedadac re ON ((re.id = are.rangoedadac_id)))
+             LEFT JOIN public.sivel2_sjr_statusmigratorio st ON ((st.id = d.ultimoestatusmigratorio_id)))
+          WHERE ((a.proyectofinanciero_id = 317) AND (f.actividadpf_id = ANY (ARRAY[(8282)::bigint, (67786)::bigint, (68263)::bigint, (68281)::bigint, (68179)::bigint, (68277)::bigint, (67783)::bigint, (68267)::bigint, (68270)::bigint, (67779)::bigint, (67781)::bigint, (68269)::bigint, (68179)::bigint, (67782)::bigint, (68268)::bigint, (68276)::bigint, (67585)::bigint, (67780)::bigint, (68271)::bigint, (68275)::bigint, (68265)::bigint, (67784)::bigint, (68273)::bigint, (67584)::bigint, (68284)::bigint, (68179)::bigint, (67785)::bigint, (67583)::bigint, (68274)::bigint, (68278)::bigint, (68179)::bigint])))
+          GROUP BY b.id, b.persona_id, d.sexo, d.nombres, d.apellidos, k.nombre, d.numerodocumento, b.telefono, l.nombre, d.ultimadiscapacidad_id, a.proyectofinanciero_id, h.nombre, j.nombre, c.oficina_id, f.actividadpf_id, g.nombrecorto, g.titulo, c.objetivo, c.resultado) s
   WITH NO DATA;
 
 
@@ -2898,25 +3053,6 @@ CREATE SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq
 --
 
 ALTER SEQUENCE public.cor1440_gen_actividad_proyecto_id_seq OWNED BY public.cor1440_gen_actividad_proyecto.id;
-
-
---
--- Name: cor1440_gen_actividad_rangoedadac; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_actividad_rangoedadac (
-    id integer NOT NULL,
-    actividad_id integer,
-    rangoedadac_id integer,
-    ml integer,
-    mr integer,
-    fl integer,
-    fr integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    s integer,
-    i integer
-);
 
 
 --
@@ -4072,23 +4208,6 @@ ALTER SEQUENCE public.cor1440_gen_proyectofinanciero_usuario_id_seq OWNED BY pub
 
 
 --
--- Name: cor1440_gen_rangoedadac; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cor1440_gen_rangoedadac (
-    id integer NOT NULL,
-    nombre character varying,
-    limiteinferior integer,
-    limitesuperior integer,
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000)
-);
-
-
---
 -- Name: cor1440_gen_rangoedadac_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -4601,21 +4720,6 @@ CREATE SEQUENCE public.dificultadmigracion_id_seq
 --
 
 ALTER SEQUENCE public.dificultadmigracion_id_seq OWNED BY public.dificultadmigracion.id;
-
-
---
--- Name: discapacidad; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.discapacidad (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
 
 
 --
@@ -7094,21 +7198,6 @@ CREATE MATERIALIZED VIEW public.nmujeres AS
   GROUP BY (p).nombre
   ORDER BY (count((p).caso))
   WITH NO DATA;
-
-
---
--- Name: perfilmigracion; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.perfilmigracion (
-    id bigint NOT NULL,
-    nombre character varying(500) NOT NULL,
-    observaciones character varying(5000),
-    fechacreacion date NOT NULL,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
 
 
 --
@@ -9778,22 +9867,6 @@ CREATE TABLE public.sivel2_sjr_rolfamilia (
     updated_at timestamp without time zone,
     observaciones character varying(5000),
     CONSTRAINT rolfamilia_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
-);
-
-
---
--- Name: sivel2_sjr_statusmigratorio; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sivel2_sjr_statusmigratorio (
-    id integer NOT NULL,
-    nombre character varying(100),
-    fechacreacion date,
-    fechadeshabilitacion date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    observaciones character varying(5000),
-    formupersona boolean
 );
 
 
