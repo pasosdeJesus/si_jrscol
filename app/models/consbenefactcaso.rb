@@ -62,7 +62,7 @@ class Consbenefactcaso < ActiveRecord::Base
       return
     end
 
-    wherebe = "TRUE"
+    wherebe = "TRUE".dup
     if oficina_ids && oficina_ids.count > 0
       wherebe << " AND ac.oficina_id IN " \
         "(#{oficina_ids.map(&:to_i).join(",")})"
