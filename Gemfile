@@ -20,8 +20,6 @@ gem "cocoon",
 
 gem "csv"
 
-gem "cssbundling-rails"
-
 gem "devise" # Autenticación y roles
 
 gem "devise-i18n"
