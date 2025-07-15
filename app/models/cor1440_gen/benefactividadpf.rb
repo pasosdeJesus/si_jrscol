@@ -90,7 +90,7 @@ module Cor1440Gen
       ;
       SQL
 
-      wherebe = "TRUE"
+      wherebe = "TRUE".dup
       if oficina_ids && oficina_ids.count > 0
         obof = Msip::Oficina.where(id: oficina_ids)
         lof = obof.pluck(:nombre).map { |o| "'#{Msip::SqlHelper.escapar(o)}'" }
