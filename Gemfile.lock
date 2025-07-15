@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 7f64ced581d97671f9aed07168cacb8983121ca7
+  revision: a8b8a0cc1ceb9b5af4ec91b0ea8e5d06f383a1ca
   branch: v2.2
   specs:
     cor1440_gen (2.2.0)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 26485276ccb87320e1ade763743476bb6f9a14d4
+  revision: fc627527af3e1312120bbe286c1fed9c6f8f038b
   branch: v2.2
   specs:
     heb412_gen (2.2.0)
@@ -49,14 +49,14 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: d4167d95b79b49516b08bf83b79feba35ae7743a
+  revision: 9d7a03770dd4add5731c98fe4181b5437e2dc267
   branch: v2.2
   specs:
     jos19 (2.2.0)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 453c304d86facadea598c96482f659c44ceb71b9
+  revision: 062d13aedecabcf089daa7251db802c05f164ccd
   branch: v2.2
   specs:
     mr519_gen (2.2.0)
@@ -65,7 +65,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 32311f4d5230d873dc4eabcb613325296c64fe6d
+  revision: 14192081e94b0fa45cec5eb61598ae0cff87c4b3
   branch: v2.2
   specs:
     msip (2.2.0)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: 1b47e7a417d080420b4b462002126ad06f5fd49a
+  revision: cf323583cb12a4ad2d486985092932636f7d2fa4
   branch: v2.2
   specs:
     sivel2_gen (2.2.0)
@@ -205,7 +205,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    color (1.8)
+    color (2.0.1)
     colorize (1.1.0)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
@@ -276,7 +276,7 @@ GEM
     htmlentities (4.3.4)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    io-console (0.8.0)
+    io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
@@ -305,7 +305,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0624)
+    mime-types-data (3.2025.0708)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.25.5)
@@ -424,7 +424,7 @@ GEM
     rainbow (3.1.1)
     raindrops (0.20.1)
     rake (13.3.0)
-    rdoc (6.14.1)
+    rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
     redcarpet (3.6.1)
@@ -438,7 +438,7 @@ GEM
     rspreadsheet (0.5.3)
       andand (>= 1.3)
       rubyzip (>= 1.3)
-    rubocop (1.77.0)
+    rubocop (1.78.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -497,10 +497,10 @@ GEM
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.7)
-    terrapin (1.1.0)
+    terrapin (1.1.1)
       climate_control
     thor (1.3.2)
-    tilt (2.6.0)
+    tilt (2.6.1)
     timeout (0.4.3)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
