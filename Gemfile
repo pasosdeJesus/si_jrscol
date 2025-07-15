@@ -18,15 +18,11 @@ gem "colorize" # Colores en terminal
 
 gem "csv"
 
-gem "cssbundling-rails"
-
 gem "devise" # Autenticación y roles
 
 gem "devise-i18n"
 
 gem "jbuilder" # API JSON facil. Ver: https://github.com/rails/jbuilder
-
-gem "jsbundling-rails"
 
 gem "kt-paperclip",                 # Anexos
   git: "https://github.com/kreeti/kt-paperclip.git"
@@ -55,7 +51,7 @@ gem "prawn-table"
 
 gem "prism"
 
-gem "propshaft"
+gem "sprockets-rails"
 
 gem "rack", "~> 2"
 
