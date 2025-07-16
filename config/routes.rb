@@ -123,12 +123,9 @@ Rails.application.routes.draw do
   get "/consultabd" => "consultabd#index",
     as: :consultabd
 
-<<<<<<< HEAD
   post "/consultabd" => "consultabd#index",
     as: :consultabd_post
 
-=======
->>>>>>> d34f0726 (Tras ejecucion de brakeman y rubocop. Avanza #1131)
   get "/diccionariodatos" => "diccionariodatos#presentar",
     as: :diccionariodatos
   post "/diccionariodatos" => "diccionariodatos#presentar",

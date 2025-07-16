@@ -51,7 +51,6 @@ test:
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter -v
     - ./cc-test-reporter before-build
-    - cd test/dummy
     - cp .env.gitlab .env
     - cp db/structure.sql db/structure.sql.copia 
     - sed -e 's/provider = libc,//g;s/SET default_table_access_method.*/-- &/g' db/structure.sql.copia > db/structure.sql 
