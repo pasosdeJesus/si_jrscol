@@ -165,12 +165,13 @@ class Consbenefactcaso < ActiveRecord::Base
         LEFT JOIN sivel2_gen_victima AS victima ON
           victima.persona_id = persona.id
         LEFT JOIN sivel2_sjr_victimasjr AS victimasjr ON
-          victimasjr.victima_id = victima.id  AND
-          victimasjr.fechadesagregacion IS NULL
+          victimasjr.victima_id = victima.id
         LEFT JOIN sivel2_gen_caso AS caso ON
           victima.caso_id = caso.id
         LEFT JOIN sivel2_sjr_casosjr AS casosjr ON
           casosjr.caso_id = caso.id
+        WHERE
+          victimasjr.fechadesagregacion IS NULL
     SQL
 
 
