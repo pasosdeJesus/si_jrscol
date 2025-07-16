@@ -53,7 +53,7 @@ class Consultabd < ActiveRecord::Base
     else
       maxcons = Msip::Bitacora.find(maxid)
       detalle_reg = JSON.parse(maxcons.detalle)
-      if detalle_reg[:consultasql] != econsultasql
+      if detalle_reg["consultasql"] != econsultasql
         forzar_crear = true
       end
     end

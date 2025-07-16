@@ -118,7 +118,7 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
         .map(&:to_i)
     end
 
-    Consbenefactcaso.crea_consulta(
+    Consbenefactcaso.refrescar_consulta(
       nil,
       @contarb_pfid,
       @contarb_actividadpfid,
@@ -126,6 +126,10 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
       @contarb_fechaini,
       @contarb_fechafin,
       @contarb_actividad_ids,
+      request.remote_ip,
+      current_usuario.id,
+      request.url,
+      params,
     )
   end
 
