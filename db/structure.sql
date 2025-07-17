@@ -2290,7 +2290,7 @@ CREATE MATERIALIZED VIEW public.consbenefactcaso2 AS
                      LEFT JOIN public.cor1440_gen_actividad_proyectofinanciero apf ON ((apf.actividad_id = ac.id)))
                      LEFT JOIN public.cor1440_gen_actividad_actividadpf aapf ON ((aapf.actividad_id = ac.id)))
                      LEFT JOIN public.cor1440_gen_actividadpf apf2 ON ((apf2.proyectofinanciero_id = apf.proyectofinanciero_id)))
-                  WHERE (true AND (ac.fecha >= '2024-01-01'::date) AND (ac.fecha <= '2024-06-30'::date))) sub) c1
+                  WHERE (true AND (ac.fecha <= '2025-06-30'::date))) sub) c1
   GROUP BY persona_id
   WITH NO DATA;
 
