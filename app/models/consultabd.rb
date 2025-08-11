@@ -16,7 +16,7 @@ class Consultabd < ActiveRecord::Base
 
   CONSULTA = "consultabd"
 
-  # econsultasql es consulta ya escapada
+  # econsultasql es consulta segura
   def self.crea_consulta(econsultasql)
     if ARGV.include?("db:migrate")
       return
@@ -42,8 +42,8 @@ class Consultabd < ActiveRecord::Base
     Consultabd.reset_column_information
   end # def crea_consulta
 
+  # `consultasql` debe ser consulta segura --tras análisis con reconocedor
   def self.refresca_consulta(consultasql, ip_remota, usuario_id, url, params)
-    econsultasql = Msip::SqlHelper.escapar(consultasql)
     forzar_crear = false
 
     # Evitamos borrar la consulta si la última hecha es esa misma
@@ -53,13 +53,13 @@ class Consultabd < ActiveRecord::Base
     else
       maxcons = Msip::Bitacora.find(maxid)
       detalle_reg = JSON.parse(maxcons.detalle)
-      if detalle_reg["consultasql"] != econsultasql
+      if detalle_reg["consultasql"] != consultasql
         forzar_crear = true
       end
     end
     if forzar_crear ||
         !ActiveRecord::Base.connection.data_source_exists?("#{CONSULTA}")
-      d = { consultasql: econsultasql }
+      d = { consultasql: consultasql }
       Msip::Bitacora.a(
         ip_remota,
         usuario_id,
@@ -70,7 +70,7 @@ class Consultabd < ActiveRecord::Base
         "listar",
         d.to_json,
       )
-      crea_consulta(econsultasql)
+      crea_consulta(consultasql)
       ActiveRecord::Base.connection.execute(
         "CREATE UNIQUE INDEX on #{CONSULTA} (numfila);",
       )
