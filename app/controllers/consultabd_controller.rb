@@ -32,6 +32,7 @@ class ConsultabdController < Heb412Gen::ModelosController
   def index
     @metodo_formulario_msipmodelo = "post"
     @columnas = []
+    @consultasql = ""
     unless ActiveRecord::Base.connection.data_source_exists?("consultabd")
       Consultabd.refresca_consulta(
         "SELECT 2 AS valor",
@@ -41,30 +42,41 @@ class ConsultabdController < Heb412Gen::ModelosController
         {},
       )
     end
-    @registros = ::Consultabd.where(numfila: -1)
-    if params && params[:filtro] && params[:filtro][:consultasql]
+    if params && ((params[:filtro] && params[:filtro][:consultasql]) || 
+        params[:pagina])
       begin
-        # asa = analizador.scan_str(params[:filtro][:consultasql].to_s).
-        #  to_sql.gsub("`", "\"")
-        asa = PgQuery.parse(params[:filtro][:consultasql].to_s)
-        Rails.logger.info("En consultabd_controller consulta: asa=#{asa}")
-        if asa.tree.stmts[0].stmt.select_stmt
-          # Es SELECT
-          Consultabd.refresca_consulta(
-            asa.query,
-            request.remote_ip,
-            current_usuario.id,
-            request.url,
-            params,
-          )
-          @registros = Consultabd.all
+        if !params[:filtro] || !params[:filtro][:consultasql] 
+          maxid = Msip::Bitacora.where(modelo: "Consultabd").maximum(:id)
+          if !maxid.nil?
+            maxcons = Msip::Bitacora.find(maxid)
+            @consultasql = JSON.parse(maxcons.detalle)["consultasql"]
+          end
+          @registros = ::Consultabd.all
         else
-          Rails.logger.info("No es SELECT")
-          flash[:error] = "La consulta debe ser un SELECT"
+          @registros = ::Consultabd.where(numfila: -1)
+          @consultasql = params[:filtro][:consultasql].to_s
+          # asa = analizador.scan_str(params[:filtro][:consultasql].to_s).
+          #  to_sql.gsub("`", "\"")
+          asa = PgQuery.parse(@consultasql)
+          Rails.logger.info("En consultabd_controller consulta: asa=#{asa}")
+          if asa.tree.stmts[0].stmt.select_stmt
+            # Es SELECT
+            Consultabd.refresca_consulta(
+              asa.query,
+              request.remote_ip,
+              current_usuario.id,
+              request.url,
+              params,
+            )
+            @registros = Consultabd.all
+          else
+            Rails.logger.info("No es SELECT")
+            flash[:error] = "La consulta debe ser un SELECT"
+          end
         end
       rescue StandardError => e
         Rails.logger.info("Excepción en consultabd_controller: #{e}")
-        flash[:error] = "No se logró reconocer consulta SELECT en SQL '#{params[:filtro][:consultasql]}':<pre>#{CGI.escapeHTML(e.to_s)}</pre>".html_safe
+        flash[:error] = "No se logró reconocer consulta SELECT en SQL '#{params}':<pre>#{CGI.escapeHTML(e.to_s)}</pre>".html_safe
         unless ActiveRecord::Base.connection.data_source_exists?("consultabd")
           Consultabd.refresca_consulta(
             "SELECT 2 AS valor",
@@ -75,6 +87,8 @@ class ConsultabdController < Heb412Gen::ModelosController
           )
         end
       end
+    else
+      @registros = ::Consultabd.where(numfila: -1)
     end
     index_msip(@registros)
   end

@@ -8,7 +8,7 @@
         label: false,
         as: :text, 
         input_html: {
-          value: Msip::ModeloHelper::poromision(params, :consultasql),
+          value: @consultasql || nil,
           'data-enviarautomatico': ''
         }
       %>
