@@ -19,12 +19,6 @@
     <%= f.input :nombrecorto, label: false %>
   </div>
   <div class="div-tabla-celda">
-    <%= f.association :actividadtipo, 
-      collection: Cor1440Gen::Actividadtipo.order(:nombre),
-      label_method: :nombre,
-      label: false %>
-  </div>
-  <div class="div-tabla-celda">
     <%= f.input :titulo, 
       as: :text, 
       input_html: { rows: 3 }, 
@@ -34,6 +28,14 @@
     <%= f.input :descripcion, 
       as: :text, 
       input_html: { rows: 3 }, 
+      label: false %>
+  </div>
+  <div class="div-tabla-celda">
+    <%= f.association :formulario, 
+      collection: Mr519Gen::Formulario.all,
+      label_method: :presenta_nombre,
+      input_html: { class: 'tom-select' },
+      wrapper_html: { style: 'width: 8rem' },
       label: false %>
   </div>
   <div class="div-tabla-celda">

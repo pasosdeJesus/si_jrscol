@@ -44,10 +44,10 @@ module Cor1440Gen
         actividadpf_attributes: [
           :id,
           :resultadopf_id,
-          :actividadtipo_id,
           :nombrecorto,
           :titulo,
           :descripcion,
+          :formulario_id,
           :indicadorgifmm_id,
           :_destroy,
         ],
