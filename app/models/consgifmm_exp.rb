@@ -833,7 +833,6 @@ class ConsgifmmExp < ActiveRecord::Base
   end
 
   def beneficiarios_sinperfilpoblacional_ids
-    debugger
     beneficiarios_condicion_ids do |p|
       p.ultimoperfilorgsocial_id.nil?
     end

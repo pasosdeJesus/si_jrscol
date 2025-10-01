@@ -69,7 +69,6 @@ class Consbenefactcaso < ActiveRecord::Base
     oficina_ids, fechaini, fechafin, actividad_ids, 
     ip_remota, usuario_id, url, params
   )
-    debugger
     if ARGV.include?("db:migrate")
       return
     end
@@ -219,7 +218,6 @@ class Consbenefactcaso < ActiveRecord::Base
       # es igual a la actual no debe ser ni siquiera necesario ejecutar
       # REFRESH MATERIALIZED VIEW
       if cuentapersonas != cuentapersonas_ant
-        debugger
         ActiveRecord::Base.connection.execute(
           "REFRESH MATERIALIZED VIEW #{CONSULTA}",
         )
