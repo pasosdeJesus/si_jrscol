@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: 56e75a31f670c4dd44fc1cae42568495565ed81a
+  revision: d8009e4a886ad7a4d31e78d7371ede1326150f51
   branch: v2.2
   specs:
     jos19 (2.2.0)

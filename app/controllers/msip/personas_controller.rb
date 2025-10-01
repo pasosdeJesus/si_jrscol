@@ -455,6 +455,10 @@ module Msip
         return
       end
 
+      if current_usuario.id.nil?
+        tu = Usuario.where(nusuario: current_usuario.nusuario).take
+        current_usuario.id = tu.id
+      end
       ep = Sivel2Gen::CasoEtiqueta.new(
         caso_id: c1.id,
         etiqueta_id: eunif.id,

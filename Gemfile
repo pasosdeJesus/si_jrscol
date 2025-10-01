@@ -122,7 +122,7 @@ gem "sivel2_gen",
 gem "jos19",
   git: "https://gitlab.com/pasosdeJesus/jos19.git",
   branch: "v2.2"
-# path: "../jos19-2.2"
+  # path: "../jos19-2.2"
 
 group :development, :test do
   gem "brakeman"
