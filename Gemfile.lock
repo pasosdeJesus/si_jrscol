@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/kreeti/kt-paperclip.git
-  revision: 83dc8d92e63e4c360bb9f45af1cf3b63d99bed54
+  revision: 153e7dbe462de4f7f3ef42c67f95390e98e6cba7
   specs:
     kt-paperclip (7.2.2)
       activemodel (>= 4.2.0)
@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/styd/apexcharts.rb.git
-  revision: 272d60ff21bd65bee897672aa5dca48db76d7e12
+  revision: b8e85db5d927442eed665ff8bc1dc2e2b0e6250e
   branch: master
   specs:
     apexcharts (0.2.0)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/cor1440_gen.git
-  revision: 2afe78cac63c69739d07ba7bdeac46c458fd3579
+  revision: 95c67da1afb63903dc65eb6462ca8eb8befa237f
   branch: v2.2
   specs:
     cor1440_gen (2.2.0)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 077b6926abfdd884c54258f2303cdabe8810e4c5
+  revision: c3e0070a3e7966b893103e7034307df33d240c4e
   branch: v2.2
   specs:
     heb412_gen (2.2.0)
@@ -49,14 +49,14 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/jos19.git
-  revision: d8009e4a886ad7a4d31e78d7371ede1326150f51
+  revision: ef72b6555a259cb44a641a53b1949acd3539ecb0
   branch: v2.2
   specs:
     jos19 (2.2.0)
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: 6b1486561806ec27fe4523f13de971009c22e250
+  revision: ebfc3357d9f626360c6315b234cd5bcdaa0617c7
   branch: v2.2
   specs:
     mr519_gen (2.2.0)
@@ -65,7 +65,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: f9f6b6ebd9569907f90e77e0bfa153daf3fd4fa4
+  revision: 85432b1759a677dc15dec5dc53f8b16ef5305cb9
   branch: v2.2
   specs:
     msip (2.2.0)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: b764aa997ba09172893f3ada6588a8032f6a19b8
+  revision: e962c206e58bb6a032ee15a0e6d08defca36fa21
   branch: v2.2
   specs:
     sivel2_gen (2.2.0)
@@ -371,14 +371,14 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     prettyprint (0.2.0)
-    prism (1.5.1)
+    prism (1.6.0)
     psych (5.2.6)
       date
       stringio
-    puma (7.0.4)
+    puma (7.1.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.18)
+    rack (2.2.20)
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.2.0)
