@@ -12,7 +12,7 @@
   <tbody id="victima">
     <% @registro.victima.each do |victima| %>
       <% colad = 1 + victima.persona.docidsecundario.count %>
-      <tr>
+        <tr style="<%= victima.victimasjr.fechadesagregacion.nil? ? "" : "text-decoration: line-through;"%>">
         <td rowspan="<%= colad %>">
           <%= link_to victima.persona_id, 
             msip.persona_path(victima.persona_id),
