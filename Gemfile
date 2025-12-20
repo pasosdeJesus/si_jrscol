@@ -155,6 +155,8 @@ end
 group :test do
   gem "rails-controller-testing"
 
+  gem "minitest", "~> 5"
+
   gem "simplecov"
 end
 
