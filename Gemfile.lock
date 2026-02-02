@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/kreeti/kt-paperclip.git
-  revision: 5078ca1c33c8cb66865e6127152ac1e240b2bb0a
+  revision: 818f236aa6f2323bd0055bea664b33187d926377
   specs:
-    kt-paperclip (7.2.2)
+    kt-paperclip (7.3.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
       marcel (~> 1.0.1)
@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/heb412_gen.git
-  revision: 1d7afb60fb6936bb75282b56ba85e96e69830702
+  revision: 3b848835c4b51c92b6ee8074f1f62c941c2576d9
   branch: v2.2
   specs:
     heb412_gen (2.2.0)
@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/mr519_gen.git
-  revision: e3899be51f64d3735ec0642655b6266e2f42ab31
+  revision: 6f6ac6110a881cf57ff713caa23b37566c40ce3d
   branch: v2.2
   specs:
     mr519_gen (2.2.0)
@@ -65,7 +65,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/msip.git
-  revision: 81858f15aba918be59e347edd7b1a487d72eb76d
+  revision: 2906b6a60eed35dc0ee571b98ae6af484e2e791d
   branch: v2.2
   specs:
     msip (2.2.0)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://gitlab.com/pasosdeJesus/sivel2_gen.git
-  revision: abcd280a1a3a3219cf687b8cd7723c1643f2041e
+  revision: 0ef2ed713b132229abd1157e79bc4888bdad56b5
   branch: v2.2
   specs:
     sivel2_gen (2.2.0)
@@ -180,9 +180,9 @@ GEM
     benchmark (0.5.0)
     bigdecimal (3.3.1)
     bindex (0.8.1)
-    bootsnap (1.20.1)
+    bootsnap (1.21.1)
       msgpack (~> 1.2)
-    brakeman (7.1.2)
+    brakeman (8.0.1)
       racc
     builder (3.3.0)
     bundler-audit (0.9.3)
@@ -208,7 +208,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    color (2.1.1)
+    color (2.2.0)
     colorize (1.1.0)
     concurrent-ruby (1.3.6)
     connection_pool (3.0.2)
@@ -236,48 +236,48 @@ GEM
     erb (6.0.1)
     erubi (1.13.1)
     execjs (2.10.0)
-    ffi (1.17.2)
-    ffi (1.17.2-aarch64-linux-gnu)
-    ffi (1.17.2-aarch64-linux-musl)
-    ffi (1.17.2-arm-linux-gnu)
-    ffi (1.17.2-arm-linux-musl)
-    ffi (1.17.2-arm64-darwin)
-    ffi (1.17.2-x86-linux-gnu)
-    ffi (1.17.2-x86-linux-musl)
-    ffi (1.17.2-x86_64-darwin)
-    ffi (1.17.2-x86_64-linux-gnu)
-    ffi (1.17.2-x86_64-linux-musl)
+    ffi (1.17.3)
+    ffi (1.17.3-aarch64-linux-gnu)
+    ffi (1.17.3-aarch64-linux-musl)
+    ffi (1.17.3-arm-linux-gnu)
+    ffi (1.17.3-arm-linux-musl)
+    ffi (1.17.3-arm64-darwin)
+    ffi (1.17.3-x86-linux-gnu)
+    ffi (1.17.3-x86-linux-musl)
+    ffi (1.17.3-x86_64-darwin)
+    ffi (1.17.3-x86_64-linux-gnu)
+    ffi (1.17.3-x86_64-linux-musl)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    google-protobuf (4.33.2)
+    google-protobuf (4.33.4)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-aarch64-linux-gnu)
+    google-protobuf (4.33.4-aarch64-linux-gnu)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-aarch64-linux-musl)
+    google-protobuf (4.33.4-aarch64-linux-musl)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-arm64-darwin)
+    google-protobuf (4.33.4-arm64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-x86-linux-gnu)
+    google-protobuf (4.33.4-x86-linux-gnu)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-x86-linux-musl)
+    google-protobuf (4.33.4-x86-linux-musl)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-x86_64-darwin)
+    google-protobuf (4.33.4-x86_64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-x86_64-linux-gnu)
+    google-protobuf (4.33.4-x86_64-linux-gnu)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.33.2-x86_64-linux-musl)
+    google-protobuf (4.33.4-x86_64-linux-musl)
       bigdecimal
       rake (>= 13)
     htmlentities (4.4.2)
-    i18n (1.14.7)
+    i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     io-console (0.8.2)
     irb (1.16.0)
@@ -309,7 +309,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0924)
+    mime-types-data (3.2026.0127)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.27.0)
@@ -349,7 +349,7 @@ GEM
       rubyzip (>= 1.3.0)
     orm_adapter (0.5.0)
     parallel (1.27.0)
-    parser (3.3.10.0)
+    parser (3.3.10.1)
       ast (~> 2.4.1)
       racc
     parslet (2.0.0)
@@ -361,7 +361,7 @@ GEM
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
     pg (1.6.3-x86_64-linux-musl)
-    pg_query (6.1.0)
+    pg_query (6.2.2)
       google-protobuf (>= 3.25.3)
     pp (0.6.3)
       prettyprint
@@ -375,11 +375,11 @@ GEM
       prawn (>= 1.0.0)
       rails (>= 3.2)
     prettyprint (0.2.0)
-    prism (1.7.0)
+    prism (1.9.0)
     psych (5.3.1)
       date
       stringio
-    puma (7.1.0)
+    puma (7.2.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.21)
@@ -436,7 +436,7 @@ GEM
     rainbow (3.1.1)
     raindrops (0.20.1)
     rake (13.3.1)
-    rdoc (7.0.1)
+    rdoc (7.1.0)
       erb
       psych (>= 4.0.0)
       tsort
@@ -451,7 +451,7 @@ GEM
     rspreadsheet (0.5.3)
       andand (>= 1.3)
       rubyzip (>= 1.3)
-    rubocop (1.82.0)
+    rubocop (1.84.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -459,12 +459,12 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.48.0, < 2.0)
+      rubocop-ast (>= 1.49.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.48.0)
+    rubocop-ast (1.49.0)
       parser (>= 3.3.7.2)
-      prism (~> 1.4)
+      prism (~> 1.7)
     rubocop-minitest (0.38.2)
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
@@ -512,8 +512,8 @@ GEM
     stringio (3.2.0)
     terrapin (1.1.1)
       climate_control
-    thor (1.4.0)
-    tilt (2.6.1)
+    thor (1.5.0)
+    tilt (2.7.0)
     timeout (0.6.0)
     tsort (0.2.0)
     ttfunk (1.8.0)
@@ -628,4 +628,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-  4.0.3
+  4.0.5
