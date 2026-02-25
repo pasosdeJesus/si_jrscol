@@ -44,6 +44,7 @@ end
 # anexos="/var/www/htdocs/sivel2_sjrcol/archivos/anexos"
 # "/var/www/htdocs/sivel2_sjrcol/public/heb412"
 
+salida_sql = "#{nube}/Respaldos/si_jrscol_base-#{d}.7z"
 salida = "#{nube}/Respaldos/si_jrscol-#{d}.7z"
 # Ojo mejor que la clave no tenga caracteres por escapar que podrían
 # resultar diferentes en otros sistemas operativos al comprimir.
@@ -53,6 +54,19 @@ clave = if Msip::Claverespaldo.count == 0
 else
   Msip::Claverespaldo.order(:id).last.clave
 end
+
+orden_sql = "doas 7z a -p#{clave} #{salida_sql} #{volcados}"
+puts "Ejecutando #{orden_sql}"
+puts "Eliminando #{salida_sql}"
+ejecutar_en_shelll("doas", "rm", "-f", salida_sql)
+ejecutar_en_shelll(
+  "doas",
+  "7z",
+  "a",
+  "-p#{clave}",
+  salida_sql,
+  volcados
+)
 
 orden = "doas 7z a -p#{clave} #{salida} #{volcados} #{anexos} #{nube} '-x!heb412/Respaldos'"
 puts "Ejecutando #{orden}"
