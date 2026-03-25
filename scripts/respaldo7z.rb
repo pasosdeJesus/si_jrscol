@@ -6,7 +6,7 @@
 # Como clave de cifrado usa la que tenga mayor id de la tabla
 # msip_claverespaldo
 
-d = Date.today.day
+d = sprintf('%02d', Date.today.day)
 
 unless ENV["HEB412_RUTA"]
   puts "Falta variable de entorno HEB412_RUTA"
@@ -68,22 +68,22 @@ ejecutar_en_shelll(
   volcados
 )
 
-orden = "doas 7z a -p#{clave} #{salida} #{volcados} #{anexos} #{nube} '-x!heb412/Respaldos'"
-puts "Ejecutando #{orden}"
+#orden = "doas 7z a -p#{clave} #{salida} #{volcados} #{anexos} #{nube} '-x!heb412/Respaldos'"
+#puts "Ejecutando #{orden}"
 
-puts "Eliminando #{salida}"
-ejecutar_en_shelll("doas", "rm", "-f", salida)
+#puts "Eliminando #{salida}"
+#ejecutar_en_shelll("doas", "rm", "-f", salida)
 # puts "Comprimiendo en #{salida}"
-ejecutar_en_shelll(
-  "doas",
-  "7z",
-  "a",
-  "-p#{clave}",
-  salida,
-  volcados,
-  anexos,
-  nube,
-  "-x!heb412/Respaldos",
-)
+#ejecutar_en_shelll(
+#  "doas",
+#  "7z",
+#  "a",
+#  "-p#{clave}",
+#  salida,
+#  volcados,
+#  anexos,
+#  nube,
+#  "-x!heb412/Respaldos",
+#)
 # puts "Comprimiendo menos en #{salida}"
 # ejecutar_en_shelll('doas', '7z', 'a', "-p#{clave}", salida, nube, "-x!heb412/Respaldos")

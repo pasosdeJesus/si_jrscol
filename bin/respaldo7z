@@ -6,3 +6,4 @@
 
 f=`date +%Y-%m-%d`
 fecharep=$f bin/railsp runner -e production scripts/respaldo7z.rb
+fecharep=$f bin/railsp runner -e production scripts/respaldo7z-anexos.rb
