@@ -295,94 +295,94 @@ module ConteosHelper
   # @return número de diferencias encontradas
   def arreglar_tablas_poblacion_desde_2020(resultado)
     ActiveRecord::Base.connection.execute(<<-SQL)
-      DROP VIEW IF EXISTS cor1440_gen_vista_resumentpob CASCADE;
-      CREATE VIEW cor1440_gen_vista_resumentpob AS (
-      SELECT * FROM (SELECT a.id AS actividad_id, ARRAY_TO_STRING(ARRAY(
-            SELECT rangoedadac_id::text || ' ' || coalesce(fr::text,'0')
-            || ' ' || coalesce(mr::text, '0') || ' ' || coalesce(s::text, '0')
-            || ' ' || coalesce(i::text, '0')
-            FROM cor1440_gen_actividad_rangoedadac
-            WHERE actividad_id=a.id
-            ORDER BY rangoedadac_id), ' | ') AS tpob
-      FROM cor1440_gen_actividad AS a) AS sub
-      WHERE sub.tpob <> ''
-      ORDER BY 1
-      );
-
-      DROP VIEW IF EXISTS cor1440_gen_vista_asist_rangoe_sexo CASCADE;
-      CREATE VIEW cor1440_gen_vista_asist_rangoe_sexo AS (
-      SELECT actividad_id, rangoedadac_id, sexo, count(persona_id) AS cuenta
-      FROM (SELECT sub.actividad_id, sub.persona_id, sexo, re.id AS rangoedadac_id
-      FROM (SELECT asi.actividad_id, persona_id, p.sexo,
-        msip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac,
-          extract(year from a.fecha)::integer,
-          extract(month from a.fecha)::integer,
-          extract(day from a.fecha)::integer
-        ) AS edad FROM  cor1440_gen_asistencia AS asi
-        JOIN msip_persona AS p ON p.id=asi.persona_id
-        JOIN cor1440_gen_actividad AS a ON a.id=asi.actividad_id) AS sub
-      JOIN cor1440_gen_rangoedadac AS re ON (re.id = 7 AND sub.edad IS NULL) OR
-        (re.id <> 7 AND re.limiteinferior<= sub.edad AND
-          (re.limitesuperior IS NULL OR sub.edad <= re.limitesuperior))) AS sub2
-      GROUP BY 1,2,3 ORDER BY 1, 2, 3
-      );
-
-      DROP VIEW IF EXISTS cor1440_gen_vista_tpoblacion_de_asist;
-      CREATE VIEW cor1440_gen_vista_tpoblacion_de_asist AS (
-      SELECT actividad_id, rangoedadac_id, coalesce(fn, 0) AS f,
-        coalesce(mn, 0) AS m, coalesce(sn, 0) AS s, coalesce(inum, 0) AS i
-      FROM (
-        SELECT DISTINCT actividad_id, rangoedadac_id, (SELECT cuenta
-          FROM cor1440_gen_vista_asist_rangoe_sexo AS i
-          WHERE i.actividad_id=v.actividad_id
-          AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_femenino]}'#{" "}
-            LIMIT 1) AS fn, (SELECT cuenta
-          FROM cor1440_gen_vista_asist_rangoe_sexo AS i
-          WHERE i.actividad_id=v.actividad_id
-          AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_masculino]}'#{" "}
-            LIMIT 1) AS mn, (SELECT cuenta
-          FROM cor1440_gen_vista_asist_rangoe_sexo AS i
-          WHERE i.actividad_id=v.actividad_id
-          AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_sininformacion]}'
-            LIMIT 1) AS sn, (SELECT cuenta
-          FROM cor1440_gen_vista_asist_rangoe_sexo AS i
-          WHERE i.actividad_id=v.actividad_id
-          AND i.rangoedadac_id=v.rangoedadac_id
-          AND sexo='#{Msip::Persona.convencion_sexo[:sexo_intersexual]}'#{" "}
-            LIMIT 1) AS inum
-        FROM cor1440_gen_vista_asist_rangoe_sexo AS v
-      ) AS sub
-      );
-
-      DROP MATERIALIZED VIEW IF EXISTS cor1440_gen_vista_resumentpob2;
-      CREATE MATERIALIZED VIEW cor1440_gen_vista_resumentpob2 AS (
-      SELECT * FROM (SELECT a.id as actividad_id, ARRAY_TO_STRING(ARRAY(
-            SELECT rangoedadac_id::text || ' ' || coalesce(f::text,'0')
-              || ' ' || coalesce(m::text, '0')#{" "}
-              || ' ' || coalesce(s::text, '0')
+        DROP VIEW IF EXISTS cor1440_gen_vista_resumentpob CASCADE;
+        CREATE VIEW cor1440_gen_vista_resumentpob AS (
+        SELECT * FROM (SELECT a.id AS actividad_id, ARRAY_TO_STRING(ARRAY(
+              SELECT rangoedadac_id::text || ' ' || coalesce(fr::text,'0')
+              || ' ' || coalesce(mr::text, '0') || ' ' || coalesce(s::text, '0')
               || ' ' || coalesce(i::text, '0')
-            FROM cor1440_gen_vista_tpoblacion_de_asist
-            WHERE actividad_id=a.id
-            ORDER BY rangoedadac_id), ' | ') AS tpob
-      FROM cor1440_gen_actividad AS a) AS sub
-      WHERE sub.tpob <> ''
-      ORDER BY 1
-      );
+              FROM cor1440_gen_actividad_rangoedadac
+              WHERE actividad_id=a.id
+              ORDER BY rangoedadac_id), ' | ') AS tpob
+        FROM cor1440_gen_actividad AS a) AS sub
+        WHERE sub.tpob <> ''
+        ORDER BY 1
+        );
+
+        DROP VIEW IF EXISTS cor1440_gen_vista_asist_rangoe_sexo CASCADE;
+        CREATE VIEW cor1440_gen_vista_asist_rangoe_sexo AS (
+        SELECT actividad_id, rangoedadac_id, sexo, count(persona_id) AS cuenta
+        FROM (SELECT sub.actividad_id, sub.persona_id, sexo, re.id AS rangoedadac_id
+        FROM (SELECT asi.actividad_id, persona_id, p.sexo,
+          msip_edad_de_fechanac_fecharef(p.anionac, p.mesnac, p.dianac,
+            extract(year from a.fecha)::integer,
+            extract(month from a.fecha)::integer,
+            extract(day from a.fecha)::integer
+          ) AS edad FROM  cor1440_gen_asistencia AS asi
+          JOIN msip_persona AS p ON p.id=asi.persona_id
+          JOIN cor1440_gen_actividad AS a ON a.id=asi.actividad_id) AS sub
+        JOIN cor1440_gen_rangoedadac AS re ON (re.id = 7 AND sub.edad IS NULL) OR
+          (re.id <> 7 AND re.limiteinferior<= sub.edad AND
+            (re.limitesuperior IS NULL OR sub.edad <= re.limitesuperior))) AS sub2
+        GROUP BY 1,2,3 ORDER BY 1, 2, 3
+        );
+
+        DROP VIEW IF EXISTS cor1440_gen_vista_tpoblacion_de_asist;
+        CREATE VIEW cor1440_gen_vista_tpoblacion_de_asist AS (
+        SELECT actividad_id, rangoedadac_id, coalesce(fn, 0) AS f,
+          coalesce(mn, 0) AS m, coalesce(sn, 0) AS s, coalesce(inum, 0) AS i
+        FROM (
+          SELECT DISTINCT actividad_id, rangoedadac_id, (SELECT cuenta
+            FROM cor1440_gen_vista_asist_rangoe_sexo AS i
+            WHERE i.actividad_id=v.actividad_id
+            AND i.rangoedadac_id=v.rangoedadac_id
+            AND sexo='#{Msip::Persona.convencion_sexo[:sexo_femenino]}'#{" "}
+              LIMIT 1) AS fn, (SELECT cuenta
+            FROM cor1440_gen_vista_asist_rangoe_sexo AS i
+            WHERE i.actividad_id=v.actividad_id
+            AND i.rangoedadac_id=v.rangoedadac_id
+            AND sexo='#{Msip::Persona.convencion_sexo[:sexo_masculino]}'#{" "}
+              LIMIT 1) AS mn, (SELECT cuenta
+            FROM cor1440_gen_vista_asist_rangoe_sexo AS i
+            WHERE i.actividad_id=v.actividad_id
+            AND i.rangoedadac_id=v.rangoedadac_id
+            AND sexo='#{Msip::Persona.convencion_sexo[:sexo_sininformacion]}'
+              LIMIT 1) AS sn, (SELECT cuenta
+            FROM cor1440_gen_vista_asist_rangoe_sexo AS i
+            WHERE i.actividad_id=v.actividad_id
+            AND i.rangoedadac_id=v.rangoedadac_id
+            AND sexo='#{Msip::Persona.convencion_sexo[:sexo_intersexual]}'#{" "}
+              LIMIT 1) AS inum
+          FROM cor1440_gen_vista_asist_rangoe_sexo AS v
+        ) AS sub
+        );
+
+        DROP MATERIALIZED VIEW IF EXISTS cor1440_gen_vista_resumentpob2;
+        CREATE MATERIALIZED VIEW cor1440_gen_vista_resumentpob2 AS (
+        SELECT * FROM (SELECT a.id as actividad_id, ARRAY_TO_STRING(ARRAY(
+              SELECT rangoedadac_id::text || ' ' || coalesce(f::text,'0')
+                || ' ' || coalesce(m::text, '0')#{" "}
+                || ' ' || coalesce(s::text, '0')
+                || ' ' || coalesce(i::text, '0')
+              FROM cor1440_gen_vista_tpoblacion_de_asist
+              WHERE actividad_id=a.id
+              ORDER BY rangoedadac_id), ' | ') AS tpob
+        FROM cor1440_gen_actividad AS a) AS sub
+        WHERE sub.tpob <> ''
+        ORDER BY 1
+        );
     SQL
 
     resc = ActiveRecord::Base.connection.execute(<<-SQL)
-      SELECT * FROM cor1440_gen_actividad AS a
-      LEFT JOIN cor1440_gen_vista_resumentpob AS r1
-        ON a.id=r1.actividad_id
-      LEFT JOIN cor1440_gen_vista_resumentpob2 AS r2
-        ON a.id=r2.actividad_id
-      WHERE a.fecha >='2020-01-01'
-        AND coalesce(r1.tpob, '')<>coalesce(r2.tpob, '')
-      ORDER BY a.id
-      ;
+        SELECT * FROM cor1440_gen_actividad AS a
+        LEFT JOIN cor1440_gen_vista_resumentpob AS r1
+          ON a.id=r1.actividad_id
+        LEFT JOIN cor1440_gen_vista_resumentpob2 AS r2
+          ON a.id=r2.actividad_id
+        WHERE a.fecha >='2020-01-01'
+          AND coalesce(r1.tpob, '')<>coalesce(r2.tpob, '')
+        ORDER BY a.id
+        ;
     SQL
     ids = resc.pluck("id")
     ap = Cor1440Gen::Actividad.where(id: ids)
@@ -437,158 +437,158 @@ module ConteosHelper
 
   def instala_calculo_poblacion_pg
     ActiveRecord::Base.connection.execute(<<-SQL)
-        -- Suponemos que cor1440_gen_rangoedadac es consistente
-        CREATE OR REPLACE PROCEDURE cor1440_gen_recalcular_poblacion_actividad(
-          par_actividad_id BIGINT)
-        LANGUAGE plpgsql
-        AS $cuerpo$
-        DECLARE
-          rangos INTEGER ARRAY;
-          idrangos INTEGER ARRAY;
-          a_dia INTEGER;
-          a_mes INTEGER;
-          a_anio INTEGER;
-          asistente RECORD;
-          edad INTEGER;
-          rango_id INTEGER;
-        BEGIN
-          RAISE NOTICE 'actividad_id es %', par_actividad_id;
-          SELECT EXTRACT(DAY FROM fecha) INTO a_dia FROM cor1440_gen_actividad
-            WHERE id=par_actividad_id LIMIT 1;
-          RAISE NOTICE 'a_dia es %', a_dia;
-          SELECT EXTRACT(MONTH FROM fecha) INTO a_mes FROM cor1440_gen_actividad
-            WHERE id=par_actividad_id;
-          RAISE NOTICE 'a_mes es %', a_mes;
-          SELECT EXTRACT(YEAR FROM fecha) INTO a_anio FROM cor1440_gen_actividad
-            WHERE id=par_actividad_id;
-          RAISE NOTICE 'a_anio es %', a_anio;
+          -- Suponemos que cor1440_gen_rangoedadac es consistente
+          CREATE OR REPLACE PROCEDURE cor1440_gen_recalcular_poblacion_actividad(
+            par_actividad_id BIGINT)
+          LANGUAGE plpgsql
+          AS $cuerpo$
+          DECLARE
+            rangos INTEGER ARRAY;
+            idrangos INTEGER ARRAY;
+            a_dia INTEGER;
+            a_mes INTEGER;
+            a_anio INTEGER;
+            asistente RECORD;
+            edad INTEGER;
+            rango_id INTEGER;
+          BEGIN
+            RAISE NOTICE 'actividad_id es %', par_actividad_id;
+            SELECT EXTRACT(DAY FROM fecha) INTO a_dia FROM cor1440_gen_actividad
+              WHERE id=par_actividad_id LIMIT 1;
+            RAISE NOTICE 'a_dia es %', a_dia;
+            SELECT EXTRACT(MONTH FROM fecha) INTO a_mes FROM cor1440_gen_actividad
+              WHERE id=par_actividad_id;
+            RAISE NOTICE 'a_mes es %', a_mes;
+            SELECT EXTRACT(YEAR FROM fecha) INTO a_anio FROM cor1440_gen_actividad
+              WHERE id=par_actividad_id;
+            RAISE NOTICE 'a_anio es %', a_anio;
 
-          DELETE FROM cor1440_gen_actividad_rangoedadac
-            WHERE actividad_id=par_actividad_id
-          ;
+            DELETE FROM cor1440_gen_actividad_rangoedadac
+              WHERE actividad_id=par_actividad_id
+            ;
 
-          FOR rango_id IN SELECT id FROM cor1440_gen_rangoedadac
-            WHERE fechadeshabilitacion IS NULL
-          LOOP
-            INSERT INTO cor1440_gen_actividad_rangoedadac
-              (actividad_id, rangoedadac_id, mr, fr, s, i, created_at, updated_at)
-              (SELECT par_actividad_id, rango_id, 0, 0, 0, 0, NOW(), NOW());
-          END LOOP;
+            FOR rango_id IN SELECT id FROM cor1440_gen_rangoedadac
+              WHERE fechadeshabilitacion IS NULL
+            LOOP
+              INSERT INTO cor1440_gen_actividad_rangoedadac
+                (actividad_id, rangoedadac_id, mr, fr, s, i, created_at, updated_at)
+                (SELECT par_actividad_id, rango_id, 0, 0, 0, 0, NOW(), NOW());
+            END LOOP;
 
-          FOR asistente IN SELECT p.id, p.anionac, p.mesnac, p.dianac, p.sexo
-            FROM cor1440_gen_asistencia AS asi
-            JOIN cor1440_gen_actividad AS ac ON ac.id=asi.actividad_id
-            JOIN msip_persona AS p ON p.id=asi.persona_id
-            WHERE ac.id=par_actividad_id
-          LOOP
-            RAISE NOTICE 'persona_id es %', asistente.id;
-            edad = msip_edad_de_fechanac_fecharef(asistente.anionac,#{" "}
-              asistente.mesnac, asistente.dianac, a_anio, a_mes, a_dia);
-            RAISE NOTICE 'edad es %', edad;
-            SELECT id INTO rango_id FROM cor1440_gen_rangoedadac WHERE
-              fechadeshabilitacion IS NULL AND
-              limiteinferior <= edad AND#{" "}
-                (limitesuperior IS NULL OR edad <= limitesuperior) LIMIT 1;
-            IF rango_id IS NULL THEN
-              rango_id := 7;
-            END IF;
-            RAISE NOTICE 'rango_id es %', rango_id;
+            FOR asistente IN SELECT p.id, p.anionac, p.mesnac, p.dianac, p.sexo
+              FROM cor1440_gen_asistencia AS asi
+              JOIN cor1440_gen_actividad AS ac ON ac.id=asi.actividad_id
+              JOIN msip_persona AS p ON p.id=asi.persona_id
+              WHERE ac.id=par_actividad_id
+            LOOP
+              RAISE NOTICE 'persona_id es %', asistente.id;
+              edad = msip_edad_de_fechanac_fecharef(asistente.anionac,#{" "}
+                asistente.mesnac, asistente.dianac, a_anio, a_mes, a_dia);
+              RAISE NOTICE 'edad es %', edad;
+              SELECT id INTO rango_id FROM cor1440_gen_rangoedadac WHERE
+                fechadeshabilitacion IS NULL AND
+                limiteinferior <= edad AND#{" "}
+                  (limitesuperior IS NULL OR edad <= limitesuperior) LIMIT 1;
+              IF rango_id IS NULL THEN
+                rango_id := 7;
+              END IF;
+              RAISE NOTICE 'rango_id es %', rango_id;
 
-            CASE asistente.sexo
-              WHEN '#{Msip::Persona.sexo_opciones[:sexo_femenino]}' THEN
-                UPDATE cor1440_gen_actividad_rangoedadac SET fr = fr + 1
-                  WHERE actividad_id=par_actividad_id
-                  AND rangoedadac_id=rango_id;
-              WHEN '#{Msip::Persona.sexo_opciones[:sexo_masculino]}' THEN
-                UPDATE cor1440_gen_actividad_rangoedadac SET mr = mr + 1
-                  WHERE actividad_id=par_actividad_id
-                  AND rangoedadac_id=rango_id;
-              WHEN '#{Msip::Persona.sexo_opciones[:sexo_intersexual]}' THEN
-                UPDATE cor1440_gen_actividad_rangoedadac SET i = i + 1
-                  WHERE actividad_id=par_actividad_id
-                  AND rangoedadac_id=rango_id;
-              ELSE
-                UPDATE cor1440_gen_actividad_rangoedadac SET s = s + 1
-                  WHERE actividad_id=par_actividad_id
-                  AND rangoedadac_id=rango_id;
-            END CASE;
-          END LOOP;
+              CASE asistente.sexo
+                WHEN '#{Msip::Persona.sexo_opciones[:sexo_femenino]}' THEN
+                  UPDATE cor1440_gen_actividad_rangoedadac SET fr = fr + 1
+                    WHERE actividad_id=par_actividad_id
+                    AND rangoedadac_id=rango_id;
+                WHEN '#{Msip::Persona.sexo_opciones[:sexo_masculino]}' THEN
+                  UPDATE cor1440_gen_actividad_rangoedadac SET mr = mr + 1
+                    WHERE actividad_id=par_actividad_id
+                    AND rangoedadac_id=rango_id;
+                WHEN '#{Msip::Persona.sexo_opciones[:sexo_intersexual]}' THEN
+                  UPDATE cor1440_gen_actividad_rangoedadac SET i = i + 1
+                    WHERE actividad_id=par_actividad_id
+                    AND rangoedadac_id=rango_id;
+                ELSE
+                  UPDATE cor1440_gen_actividad_rangoedadac SET s = s + 1
+                    WHERE actividad_id=par_actividad_id
+                    AND rangoedadac_id=rango_id;
+              END CASE;
+            END LOOP;
 
-          DELETE FROM cor1440_gen_actividad_rangoedadac
-            WHERE actividad_id = par_actividad_id
-            AND mr = 0 AND fr = 0 AND i = 0 AND s = 0
-          ;
-          RETURN;
-        END;
-        $cuerpo$;
+            DELETE FROM cor1440_gen_actividad_rangoedadac
+              WHERE actividad_id = par_actividad_id
+              AND mr = 0 AND fr = 0 AND i = 0 AND s = 0
+            ;
+            RETURN;
+          END;
+          $cuerpo$;
 
 
-        CREATE OR REPLACE FUNCTION cor1440_gen_actividad_cambiada()
-          RETURNS trigger AS $ac$
+          CREATE OR REPLACE FUNCTION cor1440_gen_actividad_cambiada()
+            RETURNS trigger AS $ac$
+            BEGIN
+              ASSERT(TG_OP = 'UPDATE');
+              ASSERT(NEW.id = OLD.id);
+              CALL cor1440_gen_recalcular_poblacion_actividad(NEW.id);
+              RETURN NULL;
+            END ;
+          $ac$ LANGUAGE plpgsql;
+
+          CREATE OR REPLACE FUNCTION cor1440_gen_asistencia_cambiada_creada_eliminada()
+            RETURNS trigger AS $ac$
+            BEGIN
+              CASE
+                WHEN (TG_OP = 'UPDATE') THEN
+                  ASSERT(NEW.id = OLD.id);
+                  CALL cor1440_gen_recalcular_poblacion_actividad(NEW.actividad_id);
+                WHEN (TG_OP = 'INSERT') THEN
+                  CALL cor1440_gen_recalcular_poblacion_actividad(NEW.actividad_id);
+                ELSE -- DELETE
+                  CALL cor1440_gen_recalcular_poblacion_actividad(OLD.actividad_id);
+              END CASE;
+              RETURN NULL;
+            END;
+          $ac$ LANGUAGE plpgsql;
+
+          CREATE OR REPLACE FUNCTION cor1440_gen_persona_cambiada()
+            RETURNS trigger AS $ac$
+          DECLARE
+            aid INTEGER;
           BEGIN
             ASSERT(TG_OP = 'UPDATE');
             ASSERT(NEW.id = OLD.id);
-            CALL cor1440_gen_recalcular_poblacion_actividad(NEW.id);
+            FOR aid IN#{" "}
+              SELECT actividad_id FROM cor1440_gen_asistencia#{" "}
+                WHERE persona_id=NEW.id
+            LOOP
+              CALL cor1440_gen_recalcular_poblacion_actividad(aid);
+            END LOOP;
             RETURN NULL;
           END ;
-        $ac$ LANGUAGE plpgsql;
-
-        CREATE OR REPLACE FUNCTION cor1440_gen_asistencia_cambiada_creada_eliminada()
-          RETURNS trigger AS $ac$
-          BEGIN
-            CASE
-              WHEN (TG_OP = 'UPDATE') THEN
-                ASSERT(NEW.id = OLD.id);
-                CALL cor1440_gen_recalcular_poblacion_actividad(NEW.actividad_id);
-              WHEN (TG_OP = 'INSERT') THEN
-                CALL cor1440_gen_recalcular_poblacion_actividad(NEW.actividad_id);
-              ELSE -- DELETE
-                CALL cor1440_gen_recalcular_poblacion_actividad(OLD.actividad_id);
-            END CASE;
-            RETURN NULL;
-          END;
-        $ac$ LANGUAGE plpgsql;
-
-        CREATE OR REPLACE FUNCTION cor1440_gen_persona_cambiada()
-          RETURNS trigger AS $ac$
-        DECLARE
-          aid INTEGER;
-        BEGIN
-          ASSERT(TG_OP = 'UPDATE');
-          ASSERT(NEW.id = OLD.id);
-          FOR aid IN#{" "}
-            SELECT actividad_id FROM cor1440_gen_asistencia#{" "}
-              WHERE persona_id=NEW.id
-          LOOP
-            CALL cor1440_gen_recalcular_poblacion_actividad(aid);
-          END LOOP;
-          RETURN NULL;
-        END ;
-        $ac$ LANGUAGE plpgsql;
+          $ac$ LANGUAGE plpgsql;
 
 
-        -- Solo agregamos trigger al cambiar actividad porque:
-        -- Al crearse no habrá asistentes
-        -- Cuando se elimine, se eliminarán los asistentes que tendrá
-        -- triggers al eliminar
-        CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_actividad
-          AFTER UPDATE ON cor1440_gen_actividad
-          FOR EACH ROW EXECUTE FUNCTION cor1440_gen_actividad_cambiada()
-        ;
+          -- Solo agregamos trigger al cambiar actividad porque:
+          -- Al crearse no habrá asistentes
+          -- Cuando se elimine, se eliminarán los asistentes que tendrá
+          -- triggers al eliminar
+          CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_actividad
+            AFTER UPDATE ON cor1440_gen_actividad
+            FOR EACH ROW EXECUTE FUNCTION cor1440_gen_actividad_cambiada()
+          ;
 
-        CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_asistencia
-          AFTER INSERT OR UPDATE OR DELETE ON cor1440_gen_asistencia
-          FOR EACH ROW EXECUTE FUNCTION cor1440_gen_asistencia_cambiada_creada_eliminada()
-        ;
+          CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_asistencia
+            AFTER INSERT OR UPDATE OR DELETE ON cor1440_gen_asistencia
+            FOR EACH ROW EXECUTE FUNCTION cor1440_gen_asistencia_cambiada_creada_eliminada()
+          ;
 
-        -- Solo agregamos trigger al cambiar persona porque:
-        -- Al crearse no puede ser asistente.
-        -- Cuando se elimine, se eliminarán las asistencias que tenía
-        --   y eso ya disparará proceso de actualizar poblacion(es).
-        CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_persona
-          AFTER UPDATE ON msip_persona
-          FOR EACH ROW EXECUTE FUNCTION cor1440_gen_persona_cambiada()
-        ;
+          -- Solo agregamos trigger al cambiar persona porque:
+          -- Al crearse no puede ser asistente.
+          -- Cuando se elimine, se eliminarán las asistencias que tenía
+          --   y eso ya disparará proceso de actualizar poblacion(es).
+          CREATE OR REPLACE TRIGGER cor1440_gen_recalcular_tras_cambiar_persona
+            AFTER UPDATE ON msip_persona
+            FOR EACH ROW EXECUTE FUNCTION cor1440_gen_persona_cambiada()
+          ;
 
     SQL
   end
@@ -596,21 +596,178 @@ module ConteosHelper
 
   def desinstala_calculo_poblacion_pg
     ActiveRecord::Base.connection.execute(<<-SQL)
-        -- Suponemos que cor1440_gen_rangoedadac es consistente
+          -- Suponemos que cor1440_gen_rangoedadac es consistente
 
-        DROP TRIGGER IF EXISTS cor1440_gen_recalcular_tras_cambiar_persona
-          ON msip_persona;
-        DROP TRIGGER IF EXISTS cor1440_gen_recalcular_tras_cambiar_actividad
-          ON cor1440_gen_asistencia;
-        DROP TRIGGER IF EXISTS cor1440_gen_recalcular_tras_cambiar_actividad
-          ON cor1440_gen_tras_cambiar_actividad;
-        DROP FUNCTION IF EXISTS#{" "}
-          cor1440_gen_asistencia_cambiada_creada_eliminada CASCADE;
-        DROP FUNCTION IF EXISTS cor1440_gen_persona_cambiada CASCADE;
-        DROP FUNCTION IF EXISTS cor1440_gen_actividad_cambiada CASCADE;
-        DROP PROCEDURE IF EXISTS cor1440_gen_recalcular_poblacion_actividad#{" "}
-          CASCADE;
+          DROP TRIGGER IF EXISTS cor1440_gen_recalcular_tras_cambiar_persona
+            ON msip_persona;
+          DROP TRIGGER IF EXISTS cor1440_gen_recalcular_tras_cambiar_actividad
+            ON cor1440_gen_asistencia;
+          DROP TRIGGER IF EXISTS cor1440_gen_recalcular_tras_cambiar_actividad
+            ON cor1440_gen_tras_cambiar_actividad;
+          DROP FUNCTION IF EXISTS#{" "}
+            cor1440_gen_asistencia_cambiada_creada_eliminada CASCADE;
+          DROP FUNCTION IF EXISTS cor1440_gen_persona_cambiada CASCADE;
+          DROP FUNCTION IF EXISTS cor1440_gen_actividad_cambiada CASCADE;
+          DROP PROCEDURE IF EXISTS cor1440_gen_recalcular_poblacion_actividad#{" "}
+            CASCADE;
     SQL
   end
   module_function :desinstala_calculo_poblacion_pg
+
+  REP = {
+    ["c383c283c382c2afc383c282c382c2bfc383c282c382c2bd"].pack('H*').force_encoding('UTF-8') => 'Ó', # Corrección
+    ["c383c2afc382c2bfc382c2bd"].pack('H*').force_encoding('UTF-8') => 'Ó', # Corrección
+    ["c383c2a2c382c280c382c293"].pack('H*').force_encoding('UTF-8') => '–',
+    ["c383c2a2c382c298c382c285"].pack('H*').force_encoding('UTF-8') => '★',
+    ["c383c2a2c382c280c382c29c"].pack('H*').force_encoding('UTF-8') => '“',
+    ["c383c2a2c382c280c382c29d"].pack('H*').force_encoding('UTF-8') => '”',
+    ["c383c2a2c382c281c382c2ab"].pack('H*').force_encoding('UTF-8') => '', # Removing ACTIVATE SYMMETRIC SWAPPING
+    ["c383c2a2c382c280c382c2af"].pack('H*').force_encoding('UTF-8') => '', # Removing double encoding errors
+    ["c383c2aac382c29ec382c289"].pack('H*').force_encoding('UTF-8') => 'ê',
+    ["c383c2a2c382c280c382c298"].pack('H*').force_encoding('UTF-8') => '‘',
+    ["c383c2a2c382c280c382c299"].pack('H*').force_encoding('UTF-8') => '’',
+    ["c383c2a2c382c29cc382c294"].pack('H*').force_encoding('UTF-8') => 'â',
+    ["41c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'Á',
+    ["4fc383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'Ó',
+    ["55c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'Ú',
+    ["61c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'á',
+    ["65c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'é',
+    ["69c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["6fc383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'ó',
+    ["75c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'ú',
+    ["5fc383c282c382c2a1"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["45c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'É',
+    ["49c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'Í',
+    ["c383c283c382c280"].pack('H*').force_encoding('UTF-8') => 'À',
+    ["c383c283c382c2a9"].pack('H*').force_encoding('UTF-8') => 'é',
+    ["c383c283c382c28c"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["c383c283c382c2b1"].pack('H*').force_encoding('UTF-8') => 'ñ',
+    ["c383c282c382c2b4"].pack('H*').force_encoding('UTF-8') => "'",
+    ["c383c283c382c2a8"].pack('H*').force_encoding('UTF-8') => 'è',
+    ["c383c282c382c2a8"].pack('H*').force_encoding('UTF-8') => '"',
+    ["c383c283c382c281"].pack('H*').force_encoding('UTF-8') => 'Á',
+    ["c383c283c382c289"].pack('H*').force_encoding('UTF-8') => 'É',
+    ["c383c283c382c28d"].pack('H*').force_encoding('UTF-8') => 'Í',
+    ["c383c283c382c291"].pack('H*').force_encoding('UTF-8') => 'Ñ',
+    ["c383c283c382c293"].pack('H*').force_encoding('UTF-8') => 'Ó',
+    ["c383c283c382c292"].pack('H*').force_encoding('UTF-8') => 'Ò',
+    ["c383c283c382c299"].pack('H*').force_encoding('UTF-8') => 'Ù',
+    ["c383c283c382c29a"].pack('H*').force_encoding('UTF-8') => 'Ú',
+    ["c383c283c382c2a1"].pack('H*').force_encoding('UTF-8') => 'á',
+    ["c383c283c382c2a0"].pack('H*').force_encoding('UTF-8') => 'à',
+    ["c383c28cc382c281"].pack('H*').force_encoding('UTF-8') => 'ó',
+    ["c383c283c382c2b3"].pack('H*').force_encoding('UTF-8') => 'ó',
+    ["c383c283c382c2b9"].pack('H*').force_encoding('UTF-8') => 'ú',
+    ["c383c28cc382c283"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["c383c283c382c2ad"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["c383c283c382c2a7"].pack('H*').force_encoding('UTF-8') => 'ç',
+    ["c383c283c382c2b2"].pack('H*').force_encoding('UTF-8') => 'ò',
+    ["c383c283c382c2ac"].pack('H*').force_encoding('UTF-8') => 'ì',
+    ["c383c282c382c2bf"].pack('H*').force_encoding('UTF-8') => '¿',
+    ["c383c283c382c288"].pack('H*').force_encoding('UTF-8') => 'È',
+    ["c383c283c382c2bc"].pack('H*').force_encoding('UTF-8') => 'ü',
+    ["c383c282c382c2a6"].pack('H*').force_encoding('UTF-8') => '¦',
+    ["c383c282c382c2b7"].pack('H*').force_encoding('UTF-8') => '·',
+    ["c383c283c382c2ba"].pack('H*').force_encoding('UTF-8') => 'ú',
+    ["c383c28cc382c280"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["c38cc382c2a72e"].pack('H*').force_encoding('UTF-8') => 'Ç',
+    ["c3a2c29cc294"].pack('H*').force_encoding('UTF-8') => 'â',
+    ["c3a2c280c298"].pack('H*').force_encoding('UTF-8') => '‘',
+    ["c3a2c280c299"].pack('H*').force_encoding('UTF-8') => '’',
+    ["c3a2c298c285"].pack('H*').force_encoding('UTF-8') => '★',
+    ["c3a2c280c293"].pack('H*').force_encoding('UTF-8') => '–',
+    ["c3a2c280c29c"].pack('H*').force_encoding('UTF-8') => '“',
+    ["c3a2c280c29d"].pack('H*').force_encoding('UTF-8') => '”',
+    ["c3aac29ec289"].pack('H*').force_encoding('UTF-8') => 'ê',
+    ["c3a2c281c2ab"].pack('H*').force_encoding('UTF-8') => '', # Removing ACTIVATE SYMMETRIC SWAPPING
+    ["c3a2c280c2af"].pack('H*').force_encoding('UTF-8') => '', # Removing double encoding errors
+    ["c38cc382c280"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["49c38cc281"].pack('H*').force_encoding('UTF-8') => 'Í',
+    ["c383c28220"].pack('H*').force_encoding('UTF-8') => ' ',
+    ["41c38cc281"].pack('H*').force_encoding('UTF-8') => 'Á',
+    ["4fc38cc281"].pack('H*').force_encoding('UTF-8') => 'Ó',
+    ["55c38cc281"].pack('H*').force_encoding('UTF-8') => 'Ú',
+    ["61c38cc281"].pack('H*').force_encoding('UTF-8') => 'á',
+    ["65c38cc281"].pack('H*').force_encoding('UTF-8') => 'é',
+    ["69c38cc281"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["6fc38cc281"].pack('H*').force_encoding('UTF-8') => 'ó',
+    ["75c38cc281"].pack('H*').force_encoding('UTF-8') => 'ú',
+    ["c38cc2a72e"].pack('H*').force_encoding('UTF-8') => 'Ç',
+    ["5fc382c2a1"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["45c38cc281"].pack('H*').force_encoding('UTF-8') => 'É',
+    ["c38cc280"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["c382c2b7"].pack('H*').force_encoding('UTF-8') => '·',
+    ["c383c280"].pack('H*').force_encoding('UTF-8') => 'À',
+    ["c383c2bc"].pack('H*').force_encoding('UTF-8') => 'ü',
+    ["c383c28c"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["c382c2a6"].pack('H*').force_encoding('UTF-8') => '¦',
+    ["c383c2b1"].pack('H*').force_encoding('UTF-8') => 'ñ',
+    ["c383c2a8"].pack('H*').force_encoding('UTF-8') => 'è',
+    ["c383c2ac"].pack('H*').force_encoding('UTF-8') => 'ì',
+    ["c383c2a7"].pack('H*').force_encoding('UTF-8') => 'ç',
+    ["c383c281"].pack('H*').force_encoding('UTF-8') => 'Á',
+    ["c383c289"].pack('H*').force_encoding('UTF-8') => 'É',
+    ["c383c28d"].pack('H*').force_encoding('UTF-8') => 'Í',
+    ["c383c291"].pack('H*').force_encoding('UTF-8') => 'Ñ',
+    ["c383c293"].pack('H*').force_encoding('UTF-8') => 'Ó',
+    ["c383c29a"].pack('H*').force_encoding('UTF-8') => 'Ú',
+    ["c383c2ad"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["c383c2b9"].pack('H*').force_encoding('UTF-8') => 'ú',
+    ["c382c2a8"].pack('H*').force_encoding('UTF-8') => '"',
+    ["c383c292"].pack('H*').force_encoding('UTF-8') => 'Ò',
+    ["c382c2a0"].pack('H*').force_encoding('UTF-8') => ' ',
+    ["c383c299"].pack('H*').force_encoding('UTF-8') => 'Ù',
+    ["c382c2bf"].pack('H*').force_encoding('UTF-8') => '¿',
+    ["c382c2b4"].pack('H*').force_encoding('UTF-8') => "'",
+    ["c383c2a0"].pack('H*').force_encoding('UTF-8') => 'à',
+    ["c383c288"].pack('H*').force_encoding('UTF-8') => 'È',
+    ["c38cc283"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["c383c282"].pack('H*').force_encoding('UTF-8') => '', # Elimina corrupcion
+    ["e28098"].pack('H*').force_encoding('UTF-8') => '‘',
+    ["e28099"].pack('H*').force_encoding('UTF-8') => '’',
+    ["ea9e89"].pack('H*').force_encoding('UTF-8') => 'ê',
+    ["cca72e"].pack('H*').force_encoding('UTF-8') => 'Ç',
+    ["e281ab"].pack('H*').force_encoding('UTF-8') => '', # Removing ACTIVATE SYMMETRIC SWAPPING
+    ["5fc2a1"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["45c3b3"].pack('H*').force_encoding('UTF-8') => 'É',
+    ["49c3b3"].pack('H*').force_encoding('UTF-8') => 'Í',
+    ["49cc81"].pack('H*').force_encoding('UTF-8') => 'Í',
+    ["4ecc81"].pack('H*').force_encoding('UTF-8') => 'É',
+    ["45cc81"].pack('H*').force_encoding('UTF-8') => 'É',
+    ["4fcc81"].pack('H*').force_encoding('UTF-8') => 'Ó',
+    ["55cc81"].pack('H*').force_encoding('UTF-8') => 'Ú',
+    ["61cc81"].pack('H*').force_encoding('UTF-8') => 'á',
+    ["65cc81"].pack('H*').force_encoding('UTF-8') => 'é',
+    ["69cc81"].pack('H*').force_encoding('UTF-8') => 'í',
+    ["6fcc81"].pack('H*').force_encoding('UTF-8') => 'ó',
+    ["75cc81"].pack('H*').force_encoding('UTF-8') => 'ú',
+    'ÃÂ¡' => 'á',
+    'ÃÂ©' => 'é',
+    'ÃÂ±' => 'ñ',
+    'ÃÂ³' => 'ó',
+    'ÃÂº' => 'ú',
+    'ÂÂ°' => '°',
+    'ÃÂ²' => 'ò',
+    ["cc83"].pack('H*').force_encoding('UTF-8') => 'Ì',
+    ["c2a8"].pack('H*').force_encoding('UTF-8') => '"',
+    ["c2b4"].pack('H*').force_encoding('UTF-8') => "'",
+    ["c2a0"].pack('H*').force_encoding('UTF-8') => ' ',
+    ["c3b9"].pack('H*').force_encoding('UTF-8') => 'ú',
+    'Ã¡' => 'á',
+    'Ã©' => 'é',
+    'Ã±' => 'ñ',
+    'Ã³' => 'ó',
+    'Ãº' => 'ú',
+    'Â°' => '°',
+    'Ã²' => 'ò',
+    'í' => 'í',
+  }
+
+  # Trata de normalizar cadenas en español con UTF-8 problematico debido a
+  # codificación errada o a problemas de 7z
+  def normaliza_utf8 l
+    regex = Regexp.union(REP.keys)
+    result = l.gsub(regex, REP)
+  end
+  module_function :normaliza_utf8
 end
