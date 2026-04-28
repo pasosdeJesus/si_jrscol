@@ -12,6 +12,12 @@ sintaxis-js:
 sintaxis-ruby:
 	find . -name "*\.rb" -exec ruby -w -W2 -c {} ';'
 
+sintaxis-erb:
+	-for i in `find . -name "*\.erb"`; do \
+	echo $$i; \
+	 erb -P -x -T '-' $$i | ruby -w -W2 -c; \
+	 done
+
 instala-gemas:
 	grep "([0-9]" Gemfile.lock  | sed -e "s/^ */doas gem install /g;s/ (/ -v /g;s/)//g" > /tmp/i.sh
 	doas chmod +x /tmp/i.sh

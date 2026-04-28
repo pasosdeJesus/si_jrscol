@@ -18,7 +18,7 @@ unless ENV["MSIP_RUTA_ANEXOS"]
   puts "Falta variable de entorno MSIP_RUTA_ANEXOS"
   exit 1
 end
-anexos = ENV["MSIP_RUTA_ANEXOS"]
+#anexos = ENV["MSIP_RUTA_ANEXOS"]
 
 unless ENV["MSIP_RUTA_VOLCADOS"]
   puts "Falta variable de entorno MSIP_RUTA_VOLCADOS"
@@ -45,7 +45,7 @@ end
 # "/var/www/htdocs/sivel2_sjrcol/public/heb412"
 
 salida_sql = "#{nube}/Respaldos/si_jrscol_base-#{d}.7z"
-salida = "#{nube}/Respaldos/si_jrscol-#{d}.7z"
+#salida = "#{nube}/Respaldos/si_jrscol-#{d}.7z"
 # Ojo mejor que la clave no tenga caracteres por escapar que podrían
 # resultar diferentes en otros sistemas operativos al comprimir.
 # Mejor asegurar que se compone solo de letras y números

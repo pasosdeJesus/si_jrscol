@@ -768,6 +768,7 @@ module ConteosHelper
   def normaliza_utf8 l
     regex = Regexp.union(REP.keys)
     result = l.gsub(regex, REP)
+    return result
   end
   module_function :normaliza_utf8
 end
