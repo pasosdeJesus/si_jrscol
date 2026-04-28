@@ -1162,6 +1162,7 @@ module Sivel2Sjr
             :sexo,
             :telefono,
             :tdocumento_id,
+            :ultimadiscapacidad_id,
             :ultimoestatusmigratorio_id,
             :ultimoperfilorgsocial_id,
           ] + otros_params_persona,

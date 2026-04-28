@@ -1,0 +1,14 @@
+<% col = Msip::ModeloHelper.opciones_tabla_basica(
+  ::Discapacidad, f, 'ultimadiscapacidad_id')
+%>
+<%= f.input :ultimadiscapacidad_id,
+  collection: col,
+  label_method: :nombre,
+  value_method: :id,
+  wrapper_html: {
+    #'data-visibuem-target': 'uem'
+  },
+  input_html: {
+    #'data-action': 'change->persona-ppt#cambia_ultimoestatusmigratorio'
+  }
+%>
