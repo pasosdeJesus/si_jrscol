@@ -1472,7 +1472,6 @@ CREATE TABLE public.cor1440_gen_asistencia (
     externo boolean,
     orgsocial_id integer,
     perfilorgsocial_id integer,
-    discapacidad boolean DEFAULT false,
     telefono character varying(127)
 );
 
@@ -1646,8 +1645,7 @@ CREATE TABLE public.sivel2_sjr_victimasjr (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     victima_id integer NOT NULL,
-    actualtrabajando boolean,
-    discapacidad_id integer
+    actualtrabajando boolean
 );
 
 
@@ -14362,14 +14360,6 @@ ALTER TABLE ONLY public.msip_ubicacionpre
 
 
 --
--- Name: sivel2_sjr_victimasjr fk_rails_4005fe5a7e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sivel2_sjr_victimasjr
-    ADD CONSTRAINT fk_rails_4005fe5a7e FOREIGN KEY (discapacidad_id) REFERENCES public.discapacidad(id);
-
-
---
 -- Name: sivel2_sjr_migracion fk_rails_40371f9525; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -16320,6 +16310,7 @@ ALTER TABLE ONLY public.sivel2_sjr_victimasjr
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260506203043'),
 ('20260427141528'),
 ('20241125115043'),
 ('20241119195733'),

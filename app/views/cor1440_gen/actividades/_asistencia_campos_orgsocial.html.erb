@@ -1,17 +1,20 @@
 <div class="div-tabla-celda">
-  <%= fasistencia.input :discapacidad,
-    collection: [["No", false], ["Si", true]],
-    label: false,
+  <%= fpersona.association :ultimadiscapacidad,
     allow_blank: false,
-    input_html: { style: 'width: 3em' } %>
+    collection: ::Discapacidad.habilitados,
+    input_html: { style: 'width: 6em' },
+    label: false,
+    label_method: :nombre,
+    value_method: :id
+ %>
 </div>
 <div class="div-tabla-celda">
   <%= fasistencia.association :perfilorgsocial,
     collection: Msip::Perfilorgsocial.habilitados,
-    label_method: :nombre,
-    value_method: :id,
     input_html: { style: 'width: 6em' },
-    label: false
+    label: false,
+    label_method: :nombre,
+    value_method: :id
   %>
 </div>
 <div class="div-tabla-celda">

@@ -181,7 +181,6 @@ module Cor1440Gen
             externo: false,
             orgsocial_id: nil,
             perfilorgsocial_id: op.ultimoperfilorgsocial_id,
-            discapacidad: vs.discapacidad_id != 6,
             telefono: op.telefono,
           )
           nr.save(validate: false)
@@ -202,7 +201,6 @@ module Cor1440Gen
             externo: false,
             orgsocial_id: nil,
             perfilorgsocial_id: op.ultimoperfilorgsocial_id,
-            discapacidad: vs.discapacidad_id != 6,
             telefono: op.telefono,
           )
           nr.save(validate: false)
@@ -528,7 +526,7 @@ module Cor1440Gen
           id: v.victima.persona_id,
           nombre: v.victima.persona.presenta_nombre,
           ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id,
-          discapacidad_en_casos: v.discapacidad_id != 6,
+          ultimadiscapacidad_id: v.victima.persona.ultimadiscapacidad_id,
           telefono: v.victima.persona.telefono,
         }
       end
@@ -578,7 +576,6 @@ module Cor1440Gen
           actividad_id: act.id,
           persona_id: dp[:id],
           perfilorgsocial_id: dp[:ultimoperfilorgsocial_id],
-          discapacidad: dp[:discapacidad_en_casos],
           telefono: dp[:telefono],
         )
         unless asistencia.save(validate: false)
@@ -613,9 +610,9 @@ module Cor1440Gen
     def lista_params
       l = lista_params_cor1440_gen
       l[-1][:asistencia_attributes][-1][:persona_attributes] << :ultimoperfilorgsocial_id
+      l[-1][:asistencia_attributes][-1][:persona_attributes] << :ultimadiscapacidad_id
       l[-1][:asistencia_attributes][-1][:persona_attributes] << :telefono
       l[-1][:asistencia_attributes].insert(0, :telefono)
-      l[-1][:asistencia_attributes].insert(0, :discapacidad)
       l +
         [
           :covid,

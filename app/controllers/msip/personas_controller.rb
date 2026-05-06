@@ -252,12 +252,9 @@ module Msip
         telefono: @persona.telefono.to_s,
         ultimoestatusmigratorio_id: @persona.ultimoestatusmigratorio_id,
         ultimoperfilorgsocial_id: @persona.ultimoperfilorgsocial_id,
+        ultimadiscapacidad_id: @persona.ultimadiscapacidad_id,
         ppt: @persona.ppt,
-        caso_ids: Sivel2Gen::Victima.where(persona_id: @persona.id).map(&:caso_id),
-        discapacidad_en_caso: Sivel2Sjr::Victimasjr
-          .joins(:victima)
-          .where("sivel2_gen_victima.persona_id = ?", @persona.id)
-          .where("discapacidad_id<>6").count > 0,
+        caso_ids: Sivel2Gen::Victima.where(persona_id: @persona.id).map(&:caso_id)
       )
     end
 

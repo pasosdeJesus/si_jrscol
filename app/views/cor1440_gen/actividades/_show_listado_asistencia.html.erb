@@ -51,7 +51,7 @@ Población beneficiaria: <%= personas.uniq.count  %>
           <% end %>
         </td>
         <td rowspan="<%= colad %>">
-          <%= asistencia.discapacidad ? "Si"  :  "No" %>
+          <%= asistencia.persona.ultimadiscapacidad.nombre if asistencia.persona && asistencia.persona.ultimadiscapacidad %>
         </td>
         <td rowspan="<%= colad %>">
           <%= asistencia.perfilorgsocial.nombre if asistencia.perfilorgsocial %>

@@ -37,8 +37,8 @@ export default class Cor1440GenAutocompletaAjaxAsistentes {
           resp.ultimoperfilorgsocial_id
         divcp.querySelector('[id$=_telefono]').value = 
           resp.telefono
-        divcp.querySelector('[id$=_discapacidad]').value = 
-          resp.discapacidad_en_caso
+        divcp.querySelector('[id$=_ultimadiscapacidad_id]').value = 
+          resp.ultimadiscapacidad_id
         const tdocid = divcp.querySelector('[id$=_attributes_tdocumento_id]')
         if (tdocid != null) {
           let idop = null
