@@ -154,6 +154,10 @@ module Msip
       self[:numerodocumento] = valor
     end
 
+    scope :filtro_ultimadiscapacidad, lambda { |uid|
+      where(ultimadiscapacidad_id: uid.to_i) 
+    }
+
     after_create :arreglar_sindocumento
     def arreglar_sindocumento
       if tdocumento_id == 11

@@ -52,6 +52,7 @@ module Msip
         :fechanac,
         :sexo,
         :etnia,
+        :ultimadiscapacidad,
         :municipio,
         :actividad_ids,
         :actividadcasobeneficiario_ids,
