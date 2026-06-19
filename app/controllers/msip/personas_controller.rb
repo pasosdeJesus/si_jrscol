@@ -20,6 +20,7 @@ module Msip
         :familiares,
       ] + [
         :docsidsecundario,
+        :ultimaorientacionsexual,
         :ultimadiscapacidad_id,
         :ultimoperfilorgsocial_id,
         :ultimoestatusmigratorio_id,
@@ -53,6 +54,7 @@ module Msip
         :sexo,
         :etnia,
         :ultimadiscapacidad,
+        :ultimaorientacionsexual,
         :municipio,
         :actividad_ids,
         :actividadcasobeneficiario_ids,
@@ -253,6 +255,7 @@ module Msip
         ultimoestatusmigratorio_id: @persona.ultimoestatusmigratorio_id,
         ultimoperfilorgsocial_id: @persona.ultimoperfilorgsocial_id,
         ultimadiscapacidad_id: @persona.ultimadiscapacidad_id,
+        ultimaorientacionsexual: @persona.ultimaorientacionsexual,
         ppt: @persona.ppt,
         caso_ids: Sivel2Gen::Victima.where(persona_id: @persona.id).map(&:caso_id)
       )

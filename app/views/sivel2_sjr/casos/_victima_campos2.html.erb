@@ -36,12 +36,11 @@
     %>
   </div>
   <div class="col-md-6">
-    <%= fvictima.input(:orientacionsexual, collection: [
-      [:HETEROSEXUAL, :H], [:LESBIANA, :L], [:GAY, :G], 
-      [:BISEXUAL, :B], [:TRANSEXUAL, :T], [:INTERSEXUAL, :I]
-    ], 
-    label: "Orientación Sexual",
-    include_blank: false ) %>
-
+    <%= fvictima.input(
+      :orientacionsexual, 
+      collection: Msip::Persona::ORIENTACION_OPCIONES,
+      label: "Orientación Sexual",
+      include_blank: false 
+    ) %>
   </div>
 </div>

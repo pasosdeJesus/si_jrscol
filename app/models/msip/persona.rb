@@ -154,6 +154,16 @@ module Msip
       self[:numerodocumento] = valor
     end
 
+    ORIENTACION_OPCIONES = [
+      ["HETEROSEXUAL", :H],
+      ["LESBIANA", :L],
+      ["GAY", :G],
+      ["BISEXUAL", :B],
+      ["TRANSEXUAL", :T],
+      ["INTERSEXUAL", :I],
+      ["OTRO", :O],
+    ]
+
     scope :filtro_ultimadiscapacidad, lambda { |uid|
       where(ultimadiscapacidad_id: uid.to_i) 
     }
