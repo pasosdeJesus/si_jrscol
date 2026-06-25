@@ -219,6 +219,12 @@
       locals: { f: f }
     %>
   </div>
+  <div class="col-md-4">
+    <%= fvictima.input :orientacionsexual,
+      collection: Msip::Persona::ORIENTACION_OPCIONES,
+      label: "Orientación sexual",
+      include_blank: false %>
+  </div>
 </div>
 
 

@@ -81,7 +81,7 @@
     <div class='campos-persona-con-victima-id' data-controller='persona-ppt'>
       <%= fvictima.input :id, as: :hidden %> 
       <%= render partial: 'msip/personas/persona_campos', 
-        locals: {f: fpersona, fvictima: fvictima} %>
+        locals: {f: fpersona, fvictima: fvictima } %>
     </div>
 
     <div class="row">
@@ -109,14 +109,15 @@
 <div class="collapse multi-collapse" id="amplioscontacto">
   <%= fvictima.simple_fields_for :victimasjr do |fvictimasjr| %>
     <% [2,4,5,1].each do |i| %>
-      <%= render partial: 'victima_campos' + i.to_s, 
+      <%= render(
+        partial: 'victima_campos' + i.to_s, 
         locals: { fvictima: fvictima, 
                   fvictimasjr: fvictimasjr,
                   fpersona: fpersona,
-                  escontacto: true}
-                %>
-     <% end %>
-   <% end %>
+                  escontacto: true} 
+      ) %>
+    <% end %>
+  <% end %> <!-- fvictima -->
 </div>
 <br>
 <a data-bs-toggle="collapse" href='#institucional'>
