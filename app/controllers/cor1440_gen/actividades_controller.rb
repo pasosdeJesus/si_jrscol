@@ -527,6 +527,7 @@ module Cor1440Gen
           nombre: v.victima.persona.presenta_nombre,
           ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id,
           ultimadiscapacidad_id: v.victima.persona.ultimadiscapacidad_id,
+          orientacionsexual: v.victima.persona.ultimaorientacionsexual,
           telefono: v.victima.persona.telefono,
         }
       end
@@ -613,6 +614,7 @@ module Cor1440Gen
       l[-1][:asistencia_attributes][-1][:persona_attributes] << :ultimadiscapacidad_id
       l[-1][:asistencia_attributes][-1][:persona_attributes] << :telefono
       l[-1][:asistencia_attributes].insert(0, :telefono)
+      l[-1][:asistencia_attributes].insert(0, :orientacionsexual)
       l +
         [
           :covid,

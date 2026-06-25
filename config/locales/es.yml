@@ -140,6 +140,7 @@ es:
       "cor1440_gen/asistencia":
         perfilorgsocial: Perfil poblacional
         perfilorgsocial_id: Perfil poblacional
+        orientacionsexual: Orientación sexual
       "cor1440_gen/benefactividadpf":
         Benefactividadpf: Beneficiarios por actividad de marco lógico
         "actividad_actividadesml": Actividades de marco lógico

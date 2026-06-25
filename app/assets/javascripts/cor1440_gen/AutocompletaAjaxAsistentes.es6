@@ -39,6 +39,8 @@ export default class Cor1440GenAutocompletaAjaxAsistentes {
           resp.telefono
         divcp.querySelector('[id$=_ultimadiscapacidad_id]').value = 
           resp.ultimadiscapacidad_id
+        divcp.querySelector('[id$=_orientacionsexual]').value = 
+          resp.ultimaorientacionsexual
         const tdocid = divcp.querySelector('[id$=_attributes_tdocumento_id]')
         if (tdocid != null) {
           let idop = null

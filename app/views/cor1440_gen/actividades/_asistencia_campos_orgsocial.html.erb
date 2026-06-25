@@ -9,6 +9,13 @@
  %>
 </div>
 <div class="div-tabla-celda">
+  <%= fasistencia.input :orientacionsexual,
+    collection: Msip::Persona::ORIENTACION_OPCIONES,
+    label: false,
+    include_blank: false
+  %>
+</div>
+<div class="div-tabla-celda">
   <%= fasistencia.association :perfilorgsocial,
     collection: Msip::Perfilorgsocial.habilitados,
     input_html: { style: 'width: 6em' },

@@ -1,4 +1,4 @@
-class UnificaOrientacionsexual < ActiveRecord::Migration[7.2]
+class UnificaOrientacionsexualPersona < ActiveRecord::Migration[7.2]
   def up
     execute <<-SQL
       UPDATE msip_persona AS p
