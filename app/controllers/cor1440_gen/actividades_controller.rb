@@ -181,6 +181,7 @@ module Cor1440Gen
             externo: false,
             orgsocial_id: nil,
             perfilorgsocial_id: op.ultimoperfilorgsocial_id,
+            orientacionsexual: op.ultimaorientacionsexual,
             telefono: op.telefono,
           )
           nr.save(validate: false)
@@ -201,6 +202,7 @@ module Cor1440Gen
             externo: false,
             orgsocial_id: nil,
             perfilorgsocial_id: op.ultimoperfilorgsocial_id,
+            orientacionsexual: op.ultimaorientacionsexual,
             telefono: op.telefono,
           )
           nr.save(validate: false)
@@ -526,6 +528,7 @@ module Cor1440Gen
           id: v.victima.persona_id,
           nombre: v.victima.persona.presenta_nombre,
           ultimoperfilorgsocial_id: v.victima.persona.ultimoperfilorgsocial_id,
+          orientacionesexual: v.victima.persona.ultimaorientacionsexual,
           ultimadiscapacidad_id: v.victima.persona.ultimadiscapacidad_id,
           orientacionsexual: v.victima.persona.ultimaorientacionsexual,
           telefono: v.victima.persona.telefono,
@@ -577,6 +580,7 @@ module Cor1440Gen
           actividad_id: act.id,
           persona_id: dp[:id],
           perfilorgsocial_id: dp[:ultimoperfilorgsocial_id],
+          orientacionsexual: dp[:ultimaorientacionsexual],
           telefono: dp[:telefono],
         )
         unless asistencia.save(validate: false)

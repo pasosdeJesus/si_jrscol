@@ -11,6 +11,7 @@
 <div class="div-tabla-celda">
   <%= fasistencia.input :orientacionsexual,
     collection: Msip::Persona::ORIENTACION_OPCIONES,
+    input_html: { style: 'width: 6em' },
     label: false,
     include_blank: false
   %>
