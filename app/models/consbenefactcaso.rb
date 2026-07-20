@@ -133,6 +133,8 @@ class Consbenefactcaso < ActiveRecord::Base
         tdocumento.sigla AS persona_tdocumento,
         persona.numerodocumento AS persona_numerodocumento,
         persona.sexo AS persona_sexo,
+        d.nombre AS persona_discapacidad,
+        persona.ultimaorientacionsexual AS persona_ultimaorientacionsexual,
         (COALESCE(persona.anionac::text, '') || '-' ||
           COALESCE(persona.mesnac::text, '') || '-' ||
           COALESCE(persona.dianac::text, '')) AS persona_fechanac,
@@ -158,6 +160,7 @@ class Consbenefactcaso < ActiveRecord::Base
         JOIN msip_persona AS persona ON c2.persona_id=persona.id
         INNER JOIN msip_tdocumento AS tdocumento ON
           persona.tdocumento_id=tdocumento.id
+        JOIN discapacidad AS d ON d.id=persona.ultimadiscapacidad_id
         LEFT JOIN msip_pais AS pais ON
           persona.pais_id = pais.id
         LEFT JOIN msip_perfilorgsocial AS perfilorgsocial ON
@@ -347,6 +350,8 @@ class Consbenefactcaso < ActiveRecord::Base
         "Número de documento",
         "Sexo",
         "Fecha de nacimiento",
+        "Discapacidad",
+        "Última orientación sexual",
         "Edad actual",
         "País",
         "Último perfil",
@@ -373,6 +378,8 @@ class Consbenefactcaso < ActiveRecord::Base
           reg.presenta("persona_numerodocumento"),
           reg.presenta("persona_sexo"),
           reg.presenta("persona_fechanac"),
+          reg.presenta("persona_discapacidad"),
+          reg.presenta("persona_ultimaorientacionsexual"),
           reg.presenta("persona_edad_actual"),
           reg.presenta("persona_paisnac"),
           reg.presenta("persona_ultimoperfilorgsocial"),

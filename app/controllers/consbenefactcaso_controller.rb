@@ -21,6 +21,8 @@ class ConsbenefactcasoController < Heb412Gen::ModelosController
       :persona_numerodocumento,
       :persona_sexo,
       :persona_fechanac,
+      :persona_discapacidad,
+      :persona_ultimaorientacionsexual,
       :persona_edad_actual,
       :persona_paisnac,
       :persona_ultimoperfilorgsocial,
