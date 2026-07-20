@@ -161,13 +161,15 @@ es:
         persona_mesnac: Mes de nacimiento
         persona_dianac: Día de nacimiento
         persona_caso_ids: Caso del beneficiario
+        persona_discapacidad: Discapacidad
         persona_identificacion: Identificación
         persona_id: Id. Beneficiario
         persona_nombre: Nombre
         persona_nombres: Nombres
+        persona_numerodocumento: Número de documento
         persona_sexo: Sexo
         persona_tipodocumento: Tipo de documento
-        persona_numerodocumento: Número de documento
+        persona_ultimaorientacionsexual: Orientación Sexual
         rangoedadac_ultact: Rango de edad en actividad más reciente
       "cor1440_gen/financiador":
         nombregifmm: Nombre GIFMM

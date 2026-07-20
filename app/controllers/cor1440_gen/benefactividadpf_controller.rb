@@ -22,6 +22,8 @@ module Cor1440Gen
           "persona_anionac",
           "persona_mesnac",
           "persona_dianac",
+          "persona_discapacidad",
+          "persona_ultimaorientacionsexual",
           "persona_actividad_edad",
           "persona_actividad_perfil",
           "actividad_municipio",
@@ -197,6 +199,8 @@ module Cor1440Gen
           "Dia Nacimiento",
           "Mes Nacimiento",
           "Año Nacimiento",
+          "Discapacidad",
+          "Orientación Sexual",
           "Edad en Act.",
           "Perfil Beneficiario",
           "Municipio Actividad",
@@ -213,7 +217,7 @@ module Cor1440Gen
           "Id. Beneficiario",
         ]
 
-        hoja.merge_cells("A1:S1")
+        hoja.merge_cells("A1:U1")
 
         hoja.add_row(l, style: [estilo_encabezado] * l.length)
         registros.order("UPPER(persona_nombres), " \
@@ -230,6 +234,8 @@ module Cor1440Gen
             baml["persona_dianac"],
             baml["persona_mesnac"],
             baml["persona_anionac"],
+            baml["persona_discapacidad"],
+            baml["persona_ultimaorientacionsexual"],
             baml["persona_actividad_edad"],
             baml["persona_actividad_perfil"],
             baml["actividad_municipio"],
@@ -244,7 +250,7 @@ module Cor1440Gen
           l << baml["persona_id"]
           hoja.add_row(l, style: estilo_base)
         end
-        hoja.column_widths(20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20)
+        hoja.column_widths(20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20)
         ultf = 0
         hoja.rows.last.tap do |row|
           ultf = row.row_index

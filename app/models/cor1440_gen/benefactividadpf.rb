@@ -66,6 +66,8 @@ module Cor1440Gen
         p.dianac AS persona_dianac,
         p.mesnac AS persona_mesnac,
         p.anionac AS persona_anionac,
+        d.nombre AS persona_discapacidad,
+        p.ultimaorientacionsexual AS persona_ultimaorientacionsexual,
         public.msip_edad_de_fechanac_fecharef(
           p.anionac, p.mesnac, p.dianac,
           EXTRACT(YEAR FROM a.fecha)::integer,
@@ -84,6 +86,7 @@ module Cor1440Gen
         JOIN msip_persona AS p ON p.id=b.persona_id
         JOIN usuario AS us ON us.id=a.usuario_id
         LEFT JOIN msip_tdocumento AS t ON t.id=p.tdocumento_id
+        LEFT JOIN discapacidad AS d ON d.id=p.ultimadiscapacidad_id
         LEFT JOIN msip_ubicacionpre AS u ON u.id=a.ubicacionpre_id
         LEFT JOIN msip_departamento AS dep on dep.id=u.departamento_id
         LEFT JOIN msip_municipio AS mun on mun.id=u.municipio_id

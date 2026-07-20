@@ -14,6 +14,10 @@ module Msip
       class_name: "::Discapacidad",
       optional: false
 
+    belongs_to :ultimaorientacionsexual,
+      validate: true,
+      optional: false
+
     belongs_to :ultimoperfilorgsocial,
       validate: true,
       class_name: "Msip::Perfilorgsocial",
