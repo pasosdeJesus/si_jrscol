@@ -47,6 +47,8 @@ if (test "$SALTAPREPARA" != "1") then {
   } fi;
 } fi;
 
+(cd $rutaap; RAILS_ENV=test ${RAILS} msip:stimulus_motores assets:precompile)
+
 if (test "$SALTAUNITARIAS" != "1") then {
   echo "== Pruebas de regresión unitarias"
   mkdir -p cobertura-unitarias/
@@ -86,7 +88,10 @@ if (test -d test/integration -a "$SALTAINTEGRACION" != "1") then {
   done;
 } fi;
 
-if (test -f $rutaap/bin/pruebasjs.sh -a -d $rutaap/test/puppeteer -a "x$NOPRUEBAJS" != "x1") then {
+# En adJ 7.5 no opera modo headless, ejecutar pruebasjs.sh manual y localmente
+# https://gitlab.com/pasosdeJesus/adJ/-/issues/15
+s=`uname`
+if (test "$s" != "OpenBSD" -a -f $rutaap/bin/pruebasjs.sh -a -d $rutaap/test/puppeteer -a "x$NOPRUEBAJS" != "x1") then {
   echo "== Con puppeteer"
   (cd $rutaap; ${RAILS} msip:stimulus_motores; bin/pruebasjs.sh)
   if (test "$?" != "0") then {
@@ -99,7 +104,6 @@ echo "== Unificando resultados de pruebas en directorio clásico coverage"
 mkdir -p coverage/
 rm -rf coverage/{*,.*}
 
-echo "${RAILS} ${MSIP_REPORTEREGRESION}"
 ${RAILS} ${MSIP_REPORTEREGRESION}
 r=$?
 if (test "$r" != "0") then {
@@ -109,6 +113,11 @@ if (test "$r" != "0") then {
 
 echo "== Copiando resultados para hacerlos visibles en el web en ruta cobertura"
 # Copiar resultados para hacerlos visibles en web
+curdir=`pwd`
+echo "pwd=$curdir"
 mkdir -p $rutaap/public/${RUTA_RELATIVA}cobertura/
 cp -rf coverage/* $rutaap/public/${RUTA_RELATIVA}cobertura/
+exit_status=$?
+echo "1 exit_status=${exit_status}"
 cp -rf coverage/assets/* $rutaap/public/${RUTA_RELATIVA}assets/
+echo "2 exit_status=${exit_status}"
