@@ -19,7 +19,6 @@ CSV.foreach('por-procesa-mismo-benef.csv', headers: true) do |row|
       contacto = 1
     end
     if (contacto >= 0)
-      
       otro = 1 - contacto
       if (vsjr[otro].rolfamilia_id && vsjr[otro].fechadesagregacion.nil? &&
           caso[otro] < caso[contacto])
