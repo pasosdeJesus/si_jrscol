@@ -228,6 +228,54 @@ class ConsgifmmController < Heb412Gen::ModelosController
         "Víctimas",
         "Víctimas doble afectación",
         "Sin Perfil Poblacional",
+        "0 a 5", # Sexo
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5", # Orientacion
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
         "0 a 5",
         "6 a 12",
         "13 a 17",
@@ -266,12 +314,46 @@ class ConsgifmmController < Heb412Gen::ModelosController
 
       hoja.merge_cells("A1:#{colfin}1")
 
-      l2 = ([""] * 33) + ["Mujeres"] + ([""] * 5) + ["Hombres"] + ([""] * 5) +
-        ["Otro sexo"] + ([""] * 5)
+      l2 = ([""] * 33) + ["Mujeres"] + ([""] * 5) + 
+        ["Hombres"] + ([""] * 5) +
+        ["Otro sexo"] + ([""] * 5) +
+        ["Orientación Bisexual"] + ([""] * 5) +
+        ["Orientación Gay"] + ([""] * 5) +
+        ["Orientación Heterosexual"] + ([""] * 5) +
+        ["Orientación Intersexual"] + ([""] * 5) +
+        ["Orientación Lesbiana"] + ([""] * 5) +
+        ["Orientación Otro"] + ([""] * 5) +
+        ["Orientación Sin Información"] + ([""] * 5) +
+        ["Orientación Transexual"] + ([""] * 5) 
+#        ["Discapacidad Alguna no Especificada"] + ([""] * 5) +
+#        ["Discapacidad Auditiva"] + ([""] * 5) +
+#        ["Discapacidad Cognitiva"] + ([""] * 5) +
+#        ["Discapacidad Física"] + ([""] * 5) +
+#        ["Discapacidad Ninguna"] + ([""] * 5) +
+#        ["Discapacidad Otra"] + ([""] * 5) +
+#        ["Discapacidad Sin Información"] + ([""] * 5) +
+#        ["Discapacidad Visual"] + ([""] * 5) 
       hoja.add_row(l2, style: [estilo_encabezado] * numfilas)
       hoja.merge_cells("AH6:AM6")
       hoja.merge_cells("AN6:AS6")
       hoja.merge_cells("AT6:AY6")
+      hoja.merge_cells("AZ6:BE6") # Orientacion
+      hoja.merge_cells("BF6:BK6")
+      hoja.merge_cells("BL6:BQ6")
+      hoja.merge_cells("BR6:BW6")
+      hoja.merge_cells("BX6:CC6")
+      hoja.merge_cells("CD6:CI6")
+      hoja.merge_cells("CJ6:CO6")
+      hoja.merge_cells("CP6:CU6")
+#      hoja.merge_cells("CV6:DA6") # Discapacidad
+#      hoja.merge_cells("DB6:DG6")
+#      hoja.merge_cells("DH6:DM6")
+#      hoja.merge_cells("DN6:DS6")
+#      hoja.merge_cells("DT6:DY6")
+#      hoja.merge_cells("DZ6:EE6")
+#      hoja.merge_cells("EF6:EK6")
+#      hoja.merge_cells("EL6:EQ6")
+
 
       hoja.add_row(l, style: [estilo_encabezado] * numfilas)
 
@@ -330,7 +412,71 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.presenta("beneficiarios_intersexuales_18_25_ids").split(",").count,
           reg.presenta("beneficiarios_intersexuales_26_59_ids").split(",").count,
           reg.presenta("beneficiarios_intersexuales_60_o_mas_ids").split(",").count,
-          reg.presenta("beneficiarios_con_discapacidad_ids").split(",").count,
+
+          reg.presenta("beneficiarios_o_bisexual_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_bisexual_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_bisexual_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_bisexual_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_bisexual_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_bisexual_60_o_mas_ids").split(",").count,
+          reg.presenta("beneficiarios_o_gay_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_gay_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_gay_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_gay_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_gay_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_gay_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_o_heterosexual_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_heterosexual_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_heterosexual_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_heterosexual_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_heterosexual_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_heterosexual_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_o_intersexual_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_intersexual_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_intersexual_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_intersexual_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_intersexual_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_intersexual_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_o_lesbiana_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_lesbiana_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_lesbiana_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_lesbiana_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_lesbiana_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_lesbiana_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_o_otro_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_otro_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_otro_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_otro_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_otro_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_otro_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_o_sininfo_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_sininfo_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_sininfo_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_sininfo_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_sininfo_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_sininfo_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_o_transexual_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_o_transexual_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_o_transexual_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_o_transexual_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_o_transexual_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_o_transexual_60_o_mas_ids").split(",").count,
+
+          0,0,0,0,0,0,
+          0,0,0,0,0,0,
+          0,0,0,0,0,0,
+          0,0,0,0,0,0,
+          0,0,0,0,0,0,
+          0,0,0,0,0,0,
+          0,0,0,0,0,0,
+          0,0,0,0,0,0,
+
           reg.presenta("beneficiarios_afrodescendientes_ids").split(",").count,
           reg.presenta("beneficiarios_indigenas_ids").split(",").count,
           reg.presenta("beneficiarios_otra_etnia_ids").split(",").count,

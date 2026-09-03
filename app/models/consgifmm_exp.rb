@@ -213,6 +213,30 @@ class ConsgifmmExp < ActiveRecord::Base
     end
   end
 
+  # Retorna ids de beneficiarios con la orientacion dada
+  # y una edad entre edadini o edadinf (pueden ser nil para indicar no limite).
+  # Si con_edad es false ademas retorna aquellos cuya edad
+  # sea desconocida
+  def beneficiarios_condicion_orientacion_edad_ids(orientacion, edadini, edadfin,
+    con_edad = true)
+    finmes = actividad.fecha.end_of_month
+    beneficiarios_condicion_ids do |p|
+      e = Sivel2Gen::RangoedadHelper.edad_de_fechanac_fecha(
+        p.anionac,
+        p.mesnac,
+        p.dianac,
+        finmes.year,
+        finmes.month,
+        finmes.day,
+      )
+      p.ultimaorientacionsexual.to_s == orientacion.to_s &&
+        (!con_edad || p.anionac) &&
+        (edadini.nil? || e >= edadini) &&
+        (edadfin.nil? || e <= edadfin)
+    end
+  end
+
+
   # Retorna ids de beneficiarios nuevos del sexo dado
   # y una edad entre edadini o edadinf (pueden ser nil para indicar no limite).
   # Si con_edad es false ademas retorna aquellos cuya edad
@@ -409,6 +433,250 @@ class ConsgifmmExp < ActiveRecord::Base
         !p.anionac
     end
   end
+
+
+  def beneficiarios_o_bisexual_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("B", 0, 5)
+  end
+
+
+  def beneficiarios_o_bisexual_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("B", 6, 12)
+  end
+
+
+  def beneficiarios_o_bisexual_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("B", 13, 17)
+  end
+
+
+  def beneficiarios_o_bisexual_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("B", 18, 25)
+  end
+
+
+  def beneficiarios_o_bisexual_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("B", 26, 59)
+  end
+
+  def beneficiarios_o_bisexual_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("B", 60, nil)
+  end
+
+
+
+  def beneficiarios_o_gay_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 0, 5)
+  end
+
+
+  def beneficiarios_o_gay_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 6, 12)
+  end
+
+
+  def beneficiarios_o_gay_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 13, 17)
+  end
+
+
+  def beneficiarios_o_gay_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 18, 25)
+  end
+
+
+  def beneficiarios_o_gay_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 26, 59)
+  end
+
+  def beneficiarios_o_gay_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 60, nil)
+  end
+
+
+
+
+  def beneficiarios_o_heterosexual_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("H", 0, 5)
+  end
+
+
+  def beneficiarios_o_heterosexual_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("H", 6, 12)
+  end
+
+
+  def beneficiarios_o_heterosexual_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("H", 13, 17)
+  end
+
+
+  def beneficiarios_o_heterosexual_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("H", 18, 25)
+  end
+
+
+  def beneficiarios_o_heterosexual_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("H", 26, 59)
+  end
+
+  def beneficiarios_o_heterosexual_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("H", 60, nil)
+  end
+
+
+
+
+  def beneficiarios_o_intersexual_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("I", 0, 5)
+  end
+
+
+  def beneficiarios_o_intersexual_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("I", 6, 12)
+  end
+
+
+  def beneficiarios_o_intersexual_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("I", 13, 17)
+  end
+
+
+  def beneficiarios_o_intersexual_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("I", 18, 25)
+  end
+
+
+  def beneficiarios_o_intersexual_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("I", 26, 59)
+  end
+
+  def beneficiarios_o_intersexual_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("I", 60, nil)
+  end
+
+
+
+
+  def beneficiarios_o_lesbiana_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 0, 5)
+  end
+
+
+  def beneficiarios_o_lesbiana_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 6, 12)
+  end
+
+
+  def beneficiarios_o_lesbiana_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 13, 17)
+  end
+
+
+  def beneficiarios_o_lesbiana_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 18, 25)
+  end
+
+
+  def beneficiarios_o_lesbiana_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 26, 59)
+  end
+
+  def beneficiarios_o_lesbiana_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("G", 60, nil)
+  end
+
+
+  def beneficiarios_o_otro_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("O", 0, 5)
+  end
+
+
+  def beneficiarios_o_otro_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("O", 6, 12)
+  end
+
+
+  def beneficiarios_o_otro_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("O", 13, 17)
+  end
+
+
+  def beneficiarios_o_otro_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("O", 18, 25)
+  end
+
+
+  def beneficiarios_o_otro_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("O", 26, 59)
+  end
+
+  def beneficiarios_o_otro_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("O", 60, nil)
+  end
+
+
+  def beneficiarios_o_sininfo_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("S", 0, 5)
+  end
+
+
+  def beneficiarios_o_sininfo_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("S", 6, 12)
+  end
+
+
+  def beneficiarios_o_sininfo_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("S", 13, 17)
+  end
+
+
+  def beneficiarios_o_sininfo_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("S", 18, 25)
+  end
+
+
+  def beneficiarios_o_sininfo_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("S", 26, 59)
+  end
+
+  def beneficiarios_o_sininfo_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("S", 60, nil)
+  end
+
+
+
+
+  def beneficiarios_o_transexual_0_5_ids 
+    beneficiarios_condicion_orientacion_edad_ids("T", 0, 5)
+  end
+
+
+  def beneficiarios_o_transexual_6_12_ids 
+    beneficiarios_condicion_orientacion_edad_ids("T", 6, 12)
+  end
+
+
+  def beneficiarios_o_transexual_13_17_ids 
+    beneficiarios_condicion_orientacion_edad_ids("T", 13, 17)
+  end
+
+
+  def beneficiarios_o_transexual_18_25_ids 
+    beneficiarios_condicion_orientacion_edad_ids("T", 18, 25)
+  end
+
+
+  def beneficiarios_o_transexual_26_59_ids 
+    beneficiarios_condicion_orientacion_edad_ids("T", 26, 59)
+  end
+
+  def beneficiarios_o_transexual_60_o_mas_ids 
+    beneficiarios_condicion_orientacion_edad_ids("T", 60, nil)
+  end
+
+
+
 
   def beneficiarios_afrodescendientes_ids
     finmes = actividad.fecha.end_of_month
