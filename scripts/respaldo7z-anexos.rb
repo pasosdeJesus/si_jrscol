@@ -50,7 +50,7 @@ else
 end
 
 SOURCE_DIR = anexos
-BASE_DEST_DIR = '/var/restovar1/anexos-por-anio'
+BASE_DEST_DIR = '/var/anexos-por-anio'
 
 min_year = Time.now.year
 max_year = 0
