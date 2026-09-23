@@ -30,7 +30,18 @@ CSV.foreach('por-procesa-mismo-benef.csv', headers: true) do |row|
           puts persona_id 
         end
       else
-        puts persona_id 
+        # Una persona que esta en dos casos y no es contacto en nignuna,
+        # suponemos que basta desagregarla del más antiguo
+        queda = caso[0] < caso [1] ? 1 : 0
+        otro = 1 - queda
+        if (vsjr[otro].rolfamilia_id && vsjr[queda].rolfamilia_id)
+          vsjr[otro].fechadesagregacion = Date.today
+          puts "#{row['nombres']} #{row['apellidos']} con id #{persona_id} es\n #{vsjr[queda].rolfamilia.nombre} en caso #{caso[queda]} pero #{vsjr[otro].rolfamilia.nombre} en caso #{caso[otro]}.\n Se desagrega del caso #{caso[otro]} que es anterior al #{caso[queda]}"
+          debugger
+          vsjr[otro].save
+        else
+          puts persona_id 
+        end
       end
     else
       puts persona_id 
