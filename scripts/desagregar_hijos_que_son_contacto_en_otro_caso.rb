@@ -2,6 +2,8 @@
 
 require 'csv'
 
+contactos_desagregados = 0
+beneficiarios_desagregados = 0
 CSV.foreach('por-procesa-mismo-benef.csv', headers: true) do |row|
   # Acceder a columnas por nombre
   persona_id = row['persona_id'].to_i
@@ -24,6 +26,8 @@ CSV.foreach('por-procesa-mismo-benef.csv', headers: true) do |row|
         if (vsjr[otro].rolfamilia_id && vsjr[otro].fechadesagregacion.nil? &&
             caso[otro] < caso[contacto])
           vsjr[otro].fechadesagregacion = Date.today
+          contactos_desagregados += 1
+          puts "Contact desagregado #{contactos_desagregados}."
           puts "#{row['nombres']} #{row['apellidos']} con id #{persona_id} es\n Contacto en caso #{caso[contacto]} pero #{vsjr[otro].rolfamilia.nombre} en caso #{caso[otro]}.\n Se desagrega del caso #{caso[otro]} que es anterior al #{caso[contacto]}"
           vsjr[otro].save
         else
@@ -36,8 +40,11 @@ CSV.foreach('por-procesa-mismo-benef.csv', headers: true) do |row|
         otro = 1 - queda
         if (vsjr[otro].rolfamilia_id && vsjr[queda].rolfamilia_id)
           vsjr[otro].fechadesagregacion = Date.today
+          beneficiarios_desagregados += 1
+          puts "Beneficiario desagregado #{beneficiarios_desagregados}."
           puts "#{row['nombres']} #{row['apellidos']} con id #{persona_id} es\n #{vsjr[queda].rolfamilia.nombre} en caso #{caso[queda]} pero #{vsjr[otro].rolfamilia.nombre} en caso #{caso[otro]}.\n Se desagrega del caso #{caso[otro]} que es anterior al #{caso[queda]}"
-          debugger
+          puts "ENTER para continuar..."
+          STDIN.gets
           vsjr[otro].save
         else
           puts persona_id 
