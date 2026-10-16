@@ -294,7 +294,54 @@ class ConsgifmmController < Heb412Gen::ModelosController
         "18 a 25",
         "26 a 59",
         "60 o más",
-        "Con discapacidad",
+        "0 a 5", # Discapacidad
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
+        "0 a 5",
+        "6 a 12",
+        "13 a 17",
+        "18 a 25",
+        "26 a 59",
+        "60 o más",
         "Afrodescendientes",
         "Indígenas",
         "Otra comunidad étnica",
@@ -324,15 +371,15 @@ class ConsgifmmController < Heb412Gen::ModelosController
         ["Orientación Lesbiana"] + ([""] * 5) +
         ["Orientación Otro"] + ([""] * 5) +
         ["Orientación Sin Información"] + ([""] * 5) +
-        ["Orientación Transexual"] + ([""] * 5) 
-#        ["Discapacidad Alguna no Especificada"] + ([""] * 5) +
-#        ["Discapacidad Auditiva"] + ([""] * 5) +
-#        ["Discapacidad Cognitiva"] + ([""] * 5) +
-#        ["Discapacidad Física"] + ([""] * 5) +
-#        ["Discapacidad Ninguna"] + ([""] * 5) +
-#        ["Discapacidad Otra"] + ([""] * 5) +
-#        ["Discapacidad Sin Información"] + ([""] * 5) +
-#        ["Discapacidad Visual"] + ([""] * 5) 
+        ["Orientación Transexual"] + ([""] * 5) +
+        ["Discapacidad Alguna no Especificada"] + ([""] * 5) +
+        ["Discapacidad Auditiva"] + ([""] * 5) +
+        ["Discapacidad Cognitiva"] + ([""] * 5) +
+        ["Discapacidad Física"] + ([""] * 5) +
+        ["Discapacidad Ninguna"] + ([""] * 5) +
+        ["Discapacidad Otra"] + ([""] * 5) +
+        ["Discapacidad Sin Información"] + ([""] * 5) +
+        ["Discapacidad Visual"] + ([""] * 5) 
       hoja.add_row(l2, style: [estilo_encabezado] * numfilas)
       hoja.merge_cells("AH6:AM6")
       hoja.merge_cells("AN6:AS6")
@@ -345,14 +392,14 @@ class ConsgifmmController < Heb412Gen::ModelosController
       hoja.merge_cells("CD6:CI6")
       hoja.merge_cells("CJ6:CO6")
       hoja.merge_cells("CP6:CU6")
-#      hoja.merge_cells("CV6:DA6") # Discapacidad
-#      hoja.merge_cells("DB6:DG6")
-#      hoja.merge_cells("DH6:DM6")
-#      hoja.merge_cells("DN6:DS6")
-#      hoja.merge_cells("DT6:DY6")
-#      hoja.merge_cells("DZ6:EE6")
-#      hoja.merge_cells("EF6:EK6")
-#      hoja.merge_cells("EL6:EQ6")
+      hoja.merge_cells("CV6:DA6") # Discapacidad
+      hoja.merge_cells("DB6:DG6")
+      hoja.merge_cells("DH6:DM6")
+      hoja.merge_cells("DN6:DS6")
+      hoja.merge_cells("DT6:DY6")
+      hoja.merge_cells("DZ6:EE6")
+      hoja.merge_cells("EF6:EK6")
+      hoja.merge_cells("EL6:EQ6")
 
 
       hoja.add_row(l, style: [estilo_encabezado] * numfilas)
@@ -468,16 +515,59 @@ class ConsgifmmController < Heb412Gen::ModelosController
           reg.presenta("beneficiarios_o_transexual_26_59_ids").split(",").count,
           reg.presenta("beneficiarios_o_transexual_60_o_mas_ids").split(",").count,
 
-#          0,0,0,0,0,0,
-#          0,0,0,0,0,0,
-#          0,0,0,0,0,0,
-#          0,0,0,0,0,0,
-#          0,0,0,0,0,0,
-#         0,0,0,0,0,0,
-#         0,0,0,0,0,0,
-#         0,0,0,0,0,0,
+          reg.presenta("beneficiarios_d_algunane_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_algunane_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_algunane_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_algunane_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_algunane_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_algunane_60_o_mas_ids").split(",").count,
+          reg.presenta("beneficiarios_d_auditiva_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_auditiva_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_auditiva_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_auditiva_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_auditiva_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_auditiva_60_o_mas_ids").split(",").count,
+          reg.presenta("beneficiarios_d_cognitiva_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_cognitiva_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_cognitiva_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_cognitiva_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_cognitiva_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_cognitiva_60_o_mas_ids").split(",").count,
+          reg.presenta("beneficiarios_d_fisica_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_fisica_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_fisica_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_fisica_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_fisica_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_fisica_60_o_mas_ids").split(",").count,
 
-          reg.presenta("beneficiarios_condiscapacidad_ids").split(",").count,
+          reg.presenta("beneficiarios_d_ninguna_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_ninguna_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_ninguna_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_ninguna_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_ninguna_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_ninguna_60_o_mas_ids").split(",").count,
+          reg.presenta("beneficiarios_d_otra_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_otra_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_otra_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_otra_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_otra_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_otra_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_d_sininformacion_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_sininformacion_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_sininformacion_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_sininformacion_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_sininformacion_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_sininformacion_60_o_mas_ids").split(",").count,
+
+          reg.presenta("beneficiarios_d_visual_0_5_ids").split(",").count,
+          reg.presenta("beneficiarios_d_visual_6_12_ids").split(",").count,
+          reg.presenta("beneficiarios_d_visual_13_17_ids").split(",").count,
+          reg.presenta("beneficiarios_d_visual_18_25_ids").split(",").count,
+          reg.presenta("beneficiarios_d_visual_26_59_ids").split(",").count,
+          reg.presenta("beneficiarios_d_visual_60_o_mas_ids").split(",").count,
+
+#          reg.presenta("beneficiarios_condiscapacidad_ids").split(",").count,
 
           reg.presenta("beneficiarios_afrodescendientes_ids").split(",").count,
           reg.presenta("beneficiarios_indigenas_ids").split(",").count,

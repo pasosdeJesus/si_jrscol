@@ -213,6 +213,31 @@ class ConsgifmmExp < ActiveRecord::Base
     end
   end
 
+  # Retorna ids de beneficiarios con la discapacidad dada
+  # y una edad entre edadini o edadinf (pueden ser nil para indicar no limite).
+  # Si con_edad es false ademas retorna aquellos cuya edad
+  # sea desconocida
+  def beneficiarios_condicion_discapacidad_edad_ids(
+    discapacidad_id, edadini, edadfin, con_edad = true
+  )
+    finmes = actividad.fecha.end_of_month
+    beneficiarios_condicion_ids do |p|
+      e = Sivel2Gen::RangoedadHelper.edad_de_fechanac_fecha(
+        p.anionac,
+        p.mesnac,
+        p.dianac,
+        finmes.year,
+        finmes.month,
+        finmes.day,
+      )
+      p.ultimadiscapacidad_id == discapacidad_id &&
+        (!con_edad || p.anionac) &&
+        (edadini.nil? || e >= edadini) &&
+        (edadfin.nil? || e <= edadfin)
+    end
+  end
+
+
   # Retorna ids de beneficiarios con la orientacion dada
   # y una edad entre edadini o edadinf (pueden ser nil para indicar no limite).
   # Si con_edad es false ademas retorna aquellos cuya edad
@@ -432,6 +457,199 @@ class ConsgifmmExp < ActiveRecord::Base
       p.sexo == Msip::Persona.convencion_sexo[:sexo_sininformacion] &&
         !p.anionac
     end
+  end
+
+
+  def beneficiarios_d_algunane_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(8, 0, 5)
+  end
+
+  def beneficiarios_d_algunane_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(8, 6, 12)
+  end
+
+  def beneficiarios_d_algunane_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(8, 13, 17)
+  end
+
+  def beneficiarios_d_algunane_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(8, 18, 25)
+  end
+
+  def beneficiarios_d_algunane_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(8, 26, 59)
+  end
+
+  def beneficiarios_d_algunane_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(8, 60, nil)
+  end
+
+  def beneficiarios_d_auditiva_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(3, 0, 5)
+  end
+
+  def beneficiarios_d_auditiva_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(3, 6, 12)
+  end
+
+  def beneficiarios_d_auditiva_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(3, 13, 17)
+  end
+
+  def beneficiarios_d_auditiva_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(3, 18, 25)
+  end
+
+  def beneficiarios_d_auditiva_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(3, 26, 59)
+  end
+
+  def beneficiarios_d_auditiva_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(3, 60, nil)
+  end
+
+  def beneficiarios_d_cognitiva_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(4, 0, 5)
+  end
+
+  def beneficiarios_d_cognitiva_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(4, 6, 12)
+  end
+
+  def beneficiarios_d_cognitiva_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(4, 13, 17)
+  end
+
+  def beneficiarios_d_cognitiva_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(4, 18, 25)
+  end
+
+  def beneficiarios_d_cognitiva_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(4, 26, 59)
+  end
+
+  def beneficiarios_d_cognitiva_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(4, 60, nil)
+  end
+
+  def beneficiarios_d_fisica_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(1, 0, 5)
+  end
+
+  def beneficiarios_d_fisica_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(1, 6, 12)
+  end
+
+  def beneficiarios_d_fisica_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(1, 13, 17)
+  end
+
+  def beneficiarios_d_fisica_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(1, 18, 25)
+  end
+
+  def beneficiarios_d_fisica_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(1, 26, 59)
+  end
+
+  def beneficiarios_d_fisica_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(1, 60, nil)
+  end
+
+  def beneficiarios_d_ninguna_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(6, 0, 5)
+  end
+
+  def beneficiarios_d_ninguna_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(6, 6, 12)
+  end
+
+  def beneficiarios_d_ninguna_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(6, 13, 17)
+  end
+
+  def beneficiarios_d_ninguna_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(6, 18, 25)
+  end
+
+  def beneficiarios_d_ninguna_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(6, 26, 59)
+  end
+
+  def beneficiarios_d_ninguna_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(6, 60, nil)
+  end
+
+  def beneficiarios_d_otra_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(5, 0, 5)
+  end
+
+  def beneficiarios_d_otra_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(5, 6, 12)
+  end
+
+  def beneficiarios_d_otra_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(5, 13, 17)
+  end
+
+  def beneficiarios_d_otra_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(5, 18, 25)
+  end
+
+  def beneficiarios_d_otra_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(5, 26, 59)
+  end
+
+  def beneficiarios_d_otra_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(5, 60, nil)
+  end
+
+  def beneficiarios_d_sininformacion_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(7, 0, 5)
+  end
+
+  def beneficiarios_d_sininformacion_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(7, 6, 12)
+  end
+
+  def beneficiarios_d_sininformacion_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(7, 13, 17)
+  end
+
+  def beneficiarios_d_sininformacion_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(7, 18, 25)
+  end
+
+  def beneficiarios_d_sininformacion_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(7, 60, nil)
+  end
+
+  def beneficiarios_d_sininformacion_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(7, 60, nil)
+  end
+
+  def beneficiarios_d_visual_0_5_ids
+    beneficiarios_condicion_discapacidad_edad_ids(2, 0, 5)
+  end
+
+  def beneficiarios_d_visual_6_12_ids
+    beneficiarios_condicion_discapacidad_edad_ids(2, 6, 12)
+  end
+
+  def beneficiarios_d_visual_13_17_ids
+    beneficiarios_condicion_discapacidad_edad_ids(2, 13, 17)
+  end
+
+  def beneficiarios_d_visual_18_25_ids
+    beneficiarios_condicion_discapacidad_edad_ids(2, 18, 25)
+  end
+
+  def beneficiarios_d_visual_26_59_ids
+    beneficiarios_condicion_discapacidad_edad_ids(2, 26, 59)
+  end
+
+  def beneficiarios_d_visual_60_o_mas_ids
+    beneficiarios_condicion_discapacidad_edad_ids(2, 60, nil)
   end
 
 

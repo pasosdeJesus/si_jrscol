@@ -11,6 +11,13 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+--
 -- Name: es_co_utf_8; Type: COLLATION; Schema: public; Owner: -
 --
 
@@ -2046,7 +2053,7 @@ CREATE MATERIALIZED VIEW public.consgifmm_exp AS
      LEFT JOIN public.depgifmm ON ((msip_departamento.deplocal_cod = depgifmm.id)))
      LEFT JOIN public.msip_municipio ON ((msip_ubicacionpre.municipio_id = msip_municipio.id)))
      LEFT JOIN public.mungifmm ON ((((msip_departamento.deplocal_cod * 1000) + msip_municipio.munlocal_cod) = mungifmm.id)))
-  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['74523-1482-'::text, '74524-1482-'::text, '74525-1482-'::text, '74526-1482-'::text, '74527-1482-'::text, '74528-1482-'::text, '74529-1482-'::text, '74530-1482-'::text, '74531-1445-'::text, '74532-1482-'::text, '74560-1536-'::text, '74612-1528-'::text, '74645-1482-'::text, '74646-1482-'::text, '74647-1482-'::text, '74719-1487-'::text, '74721-1487-'::text, '74722-1487-'::text, '74723-1487-'::text, '74724-1487-'::text, '74725-1487-'::text, '74648-1482-'::text, '74649-1482-'::text, '74650-1482-'::text, '74651-1482-'::text, '74652-1482-'::text, '74653-1482-'::text, '74703-1485-'::text, '74640-1482-'::text, '74641-1482-'::text, '74642-1482-'::text, '74643-1482-'::text, '74715-1487-'::text, '74672-1528-'::text, '74673-1536-'::text, '74726-1493-'::text, '74716-1485-'::text])))
+  WHERE ((cor1440_gen_actividadpf.indicadorgifmm_id IS NOT NULL) AND ((detallefinanciero.proyectofinanciero_id IS NULL) OR (detallefinanciero.proyectofinanciero_id = cor1440_gen_actividadpf.proyectofinanciero_id)) AND ((detallefinanciero.actividadpf_id IS NULL) OR (detallefinanciero.actividadpf_id = cor1440_gen_actividadpf.id)) AND (consgifmm.id = ANY (ARRAY['75013-1528-'::text, '75014-1528-'::text, '74949-1485-'::text, '74986-1528-'::text])))
   ORDER BY cor1440_gen_actividad.fecha DESC, cor1440_gen_actividad.id
   WITH NO DATA;
 
@@ -7476,7 +7483,7 @@ CREATE MATERIALIZED VIEW public.sivel2_gen_consexpcaso AS
      LEFT JOIN public.sivel2_sjr_ultimaatencion ultimaatencion ON ((ultimaatencion.caso_id = caso.id)))
   WHERE (conscaso.caso_id IN ( SELECT sivel2_gen_conscaso.caso_id
            FROM public.sivel2_gen_conscaso
-          WHERE (sivel2_gen_conscaso.caso_id = 144)
+          WHERE (sivel2_gen_conscaso.caso_id = ANY (ARRAY[38476, 38477, 38469]))
           ORDER BY sivel2_gen_conscaso.fecharec DESC, sivel2_gen_conscaso.caso_id))
   ORDER BY conscaso.fecha, conscaso.caso_id
   WITH NO DATA;
@@ -15996,11 +16003,11 @@ ALTER TABLE ONLY public.msip_persona_trelacion
 
 
 --
--- Name: sivel2_gen_presponsable presponsable_papa_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sivel2_gen_presponsable presponsable_papa_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sivel2_gen_presponsable
-    ADD CONSTRAINT presponsable_papa_id_fkey FOREIGN KEY (papa_id) REFERENCES public.sivel2_gen_presponsable(id);
+    ADD CONSTRAINT presponsable_papa_fkey FOREIGN KEY (papa_id) REFERENCES public.sivel2_gen_presponsable(id);
 
 
 --
